@@ -1,0 +1,13 @@
+{
+  "name": "@75Neo/styles",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "prepare": "panda codegen"
+  },
+  "devDependencies": {
+    "@pandacss/dev": "^1.12.0",
+    "postcss": "^8.5.26"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "ui",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.20.0",
+      "onFail": "download"
+    }
+  }
+}
