@@ -1,4 +1,17 @@
 node_modules/
+dist/
+build/
+*.tsbuildinfo
+
 ## Panda
 styled-system
 styled-system-studio
+
+## Framework caches
+.astro/
+.svelte-kit/
+storybook-static/
+
+## Editors / OS
+.DS_Store
+*.log

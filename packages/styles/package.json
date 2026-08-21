@@ -1,13 +1,49 @@
 {
-  "name": "@75Neo/styles",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@75neo/styles",
+  "version": "0.0.0",
+  "description": "Shared Panda CSS preset and generated styled-system for 75NeoUI",
+  "license": "MIT",
+  "files": [
+    "src",
+    "styled-system"
+  ],
   "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./preset": "./src/preset.ts",
+    "./css": {
+      "types": "./styled-system/css/index.d.ts",
+      "default": "./styled-system/css/index.mjs"
+    },
+    "./recipes": {
+      "types": "./styled-system/recipes/index.d.ts",
+      "default": "./styled-system/recipes/index.mjs"
+    },
+    "./patterns": {
+      "types": "./styled-system/patterns/index.d.ts",
+      "default": "./styled-system/patterns/index.mjs"
+    },
+    "./tokens": {
+      "types": "./styled-system/tokens/index.d.ts",
+      "default": "./styled-system/tokens/index.mjs"
+    },
+    "./types": {
+      "types": "./styled-system/types/index.d.ts",
+      "default": "./styled-system/types/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
   "scripts": {
-    "prepare": "panda codegen"
+    "codegen": "panda codegen --clean",
+    "dev": "panda codegen --watch",
+    "build": "panda codegen --clean",
+    "check": "tsc --noEmit",
+    "prepack": "panda codegen --clean"
   },
   "devDependencies": {
-    "@pandacss/dev": "^1.12.0",
-    "postcss": "^8.5.26"
+    "@pandacss/dev": "catalog:",
+    "postcss": "catalog:",
+    "typescript": "catalog:"
   }
 }

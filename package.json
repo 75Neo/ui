@@ -1,13 +1,42 @@
 {
-  "name": "ui",
-  "version": "1.0.0",
-  "description": "",
+  "name": "75neo-ui",
+  "version": "0.0.0",
+  "private": true,
+  "description": "75NeoUI — an Ark UI + Panda CSS component library for React, Vue and Svelte",
   "type": "module",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @75neo/styles --filter \"./apps/playground-*\" run dev",
+    "dev:react": "pnpm --filter playground-react run dev",
+    "dev:vue": "pnpm --filter playground-vue run dev",
+    "dev:svelte": "pnpm --filter playground-svelte run dev",
+    "dev:docs": "pnpm --filter docs run dev",
+    "dev:app:react": "pnpm --filter playground-react run dev:app",
+    "dev:app:vue": "pnpm --filter playground-vue run dev:app",
+    "dev:app:svelte": "pnpm --filter playground-svelte run dev:app",
+    "codegen": "pnpm --filter @75neo/styles run codegen",
+    "build": "pnpm -r run build",
+    "check": "pnpm -r run check",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "lint:packages": "pnpm --filter \"./packages/*\" exec publint",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "clean": "pnpm -r exec rm -rf dist storybook-static styled-system .astro .svelte-kit node_modules/.tmp node_modules/.vite",
+    "prepare": "pnpm run codegen"
+  },
+  "devDependencies": {
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "typescript": "catalog:"
+  },
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
       "version": "^11.20.0",
-      "onFail": "download"
+      "onFail": "warn"
     }
+  },
+  "engines": {
+    "node": ">=24"
   }
 }

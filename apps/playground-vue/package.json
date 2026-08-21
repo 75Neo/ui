@@ -4,24 +4,29 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "dev": "storybook dev -p 6007 --no-open",
+    "dev:app": "vite",
+    "build": "storybook build",
+    "build:app": "vite build",
     "preview": "vite preview",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "check": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "vue": "^3.5.40"
+    "@75neo/vue": "workspace:*",
+    "vue": "catalog:"
   },
   "devDependencies": {
-    "@storybook/addon-docs": "10.5.6",
-    "@storybook/vue3-vite": "10.5.6",
-    "@types/node": "^24.13.3",
-    "@vitejs/plugin-vue": "^6.0.8",
-    "@vue/tsconfig": "^0.9.1",
-    "storybook": "10.5.6",
-    "typescript": "~6.0.2",
-    "vite": "^8.2.0",
-    "vue-tsc": "^3.3.8"
+    "@75neo/styles": "workspace:*",
+    "@pandacss/dev": "catalog:",
+    "@storybook/addon-docs": "catalog:",
+    "@storybook/vue3-vite": "catalog:",
+    "@types/node": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "@vue/tsconfig": "catalog:",
+    "postcss": "catalog:",
+    "storybook": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vue-tsc": "catalog:"
   }
 }

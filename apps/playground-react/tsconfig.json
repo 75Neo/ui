@@ -1,4 +1,12 @@
 {
-  "files": [],
-  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "types": ["vite/client", "node"],
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo",
+    "paths": {
+      "@75neo/react": ["../../packages/react/src/index.ts"]
+    }
+  },
+  "include": ["src", "vite.config.ts", "panda.config.ts", ".storybook"]
 }

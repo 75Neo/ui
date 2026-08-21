@@ -1,0 +1,32 @@
+{
+  "name": "playground-svelte",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "storybook dev -p 6008 --no-open",
+    "dev:app": "vite",
+    "build": "storybook build",
+    "build:app": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json"
+  },
+  "dependencies": {
+    "@75neo/svelte": "workspace:*",
+    "svelte": "catalog:"
+  },
+  "devDependencies": {
+    "@75neo/styles": "workspace:*",
+    "@pandacss/dev": "catalog:",
+    "@storybook/addon-svelte-csf": "catalog:",
+    "@storybook/svelte-vite": "catalog:",
+    "@sveltejs/vite-plugin-svelte": "catalog:",
+    "@tsconfig/svelte": "catalog:",
+    "@types/node": "catalog:",
+    "postcss": "catalog:",
+    "storybook": "catalog:",
+    "svelte-check": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "name": "@75neo/vue",
+  "version": "0.0.0",
+  "description": "75NeoUI components for Vue",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "check": "vue-tsc --noEmit",
+    "lint:package": "publint",
+    "prepack": "pnpm run build"
+  },
+  "dependencies": {
+    "@75neo/styles": "workspace:*",
+    "@ark-ui/vue": "catalog:"
+  },
+  "devDependencies": {
+    "@vue/tsconfig": "catalog:",
+    "publint": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vue": "catalog:",
+    "vue-tsc": "catalog:"
+  },
+  "peerDependencies": {
+    "vue": ">=3.5"
+  }
+}
