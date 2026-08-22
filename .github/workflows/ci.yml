@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+# A newer push to the same branch supersedes the run already in flight for it.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Nothing here writes to the repo or to any registry.
+permissions:
+  contents: read
+
+env:
+  # Mirrors mise.toml, which is what local dev uses. The first step below fails the run
+  # if the two ever drift apart.
+  NODE_VERSION: "24"
+  PNPM_VERSION: "11"
+
+jobs:
+  ci:
+    name: Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Toolchain matches mise.toml
+        run: |
+          set -euo pipefail
+          node_pin=$(grep -oP '^\s*node\s*=\s*"\K[^"]+' mise.toml)
+          pnpm_pin=$(grep -oP '^\s*pnpm\s*=\s*"\K[^"]+' mise.toml)
+          if [ "$node_pin" != "$NODE_VERSION" ]; then
+            echo "::error file=mise.toml::mise.toml pins node $node_pin, this workflow uses $NODE_VERSION"
+            exit 1
+          fi
+          if [ "$pnpm_pin" != "$PNPM_VERSION" ]; then
+            echo "::error file=mise.toml::mise.toml pins pnpm $pnpm_pin, this workflow uses $PNPM_VERSION"
+            exit 1
+          fi
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # Generates packages/styles/styled-system, which is git-ignored. Every package
+      # resolves its runtime *and* its types from there, so nothing below works without
+      # it. The root `prepare` script also runs this on install, but pnpm skips lifecycle
+      # scripts when it decides the install is already up to date — so this step is
+      # explicit rather than assumed.
+      - name: Codegen
+        id: setup
+        run: pnpm codegen
+
+      # Each check below runs even when an earlier one failed, so a single push reports
+      # every problem at once instead of one per round trip. The job still fails if any
+      # of them do.
+      - name: Format
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        run: pnpm format:check
+
+      - name: Lint
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        run: pnpm lint
+
+      # tsc / vue-tsc / svelte-check / astro check across all 8 projects. This is also
+      # what enforces `strictTokens` — a raw CSS value is a type error, not a lint error.
+      - name: Types
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        run: pnpm check
+
+      - name: Build
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        run: pnpm build
+
+      # publint, over the four publishable manifests.
+      - name: Package manifests
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        run: pnpm lint:packages

@@ -3,7 +3,7 @@ import { Button } from "@75neo/vue";
 import { css } from "@75neo/styles/css";
 import { ref } from "vue";
 
-const variants = ["solid", "outline", "ghost", "danger"] as const;
+const variants = ["solid", "subtle", "outline", "ghost", "link"] as const;
 const sizes = ["sm", "md", "lg"] as const;
 const count = ref(0);
 </script>

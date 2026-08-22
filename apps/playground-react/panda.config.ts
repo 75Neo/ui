@@ -11,4 +11,6 @@ export default defineConfig({
   dependencies: ["../../packages/styles/src/**/*.ts"],
   outdir: "styled-system",
   preflight: true,
+  // Kept in step with `packages/styles` so the two never disagree.
+  strictTokens: true,
 });

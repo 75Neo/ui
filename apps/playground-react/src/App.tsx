@@ -2,7 +2,7 @@ import { Button } from "@75neo/react";
 import { css } from "@75neo/styles/css";
 import { useState } from "react";
 
-const variants = ["solid", "outline", "ghost", "danger"] as const;
+const variants = ["solid", "subtle", "outline", "ghost", "link"] as const;
 const sizes = ["sm", "md", "lg"] as const;
 
 export const App = () => {

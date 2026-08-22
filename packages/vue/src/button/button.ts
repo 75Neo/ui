@@ -15,6 +15,10 @@ export const Button = defineComponent({
   props: {
     variant: { type: String as PropType<ButtonProps["variant"]>, default: undefined },
     size: { type: String as PropType<ButtonProps["size"]>, default: undefined },
+    colorPalette: {
+      type: String as PropType<ButtonProps["colorPalette"]>,
+      default: undefined,
+    },
     fullWidth: { type: Boolean as PropType<ButtonProps["fullWidth"]>, default: undefined },
   },
   setup(props, { slots }) {

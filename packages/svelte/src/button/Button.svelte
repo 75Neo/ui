@@ -12,10 +12,22 @@
       children?: Snippet;
     };
 
-  let { variant, size, fullWidth, class: className, children, ...rest }: ButtonProps = $props();
+  let {
+    variant,
+    size,
+    colorPalette,
+    fullWidth,
+    class: className,
+    children,
+    ...rest
+  }: ButtonProps = $props();
 </script>
 
 <!-- Ark's polymorphic element (so `asChild` works) wearing the shared `button` recipe. -->
-<Ark as="button" class={cx(button({ variant, size, fullWidth }), className)} {...rest}>
+<Ark
+  as="button"
+  class={cx(button({ variant, size, colorPalette, fullWidth }), className)}
+  {...rest}
+>
   {@render children?.()}
 </Ark>

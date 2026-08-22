@@ -29,8 +29,7 @@
       "default": "./styled-system/tokens/index.mjs"
     },
     "./types": {
-      "types": "./styled-system/types/index.d.ts",
-      "default": "./styled-system/types/index.mjs"
+      "types": "./styled-system/types/index.d.ts"
     },
     "./package.json": "./package.json"
   },
@@ -44,6 +43,7 @@
   "devDependencies": {
     "@pandacss/dev": "catalog:",
     "postcss": "catalog:",
+    "publint": "catalog:",
     "typescript": "catalog:"
   }
 }

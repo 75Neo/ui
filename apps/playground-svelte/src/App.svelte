@@ -2,7 +2,7 @@
   import { Button } from "@75neo/svelte";
   import { css } from "@75neo/styles/css";
 
-  const variants = ["solid", "outline", "ghost", "danger"] as const;
+  const variants = ["solid", "subtle", "outline", "ghost", "link"] as const;
   const sizes = ["sm", "md", "lg"] as const;
 
   let count = $state(0);

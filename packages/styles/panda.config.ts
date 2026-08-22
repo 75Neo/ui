@@ -16,4 +16,9 @@ export default defineConfig({
   importMap: "@75neo/styles",
   jsxFramework: undefined,
   preflight: false,
+
+  // Token values only — a raw `padding: "13px"` or `color: "#eee"` is a type error.
+  // These are the types every package consumes via `@75neo/styles/css`, so this is the
+  // one config that actually enforces it; `pnpm check` is what surfaces a violation.
+  strictTokens: true,
 });
