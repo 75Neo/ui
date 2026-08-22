@@ -1,7 +1,9 @@
-import type { RecipeConfig } from "@pandacss/dev";
+import type { RecipeConfig, SlotRecipeConfig } from "@pandacss/dev";
 import type {
   RecipeConfig as StrictRecipeConfig,
   RecipeVariantRecord,
+  SlotRecipeConfig as StrictSlotRecipeConfig,
+  SlotRecipeVariantRecord,
 } from "../../styled-system/types/recipe";
 
 /**
@@ -24,3 +26,16 @@ import type {
 export const defineRecipe = <T extends RecipeVariantRecord>(
   config: StrictRecipeConfig<T>,
 ): RecipeConfig => config as RecipeConfig;
+
+/**
+ * The multi-part counterpart, for components made of several elements — an accordion's
+ * root, item, trigger, indicator and content are one recipe, not five.
+ *
+ * Same trick and same reason as `defineRecipe` above: Panda's own `defineSlotRecipe` is
+ * typed loosely enough that `strictTokens` never applies, so the parameter is re-typed
+ * against the generated `SlotRecipeConfig` and the return type widened back for
+ * `theme.extend.slotRecipes`.
+ */
+export const defineSlotRecipe = <S extends string, T extends SlotRecipeVariantRecord<S>>(
+  config: StrictSlotRecipeConfig<S, T>,
+): SlotRecipeConfig => config as SlotRecipeConfig;

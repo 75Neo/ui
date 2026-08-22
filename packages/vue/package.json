@@ -29,7 +29,8 @@
   },
   "dependencies": {
     "@75neo/styles": "workspace:*",
-    "@ark-ui/vue": "catalog:"
+    "@ark-ui/vue": "catalog:",
+    "@lucide/vue": "catalog:"
   },
   "devDependencies": {
     "@vue/tsconfig": "catalog:",

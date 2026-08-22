@@ -1,5 +1,5 @@
 import { definePreset } from "@pandacss/dev";
-import { recipes } from "./recipes";
+import { recipes, slotRecipes } from "./recipes";
 import { breakpoints, keyframes, semanticTokens, textStyles, tokens } from "./theme";
 
 /**
@@ -52,6 +52,7 @@ export const preset = definePreset({
       textStyles,
       keyframes,
       recipes,
+      slotRecipes,
     },
   },
 

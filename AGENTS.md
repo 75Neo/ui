@@ -10,15 +10,15 @@ published for **three frameworks at once** — React, Vue and Svelte — from a 
 styles. `packages/styles` is the design system; `packages/react|vue|svelte` are thin framework
 bindings over it; `apps/*` are development surfaces, not products.
 
-pnpm workspace, Node 24 (see `mise.toml`). `Button` is currently the only component, and is the
-reference implementation for every pattern below.
+pnpm workspace, Node 24 (see `mise.toml`). Two components so far, and between them they are the
+reference implementation for every pattern below: `Button` for single-element components, and
+`Accordion` for multi-part ones.
 
 ## Commands
 
 ```sh
 pnpm dev:react        # Storybook for one framework — the usual way to work (also :vue, :svelte)
 pnpm dev              # styles watcher + all three Storybooks in parallel
-pnpm dev:app:react    # the Vite demo page instead of Storybook (also :vue, :svelte)
 pnpm dev:docs         # Astro docs site
 
 pnpm build            # every package + each Storybook + docs, in dependency order (~10s)
@@ -112,6 +112,7 @@ solid: { bg: "colorPalette.default", color: "colorPalette.contrast",
 ```
 
 `Button` has five variants and six palettes; all thirty combinations exist, none are spelled out.
+`Accordion` spends only two of the eight roles, but spends them the same way.
 Adding an intent is one entry in `semantic-tokens.ts` and one line per recipe — never a new
 `variant`. If you find yourself writing a `dangerOutline` variant, you've fused the two axes back
 together.
@@ -126,6 +127,35 @@ typecheck cleanly, in the one place this repo says styling belongs.
 against the **generated** `RecipeConfig`, which `strictTokens` does apply to. Every recipe must
 import from there. Nothing else changes, and the import is type-only so a cold `pnpm codegen` —
 before `styled-system/` exists — still works.
+
+`defineSlotRecipe` in the same file is the multi-part counterpart, for the same reason.
+
+### Multi-part components are one slot recipe, not several recipes
+
+An accordion's root, item, trigger, indicator and content are **one** `defineSlotRecipe` with a
+`slots` list — so `size`, `variant` and `colorPalette` are chosen once and every part follows.
+Two things this changes:
+
+- Slot recipes register under `theme.extend.slotRecipes`, **not** `recipes`. Panda keeps the two
+  registries apart; `recipes/index.ts` exports both objects and `preset.ts` passes each to its own
+  key. A slot recipe listed under `recipes` silently generates nothing.
+- The framework bindings resolve the recipe in `Root` and publish the resulting slot class names
+  on a per-framework context — React `createContext`, Vue `provide`/`inject`, Svelte
+  `setContext`/`getContext` (storing a _getter_, so `$derived` stays reactive across the
+  boundary). Every part below reads its own class from there, so callers set the variants once on
+  `Root` and never thread props down the tree.
+
+The parts are exported as a namespace (`export * as Accordion`), matching Ark's own anatomy 1:1 so
+their docs transfer: `<Accordion.Root>`, `<Accordion.Item>`, `<Accordion.ItemTrigger>`,
+`<Accordion.ItemIndicator>`, `<Accordion.ItemContent>`.
+
+Two deliberate departures from a pure pass-through, in all three frameworks:
+
+- `ItemContent` renders the recipe's `itemBody` slot around its children. The open/close animation
+  interpolates `height`, and a padded element cannot collapse below its own padding — so the
+  padding lives one level in and callers never have to know.
+- `ItemIndicator` falls back to a Lucide chevron when given no children, so an accordion works
+  without the caller wiring up an icon.
 
 ### The contrast rule
 
@@ -156,14 +186,15 @@ the exports map stays simple. Run `pnpm lint:packages` after touching any `expor
 
 ## Dev loop and apps
 
-Each playground aliases `@75neo/<framework>` to `packages/<framework>/src` in **both**
-`vite.config.ts` (`resolve.alias`) and `tsconfig.json` (`paths`). Editing a component hot-reloads
-with no build step. Keep those two in sync — changing one alone produces either a runtime that
-disagrees with the types or the reverse.
+**Storybook is the only development surface.** A playground is a Storybook and nothing else —
+there is no demo page, no `index.html`, no app entry. A component is exercised through its stories
+in `apps/playground-<framework>/src/*.stories.*`. Ports: React 6006, Vue 6007, Svelte 6008.
 
-**Storybook is the development space.** A component is exercised through its stories in
-`apps/playground-<framework>/src/*.stories.*`; wiring it into the playground's `App` page is
-optional. Ports: React 6006, Vue 6007, Svelte 6008 (Vite demo apps on 5173/5174/5175).
+Each playground still keeps a `vite.config.ts`, because Storybook's Vite builder loads it and
+merges it into its own. That is where `@75neo/<framework>` is aliased to
+`packages/<framework>/src` (`resolve.alias`), mirrored by `tsconfig.json` (`paths`). Editing a
+component hot-reloads with no build step. Keep those two in sync — changing one alone produces
+either a runtime that disagrees with the types or the reverse.
 
 `apps/docs` is a stub Astro site listing the packages. It is not wired into the design system.
 
@@ -174,6 +205,15 @@ optional. Ports: React 6006, Vue 6007, Svelte 6008 (Vite demo apps on 5173/5174/
 - **Tooling is Oxc**: `oxlint` and `oxfmt` (`.oxlintrc.json`, `.oxfmtrc.json`). Do not add Prettier.
   oxfmt covers `.ts/.tsx/.js/.svelte/.vue/.md/.json`; `.astro` files are not formatted by it.
 - The npm scope is lowercase `@75neo` — npm rejects capitalized scopes.
+- **Icons come from [Lucide](https://github.com/lucide-icons/lucide)**, never hand-written SVG.
+  Each package takes its own binding as a regular dependency: `lucide-react`, `@lucide/vue`,
+  `@lucide/svelte`. (`lucide-vue-next` and `lucide-svelte` are deprecated in favour of the
+  `@lucide/*` scope; there is no `@lucide/react`, so React keeps the unscoped name.) Svelte imports
+  one icon at a time — `@lucide/svelte/icons/chevron-down` — which Lucide recommends so Vite's dev
+  server does not have to process the whole barrel.
+  Size icons from the recipe (`& svg { width: 1em; height: 1em }`) rather than through Lucide's
+  `size` prop, so the component's `size` variant stays in charge and a caller-supplied icon is
+  sized the same way.
 
 ## CI
 

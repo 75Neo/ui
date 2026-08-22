@@ -1,5 +1,5 @@
 export { preset, preset as default } from "./preset";
-export { button, recipes } from "./recipes";
+export { accordion, button, recipes, slotRecipes } from "./recipes";
 export {
   animations,
   breakpoints,

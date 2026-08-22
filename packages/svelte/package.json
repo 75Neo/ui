@@ -30,7 +30,8 @@
   },
   "dependencies": {
     "@75neo/styles": "workspace:*",
-    "@ark-ui/svelte": "catalog:"
+    "@ark-ui/svelte": "catalog:",
+    "@lucide/svelte": "catalog:"
   },
   "devDependencies": {
     "@sveltejs/package": "catalog:",

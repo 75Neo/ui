@@ -5,10 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "storybook dev -p 6007 --no-open",
-    "dev:app": "vite",
     "build": "storybook build",
-    "build:app": "vite build",
-    "preview": "vite preview",
     "check": "vue-tsc --noEmit"
   },
   "dependencies": {
@@ -17,6 +14,7 @@
   },
   "devDependencies": {
     "@75neo/styles": "workspace:*",
+    "@lucide/vue": "catalog:",
     "@pandacss/dev": "catalog:",
     "@storybook/addon-docs": "catalog:",
     "@storybook/vue3-vite": "catalog:",
