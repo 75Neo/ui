@@ -1,6 +1,5 @@
 <script module lang="ts">
-  import { css } from "@75neo/styles/css";
-  import { Accordion } from "@75neo/svelte";
+  import { Accordion, NeoUIProvider, type ThemeConfig } from "@75neo/svelte";
   import PlusIcon from "@lucide/svelte/icons/plus";
   import { defineMeta } from "@storybook/addon-svelte-csf";
 
@@ -13,31 +12,34 @@
       value: "recipes",
       title: "Where does styling live?",
       content:
-        "In one recipe under packages/styles. React, Vue and Svelte all render the class names it produces, so a variant is added once rather than three times.",
+        "In one tailwind-variants theme under packages/styles. React, Vue and Svelte all render the class names it produces, so a variant is added once rather than three times.",
     },
     {
       value: "intents",
       title: "How are shape and intent kept apart?",
       content:
-        "Every intent palette fills the same eight roles, so a recipe writes each shape once against colorPalette.* and gets all six intents for free.",
+        "Every intent palette fills the same eight roles, so a theme writes each shape once against the intent-* roles and gets all six intents for free.",
     },
     {
       value: "modes",
       title: "What happens in dark mode?",
       content:
-        "Components style against semantic tokens, which resolve per colour mode. Nothing inside a component ever branches on _dark.",
+        "Components style against semantic utilities such as bg-surface and text-fg-muted, which resolve per colour mode. Nothing inside a component ever branches on dark: itself.",
     },
   ];
 
-  const grid = css({ display: "grid", gap: "6" });
-  const row = css({ display: "grid", gap: "2" });
-  const frame = css({ maxWidth: "lg" });
-  const legend = css({
-    textStyle: "label.sm",
-    color: "fg.muted",
-    textTransform: "uppercase",
-  });
-  const plus = css({ _open: { transform: "rotate(45deg)" } });
+  const grid = "grid gap-6";
+  const row = "grid gap-2";
+  const frame = "max-w-lg";
+  const legend = "text-xs font-medium uppercase tracking-wide text-fg-muted";
+  const plus = "data-[state=open]:rotate-45";
+
+  const flatTheme: ThemeConfig = {
+    accordion: {
+      slots: { itemTrigger: "font-semibold" },
+      defaultVariants: { variant: "plain", colorPalette: "info" },
+    },
+  };
 
   const { Story } = defineMeta({
     title: "Components/Accordion",
@@ -166,5 +168,43 @@
         {/each}
       </Accordion.Root>
     </div>
+  {/snippet}
+</Story>
+<!--
+  `ui` reaches every part from the root. Each key is a slot of the accordion theme, so
+  one prop restyles triggers, indicators and bodies at once without the parts being given
+  props one by one.
+-->
+<Story name="Customized">
+  {#snippet template(args)}
+    <div class={frame}>
+      <Accordion.Root
+        {...args}
+        ui={{
+          root: "rounded-none border-x-0",
+          itemTrigger: "font-semibold uppercase tracking-wide",
+          itemIndicator: "text-intent-fg",
+          itemBody: "text-fg",
+        }}
+      >
+        {@render rows()}
+      </Accordion.Root>
+    </div>
+  {/snippet}
+</Story>
+
+<!--
+  The same overrides applied app-wide. Anything a `ui` prop can say, a `ThemeConfig` can
+  say for every accordion at once — including which variant is the default.
+-->
+<Story name="ThemedApp">
+  {#snippet template(args)}
+    <NeoUIProvider theme={flatTheme}>
+      <div class={frame}>
+        <Accordion.Root {...args}>
+          {@render rows()}
+        </Accordion.Root>
+      </div>
+    </NeoUIProvider>
   {/snippet}
 </Story>

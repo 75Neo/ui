@@ -10,11 +10,5 @@
       "@75neo/vue": ["../../packages/vue/src/index.ts"]
     }
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.vue",
-    "vite.config.ts",
-    "panda.config.ts",
-    ".storybook/**/*.ts"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.vue", "vite.config.ts", ".storybook/**/*.ts"]
 }

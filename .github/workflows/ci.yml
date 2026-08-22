@@ -50,17 +50,13 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
 
+      # There is no code generation step: Tailwind reads the design system straight
+      # from `packages/styles/src`, so an install is the only prerequisite. Every check
+      # below is guarded on it rather than on step order, because `!cancelled()` would
+      # otherwise run them all against an empty `node_modules`.
       - name: Install
-        run: pnpm install --frozen-lockfile
-
-      # Generates packages/styles/styled-system, which is git-ignored. Every package
-      # resolves its runtime *and* its types from there, so nothing below works without
-      # it. The root `prepare` script also runs this on install, but pnpm skips lifecycle
-      # scripts when it decides the install is already up to date — so this step is
-      # explicit rather than assumed.
-      - name: Codegen
         id: setup
-        run: pnpm codegen
+        run: pnpm install --frozen-lockfile
 
       # Each check below runs even when an earlier one failed, so a single push reports
       # every problem at once instead of one per round trip. The job still fails if any
@@ -73,8 +69,7 @@ jobs:
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: pnpm lint
 
-      # tsc / vue-tsc / svelte-check / astro check across all 8 projects. This is also
-      # what enforces `strictTokens` — a raw CSS value is a type error, not a lint error.
+      # tsc / vue-tsc / svelte-check / astro check across all 8 projects.
       - name: Types
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: pnpm check

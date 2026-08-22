@@ -3,10 +3,6 @@ dist/
 build/
 *.tsbuildinfo
 
-## Panda
-styled-system
-styled-system-studio
-
 ## Framework caches
 .astro/
 .svelte-kit/

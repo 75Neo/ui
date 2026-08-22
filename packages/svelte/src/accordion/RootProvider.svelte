@@ -1,27 +1,32 @@
 <script lang="ts">
-  import { cx } from "@75neo/styles/css";
-  import { accordion, type AccordionVariantProps } from "@75neo/styles/recipes";
+  import type { AccordionSlots, AccordionVariants } from "@75neo/styles";
   import { Accordion as Ark } from "@ark-ui/svelte/accordion";
-  import { setAccordionSlots } from "./context";
+  import { useComponentTheme } from "../theme";
+  import { setAccordionStyles } from "./context";
 
   /** `Root`'s counterpart for the `useAccordion` hook — same styling, external state. */
   export type RootProviderProps = Omit<Ark.RootProviderProps, "class"> &
-    AccordionVariantProps & { class?: string };
+    AccordionVariants & {
+      class?: string;
+      ui?: AccordionSlots;
+    };
 
   let {
     variant,
     size,
     colorPalette,
+    ui,
     class: className,
     children,
     ...rest
   }: RootProviderProps = $props();
 
-  const slots = $derived(accordion({ variant, size, colorPalette }));
+  const theme = useComponentTheme("accordion");
+  const slots = $derived(theme()({ variant, size, colorPalette }));
 
-  setAccordionSlots(() => slots);
+  setAccordionStyles(() => ({ slots, ui }));
 </script>
 
-<Ark.RootProvider class={cx(slots.root, className)} {...rest}>
+<Ark.RootProvider class={slots.root({ class: [ui?.root, className] })} {...rest}>
   {@render children?.()}
 </Ark.RootProvider>

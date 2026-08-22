@@ -16,11 +16,5 @@
       "@75neo/svelte": ["../../packages/svelte/src/index.ts"]
     }
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.svelte",
-    "vite.config.ts",
-    "panda.config.ts",
-    ".storybook/**/*.ts"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.svelte", "vite.config.ts", ".storybook/**/*.ts"]
 }

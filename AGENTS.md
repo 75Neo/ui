@@ -5,10 +5,10 @@ when working with code in this repository.
 
 ## What this is
 
-75NeoUI: an [Ark UI](https://ark-ui.com) + [Panda CSS](https://panda-css.com) component library
+75NeoUI: an [Ark UI](https://ark-ui.com) + [Tailwind CSS](https://tailwindcss.com) component library
 published for **three frameworks at once** — React, Vue and Svelte — from a single shared set of
 styles. `packages/styles` is the design system; `packages/react|vue|svelte` are thin framework
-bindings over it; `apps/*` are development surfaces, not products.
+bindings over it; `apps/*` are development surfaces, plus the docs site.
 
 pnpm workspace, Node 24 (see `mise.toml`). Two components so far, and between them they are the
 reference implementation for every pattern below: `Button` for single-element components, and
@@ -18,16 +18,15 @@ reference implementation for every pattern below: `Button` for single-element co
 
 ```sh
 pnpm dev:react        # Storybook for one framework — the usual way to work (also :vue, :svelte)
-pnpm dev              # styles watcher + all three Storybooks in parallel
+pnpm dev              # all three Storybooks in parallel
 pnpm dev:docs         # Astro docs site
 
-pnpm build            # every package + each Storybook + docs, in dependency order (~10s)
+pnpm build            # every package + each Storybook + docs, in dependency order
 pnpm check            # tsc / vue-tsc / svelte-check / astro check across all 8 projects
 pnpm lint             # oxlint
 pnpm format           # oxfmt
 pnpm lint:packages    # publint — validates the publishable manifests
-pnpm codegen          # regenerate packages/styles/styled-system
-pnpm clean            # drop dist, storybook-static, styled-system, caches
+pnpm clean            # drop dist, storybook-static, caches
 ```
 
 Single project: `pnpm --filter <name> run <script>` (`@75neo/react`, `playground-vue`, `docs`, …).
@@ -36,126 +35,112 @@ Single project: `pnpm --filter <name> run <script>` (`@75neo/react`, `playground
 (type checking) is the closest thing to a test suite. Don't invent a test command; if tests are
 wanted, that's a new setup decision for the user.
 
-## The one thing that will break first
-
-`packages/styles/styled-system/` is **generated and git-ignored**. Every package imports its
-runtime from there via `@75neo/styles/css` and `@75neo/styles/recipes`. If it is missing, all
-three framework packages fail to resolve and every typecheck and build collapses at once.
-
-The root `prepare` script regenerates it on `pnpm install`. After a `pnpm clean`, or on a fresh
-clone where install was skipped, run `pnpm codegen` before anything else.
+**There is no code generation step.** Tailwind reads the design system straight from
+`packages/styles/src`. A fresh clone works after `pnpm install` alone.
 
 ## How the styling actually connects
 
-Read this before touching Panda config — the mechanism spans four files and is not obvious from
-any one of them.
+Read this before touching `packages/styles/src/css` — the mechanism is short, but not obvious from
+any one file.
 
-1. **`packages/styles/src/preset.ts`** is the design system: tokens, semantic tokens, recipes,
-   exported as a Panda preset. `panda.config.ts` in that package runs codegen only — it emits the
-   runtime and deliberately extracts no CSS (`include: []`, `preflight: false`).
-2. **Component packages** import that runtime and apply recipe class names. They never run Panda.
-3. **Apps** load the same preset and run the real Panda extraction via `postcss.config.cjs`.
-   That is what emits CSS. Two settings in each app's `panda.config.ts` make it work:
-   - `importMap: "@75neo/styles"` — tells Panda that `@75neo/styles/css` imports are its own
-     runtime rather than an unknown third-party module.
-   - `include: [..., "../../packages/<framework>/src/**"]` — scans the **library** sources, or the
-     component recipes never reach the app's CSS.
-   - `dependencies: ["../../packages/styles/src/**/*.ts"]` restarts extraction when the preset changes.
-4. **`staticCss: { recipes: "*" }`** in the preset ships every recipe variant. Panda extracts
-   statically, so a runtime-chosen variant (`<Button variant={someState} />`) produces class names
-   that would otherwise have no CSS behind them. Removing this silently breaks all non-default
-   variants — the app renders, the styles are just absent.
+1. **`packages/styles/src/css/`** is the design system as plain CSS: tokens, semantic colour
+   utilities, intent palettes, base rules. It assumes Tailwind has already been imported.
+2. **`packages/styles/src/themes/`** is one `tailwind-variants` theme per component. This is the
+   only place component styling lives.
+3. **Component packages** resolve a theme and render the class names it produces. They never spell
+   a Tailwind class themselves.
+4. **Apps** need exactly two lines:
+
+   ```css
+   @import "tailwindcss";
+   @import "@75neo/styles/css";
+   ```
+
+   plus the `@tailwindcss/vite` plugin (or `@tailwindcss/postcss`).
+
+### The one line that makes it work
+
+Tailwind only emits a class it has seen in a scanned file, and it never scans `node_modules`. The
+component themes live in `@75neo/styles` — outside every app's project root. `src/css/index.css`
+therefore ends with:
+
+```css
+@source "../themes";
+```
+
+The path is relative to that CSS file, so it resolves identically in a workspace checkout and in a
+consumer's `node_modules`. **This is why component packages must not spell Tailwind classes
+themselves** — nothing scans `packages/react/src`. A class written there produces no CSS, the app
+renders, and the styles are simply absent.
 
 ### Consequences for day-to-day work
 
-- **Styling changes belong in the recipe, not in components.** One recipe in
-  `packages/styles/src/recipes/` drives all three frameworks. Adding a variant is a one-file
-  change; adding it three times in three components is the wrong instinct here.
-- Components style against **semantic tokens** (`bg.default`, `fg.muted`, `colorPalette.default`),
-  which resolve per color mode. Never branch on `_dark` inside a component, and don't reach for raw
-  tokens (`gray.800`) in component code.
-- After adding a **new** recipe, `pnpm codegen` must run before the component that imports it will
-  typecheck — the import target does not exist until then.
-- **`strictTokens` is on.** A raw CSS value (`padding: "13px"`, `color: "#eee"`) is a _type_ error,
-  not a lint error, so `pnpm check` is what catches it. Use a token, or the documented escape
-  hatch — a `[13px]` bracket value, or `var(--…)` — when you genuinely need one. Panda keyword
-  values still work where a utility defines them (`transitionProperty: "colors"`), and `auto` is
-  still valid for margins.
+- **Styling changes belong in the theme, not in components.** One theme in
+  `packages/styles/src/themes/` drives all three frameworks. Adding a variant is a one-file change;
+  adding it three times in three components is the wrong instinct here.
+- Themes style against **semantic utilities** (`bg-surface`, `text-fg-muted`, `border-line`) and
+  **intent roles** (`bg-intent-default`, `text-intent-contrast`), which resolve per colour mode and
+  per palette. Never write `dark:` inside a theme, and don't reach for a raw ramp (`bg-zinc-800`).
+- After adding a **new** theme, register it in `packages/styles/src/registry.ts`. That is what makes
+  it themeable from an app's `ThemeConfig`; nothing else is needed.
+- **`tailwind-merge` is what makes overrides work.** Every class a caller supplies is merged, not
+  appended, so `className="px-8"` replaces the size variant's `px-4`. A new utility family that
+  `tailwind-merge` can't classify needs an entry in `twMergeConfig` in `packages/styles/src/tv.ts` —
+  otherwise two conflicting classes both survive and CSS source order decides the winner.
 
 ## The design system
 
-`packages/styles/src/theme/` is the system proper, in three layers. Each one may only reference the
-layer above it:
+`packages/styles/src/css/` is the system proper, in layers. Each one may only reference the layer
+above it:
 
-1. **`colors.ts`** — six raw palettes (`neo`, `gray`, `red`, `green`, `amber`, `sky`), eleven steps
-   each, no meaning attached. Nothing outside `semantic-tokens.ts` may import it.
-2. **`tokens.ts`** — the non-color scales: `spacing`, `sizes`, `fontSizes`, `radii`, `zIndex`,
-   `durations`, `easings` and the rest. These don't vary by color mode, so components use them by
-   name. `spacing` and `sizes` share one ramp, so a height and a padding of the same number agree.
-3. **`semantic-tokens.ts`** — what the palettes _mean_, resolved per color mode. Page chrome
-   (`bg.*`, `fg.*`, `border.*`) plus six **intent palettes** — `accent`, `neutral`, `success`,
-   `warning`, `danger`, `info` — each built through the same `intent()` helper so all six end up
-   with an identical eight-role shape.
+1. **`tokens.css`** — raw values, in a `@theme` block. Most of the system's scales _are_ Tailwind's,
+   unchanged: the 0.25rem spacing ramp, breakpoints, container widths, line heights, tracking, and
+   `--ease-in-out` (already `cubic-bezier(0.4, 0, 0.2, 1)`, the everyday curve). So are five of the
+   six palettes — neutrals are `zinc`, danger is `red`, success is `emerald`, warning is `amber`,
+   info is `sky`. What this file adds is the `neo` brand ramp, a rounder radius scale, `--text-2xs`,
+   three specialised easings, and the animation keyframes.
+2. **`semantic.css`** — what those values _mean_, per colour mode. Page chrome as `--ui-*` custom
+   properties under `:root` / `.dark`, exposed as utilities through `@theme inline`.
+3. **`intents.css`** — the six intent palettes, each an `@utility` re-pointing the same eight
+   `--ui-intent-*` roles.
+4. **`base.css`** — the handful of global rules: page background, colour-scheme, `::selection`, and
+   one focus ring for the whole system.
 
-Also here: `text-styles.ts` (named type ramps — `heading.lg`, `body.md`, `label.sm`),
-`animations.ts` (keyframes plus duration/easing shorthands), `breakpoints.ts`.
+### `@theme inline` is load-bearing
+
+The semantic utilities are declared as
+
+```css
+@theme inline {
+  --color-surface: var(--ui-surface);
+}
+```
+
+Without `inline`, Tailwind emits `background-color: var(--color-surface)` and resolves
+`--color-surface` **once, at `:root`** — freezing every element on the light value. With it, the
+`var(--ui-surface)` lands in the utility itself and is resolved at the element, where the nearest
+`.dark` ancestor has already had its say. The same applies to `--color-intent-*`, whose value
+depends on which `intent-*` class an ancestor carries.
 
 ### Shape and intent are separate axes
 
-Because every intent palette has the same eight roles (`subtle`, `muted`, `default`, `emphasized`,
-`border`, `fg`, `text`, `contrast`), a recipe writes each _shape_ once against `colorPalette.*` and
-gets every _intent_ for free:
+Every intent palette fills the same eight roles (`subtle`, `muted`, `default`, `emphasized`, `line`,
+`fg`, `label`, `contrast`), so a theme writes each _shape_ once and gets every _intent_ for free:
 
 ```ts
-solid: { bg: "colorPalette.default", color: "colorPalette.contrast",
-         _hover: { bg: "colorPalette.emphasized" } },
+solid: { base: "bg-intent-default text-intent-contrast hover:bg-intent-emphasized" },
 ```
 
 `Button` has five variants and six palettes; all thirty combinations exist, none are spelled out.
 `Accordion` spends only two of the eight roles, but spends them the same way.
-Adding an intent is one entry in `semantic-tokens.ts` and one line per recipe — never a new
+
+An `intent-*` class sets custom properties and nothing else, and custom properties inherit — so the
+class goes on the root element and every descendant follows. That is what Panda's `colorPalette`
+used to do, expressed in plain CSS.
+
+Adding an intent is one `@utility` block in `intents.css` and one line per theme — never a new
 `variant`. If you find yourself writing a `dangerOutline` variant, you've fused the two axes back
 together.
-
-### Recipes import `defineRecipe` from `./define`, not from `@pandacss/dev`
-
-Panda's own `defineRecipe` is typed against its _generic_ `SystemStyleObject`, which accepts any
-raw CSS value — `strictTokens` does not reach it. A stray `padding: "13px"` inside a recipe would
-typecheck cleanly, in the one place this repo says styling belongs.
-
-`packages/styles/src/recipes/define.ts` is the same identity function with its parameter re-typed
-against the **generated** `RecipeConfig`, which `strictTokens` does apply to. Every recipe must
-import from there. Nothing else changes, and the import is type-only so a cold `pnpm codegen` —
-before `styled-system/` exists — still works.
-
-`defineSlotRecipe` in the same file is the multi-part counterpart, for the same reason.
-
-### Multi-part components are one slot recipe, not several recipes
-
-An accordion's root, item, trigger, indicator and content are **one** `defineSlotRecipe` with a
-`slots` list — so `size`, `variant` and `colorPalette` are chosen once and every part follows.
-Two things this changes:
-
-- Slot recipes register under `theme.extend.slotRecipes`, **not** `recipes`. Panda keeps the two
-  registries apart; `recipes/index.ts` exports both objects and `preset.ts` passes each to its own
-  key. A slot recipe listed under `recipes` silently generates nothing.
-- The framework bindings resolve the recipe in `Root` and publish the resulting slot class names
-  on a per-framework context — React `createContext`, Vue `provide`/`inject`, Svelte
-  `setContext`/`getContext` (storing a _getter_, so `$derived` stays reactive across the
-  boundary). Every part below reads its own class from there, so callers set the variants once on
-  `Root` and never thread props down the tree.
-
-The parts are exported as a namespace (`export * as Accordion`), matching Ark's own anatomy 1:1 so
-their docs transfer: `<Accordion.Root>`, `<Accordion.Item>`, `<Accordion.ItemTrigger>`,
-`<Accordion.ItemIndicator>`, `<Accordion.ItemContent>`.
-
-Two deliberate departures from a pure pass-through, in all three frameworks:
-
-- `ItemContent` renders the recipe's `itemBody` slot around its children. The open/close animation
-  interpolates `height`, and a padded element cannot collapse below its own padding — so the
-  padding lives one level in and callers never have to know.
-- `ItemIndicator` falls back to a Lucide chevron when given no children, so an accordion works
-  without the caller wiring up an icon.
 
 ### The contrast rule
 
@@ -165,38 +150,117 @@ text at their solid steps, while `success`/`warning`/`info` invert in dark mode 
 with 950 text, because no green, amber or blue is both recognizable _and_ dark enough for white.
 
 **Changing a solid step means re-checking its `contrast` pair.** The current worst pair is 4.83:1.
-`fg.subtle` (3.7:1 in dark) and `fg.disabled` are the two deliberate exceptions, documented at their
+`fg-subtle` (3.7:1 in dark) and `fg-disabled` are the two deliberate exceptions, documented at their
 definitions.
+
+### Multi-part components are one slot theme, not several themes
+
+An accordion's root, item, trigger, indicator and content are **one** `tv({ slots })` — so `size`,
+`variant` and `colorPalette` are chosen once and every part follows.
+
+The framework bindings resolve the theme in `Root` and publish the resulting slot functions, plus
+whatever `ui` the caller passed, on a per-framework context — React `createContext`, Vue
+`provide`/`inject`, Svelte `setContext`/`getContext` (storing a _getter_, so `$derived` stays
+reactive across the boundary). Every part below reads its own class from there, so callers set the
+variants once on `Root` and never thread props down the tree.
+
+The parts are exported as a namespace (`export * as Accordion`), matching Ark's own anatomy 1:1 so
+their docs transfer: `<Accordion.Root>`, `<Accordion.Item>`, `<Accordion.ItemTrigger>`,
+`<Accordion.ItemIndicator>`, `<Accordion.ItemContent>`.
+
+Two deliberate departures from a pure pass-through, in all three frameworks:
+
+- `ItemContent` renders the theme's `itemBody` slot around its children. The open/close animation
+  interpolates `height`, and a padded element cannot collapse below its own padding — so the
+  padding lives one level in and callers never have to know.
+- `ItemIndicator` falls back to a Lucide chevron when given no children, so an accordion works
+  without the caller wiring up an icon.
+
+## The customization API
+
+Modelled on [Nuxt UI](https://ui.nuxt.com), adapted to a framework-agnostic library. Four levels,
+all of which merge through `tailwind-merge` rather than racing in the cascade:
+
+| Mechanism     | Reaches                      | What it can change                                        |
+| ------------- | ---------------------------- | --------------------------------------------------------- |
+| `class`       | one element                  | the component's root element                              |
+| `ui`          | one component instance       | every slot, by name — set on `Root`, reaches every part   |
+| `ThemeConfig` | every component of that type | slots, variants, compound variants, default variants      |
+| CSS           | anything                     | Ark's own `data-scope` / `data-part`, from your own sheet |
+
+Priority ascends left to right within a call: theme → `ui` → `class`.
+
+`ThemeConfig` is applied through each framework's provider — React `<NeoUIProvider theme={…}>`, Vue
+`app.use(createNeoUI({ theme }))` or `<NeoUIProvider>`, Svelte `<NeoUIProvider theme={…}>`. It is
+resolved by `resolveTheme` in `packages/styles/src/registry.ts`, which merges the override into the
+built-in theme with `tv({ extend })` and memoises the result on the config object's **identity** —
+so a config defined inline in a render function rebuilds every theme it touches on every render.
+
+In `ThemeOverride`, `slots` and `defaultVariants` are typed against the component's real names;
+`variants` and `compoundVariants` are typed loosely on purpose, because an override is allowed to
+introduce variant _values_ the built-in theme has never heard of.
+
+Note that `tailwind-variants` adds an implicit `base` slot to every slotted theme. For a multi-part
+component it has no element behind it; ignore it.
 
 ## Framework binding conventions
 
 The three packages deliberately differ, each for a reason:
 
-- **React** — `ark.button` from `@ark-ui/react/factory` for `asChild` support; `button.splitVariantProps`
-  separates recipe variants from DOM props; `cx()` merges the caller's `className`.
+- **React** — `ark.button` from `@ark-ui/react/factory` for `asChild` support; variant props are
+  destructured explicitly; `className` is merged through the slot function.
 - **Vue** — written with `defineComponent` + `h()`, **not** SFCs. This is intentional: it keeps
-  tsdown able to build the package without a Vue SFC plugin. Variant props are declared; everything
-  else falls through as attrs, and Vue merges the caller's `class` automatically.
+  tsdown able to build the package without a Vue SFC plugin. Every component sets
+  `inheritAttrs: false` and merges `attrs.class` itself — Vue's own attribute merging would keep
+  both `px-4` and a caller's `px-8` and leave source order to decide.
 - **Svelte** — `.svelte` source built by `svelte-package`, since Svelte libraries ship source.
-  `ButtonProps` narrows `class` to `string` (`Omit<HTMLButtonAttributes, "class">`) because Svelte 5
-  types it as `ClassValue`, which `cx()` won't accept.
+  Props narrow `class` to `string` (`Omit<HTMLButtonAttributes, "class">`) because Svelte 5 types it
+  as `ClassValue`, which is wider than what a slot function accepts.
 
 React and Vue build with tsdown; both set `fixedExtension: false` so ESM output lands at `.js` and
-the exports map stays simple. Run `pnpm lint:packages` after touching any `exports` field.
+the exports map stays simple. `@75neo/styles` builds with tsdown too, but only for publishing: its
+`exports` point at `src` so nothing in this workspace needs a build, and `publishConfig` swaps in
+the built entry on publish. The CSS is always published as source, because the `@source` inside it
+resolves relative to its own location. Run `pnpm lint:packages` after touching any `exports` field.
 
 ## Dev loop and apps
 
-**Storybook is the only development surface.** A playground is a Storybook and nothing else —
-there is no demo page, no `index.html`, no app entry. A component is exercised through its stories
-in `apps/playground-<framework>/src/*.stories.*`. Ports: React 6006, Vue 6007, Svelte 6008.
+**Storybook is the only development surface for components.** A playground is a Storybook and
+nothing else — there is no demo page, no `index.html`, no app entry. A component is exercised
+through its stories in `apps/playground-<framework>/src/*.stories.*`. Ports: React 6006, Vue 6007,
+Svelte 6008. Each preview exposes a **colour mode** toolbar global that toggles `.dark` on the
+document element.
 
-Each playground still keeps a `vite.config.ts`, because Storybook's Vite builder loads it and
-merges it into its own. That is where `@75neo/<framework>` is aliased to
-`packages/<framework>/src` (`resolve.alias`), mirrored by `tsconfig.json` (`paths`). Editing a
-component hot-reloads with no build step. Keep those two in sync — changing one alone produces
-either a runtime that disagrees with the types or the reverse.
+Each playground keeps a `vite.config.ts`, because Storybook's Vite builder loads it and merges it
+into its own. That is where `@tailwindcss/vite` is registered and where `@75neo/<framework>` is
+aliased to `packages/<framework>/src` (`resolve.alias`), mirrored by `tsconfig.json` (`paths`).
+Editing a component hot-reloads with no build step. Keep those two in sync — changing one alone
+produces either a runtime that disagrees with the types or the reverse.
 
-`apps/docs` is a stub Astro site listing the packages. It is not wired into the design system.
+`apps/docs` is an Astro site that documents the library, styled with the design system it
+documents. The pages are **markdown in a content collection** — `src/content/docs/**/*.md`, loaded
+by the `glob` loader in `src/content.config.ts` and rendered by the single `src/pages/[...slug].astro`
+route. An entry's `id` is its path below `content/docs`, which is also its URL; `index.md` is the
+site root.
+
+Adding a page is adding a file: the sidebar is built from the collection, sorted on the `order`
+frontmatter and grouped by `section`, so there is no nav list to keep in step. Markdown output
+carries no classes, so it is styled by element under `.prose` in `src/styles.css` — written against
+the design system's own custom properties rather than `@apply`, which is also what proves the
+semantic layer resolves colour mode without a single `dark:`.
+
+Each component page follows Nuxt UI's structure — Usage, Anatomy, the shaping props, API, and a
+**Theme** section. That last one is the exception to "just markdown": setting `theme: button` in the
+frontmatter appends `ThemeBlock.astro`, which prints the component's theme object imported from
+`@75neo/styles` at build time. Markdown cannot import, and transcribing the object by hand is
+exactly how docs drift out of step with the code.
+
+There are deliberately **no live component demos**. The docs render markdown only until the library
+has enough components to be worth demoing.
+
+Svelte stories use `{#snippet template(args)}` rather than bare children. `@storybook/addon-svelte-csf`
+needs the meta `component` to be a plain imported identifier when a story passes children directly,
+and the accordion's is `Accordion.Root` — a member expression, which it rejects.
 
 ## Repo conventions
 
@@ -204,6 +268,8 @@ either a runtime that disagrees with the types or the reverse.
   Package manifests say `"catalog:"` instead of a range. Bump versions there, not in manifests.
 - **Tooling is Oxc**: `oxlint` and `oxfmt` (`.oxlintrc.json`, `.oxfmtrc.json`). Do not add Prettier.
   oxfmt covers `.ts/.tsx/.js/.svelte/.vue/.md/.json`; `.astro` files are not formatted by it.
+  `.oxlintrc.json` turns `react/rules-of-hooks` off for the Vue package and playground — Vue's
+  composables share React's `use*` naming, and the rule has nothing true to say there.
 - The npm scope is lowercase `@75neo` — npm rejects capitalized scopes.
 - **Icons come from [Lucide](https://github.com/lucide-icons/lucide)**, never hand-written SVG.
   Each package takes its own binding as a regular dependency: `lucide-react`, `@lucide/vue`,
@@ -211,24 +277,19 @@ either a runtime that disagrees with the types or the reverse.
   `@lucide/*` scope; there is no `@lucide/react`, so React keeps the unscoped name.) Svelte imports
   one icon at a time — `@lucide/svelte/icons/chevron-down` — which Lucide recommends so Vite's dev
   server does not have to process the whole barrel.
-  Size icons from the recipe (`& svg { width: 1em; height: 1em }`) rather than through Lucide's
-  `size` prop, so the component's `size` variant stays in charge and a caller-supplied icon is
-  sized the same way.
+  Size icons from the theme (`[&_svg]:size-[1em]`) rather than through Lucide's `size` prop, so the
+  component's `size` variant stays in charge and a caller-supplied icon is sized the same way.
 
 ## CI
 
 `.github/workflows/ci.yml` runs on pushes to `master` and on every pull request: format, lint,
 types, build, then publint. Each check is guarded with `!cancelled()` so one push reports every
-problem at once rather than one per round trip.
+problem at once rather than one per round trip, and on the install step's outcome so they don't all
+run against an empty `node_modules`.
 
-Two things worth knowing before editing it:
-
-- It runs `pnpm codegen` as an **explicit step**. The root `prepare` script also runs it on install,
-  but pnpm skips lifecycle scripts when it decides the install is already up to date — and without
-  `styled-system/` every later step fails at once.
-- Node and pnpm versions are duplicated into the workflow's `env` because nothing reads `mise.toml`
-  on CI. The first step re-reads `mise.toml` and fails the run if the two have drifted, so the
-  duplication can't rot silently. Change both together.
+Node and pnpm versions are duplicated into the workflow's `env` because nothing reads `mise.toml`
+on CI. The first step re-reads `mise.toml` and fails the run if the two have drifted, so the
+duplication can't rot silently. Change both together.
 
 To reproduce a CI failure locally, run the same five: `pnpm format:check && pnpm lint && pnpm check
 && pnpm build && pnpm lint:packages`.

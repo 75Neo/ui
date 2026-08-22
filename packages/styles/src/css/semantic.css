@@ -1,0 +1,163 @@
+/*
+ * What the raw values *mean*, resolved per colour mode.
+ *
+ * This is the surface every component styles against. Each `--ui-*` below is redefined
+ * under `.dark`, and custom properties inherit — so marking one ancestor flips the whole
+ * subtree and a component never has to branch on the colour mode itself.
+ *
+ * The `@theme inline` block at the bottom is what turns them into utilities. `inline` is
+ * load-bearing: without it Tailwind would emit `background-color: var(--color-surface)`
+ * and resolve `--color-surface` once, at `:root`, freezing every element on the light
+ * value. With it, the `var(--ui-surface)` lands in the utility itself and is resolved at
+ * the element, where the nearest `.dark` ancestor has already had its say.
+ */
+
+/* Page chrome and the focus ring. Light is the default; `.light` re-asserts it so a
+ * light island can sit inside a dark subtree. */
+:root,
+:host,
+.light,
+[data-theme="light"] {
+  /*
+   * Surfaces. Ordered: `canvas` sits behind `surface`.
+   */
+  --ui-canvas: var(--color-zinc-50);
+  --ui-surface: var(--color-white);
+  --ui-surface-subtle: var(--color-zinc-100);
+  --ui-surface-muted: var(--color-zinc-200);
+  --ui-surface-emphasized: var(--color-zinc-300);
+  --ui-surface-inverted: var(--color-zinc-900);
+  --ui-surface-disabled: var(--color-zinc-100);
+
+  /*
+   * Text and icons, as an emphasis ramp. Measured against `--ui-surface`:
+   *
+   * - `fg` — 17.7:1 light, 17.0:1 dark.
+   * - `fg-muted` — 7.7:1 light, 6.9:1 dark. Secondary copy. Deliberately zinc-600 rather
+   *   than zinc-500, which would leave it at 4.8:1 with no headroom.
+   * - `fg-subtle` — 4.8:1 light, **3.7:1 dark**. Clears AA Large and non-text contrast in
+   *   both modes but *not* AA for body text in dark. It is the placeholder/watermark
+   *   rung; anything a user has to read belongs on `fg-muted`.
+   * - `fg-disabled` — below AA by design. WCAG exempts inactive controls, and the whole
+   *   point of the token is to look unavailable.
+   */
+  --ui-fg: var(--color-zinc-900);
+  --ui-fg-muted: var(--color-zinc-600);
+  --ui-fg-subtle: var(--color-zinc-500);
+  --ui-fg-disabled: var(--color-zinc-400);
+  --ui-fg-inverted: var(--color-white);
+
+  --ui-line: var(--color-zinc-200);
+  --ui-line-subtle: var(--color-zinc-100);
+  --ui-line-emphasized: var(--color-zinc-300);
+  --ui-line-disabled: var(--color-zinc-200);
+
+  /* The focus ring. Deliberately one token, so focus looks the same everywhere. */
+  --ui-focus: var(--color-neo-500);
+
+  /*
+   * Shadows are semantic because elevation does not survive a mode flip. A shadow tuned
+   * for white needs roughly four times the alpha to read against zinc-900.
+   */
+  --ui-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --ui-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --ui-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --ui-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --ui-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --ui-shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+
+  /*
+   * Named layers, not magic numbers, so a toast is always above a modal and a tooltip is
+   * always above everything. Tailwind's `z-*` is a bare integer scale, so these are used
+   * through its CSS-variable shorthand: `z-(--ui-z-modal)`.
+   */
+  --ui-z-hide: -1;
+  --ui-z-base: 0;
+  --ui-z-docked: 10;
+  --ui-z-dropdown: 1000;
+  --ui-z-sticky: 1100;
+  --ui-z-banner: 1200;
+  --ui-z-overlay: 1300;
+  --ui-z-modal: 1400;
+  --ui-z-popover: 1500;
+  --ui-z-toast: 1600;
+  --ui-z-tooltip: 1700;
+}
+
+.dark,
+[data-theme="dark"] {
+  --ui-canvas: var(--color-zinc-950);
+  --ui-surface: var(--color-zinc-900);
+  --ui-surface-subtle: var(--color-zinc-800);
+  --ui-surface-muted: var(--color-zinc-700);
+  --ui-surface-emphasized: var(--color-zinc-600);
+  --ui-surface-inverted: var(--color-zinc-50);
+  --ui-surface-disabled: var(--color-zinc-800);
+
+  --ui-fg: var(--color-zinc-50);
+  --ui-fg-muted: var(--color-zinc-400);
+  --ui-fg-subtle: var(--color-zinc-500);
+  --ui-fg-disabled: var(--color-zinc-600);
+  --ui-fg-inverted: var(--color-zinc-900);
+
+  --ui-line: var(--color-zinc-800);
+  --ui-line-subtle: var(--color-zinc-900);
+  --ui-line-emphasized: var(--color-zinc-700);
+  --ui-line-disabled: var(--color-zinc-800);
+
+  --ui-focus: var(--color-neo-400);
+
+  --ui-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+  --ui-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.6), 0 1px 2px -1px rgb(0 0 0 / 0.5);
+  --ui-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.6), 0 2px 4px -2px rgb(0 0 0 / 0.5);
+  --ui-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.7), 0 4px 6px -4px rgb(0 0 0 / 0.5);
+  --ui-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.75), 0 8px 10px -6px rgb(0 0 0 / 0.5);
+  --ui-shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.4);
+}
+
+/*
+ * The utilities. Every name here is a colour, so it composes with any colour utility:
+ * `bg-surface`, `hover:bg-surface-subtle`, `text-fg-muted`, `border-line`,
+ * `outline-focus`, `divide-line`, `ring-focus`, and `bg-surface/50` for an alpha.
+ *
+ * `--color-intent-*` is the current *intent* palette rather than a fixed hue — see
+ * `intents.css`.
+ */
+@theme inline {
+  --color-canvas: var(--ui-canvas);
+  --color-surface: var(--ui-surface);
+  --color-surface-subtle: var(--ui-surface-subtle);
+  --color-surface-muted: var(--ui-surface-muted);
+  --color-surface-emphasized: var(--ui-surface-emphasized);
+  --color-surface-inverted: var(--ui-surface-inverted);
+  --color-surface-disabled: var(--ui-surface-disabled);
+
+  --color-fg: var(--ui-fg);
+  --color-fg-muted: var(--ui-fg-muted);
+  --color-fg-subtle: var(--ui-fg-subtle);
+  --color-fg-disabled: var(--ui-fg-disabled);
+  --color-fg-inverted: var(--ui-fg-inverted);
+
+  --color-line: var(--ui-line);
+  --color-line-subtle: var(--ui-line-subtle);
+  --color-line-emphasized: var(--ui-line-emphasized);
+  --color-line-disabled: var(--ui-line-disabled);
+
+  --color-focus: var(--ui-focus);
+
+  --color-intent-subtle: var(--ui-intent-subtle);
+  --color-intent-muted: var(--ui-intent-muted);
+  --color-intent-default: var(--ui-intent-default);
+  --color-intent-emphasized: var(--ui-intent-emphasized);
+  --color-intent-line: var(--ui-intent-line);
+  --color-intent-fg: var(--ui-intent-fg);
+  --color-intent-label: var(--ui-intent-label);
+  --color-intent-contrast: var(--ui-intent-contrast);
+
+  --shadow-xs: var(--ui-shadow-xs);
+  --shadow-sm: var(--ui-shadow-sm);
+  --shadow-md: var(--ui-shadow-md);
+  --shadow-lg: var(--ui-shadow-lg);
+  --shadow-xl: var(--ui-shadow-xl);
+  --inset-shadow-sm: var(--ui-shadow-inner);
+}

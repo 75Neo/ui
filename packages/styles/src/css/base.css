@@ -1,0 +1,41 @@
+/*
+ * The only global rules the system owns. Everything else is a utility.
+ */
+
+@layer base {
+  html {
+    /*
+     * Tells the browser which way to render native UI — scrollbars, form controls,
+     * spellcheck underlines. Without it those stay light-themed in dark mode.
+     */
+    color-scheme: light;
+  }
+
+  html:where(.dark, [data-theme="dark"]),
+  :where(.dark, [data-theme="dark"]) html {
+    color-scheme: dark;
+  }
+
+  html,
+  body {
+    background-color: var(--ui-canvas);
+    color: var(--ui-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: var(--ui-intent-muted, var(--color-neo-100));
+    color: var(--ui-intent-label, var(--color-neo-700));
+  }
+
+  /*
+   * One focus ring for the whole system. Components override it only to change the
+   * offset — they should never restyle its colour.
+   */
+  :focus-visible {
+    outline: 2px solid var(--ui-focus);
+    outline-offset: 2px;
+  }
+}

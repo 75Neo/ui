@@ -1,49 +1,49 @@
 {
   "name": "@75neo/styles",
   "version": "0.0.0",
-  "description": "Shared Panda CSS preset and generated styled-system for 75NeoUI",
+  "description": "Shared Tailwind CSS theme and tailwind-variants component themes for 75NeoUI",
   "license": "MIT",
   "files": [
-    "src",
-    "styled-system"
+    "dist",
+    "src"
   ],
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "exports": {
     ".": "./src/index.ts",
-    "./preset": "./src/preset.ts",
-    "./css": {
-      "types": "./styled-system/css/index.d.ts",
-      "default": "./styled-system/css/index.mjs"
-    },
-    "./recipes": {
-      "types": "./styled-system/recipes/index.d.ts",
-      "default": "./styled-system/recipes/index.mjs"
-    },
-    "./patterns": {
-      "types": "./styled-system/patterns/index.d.ts",
-      "default": "./styled-system/patterns/index.mjs"
-    },
-    "./tokens": {
-      "types": "./styled-system/tokens/index.d.ts",
-      "default": "./styled-system/tokens/index.mjs"
-    },
-    "./types": {
-      "types": "./styled-system/types/index.d.ts"
-    },
+    "./css": "./src/css/index.css",
     "./package.json": "./package.json"
   },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./css": "./src/css/index.css",
+      "./package.json": "./package.json"
+    },
+    "access": "public"
+  },
   "scripts": {
-    "codegen": "panda codegen --clean",
-    "dev": "panda codegen --watch",
-    "build": "panda codegen --clean",
+    "build": "tsdown",
     "check": "tsc --noEmit",
-    "prepack": "panda codegen --clean"
+    "lint:package": "publint",
+    "prepack": "pnpm run build"
+  },
+  "dependencies": {
+    "tailwind-merge": "catalog:",
+    "tailwind-variants": "catalog:"
   },
   "devDependencies": {
-    "@pandacss/dev": "catalog:",
-    "postcss": "catalog:",
     "publint": "catalog:",
+    "tailwindcss": "catalog:",
+    "tsdown": "catalog:",
     "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "tailwindcss": ">=4.1"
   }
 }

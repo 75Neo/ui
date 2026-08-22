@@ -15,15 +15,15 @@
   "devDependencies": {
     "@75neo/styles": "workspace:*",
     "@lucide/svelte": "catalog:",
-    "@pandacss/dev": "catalog:",
     "@storybook/addon-svelte-csf": "catalog:",
     "@storybook/svelte-vite": "catalog:",
     "@sveltejs/vite-plugin-svelte": "catalog:",
+    "@tailwindcss/vite": "catalog:",
     "@tsconfig/svelte": "catalog:",
     "@types/node": "catalog:",
-    "postcss": "catalog:",
     "storybook": "catalog:",
     "svelte-check": "catalog:",
+    "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:"
   }

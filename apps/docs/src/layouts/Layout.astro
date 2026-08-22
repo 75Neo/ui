@@ -1,9 +1,29 @@
 ---
+import { getCollection } from "astro:content";
+import "../styles.css";
+
 interface Props {
   title: string;
+  description?: string;
 }
 
-const { title } = Astro.props;
+const { title, description } = Astro.props;
+
+/**
+ * The sidebar is the collection, sorted. A new markdown file appears here on its own —
+ * there is no nav to keep in step with the pages.
+ */
+const entries = (await getCollection("docs")).sort((a, b) => a.data.order - b.data.order);
+
+const sections = ["Guide", "Components"] as const;
+
+const href = (id: string) => (id === "index" ? "/" : `/${id}`);
+
+// Astro emits directory-style URLs, so a page is reached at both `/theming` and
+// `/theming/`. Both sides of the comparison are normalised the same way, or the index —
+// where the two forms differ by the whole string — never matches itself.
+const normalize = (path: string) => path.replace(/\/+$/, "") || "/";
+const current = normalize(Astro.url.pathname);
 ---
 
 <html lang="en">
@@ -12,9 +32,46 @@ const { title } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <title>{`${title} · 75NeoUI`}</title>
   </head>
-  <body>
-    <slot />
+  <body class="min-h-dvh bg-canvas text-fg">
+    <div class="mx-auto flex max-w-5xl gap-12 px-6 py-12">
+      <aside class="sticky top-12 hidden h-fit w-48 shrink-0 md:block">
+        <a href="/" class="text-lg font-semibold tracking-tight">75NeoUI</a>
+        <p class="mt-1 text-xs text-fg-subtle">Ark UI · Tailwind CSS</p>
+
+        <nav class="mt-8 grid gap-6">
+          {
+            sections.map((section) => (
+              <div class="grid gap-1">
+                <span class="text-2xs font-medium uppercase tracking-widest text-fg-subtle">
+                  {section}
+                </span>
+                {entries
+                  .filter((entry) => entry.data.section === section)
+                  .map((entry) => (
+                    <a
+                      href={href(entry.id)}
+                      class:list={[
+                        "rounded-sm py-1 text-sm transition-colors",
+                        current === normalize(href(entry.id))
+                          ? "font-medium text-intent-label"
+                          : "text-fg-muted hover:text-fg",
+                      ]}
+                    >
+                      {entry.data.navLabel ?? entry.data.title}
+                    </a>
+                  ))}
+              </div>
+            ))
+          }
+        </nav>
+      </aside>
+
+      <main class="intent-accent min-w-0 flex-1 pb-24">
+        <slot />
+      </main>
+    </div>
   </body>
 </html>

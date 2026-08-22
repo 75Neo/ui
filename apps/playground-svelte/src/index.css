@@ -1,1 +1,10 @@
-@layer reset, base, tokens, recipes, utilities;
+/*
+ * The whole style setup for a 75NeoUI app: Tailwind, then the design system.
+ *
+ * Order matters — everything `@75neo/styles/css` defines extends Tailwind's own theme.
+ * That second import also carries a `@source` pointing at the component themes inside
+ * `@75neo/styles`, which is what makes Tailwind emit the classes the components render.
+ * Nothing else needs configuring.
+ */
+@import "tailwindcss";
+@import "@75neo/styles/css";

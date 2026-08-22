@@ -8,5 +8,5 @@
       "@75neo/react": ["../../packages/react/src/index.ts"]
     }
   },
-  "include": ["src", "vite.config.ts", "panda.config.ts", ".storybook"]
+  "include": ["src", "vite.config.ts", ".storybook"]
 }

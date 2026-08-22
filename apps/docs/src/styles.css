@@ -1,0 +1,153 @@
+/*
+ * The docs site is a 75NeoUI app like any other: Tailwind, then the design system.
+ *
+ * `@source` is explicit here because the class names live in `.astro` files one
+ * directory up from this stylesheet. The markdown under `content/` holds no classes —
+ * it is styled by the `.prose` rules below.
+ */
+@import "tailwindcss";
+@import "@75neo/styles/css";
+
+@source "./components";
+@source "./layouts";
+@source "./pages";
+
+/*
+ * Markdown output is plain HTML with no classes on it, so it is styled by element.
+ *
+ * These rules are written against the design system's own custom properties rather than
+ * `@apply`, so the docs prove the same thing the components do: everything resolves per
+ * colour mode without a single `dark:` anywhere.
+ */
+@layer components {
+  .prose {
+    max-width: 46rem;
+  }
+
+  .prose h1 {
+    font-size: var(--text-3xl);
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .prose .lede {
+    margin-top: --spacing(3);
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--ui-fg-muted);
+  }
+
+  .prose h2 {
+    margin-top: --spacing(14);
+    font-size: var(--text-xl);
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .prose h3 {
+    margin-top: --spacing(8);
+    font-size: var(--text-base);
+    font-weight: 600;
+  }
+
+  .prose p,
+  .prose ul,
+  .prose ol {
+    margin-top: --spacing(4);
+    line-height: var(--leading-relaxed);
+    color: var(--ui-fg-muted);
+  }
+
+  .prose li + li {
+    margin-top: --spacing(1.5);
+  }
+
+  .prose ul {
+    list-style: disc;
+    padding-inline-start: --spacing(5);
+  }
+
+  .prose ol {
+    list-style: decimal;
+    padding-inline-start: --spacing(5);
+  }
+
+  .prose strong {
+    font-weight: 500;
+    color: var(--ui-fg);
+  }
+
+  .prose a {
+    color: var(--ui-intent-label);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .prose code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    color: var(--ui-fg);
+  }
+
+  /* Shiki paints its own foreground on every token, so only the frame is ours. */
+  .prose pre {
+    margin-top: --spacing(4);
+    overflow-x: auto;
+    border-radius: var(--radius-lg);
+    padding: --spacing(4);
+    font-size: var(--text-xs);
+    line-height: var(--leading-relaxed);
+  }
+
+  .prose pre code {
+    color: inherit;
+  }
+
+  .prose table {
+    margin-top: --spacing(4);
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    text-align: start;
+  }
+
+  /* A wide API table should scroll inside itself rather than widen the page. */
+  .prose :where(table) {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .prose th {
+    border-block-end: 1px solid var(--ui-line);
+    padding: --spacing(2.5) --spacing(3);
+    font-weight: 500;
+    color: var(--ui-fg);
+  }
+
+  .prose td {
+    border-block-end: 1px solid var(--ui-line-subtle);
+    padding: --spacing(2.5) --spacing(3);
+    vertical-align: top;
+    color: var(--ui-fg-muted);
+  }
+
+  .prose th:first-child,
+  .prose td:first-child {
+    padding-inline-start: 0;
+  }
+
+  .prose blockquote {
+    margin-top: --spacing(4);
+    border-inline-start: 2px solid var(--ui-intent-line);
+    padding-inline-start: --spacing(4);
+    color: var(--ui-fg-muted);
+  }
+
+  .prose hr {
+    margin-block: --spacing(10);
+    border: 0;
+    border-block-start: 1px solid var(--ui-line);
+  }
+}

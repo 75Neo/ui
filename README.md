@@ -1,82 +1,129 @@
 # 75NeoUI
 
-An [Ark UI](https://ark-ui.com) + [Panda CSS](https://panda-css.com) component library, shipped
+An [Ark UI](https://ark-ui.com) + [Tailwind CSS](https://tailwindcss.com) component library, shipped
 for **React**, **Vue** and **Svelte** from a single set of styles.
 
 ```
 packages/
-  styles/     @75neo/styles   Panda preset (tokens, recipes) + generated runtime
+  styles/     @75neo/styles   the Tailwind layer + one tailwind-variants theme per component
   react/      @75neo/react    components for React
   vue/        @75neo/vue      components for Vue
   svelte/     @75neo/svelte   components for Svelte
 apps/
-  playground-react|vue|svelte  Vite dev app + Storybook per framework
+  playground-react|vue|svelte  Storybook per framework
   docs/                        Astro documentation site
 ```
 
 ## Getting started
 
 ```sh
-pnpm install     # also runs `panda codegen` for @75neo/styles
+pnpm install
 pnpm dev:react   # Storybook for one framework — the usual way to work
-pnpm dev         # styles watcher + all three Storybooks in parallel
+pnpm dev         # all three Storybooks in parallel
+pnpm dev:docs    # the docs site
 ```
 
+There is no code generation step; Tailwind reads the design system straight from source.
+
 **Storybook is the development space.** A component is exercised through its stories; each
-playground's `dev` script starts that framework's Storybook.
+playground's `dev` script starts that framework's Storybook, with a colour-mode toggle in the
+toolbar.
 
-| Framework | Storybook (`pnpm dev:<fw>`) | Vite demo app (`pnpm dev:app:<fw>`) |
-| --------- | --------------------------- | ----------------------------------- |
-| React     | http://localhost:6006       | http://localhost:5173               |
-| Vue       | http://localhost:6007       | http://localhost:5174               |
-| Svelte    | http://localhost:6008       | http://localhost:5175               |
+| Framework | Storybook (`pnpm dev:<fw>`) |
+| --------- | --------------------------- |
+| React     | http://localhost:6006       |
+| Vue       | http://localhost:6007       |
+| Svelte    | http://localhost:6008       |
 
-The Vite apps are a lightweight way to see a component outside Storybook; they are secondary.
-
-Both surfaces alias `@75neo/<framework>` straight to `packages/<framework>/src`, so editing a
+Each playground aliases `@75neo/<framework>` straight to `packages/<framework>/src`, so editing a
 component hot-reloads with **no build step in the loop**.
+
+## Using it in an app
+
+```sh
+pnpm add @75neo/react tailwindcss
+```
+
+```css
+/* main.css */
+@import "tailwindcss";
+@import "@75neo/styles/css";
+```
+
+That is the whole setup. The second import brings in the theme, the semantic utilities, the intent
+palettes, and a `@source` pointing at the component themes — which is what makes Tailwind emit the
+classes the components render.
+
+```tsx
+import { Button } from "@75neo/react";
+
+<Button colorPalette="danger" variant="outline">
+  Delete
+</Button>;
+```
 
 ## How the styling fits together
 
 Styling lives in exactly one place — `packages/styles/src`:
 
-- `theme/tokens.ts` — raw values (color scales, radii, fonts).
-- `theme/semantic-tokens.ts` — the light/dark-aware surface components style against (`bg.surface`,
-  `fg.muted`, `border.accent`, …). Components never branch on `_dark` themselves.
-- `recipes/*.ts` — one recipe per component, shared by all three frameworks.
+- `css/tokens.css` — raw values. Most scales are Tailwind's own; this adds the `neo` brand ramp, a
+  rounder radius scale and the animation keyframes.
+- `css/semantic.css` — the colour-mode-aware surface components style against (`bg-surface`,
+  `text-fg-muted`, `border-line`, …). Components never write `dark:` themselves.
+- `css/intents.css` — six intent palettes, each re-pointing the same eight `intent-*` roles.
+- `themes/*.ts` — one `tailwind-variants` theme per component, shared by all three frameworks.
 
-`panda codegen` turns that preset into a runtime the component packages import
-(`@75neo/styles/css`, `@75neo/styles/recipes`). The apps load the same preset and run their own
-Panda extraction, which is what emits the CSS. Two settings connect the halves:
+Shape and intent are separate axes: a theme writes each shape once against the `intent-*` roles, and
+every palette comes for free. Adding a variant means editing one theme, not three components.
 
-- `importMap: "@75neo/styles"` — tells Panda that `@75neo/styles/css` imports are its own.
-- `include: [..., "../../packages/<framework>/src/**"]` — scans the library sources so the
-  component recipes reach the output.
+## Customizing
 
-Adding a variant therefore means editing one recipe, not three components.
+Four levels, all merged through `tailwind-merge` — an override _replaces_ what it conflicts with
+rather than racing it in the cascade.
+
+```tsx
+// one element
+<Button className="rounded-full px-8">Save</Button>
+
+// one component instance, every slot by name
+<Accordion.Root ui={{ itemTrigger: "font-semibold", itemBody: "text-fg" }} />
+
+// every component of that type, app-wide
+const theme: ThemeConfig = { button: { slots: { base: "rounded-full" } } };
+
+<NeoUIProvider theme={theme}>
+  <App />
+</NeoUIProvider>;
+```
+
+Vue installs the same config with `app.use(createNeoUI({ theme }))`; Svelte wraps the app in
+`<NeoUIProvider {theme}>`. See the docs site for the full API.
 
 ## Adding a component
 
-1. Add its recipe in `packages/styles/src/recipes/` and register it in `recipes/index.ts`.
-2. Implement it in each framework package on top of the matching Ark UI primitive, applying the
-   recipe's class names (see `button` for the reference implementation).
+1. Add its theme in `packages/styles/src/themes/` and register it in `registry.ts`.
+2. Implement it in each framework package on top of the matching Ark UI primitive, rendering the
+   class names the theme produces (see `button` for the reference implementation).
 3. Export it from that package's `src/index.ts` and write its story in
-   `apps/playground-<framework>/src/`. The story is what you develop against — wiring the
-   component into the playground's `App` page is optional.
+   `apps/playground-<framework>/src/`, then add a markdown page under
+   `apps/docs/src/content/docs/components/`. The docs sidebar is built from that collection, so
+   there is no nav to update.
+
+Component packages must not spell Tailwind classes themselves — nothing scans them, so a class
+written there produces no CSS.
 
 ## Scripts
 
 | Command              | What it does                                           |
 | -------------------- | ------------------------------------------------------ |
-| `pnpm dev`           | Styles watcher + all three Storybooks                  |
+| `pnpm dev`           | All three Storybooks                                   |
 | `pnpm dev:<fw>`      | Storybook for one framework                            |
-| `pnpm dev:app:<fw>`  | The Vite demo app for one framework                    |
+| `pnpm dev:docs`      | The Astro docs site                                    |
 | `pnpm build`         | Builds every package, plus each Storybook and the docs |
 | `pnpm check`         | Type-checks every workspace project                    |
 | `pnpm lint`          | oxlint across the repo                                 |
 | `pnpm lint:packages` | publint — validates the publishable package manifests  |
 | `pnpm format`        | oxfmt                                                  |
-| `pnpm codegen`       | Regenerates `packages/styles/styled-system`            |
 
 Linting and formatting both come from [Oxc](https://oxc.rs) — `oxlint` and `oxfmt`. oxfmt covers
 `.ts`, `.tsx`, `.js`, `.svelte`, `.vue`, `.md` and `.json`; `.astro` files in `apps/docs` are not

@@ -2,15 +2,14 @@
   "name": "75neo-ui",
   "version": "0.0.0",
   "private": true,
-  "description": "75NeoUI — an Ark UI + Panda CSS component library for React, Vue and Svelte",
+  "description": "75NeoUI — an Ark UI + Tailwind CSS component library for React, Vue and Svelte",
   "type": "module",
   "scripts": {
-    "dev": "pnpm --parallel --filter @75neo/styles --filter \"./apps/playground-*\" run dev",
+    "dev": "pnpm --parallel --filter \"./apps/playground-*\" run dev",
     "dev:react": "pnpm --filter playground-react run dev",
     "dev:vue": "pnpm --filter playground-vue run dev",
     "dev:svelte": "pnpm --filter playground-svelte run dev",
     "dev:docs": "pnpm --filter docs run dev",
-    "codegen": "pnpm --filter @75neo/styles run codegen",
     "build": "pnpm -r run build",
     "check": "pnpm -r run check",
     "lint": "oxlint",
@@ -18,8 +17,7 @@
     "lint:packages": "pnpm --filter \"./packages/*\" exec publint",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
-    "clean": "pnpm -r exec rm -rf dist storybook-static styled-system .astro .svelte-kit node_modules/.tmp node_modules/.vite",
-    "prepare": "pnpm run codegen"
+    "clean": "pnpm -r exec rm -rf dist storybook-static .astro .svelte-kit node_modules/.tmp node_modules/.vite"
   },
   "devDependencies": {
     "oxfmt": "catalog:",

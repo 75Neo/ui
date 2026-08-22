@@ -1,15 +1,21 @@
 <script module lang="ts">
-  import { css } from "@75neo/styles/css";
-  import { Button } from "@75neo/svelte";
+  import { Button, NeoUIProvider, type ThemeConfig } from "@75neo/svelte";
   import { defineMeta } from "@storybook/addon-svelte-csf";
 
   const VARIANTS = ["solid", "subtle", "outline", "ghost", "link"] as const;
   const PALETTES = ["accent", "neutral", "success", "warning", "danger", "info"] as const;
   const SIZES = ["xs", "sm", "md", "lg"] as const;
 
-  const row = css({ display: "flex", gap: "3", alignItems: "center", flexWrap: "wrap" });
-  const grid = css({ display: "grid", gap: "3" });
-  const legend = css({ textStyle: "label.sm", color: "fg.muted", textTransform: "uppercase" });
+  const row = "flex flex-wrap items-center gap-3";
+  const grid = "grid gap-3";
+  const legend = "text-xs font-medium uppercase tracking-wide text-fg-muted";
+
+  const pillTheme: ThemeConfig = {
+    button: {
+      slots: { base: "rounded-full" },
+      defaultVariants: { colorPalette: "neutral" },
+    },
+  };
 
   const { Story } = defineMeta({
     title: "Components/Button",
@@ -70,4 +76,32 @@
 
 <Story name="FullWidth">
   <Button fullWidth>Button</Button>
+</Story>
+
+<!--
+  `class` is merged by `tailwind-merge`, not appended: `rounded-full` replaces the size
+  variant's `rounded-md` and `px-8` replaces its `px-4`, with no `!important` and no
+  knowledge of what the theme picked.
+-->
+<Story name="OverridingClasses">
+  <div class={row}>
+    <Button>default</Button>
+    <Button class="rounded-full px-8">rounded-full px-8</Button>
+    <Button ui={{ base: "uppercase tracking-widest" }}>via ui</Button>
+  </div>
+</Story>
+
+<!--
+  The same override applied to every button at once. `<NeoUIProvider>` merges a
+  `ThemeConfig` into the built-in themes, so a whole app can be re-shaped without
+  touching a call site.
+-->
+<Story name="ThemedApp">
+  <NeoUIProvider theme={pillTheme}>
+    <div class={row}>
+      {#each VARIANTS as variant (variant)}
+        <Button {variant}>{variant}</Button>
+      {/each}
+    </div>
+  </NeoUIProvider>
 </Story>

@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { cx } from "@75neo/styles/css";
   import { Accordion as Ark } from "@ark-ui/svelte/accordion";
   // Imported per icon rather than from the barrel, which Lucide recommends so Vite's
   // dev server does not have to process the whole set.
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
-  import { getAccordionSlots } from "./context";
+  import { getAccordionStyles } from "./context";
 
   export type ItemIndicatorProps = Omit<Ark.ItemIndicatorProps, "class"> & {
     class?: string;
@@ -12,10 +11,13 @@
 
   let { class: className, children, ...rest }: ItemIndicatorProps = $props();
 
-  const slots = getAccordionSlots("ItemIndicator");
+  const styles = getAccordionStyles("ItemIndicator");
 </script>
 
-<Ark.ItemIndicator class={cx(slots().itemIndicator, className)} {...rest}>
+<Ark.ItemIndicator
+  class={styles().slots.itemIndicator({ class: [styles().ui?.itemIndicator, className] })}
+  {...rest}
+>
   {#if children}
     {@render children()}
   {:else}

@@ -1,13 +1,12 @@
 <script lang="ts">
-  import { cx } from "@75neo/styles/css";
   import { Accordion as Ark } from "@ark-ui/svelte/accordion";
-  import { getAccordionSlots } from "./context";
+  import { getAccordionStyles } from "./context";
 
   export type ItemContentProps = Omit<Ark.ItemContentProps, "class"> & { class?: string };
 
   let { class: className, children, ...rest }: ItemContentProps = $props();
 
-  const slots = getAccordionSlots("ItemContent");
+  const styles = getAccordionStyles("ItemContent");
 </script>
 
 <!--
@@ -15,8 +14,11 @@
   height is what animates, and a padded element cannot collapse below its own padding —
   so the padding lives one level in.
 -->
-<Ark.ItemContent class={cx(slots().itemContent, className)} {...rest}>
-  <div class={slots().itemBody}>
+<Ark.ItemContent
+  class={styles().slots.itemContent({ class: [styles().ui?.itemContent, className] })}
+  {...rest}
+>
+  <div class={styles().slots.itemBody({ class: styles().ui?.itemBody })}>
     {@render children?.()}
   </div>
 </Ark.ItemContent>

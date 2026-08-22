@@ -1,0 +1,53 @@
+/*
+ * The 75NeoUI design system, as CSS.
+ *
+ * An app pulls the whole system in with two lines, in this order:
+ *
+ *   @import "tailwindcss";
+ *   @import "@75neo/styles/css";
+ *
+ * Order matters: everything below extends Tailwind's own theme, so Tailwind has to be
+ * loaded first.
+ *
+ * Layers, outermost first:
+ *
+ *   1. `tokens.css`    — raw values. The `neo` brand ramp, radii, easings, keyframes.
+ *   2. `semantic.css`  — what those values *mean* (`bg-surface`, `text-fg-muted`),
+ *                        resolved per colour mode.
+ *   3. `intents.css`   — the six intent palettes, each re-pointing the same eight roles.
+ *   4. `base.css`      — the handful of global rules (page chrome, focus ring).
+ *
+ * Component styling lives one level up, in `../themes/*.ts`, written entirely against
+ * layers 2 and 3.
+ */
+
+@import "./tokens.css";
+@import "./semantic.css";
+@import "./intents.css";
+@import "./base.css";
+
+/*
+ * Tailwind only emits a class it has seen in a scanned file, and the component themes
+ * live in this package — outside whatever project root the app's Tailwind scans. This
+ * one line is what replaces per-app source configuration: the path is relative to *this*
+ * file, so it resolves the same in a workspace checkout and in `node_modules`.
+ *
+ * It is also why component packages must not spell Tailwind classes themselves — see
+ * AGENTS.md. Nothing scans them.
+ */
+@source "../themes";
+
+/*
+ * Colour mode is opt-in via a class or `data-theme`, with no `prefers-color-scheme`
+ * fallback — the host app decides, so a user's saved choice can't be overridden by
+ * their OS.
+ *
+ * Each half of the `:where()` matches the marked element *and* its descendants. Without
+ * the bare `.dark` / `[data-theme="dark"]`, marking `<html>` would leave `<html>` itself
+ * on the light values while everything inside it flipped.
+ *
+ * `:where()` keeps the variant at zero specificity, so `dark:` utilities still lose to a
+ * later plain utility exactly as they would in stock Tailwind.
+ */
+@custom-variant dark (&:where(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *));
+@custom-variant light (&:where(.light, .light *, [data-theme="light"], [data-theme="light"] *));

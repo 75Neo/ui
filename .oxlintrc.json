@@ -7,9 +7,28 @@
   },
   "rules": {
     "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }],
+    "react/only-export-components": [
+      "warn",
+      {
+        "allowConstantExport": true
+      }
+    ],
     "react/react-in-jsx-scope": "off",
     "import/no-unassigned-import": "off"
   },
-  "ignorePatterns": ["**/dist/**", "**/styled-system/**", "**/storybook-static/**"]
+  "ignorePatterns": [
+    "**/dist/**",
+    "**/styled-system/**",
+    "**/storybook-static/**",
+    ".agents/skills/**",
+    ".claude/skills/**"
+  ],
+  "overrides": [
+    {
+      "files": ["packages/vue/**", "apps/playground-vue/**"],
+      "rules": {
+        "react/rules-of-hooks": "off"
+      }
+    }
+  ]
 }

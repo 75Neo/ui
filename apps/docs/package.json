@@ -13,7 +13,10 @@
     "astro": "catalog:"
   },
   "devDependencies": {
+    "@75neo/styles": "workspace:*",
     "@astrojs/check": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "tailwindcss": "catalog:",
     "typescript": "catalog:"
   }
 }
