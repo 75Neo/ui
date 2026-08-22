@@ -38,6 +38,7 @@
     "tailwind-variants": "^3.3.1"
   },
   "devDependencies": {
+    "@75neo/tooling": "workspace:*",
     "publint": "catalog:",
     "tailwindcss": "catalog:",
     "tsdown": "catalog:",

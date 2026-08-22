@@ -14,12 +14,12 @@
   },
   "devDependencies": {
     "@75neo/styles": "workspace:*",
+    "@75neo/tooling": "workspace:*",
     "@lucide/svelte": "catalog:",
     "@storybook/addon-svelte-csf": "^5.1.2",
     "@storybook/svelte-vite": "^10.5.10",
     "@sveltejs/vite-plugin-svelte": "catalog:",
     "@tailwindcss/vite": "catalog:",
-    "@tsconfig/svelte": "catalog:",
     "@types/node": "catalog:",
     "storybook": "catalog:",
     "svelte-check": "catalog:",

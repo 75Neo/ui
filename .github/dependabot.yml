@@ -1,0 +1,72 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore"
+    # Four actions across one workflow. One PR a week, not four.
+    groups:
+      actions:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore"
+    # Shared versions live in the `catalog:` block of pnpm-workspace.yaml, which
+    # Dependabot understands and edits in place. It reports every catalog entry as a
+    # production dependency regardless of how consumers declare it, so these groups
+    # match on name rather than on `dependency-type`.
+    #
+    # Groups are matched in order: a dependency joins the first one that claims it,
+    # so the framework groups come before the catch-all.
+    groups:
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+          - "@ark-ui/react"
+          - "lucide-react"
+          - "@vitejs/plugin-react"
+      vue:
+        patterns:
+          - "vue"
+          - "vue-tsc"
+          - "@vue/*"
+          - "@ark-ui/vue"
+          - "@lucide/vue"
+          - "@vitejs/plugin-vue"
+      svelte:
+        patterns:
+          - "svelte"
+          - "svelte-check"
+          - "@sveltejs/*"
+          - "@tsconfig/svelte"
+          - "@ark-ui/svelte"
+          - "@lucide/svelte"
+      storybook:
+        patterns:
+          - "storybook"
+          - "@storybook/*"
+      tailwind:
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/*"
+          - "tailwind-merge"
+          - "tailwind-variants"
+      tooling:
+        patterns:
+          - "*"
+    ignore:
+      # TypeScript stays on 6 until 7 ships as a stable major.
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]

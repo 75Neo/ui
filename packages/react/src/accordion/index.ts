@@ -1,9 +1,7 @@
-export * as Accordion from "./accordion";
-export type {
-  ItemContentProps as AccordionItemContentProps,
-  ItemIndicatorProps as AccordionItemIndicatorProps,
-  ItemProps as AccordionItemProps,
-  ItemTriggerProps as AccordionItemTriggerProps,
-  RootProps as AccordionRootProps,
-  RootProviderProps as AccordionRootProviderProps,
+export {
+  Accordion,
+  type AccordionItem,
+  type AccordionProps,
+  type AccordionSlot,
+  type AccordionSlotProps,
 } from "./accordion";

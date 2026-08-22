@@ -1,11 +1,9 @@
 export {
   Accordion,
-  type AccordionItemContentProps,
-  type AccordionItemIndicatorProps,
-  type AccordionItemProps,
-  type AccordionItemTriggerProps,
-  type AccordionRootProps,
-  type AccordionRootProviderProps,
+  type AccordionItem,
+  type AccordionProps,
+  type AccordionSlot,
+  type AccordionSlotProps,
 } from "./accordion";
 export { Button, type ButtonProps } from "./button";
 export { NeoUIProvider, type NeoUIProviderProps, useComponentTheme } from "./theme";

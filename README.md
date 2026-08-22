@@ -9,6 +9,7 @@ packages/
   react/      @75neo/react    components for React
   vue/        @75neo/vue      components for Vue
   svelte/     @75neo/svelte   components for Svelte
+  tooling/    @75neo/tooling  shared TypeScript and tsdown config (private)
 apps/
   playground-react|vue|svelte  Storybook per framework
   docs/                        Astro documentation site
@@ -86,7 +87,7 @@ rather than racing it in the cascade.
 <Button className="rounded-full px-8">Save</Button>
 
 // one component instance, every slot by name
-<Accordion.Root ui={{ itemTrigger: "font-semibold", itemBody: "text-fg" }} />
+<Accordion items={items} ui={{ trigger: "font-semibold", body: "text-fg" }} />
 
 // every component of that type, app-wide
 const theme: ThemeConfig = { button: { slots: { base: "rounded-full" } } };

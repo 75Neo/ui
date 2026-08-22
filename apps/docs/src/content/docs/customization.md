@@ -37,19 +37,22 @@ merging would keep both `px-4` and your `px-8` and leave source order to decide.
 ## ui
 
 A component made of several elements exposes each of them as a named slot. `ui` reaches
-all of them from the root, so restyling triggers, indicators and bodies is one prop rather
-than one prop per part.
+all of them at once, so restyling triggers, icons and bodies is one prop rather than one
+prop per part.
 
 ```tsx
-<Accordion.Root
+<Accordion
+  items={items}
   ui={{
     root: "rounded-none border-x-0",
-    itemTrigger: "font-semibold uppercase tracking-wide",
-    itemIndicator: "text-intent-fg",
-    itemBody: "text-fg",
+    trigger: "font-semibold uppercase tracking-wide",
+    trailingIcon: "text-intent-fg",
+    body: "text-fg",
   }}
->
+/>
 ```
+
+An item may carry its own `ui`, which is merged over the accordion's for that row alone.
 
 The keys are typed against the component's real slot names — the **Theme** section of each
 component page lists them.
@@ -74,7 +77,7 @@ const theme: ThemeConfig = {
     defaultVariants: { colorPalette: "neutral" },
   },
   accordion: {
-    slots: { itemTrigger: "font-semibold" },
+    slots: { trigger: "font-semibold" },
     defaultVariants: { variant: "plain" },
   },
 };

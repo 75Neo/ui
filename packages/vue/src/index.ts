@@ -1,4 +1,9 @@
-export { Accordion, type AccordionProps } from "./accordion";
+export {
+  Accordion,
+  type AccordionItem,
+  type AccordionProps,
+  type AccordionSlotProps,
+} from "./accordion";
 export { Button, type ButtonProps } from "./button";
 export {
   createNeoUI,

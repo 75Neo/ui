@@ -33,6 +33,7 @@
     "lucide-react": "catalog:"
   },
   "devDependencies": {
+    "@75neo/tooling": "workspace:*",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "publint": "catalog:",

@@ -4,14 +4,18 @@ import { tv } from "../tv";
  * One theme, three frameworks. React, Vue and Svelte all render the class names this
  * produces, so accordion styling only ever changes here.
  *
- * ## Why there is an `itemBody` slot
+ * The slot names are [Nuxt UI's](https://ui.nuxt.com/components/accordion), which is the
+ * API this library reproduces — minus its `header`, a wrapper Reka UI's anatomy requires
+ * and Ark's does not.
+ *
+ * ## Why there is a `body` slot
  *
  * The open/close animation interpolates `height` between `0` and the `--height` Ark sets
  * once it has measured the panel. With `box-sizing: border-box` an element cannot be
  * shorter than its own vertical padding, so padding on the animated element leaves a
- * visible stub at the end of the collapse. `itemContent` is therefore the bare animated
- * box and `itemBody` — the element inside it — carries the padding. The framework
- * bindings render that wrapper themselves, so callers never have to know.
+ * visible stub at the end of the collapse. `content` is therefore the bare animated box
+ * and `body` — the element inside it — carries the padding. The framework bindings
+ * render that wrapper themselves, so callers never have to know.
  *
  * ## Orientation
  *
@@ -27,11 +31,11 @@ export const accordion = tv({
     // it; the panel that opened should stay where the user clicked.
     item: "min-w-0 [overflow-anchor:none]",
 
-    itemTrigger: [
-      "flex w-full items-center justify-between",
-      "cursor-pointer border-0 bg-transparent text-start font-medium leading-snug",
+    trigger: [
+      "flex w-full items-center",
+      "cursor-pointer border-0 bg-transparent text-start font-medium",
       "text-fg transition-colors duration-150 ease-in-out",
-      // The expanded header is the one place the accordion carries its intent colour.
+      // The expanded trigger is the one place the accordion carries its intent colour.
       "hover:text-intent-label data-[state=open]:text-intent-label",
       // Colour comes from the global `:focus-visible` rule; only the offset is local. It
       // is negative because the boxed variants clip their corners, and an outward ring on
@@ -41,15 +45,22 @@ export const accordion = tv({
       "disabled:hover:bg-transparent disabled:hover:text-fg-disabled",
     ],
 
-    itemIndicator: [
+    // Icons scale with the trigger's type ramp rather than being sized per call site,
+    // here and in `trailingIcon`.
+    leadingIcon:
+      "inline-flex shrink-0 items-center justify-center text-fg-muted [&_svg]:size-[1em]",
+
+    // Takes the free space, so the trailing icon is pushed to the end of the trigger.
+    label: "min-w-0 flex-1 break-words",
+
+    trailingIcon: [
       "inline-flex shrink-0 items-center justify-center text-fg-muted",
       "transition-transform duration-200 ease-in-out motion-reduce:transition-none",
       "data-[state=open]:rotate-180 data-[state=open]:text-intent-fg",
-      // Icons scale with the trigger's type ramp rather than being sized per call site.
       "[&_svg]:size-[1em]",
     ],
 
-    itemContent: [
+    content: [
       // Both halves of the animation: the keyframes interpolate `height`, and this is
       // what keeps the body from spilling out while they do.
       "overflow-hidden",
@@ -58,7 +69,7 @@ export const accordion = tv({
       "motion-reduce:animate-none",
     ],
 
-    itemBody: "leading-relaxed text-fg-muted",
+    body: "leading-relaxed text-fg-muted",
   },
 
   /**
@@ -69,19 +80,22 @@ export const accordion = tv({
   variants: {
     size: {
       sm: {
-        itemTrigger: "min-h-9 gap-2 px-3 py-2.5 text-sm",
-        itemIndicator: "text-base",
-        itemBody: "px-3 pb-3 text-sm",
+        trigger: "min-h-9 gap-2 px-3 py-2.5 text-sm",
+        leadingIcon: "text-base",
+        trailingIcon: "text-base",
+        body: "px-3 pb-3 text-sm",
       },
       md: {
-        itemTrigger: "min-h-11 gap-3 px-4 py-3 text-base",
-        itemIndicator: "text-lg",
-        itemBody: "px-4 pb-4 text-base",
+        trigger: "min-h-11 gap-3 px-4 py-3 text-base",
+        leadingIcon: "text-lg",
+        trailingIcon: "text-lg",
+        body: "px-4 pb-4 text-base",
       },
       lg: {
-        itemTrigger: "min-h-14 gap-3 px-5 py-4 text-lg",
-        itemIndicator: "text-xl",
-        itemBody: "px-5 pb-5 text-base",
+        trigger: "min-h-14 gap-3 px-5 py-4 text-lg",
+        leadingIcon: "text-xl",
+        trailingIcon: "text-xl",
+        body: "px-5 pb-5 text-base",
       },
     },
 
@@ -92,14 +106,14 @@ export const accordion = tv({
         // the container.
         root: "overflow-hidden rounded-lg border border-line bg-surface",
         item: "border-b border-line last:border-b-0",
-        itemTrigger: "hover:bg-surface-subtle",
+        trigger: "hover:bg-surface-subtle",
       },
 
       /** Tinted blocks with air between them. No outer container. */
       subtle: {
         root: "gap-2",
         item: "overflow-hidden rounded-md bg-surface-subtle",
-        itemTrigger: "hover:bg-surface-muted",
+        trigger: "hover:bg-surface-muted",
       },
 
       /** Each item is its own raised card. The expanded one lifts further. */
@@ -109,7 +123,7 @@ export const accordion = tv({
           "overflow-hidden rounded-lg border border-line bg-surface shadow-sm",
           "transition-shadow duration-200 ease-in-out data-[state=open]:shadow-md",
         ],
-        itemTrigger: "hover:bg-surface-subtle",
+        trigger: "hover:bg-surface-subtle",
       },
 
       /**
@@ -118,14 +132,14 @@ export const accordion = tv({
        */
       plain: {
         item: "border-b border-line",
-        itemTrigger: "px-0 hover:text-intent-label",
-        itemBody: "px-0",
+        trigger: "px-0 hover:text-intent-label",
+        body: "px-0",
       },
     },
 
     /**
      * Re-points the eight `intent-*` roles at another hue. The accordion only spends two
-     * of them — the expanded header's text and its indicator — but it spends them the
+     * of them — the expanded trigger's text and its icon — but it spends them the
      * same way every other component does, so intent stays a single prop.
      *
      * The class lands on `root`; custom properties inherit, so every slot below follows.

@@ -1,6 +1,6 @@
 import type { ThemeConfig } from "@75neo/styles";
-import { defineComponent, type Plugin, type PropType } from "vue";
-import { provideNeoUITheme, themeKey } from "./context";
+import type { Plugin } from "vue";
+import { themeKey } from "./context";
 
 export interface NeoUIOptions {
   /** Per-component class overrides, merged into the built-in themes. */
@@ -22,21 +22,5 @@ export const createNeoUI = (options: NeoUIOptions = {}): Plugin => ({
 
     // App-level `provide`, not the composable: `install` runs outside any `setup`.
     app.provide(themeKey, () => theme);
-  },
-});
-
-/**
- * The same thing scoped to a subtree, for apps that theme one section differently or
- * that would rather not install a plugin.
- */
-export const NeoUIProvider = defineComponent({
-  name: "NeoUIProvider",
-  props: {
-    theme: { type: Object as PropType<ThemeConfig>, default: undefined },
-  },
-  setup(props, { slots }) {
-    provideNeoUITheme(() => props.theme ?? null);
-
-    return () => slots.default?.();
   },
 });

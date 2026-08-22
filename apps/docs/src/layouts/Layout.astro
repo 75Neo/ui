@@ -13,7 +13,9 @@ const { title, description } = Astro.props;
  * The sidebar is the collection, sorted. A new markdown file appears here on its own —
  * there is no nav to keep in step with the pages.
  */
-const entries = (await getCollection("docs")).sort((a, b) => a.data.order - b.data.order);
+const entries = (await getCollection("docs")).toSorted(
+  (a, b) => a.data.order - b.data.order,
+);
 
 const sections = ["Guide", "Components"] as const;
 

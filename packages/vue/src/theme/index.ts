@@ -1,2 +1,3 @@
 export { provideNeoUITheme, useComponentTheme } from "./context";
-export { createNeoUI, NeoUIProvider, type NeoUIOptions } from "./plugin";
+export { default as NeoUIProvider } from "./NeoUIProvider.vue";
+export { createNeoUI, type NeoUIOptions } from "./plugin";

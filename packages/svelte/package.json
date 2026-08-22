@@ -34,9 +34,9 @@
     "@lucide/svelte": "catalog:"
   },
   "devDependencies": {
+    "@75neo/tooling": "workspace:*",
     "@sveltejs/package": "^2.5.8",
     "@sveltejs/vite-plugin-svelte": "catalog:",
-    "@tsconfig/svelte": "catalog:",
     "publint": "catalog:",
     "svelte": "catalog:",
     "svelte-check": "catalog:",

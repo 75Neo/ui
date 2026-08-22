@@ -5,59 +5,54 @@ on:
     branches: [master]
   pull_request:
 
-# A newer push to the same branch supersedes the run already in flight for it.
+# A newer push to the same PR supersedes the run already in flight for it. Pushes to
+# master are left alone: they are what seeds the Turborepo cache and marks the branch
+# green, so superseding one costs more than it saves.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 # Nothing here writes to the repo or to any registry.
 permissions:
   contents: read
 
 env:
-  # Mirrors mise.toml, which is what local dev uses. The first step below fails the run
-  # if the two ever drift apart.
-  NODE_VERSION: "24"
-  PNPM_VERSION: "11"
   # Turborepo phones home with anonymous usage counts by default. CI has nothing to
   # gain from it and one less network call is one less way for a run to hang.
   TURBO_TELEMETRY_DISABLED: "1"
 
 jobs:
-  ci:
-    name: Checks
+  qa:
+    name: QA
     runs-on: ubuntu-latest
+    # The whole job runs in about two minutes. Anything near this is hung.
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v7
 
-      - name: Toolchain matches mise.toml
-        run: |
-          set -euo pipefail
-          node_pin=$(grep -oP '^\s*node\s*=\s*"\K[^"]+' mise.toml)
-          pnpm_pin=$(grep -oP '^\s*pnpm\s*=\s*"\K[^"]+' mise.toml)
-          if [ "$node_pin" != "$NODE_VERSION" ]; then
-            echo "::error file=mise.toml::mise.toml pins node $node_pin, this workflow uses $NODE_VERSION"
-            exit 1
-          fi
-          if [ "$pnpm_pin" != "$PNPM_VERSION" ]; then
-            echo "::error file=mise.toml::mise.toml pins pnpm $pnpm_pin, this workflow uses $PNPM_VERSION"
-            exit 1
-          fi
+      # mise reads mise.toml, which is what local dev uses — so the Node and pnpm
+      # versions are pinned in exactly one place and cannot drift.
+      - name: Setup mise
+        uses: jdx/mise-action@v4
 
-      - uses: pnpm/action-setup@v4
+      - name: pnpm store path
+        id: pnpm-store
+        run: echo "path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+
+      - name: pnpm store cache
+        uses: actions/cache@v6
         with:
-          version: ${{ env.PNPM_VERSION }}
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
+          path: ${{ steps.pnpm-store.outputs.path }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       # Turborepo's local cache, carried between runs. Saved under this commit's SHA and
       # restored from the newest `-turbo-` key, so a re-run of the same commit replays
       # everything and a new commit still reuses every task whose inputs didn't move.
       - name: Turborepo cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .turbo/cache
           key: ${{ runner.os }}-turbo-${{ github.sha }}
@@ -97,3 +92,11 @@ jobs:
       - name: Package manifests
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: pnpm lint:packages
+
+      # The store is restored from the newest key even when the lockfile has moved, and
+      # pnpm never removes what a lockfile stopped referencing. Without this the cached
+      # store only ever grows. Runs before the post-job cache save; never fails the run.
+      - name: Prune pnpm store
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        continue-on-error: true
+        run: pnpm store prune

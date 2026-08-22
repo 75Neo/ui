@@ -1,143 +1,189 @@
-import type { AccordionSlots, AccordionVariants, Themes } from "@75neo/styles";
+import type { AccordionSlots, AccordionVariants, ClassValue } from "@75neo/styles";
 import { Accordion as Ark } from "@ark-ui/react/accordion";
-import { ChevronDownIcon } from "lucide-react";
-import { createContext, useContext, useMemo } from "react";
+import { ChevronDownIcon, type LucideIcon } from "lucide-react";
+import type { ComponentType, ReactNode } from "react";
 import { useComponentTheme } from "../theme";
 
 /**
- * The shared `accordion` theme wearing Ark's accordion.
- *
- * `Root` resolves the theme once and publishes the resulting slot functions — together
- * with whatever `ui` it was given — on a context. `size`, `variant`, `colorPalette` and
- * every per-slot override are therefore set in one place, and each part below picks up
- * its own class without the caller threading props down the tree.
+ * One row of the accordion. Extra keys are allowed, so a list that already exists in the
+ * shape some API returns it can be passed straight in and read through `labelKey` and
+ * `valueKey`.
  */
-type AccordionStyles = {
-  slots: ReturnType<Themes["accordion"]>;
-  ui: AccordionSlots | undefined;
-};
-
-const StyleContext = createContext<AccordionStyles | null>(null);
-
-const useStyles = (part: string): AccordionStyles => {
-  const styles = useContext(StyleContext);
-
-  if (!styles) {
-    throw new Error(`<Accordion.${part} /> must be rendered inside <Accordion.Root />`);
-  }
-
-  return styles;
-};
-
-/** The variant props and `ui` bag both roots take. */
-interface AccordionOwnProps extends AccordionVariants {
+export interface AccordionItem {
+  /** The trigger's text. */
+  label?: string;
+  /** Rendered before the label — a Lucide icon, or any component taking no props. */
+  icon?: LucideIcon | ComponentType;
+  /** Replaces the chevron, for this row alone. */
+  trailingIcon?: LucideIcon | ComponentType;
   /**
-   * Per-slot class overrides for the whole accordion — `{ itemTrigger: "text-lg" }`
-   * reaches every trigger below, without the parts having to be given props one by one.
+   * Names this row's own slots in `slots`: `{slot}` replaces its whole panel,
+   * `{slot}-body` only what sits inside it. Without one, `content` and `body` are used.
    */
+  slot?: string;
+  /** The panel's text, for a row that needs no markup of its own. */
+  content?: ReactNode;
+  /**
+   * The row's value, which is also its key. Defaults to the index — give it something
+   * stable if rows are added, removed or reordered, so open panels stay open.
+   */
+  value?: string;
+  disabled?: boolean;
+  /** Merged into this row's `item` class. */
+  className?: ClassValue;
+  /** Per-slot overrides for this row only, merged over the accordion's own `ui`. */
   ui?: AccordionSlots;
+  [key: string]: unknown;
 }
 
-export interface RootProps extends Ark.RootProps, AccordionOwnProps {}
+/** What every slot is handed. */
+export interface AccordionSlotProps {
+  item: AccordionItem;
+  index: number;
+  /** Whether this row is expanded. */
+  open: boolean;
+}
 
-export const Root = ({ variant, size, colorPalette, ui, className, ...rest }: RootProps) => {
-  const theme = useComponentTheme("accordion");
-  const slots = theme({ variant, size, colorPalette });
-  const styles = useMemo(() => ({ slots, ui }), [slots, ui]);
+/** A slot: Vue and Svelte spell this as a named slot, React as a render prop. */
+export type AccordionSlot = (props: AccordionSlotProps) => ReactNode;
 
-  return (
-    <StyleContext.Provider value={styles}>
-      <Ark.Root className={slots.root({ class: [ui?.root, className] })} {...rest} />
-    </StyleContext.Provider>
-  );
-};
+export interface AccordionProps
+  // `content` is omitted because React types it as the HTML attribute of that name; here
+  // it is the panel's render prop.
+  extends Omit<Ark.RootProps, "children" | "className" | "content">, AccordionVariants {
+  /** The rows. */
+  items?: AccordionItem[];
+  /** The chevron every row's trigger ends with. */
+  trailingIcon?: LucideIcon | ComponentType;
+  /** Which key of an item holds its label. */
+  labelKey?: string;
+  /** Which key of an item holds its value. */
+  valueKey?: string;
+  className?: ClassValue;
+  /**
+   * Per-slot class overrides for the whole accordion — `{ trigger: "text-lg" }` reaches
+   * every row.
+   */
+  ui?: AccordionSlots;
+  /** The trigger's label. Vue's and Svelte's default slot. */
+  children?: AccordionSlot;
+  /** Before the label. Renders the row's `icon` by default. */
+  leading?: AccordionSlot;
+  /** After the label. Renders the chevron by default. */
+  trailing?: AccordionSlot;
+  /** The whole panel, padding included. */
+  content?: AccordionSlot;
+  /** What sits inside the panel's padding. Renders the row's `content` by default. */
+  body?: AccordionSlot;
+  /** The per-row slots named by `item.slot`, keyed by that name. */
+  slots?: Record<string, AccordionSlot>;
+}
 
-Root.displayName = "Accordion.Root";
-
-/** `Root`'s counterpart for the `useAccordion` hook — same styling, external state. */
-export interface RootProviderProps extends Ark.RootProviderProps, AccordionOwnProps {}
-
-export const RootProvider = ({
+/**
+ * The whole accordion, driven by `items` — Ark's five parts are an implementation detail
+ * rather than the API, and every part a caller might want to replace is a render prop.
+ *
+ * Ark's own root props (`multiple`, `collapsible`, `defaultValue`, `unmountOnExit`, …)
+ * are accepted unchanged, so [its documentation](https://ark-ui.com/docs/components/accordion)
+ * applies.
+ */
+export const Accordion = ({
+  items = [],
+  trailingIcon: TrailingIcon = ChevronDownIcon,
+  labelKey = "label",
+  valueKey = "value",
   variant,
   size,
   colorPalette,
-  ui,
   className,
+  ui,
+  children,
+  leading,
+  trailing,
+  content,
+  body,
+  slots: itemSlots,
   ...rest
-}: RootProviderProps) => {
+}: AccordionProps) => {
   const theme = useComponentTheme("accordion");
-  const slots = theme({ variant, size, colorPalette });
-  const styles = useMemo(() => ({ slots, ui }), [slots, ui]);
+  const styles = theme({ variant, size, colorPalette });
+
+  const contentSlot = (item: AccordionItem) => itemSlots?.[item.slot ?? ""] ?? content;
+  const bodySlot = (item: AccordionItem) => itemSlots?.[`${item.slot}-body`] ?? body;
 
   return (
-    <StyleContext.Provider value={styles}>
-      <Ark.RootProvider className={slots.root({ class: [ui?.root, className] })} {...rest} />
-    </StyleContext.Provider>
+    <Ark.Root className={styles.root({ class: [ui?.root, className] })} {...rest}>
+      {items.map((item, index) => {
+        const value = String(item[valueKey] ?? index);
+        const label = item[labelKey] as ReactNode;
+        const Icon = item.icon;
+        const ItemTrailingIcon = item.trailingIcon ?? TrailingIcon;
+        // A row with nothing to show gets no panel at all, rather than an empty
+        // animated box.
+        const hasContent = Boolean(item.content ?? contentSlot(item) ?? bodySlot(item));
+
+        return (
+          <Ark.Item
+            key={value}
+            value={value}
+            disabled={item.disabled}
+            className={styles.item({ class: [ui?.item, item.ui?.item, item.className] })}
+          >
+            <Ark.ItemContext>
+              {({ expanded }) => {
+                const slotProps = { item, index, open: expanded };
+
+                return (
+                  <>
+                    <Ark.ItemTrigger
+                      className={styles.trigger({ class: [ui?.trigger, item.ui?.trigger] })}
+                    >
+                      {leading?.(slotProps) ??
+                        (Icon ? (
+                          <span
+                            className={styles.leadingIcon({
+                              class: [ui?.leadingIcon, item.ui?.leadingIcon],
+                            })}
+                          >
+                            <Icon aria-hidden="true" focusable="false" />
+                          </span>
+                        ) : null)}
+
+                      <span className={styles.label({ class: [ui?.label, item.ui?.label] })}>
+                        {children?.(slotProps) ?? label}
+                      </span>
+
+                      {trailing?.(slotProps) ?? (
+                        <Ark.ItemIndicator
+                          className={styles.trailingIcon({
+                            class: [ui?.trailingIcon, item.ui?.trailingIcon],
+                          })}
+                        >
+                          <ItemTrailingIcon aria-hidden="true" focusable="false" />
+                        </Ark.ItemIndicator>
+                      )}
+                    </Ark.ItemTrigger>
+
+                    {hasContent && (
+                      <Ark.ItemContent
+                        className={styles.content({ class: [ui?.content, item.ui?.content] })}
+                      >
+                        {contentSlot(item)?.(slotProps) ?? (
+                          <div className={styles.body({ class: [ui?.body, item.ui?.body] })}>
+                            {bodySlot(item)?.(slotProps) ?? item.content}
+                          </div>
+                        )}
+                      </Ark.ItemContent>
+                    )}
+                  </>
+                );
+              }}
+            </Ark.ItemContext>
+          </Ark.Item>
+        );
+      })}
+    </Ark.Root>
   );
 };
 
-RootProvider.displayName = "Accordion.RootProvider";
-
-export interface ItemProps extends Ark.ItemProps {}
-
-export const Item = ({ className, ...rest }: ItemProps) => {
-  const { slots, ui } = useStyles("Item");
-
-  return <Ark.Item className={slots.item({ class: [ui?.item, className] })} {...rest} />;
-};
-
-Item.displayName = "Accordion.Item";
-
-export interface ItemTriggerProps extends Ark.ItemTriggerProps {}
-
-export const ItemTrigger = ({ className, ...rest }: ItemTriggerProps) => {
-  const { slots, ui } = useStyles("ItemTrigger");
-
-  return (
-    <Ark.ItemTrigger
-      className={slots.itemTrigger({ class: [ui?.itemTrigger, className] })}
-      {...rest}
-    />
-  );
-};
-
-ItemTrigger.displayName = "Accordion.ItemTrigger";
-
-export interface ItemIndicatorProps extends Ark.ItemIndicatorProps {}
-
-export const ItemIndicator = ({ className, children, ...rest }: ItemIndicatorProps) => {
-  const { slots, ui } = useStyles("ItemIndicator");
-
-  return (
-    <Ark.ItemIndicator
-      className={slots.itemIndicator({ class: [ui?.itemIndicator, className] })}
-      {...rest}
-    >
-      {children ?? <ChevronDownIcon aria-hidden="true" focusable="false" />}
-    </Ark.ItemIndicator>
-  );
-};
-
-ItemIndicator.displayName = "Accordion.ItemIndicator";
-
-export interface ItemContentProps extends Ark.ItemContentProps {}
-
-/**
- * Renders the theme's `itemBody` wrapper around its children. The panel's height is what
- * animates, and a padded element cannot collapse below its own padding — so the padding
- * lives one level in, and callers never have to know that.
- */
-export const ItemContent = ({ className, children, ...rest }: ItemContentProps) => {
-  const { slots, ui } = useStyles("ItemContent");
-
-  return (
-    <Ark.ItemContent
-      className={slots.itemContent({ class: [ui?.itemContent, className] })}
-      {...rest}
-    >
-      <div className={slots.itemBody({ class: ui?.itemBody })}>{children}</div>
-    </Ark.ItemContent>
-  );
-};
-
-ItemContent.displayName = "Accordion.ItemContent";
+Accordion.displayName = "Accordion";

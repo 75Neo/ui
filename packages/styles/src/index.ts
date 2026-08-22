@@ -22,7 +22,7 @@ export type ButtonVariants = VariantProps<typeof button>;
 /** The `ui` prop of every framework's `<Button>`. */
 export type ButtonSlots = SlotClasses<typeof button>;
 
-/** The variant props every framework's `<Accordion.Root>` accepts. */
+/** The variant props every framework's `<Accordion>` accepts. */
 export type AccordionVariants = VariantProps<typeof accordion>;
-/** The `ui` prop of every framework's `<Accordion.Root>`. */
+/** The `ui` prop of every framework's `<Accordion>`. */
 export type AccordionSlots = SlotClasses<typeof accordion>;

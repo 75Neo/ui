@@ -1,2 +1,2 @@
-export * as Accordion from "./accordion";
-export type { AccordionProps } from "./accordion";
+export { default as Accordion } from "./Accordion.vue";
+export type { AccordionItem, AccordionProps, AccordionSlotProps } from "./types";

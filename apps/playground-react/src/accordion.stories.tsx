@@ -1,27 +1,30 @@
-import { Accordion, NeoUIProvider, type ThemeConfig } from "@75neo/react";
+import { Accordion, type AccordionItem, NeoUIProvider, type ThemeConfig } from "@75neo/react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { PlusIcon } from "lucide-react";
+import { LeafIcon, PlusIcon, ShapesIcon, SunMoonIcon } from "lucide-react";
 
 const VARIANTS = ["outline", "subtle", "elevated", "plain"] as const;
 const PALETTES = ["accent", "neutral", "success", "warning", "danger", "info"] as const;
 const SIZES = ["sm", "md", "lg"] as const;
 
-const items = [
+const items: AccordionItem[] = [
   {
     value: "recipes",
-    title: "Where does styling live?",
+    label: "Where does styling live?",
+    icon: LeafIcon,
     content:
       "In one tailwind-variants theme under packages/styles. React, Vue and Svelte all render the class names it produces, so a variant is added once rather than three times.",
   },
   {
     value: "intents",
-    title: "How are shape and intent kept apart?",
+    label: "How are shape and intent kept apart?",
+    icon: ShapesIcon,
     content:
       "Every intent palette fills the same eight roles, so a theme writes each shape once against the intent-* roles and gets all six intents for free.",
   },
   {
     value: "modes",
-    title: "What happens in dark mode?",
+    label: "What happens in dark mode?",
+    icon: SunMoonIcon,
     content:
       "Components style against semantic utilities such as bg-surface and text-fg-muted, which resolve per colour mode. Nothing inside a component ever branches on dark: itself.",
   },
@@ -31,21 +34,10 @@ const grid = "grid gap-6";
 const frame = "max-w-lg";
 const legend = "text-xs font-medium uppercase tracking-wide text-fg-muted";
 
-const renderItems = () =>
-  items.map((item) => (
-    <Accordion.Item key={item.value} value={item.value}>
-      <Accordion.ItemTrigger>
-        {item.title}
-        <Accordion.ItemIndicator />
-      </Accordion.ItemTrigger>
-      <Accordion.ItemContent>{item.content}</Accordion.ItemContent>
-    </Accordion.Item>
-  ));
-
 const meta = {
   title: "Components/Accordion",
-  component: Accordion.Root,
-  args: { defaultValue: ["recipes"] },
+  component: Accordion,
+  args: { items, defaultValue: ["recipes"] },
   argTypes: {
     variant: { control: "select", options: VARIANTS },
     colorPalette: { control: "select", options: PALETTES },
@@ -56,10 +48,10 @@ const meta = {
   },
   render: (args) => (
     <div className={frame}>
-      <Accordion.Root {...args}>{renderItems()}</Accordion.Root>
+      <Accordion {...args} />
     </div>
   ),
-} satisfies Meta<typeof Accordion.Root>;
+} satisfies Meta<typeof Accordion>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -73,9 +65,7 @@ export const Variants: Story = {
       {VARIANTS.map((variant) => (
         <div key={variant} className="grid gap-2">
           <span className={legend}>{variant}</span>
-          <Accordion.Root {...args} variant={variant}>
-            {renderItems()}
-          </Accordion.Root>
+          <Accordion {...args} variant={variant} />
         </div>
       ))}
     </div>
@@ -88,25 +78,21 @@ export const Sizes: Story = {
       {SIZES.map((size) => (
         <div key={size} className="grid gap-2">
           <span className={legend}>{size}</span>
-          <Accordion.Root {...args} size={size}>
-            {renderItems()}
-          </Accordion.Root>
+          <Accordion {...args} size={size} />
         </div>
       ))}
     </div>
   ),
 };
 
-/** Shape and intent are independent — the expanded header and its indicator carry it. */
+/** Shape and intent are independent — the expanded trigger and its icon carry it. */
 export const Intents: Story = {
   render: (args) => (
     <div className={`${grid} ${frame}`}>
       {PALETTES.map((colorPalette) => (
         <div key={colorPalette} className="grid gap-2">
           <span className={legend}>{colorPalette}</span>
-          <Accordion.Root {...args} colorPalette={colorPalette}>
-            {renderItems()}
-          </Accordion.Root>
+          <Accordion {...args} colorPalette={colorPalette} />
         </div>
       ))}
     </div>
@@ -118,51 +104,86 @@ export const Multiple: Story = {
   args: { multiple: true, collapsible: true, defaultValue: ["recipes", "intents"] },
 };
 
-/** Disabled on the root; pass it to a single `Item` to disable just that row. */
+/** Disabled on the accordion; `disabled` on one item disables just that row. */
 export const Disabled: Story = { args: { disabled: true } };
 
-/** `ItemIndicator` renders a chevron unless you give it something else. */
-export const CustomIndicator: Story = {
+export const DisabledItem: Story = {
+  args: { items: items.map((item, index) => ({ ...item, disabled: index === 1 })) },
+};
+
+/** `trailingIcon` replaces the chevron; `ui.trailingIcon` retunes how it animates. */
+export const TrailingIcon: Story = {
+  args: {
+    trailingIcon: PlusIcon,
+    ui: { trailingIcon: "data-[state=open]:rotate-45" },
+  },
+};
+
+/**
+ * Every part a caller might want to replace is a render prop — Vue and Svelte spell the
+ * same five as named slots. `children` is the trigger's label; `body` is the panel's.
+ */
+export const Slots: Story = {
   render: (args) => (
     <div className={frame}>
-      <Accordion.Root {...args}>
-        {items.map((item) => (
-          <Accordion.Item key={item.value} value={item.value}>
-            <Accordion.ItemTrigger>
-              {item.title}
-              <Accordion.ItemIndicator className="data-[state=open]:rotate-45">
-                <PlusIcon aria-hidden="true" />
-              </Accordion.ItemIndicator>
-            </Accordion.ItemTrigger>
-            <Accordion.ItemContent>{item.content}</Accordion.ItemContent>
-          </Accordion.Item>
-        ))}
-      </Accordion.Root>
+      <Accordion
+        {...args}
+        body={({ item, open }) => (
+          <>
+            <p>{item.content}</p>
+            <p className="mt-2 text-2xs uppercase tracking-wide">{open ? "open" : "closed"}</p>
+          </>
+        )}
+      >
+        {({ item, index }) => (
+          <>
+            <span className="tabular-nums text-fg-muted">{index + 1}.</span> {item.label}
+          </>
+        )}
+      </Accordion>
     </div>
   ),
 };
 
 /**
- * `ui` reaches every part from the root. Each key is a slot of the accordion theme, so
- * one prop restyles triggers, indicators and bodies at once without the parts being
- * given props one by one.
+ * A row that names a `slot` is rendered by the entry of that name in `slots`: `{slot}`
+ * replaces its whole panel, `{slot}-body` only what sits inside it. The rows that name
+ * none keep rendering their `content`.
  */
-export const Customized: Story = {
+export const PerItemSlots: Story = {
+  args: { items: items.map((item, index) => (index === 0 ? { ...item, slot: "styling" } : item)) },
   render: (args) => (
     <div className={frame}>
-      <Accordion.Root
+      <Accordion
         {...args}
-        ui={{
-          root: "rounded-none border-x-0",
-          itemTrigger: "font-semibold uppercase tracking-wide",
-          itemIndicator: "text-intent-fg",
-          itemBody: "text-fg",
+        slots={{
+          "styling-body": ({ item }) => (
+            <>
+              <p>{item.content}</p>
+              <code className="mt-2 block rounded bg-surface-subtle px-2 py-1 text-2xs">
+                packages/styles/src/themes
+              </code>
+            </>
+          ),
         }}
-      >
-        {renderItems()}
-      </Accordion.Root>
+      />
     </div>
   ),
+};
+
+/**
+ * `ui` reaches every slot of the theme, so one prop restyles triggers, icons and bodies
+ * at once. An item's own `ui` is merged over it, for one row only.
+ */
+export const Customized: Story = {
+  args: {
+    ui: {
+      root: "rounded-none border-x-0",
+      trigger: "font-semibold uppercase tracking-wide",
+      trailingIcon: "text-intent-fg",
+      body: "text-fg",
+    },
+  },
 };
 
 /**
@@ -171,7 +192,7 @@ export const Customized: Story = {
  */
 const flatTheme: ThemeConfig = {
   accordion: {
-    slots: { itemTrigger: "font-semibold" },
+    slots: { trigger: "font-semibold" },
     defaultVariants: { variant: "plain", colorPalette: "info" },
   },
 };
@@ -180,7 +201,7 @@ export const ThemedApp: Story = {
   render: (args) => (
     <NeoUIProvider theme={flatTheme}>
       <div className={frame}>
-        <Accordion.Root {...args}>{renderItems()}</Accordion.Root>
+        <Accordion {...args} />
       </div>
     </NeoUIProvider>
   ),

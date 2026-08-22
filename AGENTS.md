@@ -8,11 +8,19 @@ when working with code in this repository.
 75NeoUI: an [Ark UI](https://ark-ui.com) + [Tailwind CSS](https://tailwindcss.com) component library
 published for **three frameworks at once** — React, Vue and Svelte — from a single shared set of
 styles. `packages/styles` is the design system; `packages/react|vue|svelte` are thin framework
-bindings over it; `apps/*` are development surfaces, plus the docs site.
+bindings over it; `packages/tooling` holds the TypeScript and tsdown config they all share; `apps/*`
+are development surfaces, plus the docs site.
 
 pnpm workspace, Node 24 (see `mise.toml`). Two components so far, and between them they are the
 reference implementation for every pattern below: `Button` for single-element components, and
 `Accordion` for multi-part ones.
+
+**[Nuxt UI](https://github.com/nuxt/ui) is the model.** The goal is to reproduce its component
+library — its component set, its prop and slot names, its customization API — on top of Ark UI,
+for three frameworks at once. When a design question has an answer in Nuxt UI, read how it does it
+there and follow that rather than inventing an API. Ark supplies the headless behaviour underneath;
+Nuxt UI's own base layer (Reka UI) is not what is being copied, so where Reka's anatomy forces a
+wrapper that Ark does not need, ours goes without it.
 
 ## Commands
 
@@ -41,56 +49,15 @@ wanted, that's a new setup decision for the user.
 
 ## Turborepo
 
-`turbo.json` is the task graph. Every root script except `lint`, `format` and `clean` is a thin
+`turbo.json` is the task graph, and every root script except `lint`, `format` and `clean` is a thin
 `turbo run <task>` delegate — **task logic belongs in the package's own `package.json`**, never in a
-root script that loops over directories. `lint` and `format` stay outside it because oxlint and
-oxfmt are single repo-wide Rust passes over ~100 files; wrapping them in a task graph would cost
-more than it saves.
+root script that loops over directories.
 
-Four tasks matter:
-
-| Task           | Depends on | Caches                                 |
-| -------------- | ---------- | -------------------------------------- |
-| `build`        | `^build`   | `dist/**`, `storybook-static/**`       |
-| `check`        | `transit`  | nothing (`apps/docs` adds `.astro/**`) |
-| `lint:package` | `build`    | nothing — publint only prints          |
-| `dev`          | —          | `cache: false`, `persistent: true`     |
-
-### Why `check` depends on `transit`, not `^check`
-
-Nothing in this repo type-checks against a _built_ dependency. The playgrounds resolve
-`@75neo/<framework>` to `packages/<framework>/src` through tsconfig `paths`, and `@75neo/styles`
-exports `src` directly — so `check` needs a dependency's **source** hashed into its own cache key,
-but never needs that dependency compiled first.
-
-`transit` is a task with no script behind it. Depending on it threads the dependency graph through
-each package's hash while leaving all eight checks free to run at once:
-
-```json
-"transit": { "dependsOn": ["^transit"] },
-"check":   { "dependsOn": ["transit"] }
-```
-
-Editing `packages/styles/src` invalidates every downstream `check`; none of them waits on another.
-`dependsOn: ["^check"]` would give the same correctness and serialise the whole thing; `dependsOn:
-[]` would run them in parallel and cache a stale pass.
-
-### Outputs
-
-`build`'s `outputs` is a union — `dist/**` for the four packages and docs, `storybook-static/**` for
-the three playgrounds. A glob that matches nothing in a given package is ignored, so one entry in
-the root config beats a package configuration per project. Turborepo _does_ warn when a task
-produces no output at all, which is why `check` declares none: `tsBuildInfoFile` is set across the
-repo without `incremental`, so tsc, vue-tsc and svelte-check write nothing to disk. `astro check`
-is the lone exception — it syncs content-collection types into `.astro` — and says so in
-`apps/docs/turbo.json`, the only package configuration here.
-
-`tsconfig.base.json` is in `globalDependencies`: six of the eight projects extend it and none of
-them owns it, so nothing else would pull it into a hash. Lockfile and per-package manifests are
-hashed by Turborepo already; don't add them.
-
-`pnpm lint:packages` filters to `./packages/*`. Without the filter, `lint:package`'s `dependsOn:
-["build"]` would build all three Storybooks and the docs site to check four manifests.
+`check` depends on a scriptless `transit` task rather than on `^check`, because nothing here
+type-checks against a _built_ dependency: the playgrounds resolve `@75neo/<framework>` to
+`packages/<framework>/src` through tsconfig `paths`, and `@75neo/styles` exports `src` directly.
+Editing `packages/styles/src` therefore invalidates every downstream `check`, but none of the eight
+waits on another.
 
 ## How the styling actually connects
 
@@ -209,26 +176,44 @@ definitions.
 
 ### Multi-part components are one slot theme, not several themes
 
-An accordion's root, item, trigger, indicator and content are **one** `tv({ slots })` — so `size`,
-`variant` and `colorPalette` are chosen once and every part follows.
+An accordion's root, item, trigger, icons, label and content are **one** `tv({ slots })` — so
+`size`, `variant` and `colorPalette` are chosen once and every part follows. The slot names are
+Nuxt UI's, for the reason in the next section.
 
-The framework bindings resolve the theme in `Root` and publish the resulting slot functions, plus
-whatever `ui` the caller passed, on a per-framework context — React `createContext`, Vue
-`provide`/`inject`, Svelte `setContext`/`getContext` (storing a _getter_, so `$derived` stays
-reactive across the boundary). Every part below reads its own class from there, so callers set the
-variants once on `Root` and never thread props down the tree.
+### A multi-part component is one component, not a namespace of parts
 
-The parts are exported as a namespace (`export * as Accordion`), matching Ark's own anatomy 1:1 so
-their docs transfer: `<Accordion.Root>`, `<Accordion.Item>`, `<Accordion.ItemTrigger>`,
-`<Accordion.ItemIndicator>`, `<Accordion.ItemContent>`.
+`<Accordion :items="items">` — one component, driven by a list, with a **named slot for every part
+a caller might want to replace**. Ark's five parts are an implementation detail; they are not the
+API. This is Nuxt UI's shape, and it is the shape every multi-part component here takes.
 
-Two deliberate departures from a pure pass-through, in all three frameworks:
+There is no `Accordion.Root` / `Accordion.Item` namespace, and no context passing slot functions
+down a tree: one component renders the whole thing, so it simply has the resolved theme in scope.
 
-- `ItemContent` renders the theme's `itemBody` slot around its children. The open/close animation
+Each framework spells the slots its own way, and each is handed `{ item, index, open }`:
+
+| Slot       | Vue         | React      | Svelte             |
+| ---------- | ----------- | ---------- | ------------------ |
+| the label  | `#default`  | `children` | `children` snippet |
+| `leading`  | `#leading`  | `leading`  | `leading` snippet  |
+| `trailing` | `#trailing` | `trailing` | `trailing` snippet |
+| `content`  | `#content`  | `content`  | `content` snippet  |
+| `body`     | `#body`     | `body`     | `body` snippet     |
+
+An item may name a `slot`, which gives that row its own pair on top of those — `{slot}` for its
+whole panel, `{slot}-body` for what sits inside it. Vue resolves those as real named slots; React
+and Svelte take a `slots` record keyed by the same names, because neither has dynamic slot names.
+
+Three deliberate departures from a pure pass-through, in all three frameworks:
+
+- The panel's padding lives in a `body` element rendered inside `content`. The open/close animation
   interpolates `height`, and a padded element cannot collapse below its own padding — so the
   padding lives one level in and callers never have to know.
-- `ItemIndicator` falls back to a Lucide chevron when given no children, so an accordion works
-  without the caller wiring up an icon.
+- `trailing` falls back to a Lucide chevron, so an accordion works without the caller wiring up an
+  icon. An item's `icon` and `trailingIcon` are components, not the icon _names_ Nuxt UI takes —
+  this library has no icon resolver, and Lucide ships components.
+- Only the presentational props are declared. Everything Ark's root accepts (`multiple`,
+  `collapsible`, `defaultValue`, …) is passed straight through, so Ark's documentation transfers
+  without the library re-declaring its API.
 
 ## The customization API
 
@@ -263,19 +248,42 @@ The three packages deliberately differ, each for a reason:
 
 - **React** — `ark.button` from `@ark-ui/react/factory` for `asChild` support; variant props are
   destructured explicitly; `className` is merged through the slot function.
-- **Vue** — written with `defineComponent` + `h()`, **not** SFCs. This is intentional: it keeps
-  tsdown able to build the package without a Vue SFC plugin. Every component sets
-  `inheritAttrs: false` and merges `attrs.class` itself — Vue's own attribute merging would keep
-  both `px-4` and a caller's `px-8` and leave source order to decide.
+- **Vue** — `<script setup>` SFCs, compiled by `unplugin-vue` at build time, so the published
+  package is plain JavaScript and a consumer needs no Vue plugin of their own. Two things are not
+  the idiomatic default:
+  - Props are declared **at runtime** (`defineProps(buttonProps)` against an object in a plain
+    `.ts` file) rather than with `defineProps<ButtonProps>()`. `ButtonVariants` is
+    `VariantProps<typeof button>`, a mapped type the SFC compiler cannot reduce to a list of prop
+    names — a type-only declaration compiles to a component with no props at all, and every
+    variant arrives as an attribute instead. The runtime object is also what lets `Root` and
+    `RootProvider` share one set of props.
+  - Every component sets `inheritAttrs: false` and binds `useSplitAttrs()`'s `otherAttrs` rather
+    than `$attrs`, because `v-bind="$attrs"` next to a `:class` makes Vue _concatenate_ the two
+    class lists — `px-4` and a caller's `px-8` would both survive, leaving source order to decide.
+    The caller's class goes through the theme's slot function instead, where `tailwind-merge`
+    resolves it.
 - **Svelte** — `.svelte` source built by `svelte-package`, since Svelte libraries ship source.
   Props narrow `class` to `string` (`Omit<HTMLButtonAttributes, "class">`) because Svelte 5 types it
   as `ClassValue`, which is wider than what a slot function accepts.
 
-React and Vue build with tsdown; both set `fixedExtension: false` so ESM output lands at `.js` and
-the exports map stays simple. `@75neo/styles` builds with tsdown too, but only for publishing: its
-`exports` point at `src` so nothing in this workspace needs a build, and `publishConfig` swaps in
-the built entry on publish. The CSS is always published as source, because the `@source` inside it
-resolves relative to its own location. Run `pnpm lint:packages` after touching any `exports` field.
+React and Vue build with tsdown, from `defineLibrary()` in `@75neo/tooling` — one shared config,
+which is where `fixedExtension: false` comes from, so ESM output lands at `.js` and the exports map
+stays simple. Vue adds the two things a component library of SFCs needs: `unplugin-vue` to compile
+them, and `dts: { vue: true }` to put `vue-tsc` behind the declaration build so the emitted
+`.d.ts` describes props and slots rather than `any`. `@75neo/styles` builds with tsdown too, but
+only for publishing: its `exports` point at `src` so nothing in this workspace needs a build, and
+`publishConfig` swaps in the built entry on publish. The CSS is always published as source, because
+the `@source` inside it resolves relative to its own location. Run `pnpm lint:packages` after
+touching any `exports` field.
+
+Nothing from `node_modules` belongs in a published bundle, so the shared config sets
+`deps.onlyBundle: []` and anything that lands there fails the build. `packages/vue` is the one
+exception, and says so: vue-tsc's declarations name two `tailwind-variants` types that live in an
+internal chunk of that package, so they cannot be re-imported and are inlined into `index.d.ts`.
+
+None of the SFCs carry a `<style>` block — styling is the theme's job. Adding one would make tsdown
+emit a CSS file the exports map doesn't mention and make `sideEffects: false` a lie, so put the
+classes in `packages/styles/src/themes` instead.
 
 ## Dev loop and apps
 
@@ -291,30 +299,36 @@ aliased to `packages/<framework>/src` (`resolve.alias`), mirrored by `tsconfig.j
 Editing a component hot-reloads with no build step. Keep those two in sync — changing one alone
 produces either a runtime that disagrees with the types or the reverse.
 
-`apps/docs` is an Astro site that documents the library, styled with the design system it
-documents. The pages are **markdown in a content collection** — `src/content/docs/**/*.md`, loaded
-by the `glob` loader in `src/content.config.ts` and rendered by the single `src/pages/[...slug].astro`
-route. An entry's `id` is its path below `content/docs`, which is also its URL; `index.md` is the
-site root.
+`apps/docs` is an Astro site that documents the library, styled with the design system it documents.
+The pages are **markdown in a content collection** (`src/content/docs/**/*.md`), so adding a page is
+adding a file — the sidebar is built from the collection, sorted on the `order` frontmatter and
+grouped by `section`, and an entry's path below `content/docs` is its URL. Setting `theme: button`
+in the frontmatter appends `ThemeBlock.astro`, which prints the component's theme object imported
+from `@75neo/styles` at build time rather than leaving it to be transcribed by hand. There are
+deliberately **no live component demos** yet.
 
-Adding a page is adding a file: the sidebar is built from the collection, sorted on the `order`
-frontmatter and grouped by `section`, so there is no nav list to keep in step. Markdown output
-carries no classes, so it is styled by element under `.prose` in `src/styles.css` — written against
-the design system's own custom properties rather than `@apply`, which is also what proves the
-semantic layer resolves colour mode without a single `dark:`.
+Svelte stories use `{#snippet template(args)}` rather than bare children, which keeps every story
+in the file uniform and works regardless of what the meta's `component` is.
 
-Each component page follows Nuxt UI's structure — Usage, Anatomy, the shaping props, API, and a
-**Theme** section. That last one is the exception to "just markdown": setting `theme: button` in the
-frontmatter appends `ThemeBlock.astro`, which prints the component's theme object imported from
-`@75neo/styles` at build time. Markdown cannot import, and transcribing the object by hand is
-exactly how docs drift out of step with the code.
+## Shared config lives in `@75neo/tooling`
 
-There are deliberately **no live component demos**. The docs render markdown only until the library
-has enough components to be worth demoing.
+`packages/tooling` is a private workspace package — never published, depended on as
+`"@75neo/tooling": "workspace:*"` by every other package and app. It ships no build step; both
+halves are consumed as source.
 
-Svelte stories use `{#snippet template(args)}` rather than bare children. `@storybook/addon-svelte-csf`
-needs the meta `component` to be a plain imported identifier when a story passes children directly,
-and the accordion's is `Accordion.Root` — a member expression, which it rejects.
+- **`tsconfig/`** — `base.json` is the whole workspace's TypeScript baseline. `react.json`,
+  `vue.json` and `svelte.json` layer the framework bits on top, the latter two by extending the
+  upstream config first (`["@vue/tsconfig/tsconfig.dom.json", "./base.json"]`) so our baseline wins
+  the overlap. A consumer extends one of the four and adds only what is genuinely local — its
+  `include`, its `tsBuildInfoFile`, an app's `types` and `paths`. A compiler option that would be
+  right for every package belongs in `base.json`, not repeated four times.
+- **`src/tsdown.ts`** — `defineLibrary(overrides?)` returns the build config each publishable
+  package's `tsdown.config.ts` exports. It imports `tsdown` for types only, so there is nothing to
+  resolve at runtime beyond the file itself.
+
+The upstream `@vue/tsconfig` and `@tsconfig/svelte` are dependencies of `packages/tooling` alone —
+an `extends` resolves from the config file that spells it, which is now inside this package, so no
+consumer needs them any more.
 
 ## Repo conventions
 
@@ -323,9 +337,9 @@ and the accordion's is `Accordion.Root` — a member expression, which it reject
   `storybook`, the framework runtimes and their type packages — so one bump keeps every consumer in
   lockstep. Those manifests say `"catalog:"` instead of a range; bump them there, not in the
   manifest. A dependency with a single consumer (`astro` in `apps/docs`, `@ark-ui/react` in
-  `packages/react`, `oxlint` at the root) keeps its range in that package's own `package.json`,
-  where it sits next to the code that uses it. Gaining a second consumer is what promotes it to the
-  catalog.
+  `packages/react`, `@vue/tsconfig` in `packages/tooling`, `oxlint` at the root) keeps its range in
+  that package's own `package.json`, where it sits next to the code that uses it. Gaining a second
+  consumer is what promotes it to the catalog.
 - **Tooling is Oxc**: `oxlint` and `oxfmt` (`.oxlintrc.json`, `.oxfmtrc.json`). Do not add Prettier.
   oxfmt covers `.ts/.tsx/.js/.svelte/.vue/.md/.json`; `.astro` files are not formatted by it.
   `.oxlintrc.json` turns `react/rules-of-hooks` off for the Vue package and playground — Vue's
@@ -342,20 +356,15 @@ and the accordion's is `Accordion.Root` — a member expression, which it reject
 
 ## CI
 
-`.github/workflows/ci.yml` runs on pushes to `master` and on every pull request: format, lint,
-types, build, then publint. Each check is guarded with `!cancelled()` so one push reports every
-problem at once rather than one per round trip, and on the install step's outcome so they don't all
-run against an empty `node_modules`.
+`.github/workflows/ci.yml` runs the same five root scripts on every push to `master` and every pull
+request, each guarded so that one push reports every problem at once rather than one per round trip.
+Run the five to reproduce a CI failure locally:
 
-Node and pnpm versions are duplicated into the workflow's `env` because nothing reads `mise.toml`
-on CI. The first step re-reads `mise.toml` and fails the run if the two have drifted, so the
-duplication can't rot silently. Change both together.
+```sh
+pnpm format:check && pnpm lint && pnpm check && pnpm build && pnpm lint:packages
+```
 
-`.turbo/cache` is carried between runs by `actions/cache`, keyed on the commit SHA and restored
-from the newest `-turbo-` key — so a re-run of the same commit replays from cache and a new commit
-reuses every task whose inputs didn't move. Nothing else about the job changed when Turborepo
-landed: the five steps still call the same five root scripts.
-
-To reproduce a CI failure locally, run the same five: `pnpm format:check && pnpm lint && pnpm check
-&& pnpm build && pnpm lint:packages`. Add `--force` to a `turbo run` (or `pnpm clean`) if you need
-to prove a result came from a real execution rather than the cache.
+Add `--force` to a `turbo run` (or `pnpm clean`) if you need to prove a result came from a real
+execution rather than the cache. The toolchain comes from `mise.toml` by way of `jdx/mise-action`,
+so Node and pnpm are pinned in one place, and `.github/dependabot.yml` batches weekly dependency
+updates into one PR per framework.

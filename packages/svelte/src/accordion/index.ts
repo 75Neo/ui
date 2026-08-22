@@ -1,1 +1,8 @@
-export * as Accordion from "./accordion";
+export {
+  default as Accordion,
+  type AccordionItem,
+  type AccordionProps,
+  type AccordionSlot,
+  type AccordionSlotProps,
+  type IconComponent,
+} from "./Accordion.svelte";
