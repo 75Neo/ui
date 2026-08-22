@@ -1,27 +1,27 @@
 {
   "name": "75neo-ui",
   "version": "0.0.0",
-  "private": true,
-  "description": "75NeoUI — an Ark UI + Tailwind CSS component library for React, Vue and Svelte",
+  "description": "A component library for React, Vue, and Svelte",
   "type": "module",
   "scripts": {
-    "dev": "pnpm --parallel --filter \"./apps/playground-*\" run dev",
-    "dev:react": "pnpm --filter playground-react run dev",
-    "dev:vue": "pnpm --filter playground-vue run dev",
-    "dev:svelte": "pnpm --filter playground-svelte run dev",
-    "dev:docs": "pnpm --filter docs run dev",
-    "build": "pnpm -r run build",
-    "check": "pnpm -r run check",
+    "dev": "turbo run dev --filter=\"./apps/playground-*\"",
+    "dev:react": "turbo run dev --filter=playground-react",
+    "dev:vue": "turbo run dev --filter=playground-vue",
+    "dev:svelte": "turbo run dev --filter=playground-svelte",
+    "dev:docs": "turbo run dev --filter=docs",
+    "build": "turbo run build",
+    "check": "turbo run check",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "lint:packages": "pnpm --filter \"./packages/*\" exec publint",
+    "lint:packages": "turbo run lint:package --filter=\"./packages/*\"",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
-    "clean": "pnpm -r exec rm -rf dist storybook-static .astro .svelte-kit node_modules/.tmp node_modules/.vite"
+    "clean": "pnpm -r exec rm -rf dist storybook-static .astro .svelte-kit .turbo node_modules/.tmp node_modules/.vite && rm -rf .turbo"
   },
   "devDependencies": {
-    "oxfmt": "catalog:",
-    "oxlint": "catalog:",
+    "oxfmt": "^0.64.0",
+    "oxlint": "^1.79.0",
+    "turbo": "^2.10.11",
     "typescript": "catalog:"
   },
   "devEngines": {

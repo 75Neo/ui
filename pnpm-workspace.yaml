@@ -2,13 +2,9 @@ packages:
   - packages/*
   - apps/*
 
-# Single source of truth for every third-party version in the workspace.
-# Reference it from any package.json with "catalog:" instead of a range.
 catalog:
   # Tooling
   "@types/node": ^24.13.3
-  oxfmt: ^0.64.0
-  oxlint: ^1.79.0
   publint: ^0.3.24
   tsdown: ^0.22.14
   typescript: ~6.0.3
@@ -16,17 +12,9 @@ catalog:
 
   # Styling
   "@tailwindcss/vite": ^4.3.3
-  tailwind-merge: ^3.6.0
-  tailwind-variants: ^3.3.1
   tailwindcss: ^4.3.3
 
-  # Headless primitives
-  "@ark-ui/react": ^5.38.2
-  "@ark-ui/svelte": ^5.23.1
-  "@ark-ui/vue": ^5.38.2
-
-  # Icons. `lucide-vue-next` and `lucide-svelte` are deprecated in favour of the
-  # `@lucide/*` scope; there is no `@lucide/react`, so React keeps the unscoped name.
+  # Icons
   "@lucide/svelte": ^1.33.0
   "@lucide/vue": ^1.33.0
   lucide-react: ^1.33.0
@@ -34,18 +22,15 @@ catalog:
   # React
   "@types/react": ^19.2.18
   "@types/react-dom": ^19.2.4
-  "@vitejs/plugin-react": ^6.1.0
   react: ^19.2.8
   react-dom: ^19.2.8
 
   # Vue
-  "@vitejs/plugin-vue": ^6.0.8
   "@vue/tsconfig": ^0.9.1
   vue: ^3.5.41
   vue-tsc: ^3.3.10
 
   # Svelte
-  "@sveltejs/package": ^2.5.8
   "@sveltejs/vite-plugin-svelte": ^7.3.0
   "@tsconfig/svelte": ^5.0.8
   svelte: ^5.56.10
@@ -53,15 +38,7 @@ catalog:
 
   # Storybook
   "@storybook/addon-docs": ^10.5.10
-  "@storybook/addon-svelte-csf": ^5.1.2
-  "@storybook/react-vite": ^10.5.10
-  "@storybook/svelte-vite": ^10.5.10
-  "@storybook/vue3-vite": ^10.5.10
   storybook: ^10.5.10
-
-  # Docs
-  "@astrojs/check": ^0.9.10
-  astro: ^7.2.4
 
 allowBuilds:
   esbuild: false

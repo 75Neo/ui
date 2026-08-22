@@ -3,7 +3,8 @@ dist/
 build/
 *.tsbuildinfo
 
-## Framework caches
+## Build system / framework caches
+.turbo/
 .astro/
 .svelte-kit/
 storybook-static/

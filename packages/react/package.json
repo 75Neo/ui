@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@75neo/styles": "workspace:*",
-    "@ark-ui/react": "catalog:",
+    "@ark-ui/react": "^5.38.2",
     "lucide-react": "catalog:"
   },
   "devDependencies": {

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "ui": "stream",
+
+  // `tsconfig.base.json` is extended by six of the eight projects but belongs to none of
+  // them, so nothing else would pull it into a hash. The lockfile and each package's own
+  // manifest are hashed by Turborepo already.
+  "globalDependencies": ["tsconfig.base.json"],
+
+  "tasks": {
+    // A dependency-graph node with no script behind it. `check` has to re-run when a
+    // dependency's *source* changes, but it never needs that dependency built — the
+    // playgrounds resolve `@75neo/<framework>` to `packages/<framework>/src` through
+    // tsconfig `paths`, and `@75neo/styles` exports `src` directly. Depending on
+    // `transit` buys that cache invalidation without serialising the checks behind
+    // builds, which `dependsOn: ["^check"]` would do.
+    "transit": {
+      "dependsOn": ["^transit"]
+    },
+
+    // `dist/**` covers tsdown, svelte-package and Astro; `storybook-static/**` covers the
+    // three playgrounds. Every package matches one of the two, so a single union beats a
+    // package configuration per project. `apps/docs` adds `.astro/**` to it.
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "storybook-static/**"]
+    },
+
+    // tsc, vue-tsc and svelte-check write nothing: `tsBuildInfoFile` is set without
+    // `incremental`, so no `.tsbuildinfo` is produced. `astro check` is the exception and
+    // declares its outputs in `apps/docs/turbo.json`.
+    "check": {
+      "dependsOn": ["transit"]
+    },
+
+    // publint validates a built package against its own `exports` map, so `dist` has to
+    // exist first. Only `packages/*` define the script — the root `lint:packages` filters
+    // to them so the apps aren't built for a manifest check.
+    "lint:package": {
+      "dependsOn": ["build"]
+    },
+
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    // Astro syncs the content collection's generated types into `.astro` before it builds
+    // or type-checks, and `check` produces nothing else. This is the only project in the
+    // repo that emits from a check.
+    "build": {
+      "outputs": ["$TURBO_EXTENDS$", ".astro/**"]
+    },
+    "check": {
+      "outputs": [".astro/**"]
+    }
+  }
+}

@@ -26,10 +26,11 @@ pnpm check            # tsc / vue-tsc / svelte-check / astro check across all 8 
 pnpm lint             # oxlint
 pnpm format           # oxfmt
 pnpm lint:packages    # publint — validates the publishable manifests
-pnpm clean            # drop dist, storybook-static, caches
+pnpm clean            # drop dist, storybook-static, .turbo and framework caches
 ```
 
-Single project: `pnpm --filter <name> run <script>` (`@75neo/react`, `playground-vue`, `docs`, …).
+Single project: `turbo run <task> --filter <name>` (`@75neo/react`, `playground-vue`, `docs`, …), or
+`pnpm --filter <name> run <script>` to bypass the task graph entirely.
 
 **There is no test framework configured** — no vitest, jest or playwright anywhere. `pnpm check`
 (type checking) is the closest thing to a test suite. Don't invent a test command; if tests are
@@ -37,6 +38,59 @@ wanted, that's a new setup decision for the user.
 
 **There is no code generation step.** Tailwind reads the design system straight from
 `packages/styles/src`. A fresh clone works after `pnpm install` alone.
+
+## Turborepo
+
+`turbo.json` is the task graph. Every root script except `lint`, `format` and `clean` is a thin
+`turbo run <task>` delegate — **task logic belongs in the package's own `package.json`**, never in a
+root script that loops over directories. `lint` and `format` stay outside it because oxlint and
+oxfmt are single repo-wide Rust passes over ~100 files; wrapping them in a task graph would cost
+more than it saves.
+
+Four tasks matter:
+
+| Task           | Depends on | Caches                                 |
+| -------------- | ---------- | -------------------------------------- |
+| `build`        | `^build`   | `dist/**`, `storybook-static/**`       |
+| `check`        | `transit`  | nothing (`apps/docs` adds `.astro/**`) |
+| `lint:package` | `build`    | nothing — publint only prints          |
+| `dev`          | —          | `cache: false`, `persistent: true`     |
+
+### Why `check` depends on `transit`, not `^check`
+
+Nothing in this repo type-checks against a _built_ dependency. The playgrounds resolve
+`@75neo/<framework>` to `packages/<framework>/src` through tsconfig `paths`, and `@75neo/styles`
+exports `src` directly — so `check` needs a dependency's **source** hashed into its own cache key,
+but never needs that dependency compiled first.
+
+`transit` is a task with no script behind it. Depending on it threads the dependency graph through
+each package's hash while leaving all eight checks free to run at once:
+
+```json
+"transit": { "dependsOn": ["^transit"] },
+"check":   { "dependsOn": ["transit"] }
+```
+
+Editing `packages/styles/src` invalidates every downstream `check`; none of them waits on another.
+`dependsOn: ["^check"]` would give the same correctness and serialise the whole thing; `dependsOn:
+[]` would run them in parallel and cache a stale pass.
+
+### Outputs
+
+`build`'s `outputs` is a union — `dist/**` for the four packages and docs, `storybook-static/**` for
+the three playgrounds. A glob that matches nothing in a given package is ignored, so one entry in
+the root config beats a package configuration per project. Turborepo _does_ warn when a task
+produces no output at all, which is why `check` declares none: `tsBuildInfoFile` is set across the
+repo without `incremental`, so tsc, vue-tsc and svelte-check write nothing to disk. `astro check`
+is the lone exception — it syncs content-collection types into `.astro` — and says so in
+`apps/docs/turbo.json`, the only package configuration here.
+
+`tsconfig.base.json` is in `globalDependencies`: six of the eight projects extend it and none of
+them owns it, so nothing else would pull it into a hash. Lockfile and per-package manifests are
+hashed by Turborepo already; don't add them.
+
+`pnpm lint:packages` filters to `./packages/*`. Without the filter, `lint:package`'s `dependsOn:
+["build"]` would build all three Storybooks and the docs site to check four manifests.
 
 ## How the styling actually connects
 
@@ -264,8 +318,14 @@ and the accordion's is `Accordion.Root` — a member expression, which it reject
 
 ## Repo conventions
 
-- **Dependency versions live in one place**: the `catalog:` block of `pnpm-workspace.yaml`.
-  Package manifests say `"catalog:"` instead of a range. Bump versions there, not in manifests.
+- **Shared dependency versions live in the `catalog:` block** of `pnpm-workspace.yaml`. The catalog
+  holds only what more than one workspace package depends on — `typescript`, `tailwindcss`,
+  `storybook`, the framework runtimes and their type packages — so one bump keeps every consumer in
+  lockstep. Those manifests say `"catalog:"` instead of a range; bump them there, not in the
+  manifest. A dependency with a single consumer (`astro` in `apps/docs`, `@ark-ui/react` in
+  `packages/react`, `oxlint` at the root) keeps its range in that package's own `package.json`,
+  where it sits next to the code that uses it. Gaining a second consumer is what promotes it to the
+  catalog.
 - **Tooling is Oxc**: `oxlint` and `oxfmt` (`.oxlintrc.json`, `.oxfmtrc.json`). Do not add Prettier.
   oxfmt covers `.ts/.tsx/.js/.svelte/.vue/.md/.json`; `.astro` files are not formatted by it.
   `.oxlintrc.json` turns `react/rules-of-hooks` off for the Vue package and playground — Vue's
@@ -291,5 +351,11 @@ Node and pnpm versions are duplicated into the workflow's `env` because nothing 
 on CI. The first step re-reads `mise.toml` and fails the run if the two have drifted, so the
 duplication can't rot silently. Change both together.
 
+`.turbo/cache` is carried between runs by `actions/cache`, keyed on the commit SHA and restored
+from the newest `-turbo-` key — so a re-run of the same commit replays from cache and a new commit
+reuses every task whose inputs didn't move. Nothing else about the job changed when Turborepo
+landed: the five steps still call the same five root scripts.
+
 To reproduce a CI failure locally, run the same five: `pnpm format:check && pnpm lint && pnpm check
-&& pnpm build && pnpm lint:packages`.
+&& pnpm build && pnpm lint:packages`. Add `--force` to a `turbo run` (or `pnpm clean`) if you need
+to prove a result came from a real execution rather than the cache.

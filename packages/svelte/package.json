@@ -30,11 +30,11 @@
   },
   "dependencies": {
     "@75neo/styles": "workspace:*",
-    "@ark-ui/svelte": "catalog:",
+    "@ark-ui/svelte": "^5.23.1",
     "@lucide/svelte": "catalog:"
   },
   "devDependencies": {
-    "@sveltejs/package": "catalog:",
+    "@sveltejs/package": "^2.5.8",
     "@sveltejs/vite-plugin-svelte": "catalog:",
     "@tsconfig/svelte": "catalog:",
     "publint": "catalog:",

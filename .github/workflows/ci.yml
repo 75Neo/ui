@@ -19,6 +19,9 @@ env:
   # if the two ever drift apart.
   NODE_VERSION: "24"
   PNPM_VERSION: "11"
+  # Turborepo phones home with anonymous usage counts by default. CI has nothing to
+  # gain from it and one less network call is one less way for a run to hang.
+  TURBO_TELEMETRY_DISABLED: "1"
 
 jobs:
   ci:
@@ -50,6 +53,17 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
 
+      # Turborepo's local cache, carried between runs. Saved under this commit's SHA and
+      # restored from the newest `-turbo-` key, so a re-run of the same commit replays
+      # everything and a new commit still reuses every task whose inputs didn't move.
+      - name: Turborepo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo/cache
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
       # There is no code generation step: Tailwind reads the design system straight
       # from `packages/styles/src`, so an install is the only prerequisite. Every check
       # below is guarded on it rather than on step order, because `!cancelled()` would
@@ -69,7 +83,8 @@ jobs:
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: pnpm lint
 
-      # tsc / vue-tsc / svelte-check / astro check across all 8 projects.
+      # tsc / vue-tsc / svelte-check / astro check across all 8 projects. Turborepo runs
+      # them in parallel: none of them needs a dependency built, only its source hashed.
       - name: Types
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: pnpm check
