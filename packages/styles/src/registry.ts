@@ -31,6 +31,11 @@ export type SlotClasses<T extends Themes[ThemeName]> = Partial<Record<SlotName<T
  * names. `variants` and `compoundVariants` are typed loosely on purpose: an override is
  * allowed to introduce variant *values* the built-in theme has never heard of, and
  * pinning them to the built-in union would make that impossible.
+ *
+ * One trap the types cannot catch: a `compoundVariants` entry's `class` must be a string
+ * or an object keyed by slot. `tailwind-variants` *silently ignores* an array there, so
+ * `class: ["a", "b"]` type-checks, compiles and styles nothing. Write
+ * `class: { base: ["a", "b"] }` instead.
  */
 export interface ThemeOverride<K extends ThemeName> {
   slots?: SlotClasses<Themes[K]>;
@@ -48,7 +53,7 @@ export interface ThemeOverride<K extends ThemeName> {
  * const theme: ThemeConfig = {
  *   button: {
  *     slots: { base: "rounded-full" },
- *     defaultVariants: { colorPalette: "neutral" },
+ *     defaultVariants: { color: "neutral" },
  *   },
  * };
  * ```

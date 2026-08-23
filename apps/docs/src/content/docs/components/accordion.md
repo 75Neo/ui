@@ -1,6 +1,6 @@
 ---
 title: Accordion
-description: A multi-part component driven by an items list, with a named slot for every part you might want to replace.
+description: A list of collapsible rows driven by an items list, with a named slot for every part you might want to replace.
 section: Components
 order: 5
 theme: accordion
@@ -16,7 +16,7 @@ import { Accordion } from "@75neo/react";
 
 const items = [
   { value: "styling", label: "Where does styling live?", content: "In one theme." },
-  { value: "intents", label: "How are shape and intent kept apart?", content: "Eight roles." },
+  { value: "intents", label: "How are shape and colour kept apart?", content: "One property." },
 ];
 
 <Accordion items={items} defaultValue={["styling"]} />;
@@ -75,47 +75,39 @@ through the `slots` record, keyed by the same names.
 
 ## Anatomy
 
-| Slot           | What it is                                      |
-| -------------- | ----------------------------------------------- |
-| `root`         | The container. Every variant prop is set here.  |
-| `item`         | One collapsible row.                            |
-| `trigger`      | The header button.                              |
-| `leadingIcon`  | Wraps the item's `icon`.                        |
-| `label`        | The trigger's text. Takes the free space.       |
-| `trailingIcon` | The chevron. Rotates on open.                   |
-| `content`      | The animated panel. Height is what animates.    |
-| `body`         | Rendered inside `content`; carries the padding. |
+| Slot           | What it is                                       |
+| -------------- | ------------------------------------------------ |
+| `root`         | The container.                                   |
+| `item`         | One collapsible row, with the divider under it.  |
+| `trigger`      | The header button.                               |
+| `leadingIcon`  | The item's `icon`.                               |
+| `label`        | The trigger's text.                              |
+| `trailingIcon` | The chevron. Pushed to the end; rotates on open. |
+| `content`      | The animated panel. Height is what animates.     |
+| `body`         | Rendered inside `content`; carries the padding.  |
 
-The names are [Nuxt UI's](https://ui.nuxt.com/components/accordion), whose API this
-component reproduces — minus its `header`, a wrapper Reka UI's anatomy requires and Ark's
-does not.
+There is no `header` slot: Ark's trigger is already the item's direct child, so `trigger`
+carries `w-full` to fill the item and nothing sits between the two.
 
 `body` is the one slot with no part of its own behind it. It exists because of how the
 animation works: `content` animates `height`, and a padded element cannot collapse below
 its own padding — so the padding lives one level in, and callers never have to know.
 
-## Variant
+## Styling
 
-Four shapes. Only the chrome changes; the anatomy is identical in all four.
+There is deliberately no `size`, `variant` or `color` axis. An accordion here is a list of
+rows in a page, and the page is what supplies the box around it: `border-b border-default`
+between rows, `text-sm`, and nothing else.
 
-| Variant    | What it is                                                                           |
-| ---------- | ------------------------------------------------------------------------------------ |
-| `outline`  | One bordered card with hairline dividers between items. The default.                 |
-| `subtle`   | Tinted blocks with air between them. No outer container.                             |
-| `elevated` | Each item is its own raised card. The expanded one lifts further.                    |
-| `plain`    | Dividers only, flush to the left — sits inside prose without indenting away from it. |
+Anything more is a `ui` prop or a `ThemeConfig` away:
 
-## Color palette
-
-`accent`, `neutral`, `success`, `warning`, `danger`, `info`.
-
-The accordion spends only two of the eight intent roles — the expanded trigger's text
-and its icon — but it spends them the same way every other component does, so intent
-stays a single prop.
-
-## Size
-
-`sm`, `md`, `lg` — trigger height, padding, gap and type size, plus the body's padding.
+```tsx
+const theme: ThemeConfig = {
+  accordion: {
+    slots: { root: "overflow-hidden rounded-lg border border-default px-4" },
+  },
+};
+```
 
 ## Customizing
 
@@ -127,7 +119,7 @@ props down a tree.
   items={items}
   ui={{
     trigger: "font-semibold uppercase tracking-wide",
-    body: "text-fg",
+    body: "text-toned",
   }}
 />
 ```
@@ -139,24 +131,24 @@ root element. See [Customization](/customization).
 
 Everything Ark UI's accordion root accepts is accepted here too, alongside these.
 
-| Prop           | Type                                                                    | Default     | Description                                                      |
-| -------------- | ----------------------------------------------------------------------- | ----------- | ---------------------------------------------------------------- |
-| `variant`      | `"outline" \| "subtle" \| "elevated" \| "plain"`                        | `"outline"` | The chrome around the items.                                     |
-| `colorPalette` | `"accent" \| "neutral" \| "success" \| "warning" \| "danger" \| "info"` | `"accent"`  | Which intent the expanded trigger and its icon carry.            |
-| `size`         | `"sm" \| "md" \| "lg"`                                                  | `"md"`      | Trigger height, padding and type size.                           |
-| `ui`           | `Partial<Record<Slot, ClassValue>>`                                     | —           | Per-slot class overrides, reaching every row.                    |
-| `items`        | `AccordionItem[]`                                                       | `[]`        | The rows.                                                        |
-| `trailingIcon` | `Component`                                                             | chevron     | The icon every row's trigger ends with.                          |
-| `labelKey`     | `string`                                                                | `"label"`   | Which key of an item holds its label.                            |
-| `valueKey`     | `string`                                                                | `"value"`   | Which key of an item holds its value.                            |
-| `multiple`     | `boolean`                                                               | `false`     | Lets several panels stay open. From Ark UI.                      |
-| `collapsible`  | `boolean`                                                               | `false`     | Lets the last open panel close. From Ark UI.                     |
-| `disabled`     | `boolean`                                                               | `false`     | Disables every row. Set `disabled` on an item for just that row. |
+| Prop           | Type                                | Default   | Description                                                      |
+| -------------- | ----------------------------------- | --------- | ---------------------------------------------------------------- |
+| `ui`           | `Partial<Record<Slot, ClassValue>>` | —         | Per-slot class overrides, reaching every row.                    |
+| `items`        | `AccordionItem[]`                   | `[]`      | The rows.                                                        |
+| `trailingIcon` | `Component`                         | chevron   | The icon every row's trigger ends with.                          |
+| `labelKey`     | `string`                            | `"label"` | Which key of an item holds its label.                            |
+| `valueKey`     | `string`                            | `"value"` | Which key of an item holds its value.                            |
+| `multiple`     | `boolean`                           | `false`   | Lets several panels stay open. From Ark UI.                      |
+| `collapsible`  | `boolean`                           | `false`   | Lets the last open panel close. From Ark UI.                     |
+| `disabled`     | `boolean`                           | `false`   | Disables every row. Set `disabled` on an item for just that row. |
 
 ## Motion
 
 The panel animates `height` from Ark's measured `--height`, and the chevron rotates.
-Both are dropped under `prefers-reduced-motion`.
+
+Only the rotation is dropped under `prefers-reduced-motion`. The height reveal is kept
+deliberately: collapsing instantly loses the connection between the trigger and the panel
+it just opened, which is the one thing the animation is there to show.
 
 Only Ark's default vertical orientation is styled. `orientation="horizontal"` is a
 different layout _and_ a different animation, and is not covered.

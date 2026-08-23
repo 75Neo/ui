@@ -15,12 +15,21 @@ pnpm workspace, Node 24 (see `mise.toml`). Two components so far, and between th
 reference implementation for every pattern below: `Button` for single-element components, and
 `Accordion` for multi-part ones.
 
-**[Nuxt UI](https://github.com/nuxt/ui) is the model.** The goal is to reproduce its component
-library — its component set, its prop and slot names, its customization API — on top of Ark UI,
-for three frameworks at once. When a design question has an answer in Nuxt UI, read how it does it
-there and follow that rather than inventing an API. Ark supplies the headless behaviour underneath;
-Nuxt UI's own base layer (Reka UI) is not what is being copied, so where Reka's anatomy forces a
-wrapper that Ark does not need, ours goes without it.
+**The API shape is settled, and consistency with it beats invention.** A component is **one
+component driven by props, with a named slot for every part a caller might want to replace** — not
+Ark's anatomy re-exported as a namespace of sub-components. Ark supplies the headless behaviour
+underneath and nothing more; where its anatomy already gives a part somewhere to live, this library
+adds no wrapper of its own. When a new component raises a question the existing two have already
+answered — how a slot is named, how `ui` and `class` merge, which axes a theme carries — follow
+`Button` and `Accordion` rather than reaching for a different shape.
+
+**The default theme is deliberately small.** Every component ships the least it can: the axes it
+genuinely needs and no more, on the reasoning that an extra variant is a `ui` prop or a
+`ThemeConfig` away for anyone who wants it, while a variant nobody asked for is three frameworks'
+worth of surface to keep in step. Adding an axis to a theme is a decision to justify, not a default.
+
+The design system in `packages/styles/src/css` is that theme as **static CSS** — no module to
+install, no generator to run, and nothing for an app to configure beyond two `@import` lines.
 
 ## Commands
 
@@ -99,92 +108,124 @@ renders, and the styles are simply absent.
 - **Styling changes belong in the theme, not in components.** One theme in
   `packages/styles/src/themes/` drives all three frameworks. Adding a variant is a one-file change;
   adding it three times in three components is the wrong instinct here.
-- Themes style against **semantic utilities** (`bg-surface`, `text-fg-muted`, `border-line`) and
-  **intent roles** (`bg-intent-default`, `text-intent-contrast`), which resolve per colour mode and
-  per palette. Never write `dark:` inside a theme, and don't reach for a raw ramp (`bg-zinc-800`).
+- Themes style against **semantic utilities** (`bg-elevated`, `text-muted`, `ring-accented`) and
+  **the current intent** (`bg-intent`, `text-intent`, and alpha steps of both), which resolve per
+  colour mode and per palette. Never write `dark:` inside a theme, and don't reach for a raw ramp
+  (`bg-slate-800`).
 - After adding a **new** theme, register it in `packages/styles/src/registry.ts`. That is what makes
   it themeable from an app's `ThemeConfig`; nothing else is needed.
 - **`tailwind-merge` is what makes overrides work.** Every class a caller supplies is merged, not
-  appended, so `className="px-8"` replaces the size variant's `px-4`. A new utility family that
+  appended, so `className="px-8"` replaces the size variant's `px-2.5`. A new utility family that
   `tailwind-merge` can't classify needs an entry in `twMergeConfig` in `packages/styles/src/tv.ts` —
   otherwise two conflicting classes both survive and CSS source order decides the winner.
+- **A `compoundVariants` entry's `class` must be a string or an object keyed by slot.**
+  `tailwind-variants` _silently ignores_ an array there, so `class: ["a", "b"]` type-checks,
+  compiles and styles nothing. Write `class: { base: ["a", "b"] }`.
 
 ## The design system
 
 `packages/styles/src/css/` is the system proper, in layers. Each one may only reference the layer
 above it:
 
-1. **`tokens.css`** — raw values, in a `@theme` block. Most of the system's scales _are_ Tailwind's,
-   unchanged: the 0.25rem spacing ramp, breakpoints, container widths, line heights, tracking, and
-   `--ease-in-out` (already `cubic-bezier(0.4, 0, 0.2, 1)`, the everyday curve). So are five of the
-   six palettes — neutrals are `zinc`, danger is `red`, success is `emerald`, warning is `amber`,
-   info is `sky`. What this file adds is the `neo` brand ramp, a rounder radius scale, `--text-2xs`,
-   three specialised easings, and the animation keyframes.
-2. **`semantic.css`** — what those values _mean_, per colour mode. Page chrome as `--ui-*` custom
-   properties under `:root` / `.dark`, exposed as utilities through `@theme inline`.
-3. **`intents.css`** — the six intent palettes, each an `@utility` re-pointing the same eight
-   `--ui-intent-*` roles.
-4. **`base.css`** — the handful of global rules: page background, colour-scheme, `::selection`, and
-   one focus ring for the whole system.
+1. **`tokens.css`** — raw values. The seven palette ramps as `--ui-color-{name}-{shade}`, the
+   radius scale derived from `--ui-radius`, and the animation keyframes. Everything else is
+   Tailwind's own scale, unchanged: the 0.25rem spacing ramp, breakpoints, container widths, line
+   heights, tracking, easings and the default font stacks.
+2. **`semantic.css`** — what those values _mean_, per colour mode: `--ui-{palette}`, and the
+   `--ui-text-*` / `--ui-bg-*` / `--ui-border-*` ramps under `:root` / `.dark`, exposed as utilities
+   through `@theme inline`.
+3. **`intents.css`** — the seven intent palettes, each an `@utility` re-pointing `--ui-intent`.
+4. **`base.css`** — the handful of global rules: page background, colour-scheme, and the one
+   Chromium link-outline reset. Deliberately **no** global focus ring.
+
+### A palette is one colour, not a ramp
+
+`bg-primary` is step 500 in light mode and step 400 in dark. Every other shade a component needs is
+reached with an alpha modifier — `bg-primary/10` for a tint, `ring-primary/50` for a border,
+`hover:bg-primary/75` for a hover step. That is why the palettes carry no per-role bookkeeping and
+why adding one is a single line.
+
+The seven are `primary` (green), `secondary` (blue), `success` (green), `info` (blue), `warning`
+(yellow), `error` (red) and `neutral` (slate). `neutral-*` shadows Tailwind's own neutral ramp;
+Tailwind's is kept reachable as `old-neutral-*`, so nothing is lost.
 
 ### `@theme inline` is load-bearing
 
 The semantic utilities are declared as
 
 ```css
-@theme inline {
-  --color-surface: var(--ui-surface);
+@theme default inline {
+  --background-color-elevated: var(--ui-bg-elevated);
 }
 ```
 
-Without `inline`, Tailwind emits `background-color: var(--color-surface)` and resolves
-`--color-surface` **once, at `:root`** — freezing every element on the light value. With it, the
-`var(--ui-surface)` lands in the utility itself and is resolved at the element, where the nearest
-`.dark` ancestor has already had its say. The same applies to `--color-intent-*`, whose value
+Without `inline`, Tailwind emits `background-color: var(--background-color-elevated)` and resolves
+it **once, at `:root`** — freezing every element on the light value. With it, the
+`var(--ui-bg-elevated)` lands in the utility itself and is resolved at the element, where the
+nearest `.dark` ancestor has already had its say. The same applies to `--color-intent`, whose value
 depends on which `intent-*` class an ancestor carries.
+
+Note the **namespaced** theme keys. `--text-color-muted` and `--background-color-muted` are
+different values — a mid-grey for secondary copy, and a barely-there tint. Declaring them in
+Tailwind's per-utility namespaces rather than the shared `--color-*` one is what lets `text-muted`
+and `bg-muted` each mean the right thing.
 
 ### Shape and intent are separate axes
 
-Every intent palette fills the same eight roles (`subtle`, `muted`, `default`, `emphasized`, `line`,
-`fg`, `label`, `contrast`), so a theme writes each _shape_ once and gets every _intent_ for free:
+The obvious way to colour a component is one compound variant per colour × variant pair, which only
+stays manageable if a build step generates them. This library has no build step, so it does the job
+the other way round: an `intent-*` class re-points `--ui-intent` and a theme writes each _shape_
+once against it.
 
 ```ts
-solid: { base: "bg-intent-default text-intent-contrast hover:bg-intent-emphasized" },
+solid: { base: "text-inverted bg-intent hover:bg-intent/75" },
 ```
 
-`Button` has five variants and six palettes; all thirty combinations exist, none are spelled out.
-`Accordion` spends only two of the eight roles, but spends them the same way.
+`Button` has six variants and seven palettes; all forty-two combinations exist, written as six
+shapes plus seven one-line palettes, and only the six `neutral` pairs are spelled out.
 
-An `intent-*` class sets custom properties and nothing else, and custom properties inherit — so the
-class goes on the root element and every descendant follows. That is what Panda's `colorPalette`
-used to do, expressed in plain CSS.
+An `intent-*` class sets one custom property and nothing else, and custom properties inherit — so
+the class goes on the root element and every descendant follows.
 
 Adding an intent is one `@utility` block in `intents.css` and one line per theme — never a new
-`variant`. If you find yourself writing a `dangerOutline` variant, you've fused the two axes back
+`variant`. If you find yourself writing an `errorOutline` variant, you've fused the two axes back
 together.
 
-### The contrast rule
+### Contrast, and why `neutral` is the exception
 
-`contrast` is picked per palette **and per mode** so it clears WCAG AA (4.5:1) against both
-`default` and `emphasized`. That is why the palettes aren't symmetric: `accent`/`danger` carry white
-text at their solid steps, while `success`/`warning`/`info` invert in dark mode to a vivid 400 fill
-with 950 text, because no green, amber or blue is both recognizable _and_ dark enough for white.
+Contrast is handled by **inverting, not by tuning**. Text on a filled control is `text-inverted`:
+white in light mode, near-black in dark. Paired with a palette that is a 500 in light and a lighter
+400 in dark, the filled shape reads the same way in both modes for every hue — including the yellows
+and greens that cannot carry white text at any recognisable brightness. There is no per-palette
+contrast table to keep in step.
 
-**Changing a solid step means re-checking its `contrast` pair.** The current worst pair is 4.83:1.
-`fg-subtle` (3.7:1 in dark) and `fg-disabled` are the two deliberate exceptions, documented at their
-definitions.
+`neutral` is the exception to the intent mechanism, in every theme. A neutral control is drawn from
+the background ramp (`bg-inverted`, `bg-elevated`, `ring-accented`, `text-default`) so that it
+recedes rather than reading as an eighth hue, which cannot be expressed by re-pointing
+`--ui-intent`. Themes spell those pairs out in `compoundVariants`.
+
+### Focus is per component, not global
+
+There is no global `:focus-visible` rule. Each component carries its own — a wide, translucent halo
+in its own palette, `outline-intent/25 focus-visible:outline-3`. A component with no colour axis
+names a palette outright (`outline-primary/25`). Don't reintroduce a system-wide ring; it would
+fight every component that already has one.
 
 ### Multi-part components are one slot theme, not several themes
 
-An accordion's root, item, trigger, icons, label and content are **one** `tv({ slots })` — so
-`size`, `variant` and `colorPalette` are chosen once and every part follows. The slot names are
-Nuxt UI's, for the reason in the next section.
+An accordion's root, item, trigger, icons, label and content are **one** `tv({ slots })`, so a
+variant is chosen once and every part follows. Slot names describe the part, not the framework
+primitive behind it.
+
+The accordion's theme carries **no** `size`, `variant` or `color` axis — it is flat dividers and
+nothing else. A boxed or tinted accordion is a `ui` prop or a `ThemeConfig` away. Its only variant is `disabled`, applied **per row** by passing
+`item.disabled` to the `trigger` slot function rather than to the theme.
 
 ### A multi-part component is one component, not a namespace of parts
 
 `<Accordion :items="items">` — one component, driven by a list, with a **named slot for every part
 a caller might want to replace**. Ark's five parts are an implementation detail; they are not the
-API. This is Nuxt UI's shape, and it is the shape every multi-part component here takes.
+API. That is the shape every multi-part component here takes.
 
 There is no `Accordion.Root` / `Accordion.Item` namespace, and no context passing slot functions
 down a tree: one component renders the whole thing, so it simply has the resolved theme in scope.
@@ -209,16 +250,17 @@ Three deliberate departures from a pure pass-through, in all three frameworks:
   interpolates `height`, and a padded element cannot collapse below its own padding — so the
   padding lives one level in and callers never have to know.
 - `trailing` falls back to a Lucide chevron, so an accordion works without the caller wiring up an
-  icon. An item's `icon` and `trailingIcon` are components, not the icon _names_ Nuxt UI takes —
-  this library has no icon resolver, and Lucide ships components.
+  icon. An item's `icon` and `trailingIcon` are icon _components_, not names — this library has no
+  icon resolver, and Lucide ships components. The chevron is a bare icon rather than Ark's
+  `ItemIndicator`: the theme rotates it through the trigger's own `group`, so the extra element
+  would have nothing to do.
 - Only the presentational props are declared. Everything Ark's root accepts (`multiple`,
   `collapsible`, `defaultValue`, …) is passed straight through, so Ark's documentation transfers
   without the library re-declaring its API.
 
 ## The customization API
 
-Modelled on [Nuxt UI](https://ui.nuxt.com), adapted to a framework-agnostic library. Four levels,
-all of which merge through `tailwind-merge` rather than racing in the cascade:
+Four levels, all of which merge through `tailwind-merge` rather than racing in the cascade:
 
 | Mechanism     | Reaches                      | What it can change                                        |
 | ------------- | ---------------------------- | --------------------------------------------------------- |
@@ -351,8 +393,9 @@ consumer needs them any more.
   `@lucide/*` scope; there is no `@lucide/react`, so React keeps the unscoped name.) Svelte imports
   one icon at a time — `@lucide/svelte/icons/chevron-down` — which Lucide recommends so Vite's dev
   server does not have to process the whole barrel.
-  Size icons from the theme (`[&_svg]:size-[1em]`) rather than through Lucide's `size` prop, so the
-  component's `size` variant stays in charge and a caller-supplied icon is sized the same way.
+  Size icons from the theme (`size-4`, `size-5`, … on the icon's own slot) rather than through
+  Lucide's `size` prop, so the component's `size` variant stays in charge and a caller-supplied icon
+  is sized the same way.
 
 ## CI
 

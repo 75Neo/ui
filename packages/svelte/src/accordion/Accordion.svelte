@@ -1,21 +1,12 @@
 <script lang="ts">
-  import type { AccordionSlots, AccordionVariants } from "@75neo/styles";
+  import type { AccordionSlots } from "@75neo/styles";
   import { Accordion as Ark } from "@ark-ui/svelte/accordion";
   // Imported per icon rather than from the barrel, which Lucide recommends so Vite's
   // dev server does not have to process the whole set.
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
-  import type { Component, Snippet } from "svelte";
+  import type { Snippet } from "svelte";
   import { useComponentTheme } from "../theme";
-
-  /**
-   * Any component that renders an icon — a Lucide one, or your own.
-   *
-   * Typed by the two attributes this component hands it rather than by the whole of
-   * `SVGAttributes`: several of those are `string | null` where Lucide's own props are
-   * `string`, and a component's props are checked contravariantly, so the wider type
-   * would make every Lucide icon unassignable.
-   */
-  export type IconComponent = Component<{ "aria-hidden"?: "true"; focusable?: "false" }>;
+  import type { IconComponent } from "../types";
 
   /**
    * One row of the accordion. Extra keys are allowed, so a list that already exists in
@@ -61,8 +52,7 @@
   export type AccordionSlot = Snippet<[AccordionSlotProps]>;
 
   // `class` is narrowed to a string so the theme's slot function can merge it.
-  export type AccordionProps = Omit<Ark.RootProps, "class" | "children"> &
-    AccordionVariants & {
+  export type AccordionProps = Omit<Ark.RootProps, "class" | "children"> & {
       /** The rows. */
       items?: AccordionItem[];
       /** The chevron every row's trigger ends with. */
@@ -96,9 +86,7 @@
     trailingIcon = ChevronDownIcon,
     labelKey = "label",
     valueKey = "value",
-    variant,
-    size,
-    colorPalette,
+    disabled,
     class: className,
     ui,
     children,
@@ -111,7 +99,7 @@
   }: AccordionProps = $props();
 
   const theme = useComponentTheme("accordion");
-  const styles = $derived(theme()({ variant, size, colorPalette }));
+  const styles = $derived(theme()({ disabled }));
 
   const valueOf = (item: AccordionItem, index: number) => String(item[valueKey] ?? index);
   const labelOf = (item: AccordionItem) => item[labelKey] as string | undefined;
@@ -131,7 +119,7 @@
   Ark's own root props (`multiple`, `collapsible`, `defaultValue`, …) are accepted
   unchanged, so its documentation applies: https://ark-ui.com/docs/components/accordion
 -->
-<Ark.Root class={styles.root({ class: [ui?.root, className] })} {...rest}>
+<Ark.Root class={styles.root({ class: [ui?.root, className] })} {disabled} {...rest}>
   {#each items as item, index (valueOf(item, index))}
     <Ark.Item
       value={valueOf(item, index)}
@@ -142,16 +130,23 @@
         {#snippet render(itemState)}
           {@const slotProps = { item, index, open: itemState().expanded }}
 
-          <Ark.ItemTrigger class={styles.trigger({ class: [ui?.trigger, item.ui?.trigger] })}>
+          <!-- `disabled` is passed per row, so one disabled row dims its own trigger
+               without the rest of the list following. -->
+          <Ark.ItemTrigger
+            class={styles.trigger({
+              disabled: item.disabled ?? disabled,
+              class: [ui?.trigger, item.ui?.trigger],
+            })}
+          >
             {#if leading}
               {@render leading(slotProps)}
             {:else if item.icon}
               {@const Icon = item.icon}
-              <span
+              <Icon
                 class={styles.leadingIcon({ class: [ui?.leadingIcon, item.ui?.leadingIcon] })}
-              >
-                <Icon aria-hidden="true" focusable="false" />
-              </span>
+                aria-hidden="true"
+                focusable="false"
+              />
             {/if}
 
             <span class={styles.label({ class: [ui?.label, item.ui?.label] })}>
@@ -166,11 +161,11 @@
               {@render trailing(slotProps)}
             {:else}
               {@const TrailingIcon = item.trailingIcon ?? trailingIcon}
-              <Ark.ItemIndicator
+              <TrailingIcon
                 class={styles.trailingIcon({ class: [ui?.trailingIcon, item.ui?.trailingIcon] })}
-              >
-                <TrailingIcon aria-hidden="true" focusable="false" />
-              </Ark.ItemIndicator>
+                aria-hidden="true"
+                focusable="false"
+              />
             {/if}
           </Ark.ItemTrigger>
 

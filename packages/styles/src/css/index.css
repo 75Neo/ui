@@ -1,6 +1,10 @@
 /*
  * The 75NeoUI design system, as CSS.
  *
+ * Tokens, semantic colours, intent palettes and a handful of base rules, written for a
+ * plain Tailwind app: no module to install, no generator to run, nothing to configure
+ * beyond the two imports below.
+ *
  * An app pulls the whole system in with two lines, in this order:
  *
  *   @import "tailwindcss";
@@ -11,11 +15,11 @@
  *
  * Layers, outermost first:
  *
- *   1. `tokens.css`    — raw values. The `neo` brand ramp, radii, easings, keyframes.
- *   2. `semantic.css`  — what those values *mean* (`bg-surface`, `text-fg-muted`),
+ *   1. `tokens.css`    — raw values. The seven palette ramps, the radius scale, motion.
+ *   2. `semantic.css`  — what those values *mean* (`bg-elevated`, `text-muted`),
  *                        resolved per colour mode.
- *   3. `intents.css`   — the six intent palettes, each re-pointing the same eight roles.
- *   4. `base.css`      — the handful of global rules (page chrome, focus ring).
+ *   3. `intents.css`   — the seven intent palettes, each re-pointing one property.
+ *   4. `base.css`      — the handful of global rules.
  *
  * Component styling lives one level up, in `../themes/*.ts`, written entirely against
  * layers 2 and 3.
@@ -40,7 +44,8 @@
 /*
  * Colour mode is opt-in via a class or `data-theme`, with no `prefers-color-scheme`
  * fallback — the host app decides, so a user's saved choice can't be overridden by
- * their OS.
+ * their OS. `[data-theme]` is accepted alongside the class for apps that would rather
+ * not manage one.
  *
  * Each half of the `:where()` matches the marked element *and* its descendants. Without
  * the bare `.dark` / `[data-theme="dark"]`, marking `<html>` would leave `<html>` itself

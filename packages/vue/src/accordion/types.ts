@@ -1,4 +1,4 @@
-import type { AccordionSlots, AccordionVariants, ClassValue } from "@75neo/styles";
+import type { AccordionSlots, ClassValue } from "@75neo/styles";
 import type { Component, PropType } from "vue";
 
 /**
@@ -33,7 +33,7 @@ export interface AccordionItem {
   [key: string]: unknown;
 }
 
-export type AccordionProps = AccordionVariants & {
+export type AccordionProps = {
   /** The rows. */
   items?: AccordionItem[];
   /** The chevron every row's trigger ends with. */
@@ -42,6 +42,8 @@ export type AccordionProps = AccordionVariants & {
   labelKey?: string;
   /** Which key of an item holds its value. */
   valueKey?: string;
+  /** Dims and blocks every row. A single row is disabled through its own `disabled`. */
+  disabled?: boolean;
   /**
    * Per-slot class overrides for the whole accordion — `{ trigger: "text-lg" }` reaches
    * every row.
@@ -66,11 +68,6 @@ export const accordionProps = {
   trailingIcon: { type: [Object, Function] as PropType<Component>, default: undefined },
   labelKey: { type: String, default: "label" },
   valueKey: { type: String, default: "value" },
-  variant: { type: String as PropType<AccordionProps["variant"]>, default: undefined },
-  size: { type: String as PropType<AccordionProps["size"]>, default: undefined },
-  colorPalette: {
-    type: String as PropType<AccordionProps["colorPalette"]>,
-    default: undefined,
-  },
+  disabled: { type: Boolean, default: undefined },
   ui: { type: Object as PropType<AccordionProps["ui"]>, default: undefined },
 };

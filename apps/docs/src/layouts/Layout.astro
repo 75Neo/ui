@@ -37,17 +37,17 @@ const current = normalize(Astro.url.pathname);
     {description && <meta name="description" content={description} />}
     <title>{`${title} · 75NeoUI`}</title>
   </head>
-  <body class="min-h-dvh bg-canvas text-fg">
+  <body class="min-h-dvh bg-default text-default">
     <div class="mx-auto flex max-w-5xl gap-12 px-6 py-12">
       <aside class="sticky top-12 hidden h-fit w-48 shrink-0 md:block">
         <a href="/" class="text-lg font-semibold tracking-tight">75NeoUI</a>
-        <p class="mt-1 text-xs text-fg-subtle">Ark UI · Tailwind CSS</p>
+        <p class="mt-1 text-xs text-dimmed">Ark UI · Tailwind CSS</p>
 
         <nav class="mt-8 grid gap-6">
           {
             sections.map((section) => (
               <div class="grid gap-1">
-                <span class="text-2xs font-medium uppercase tracking-widest text-fg-subtle">
+                <span class="text-xs font-medium uppercase tracking-widest text-dimmed">
                   {section}
                 </span>
                 {entries
@@ -58,8 +58,8 @@ const current = normalize(Astro.url.pathname);
                       class:list={[
                         "rounded-sm py-1 text-sm transition-colors",
                         current === normalize(href(entry.id))
-                          ? "font-medium text-intent-label"
-                          : "text-fg-muted hover:text-fg",
+                          ? "font-medium text-primary"
+                          : "text-muted hover:text-default",
                       ]}
                     >
                       {entry.data.navLabel ?? entry.data.title}
@@ -71,7 +71,7 @@ const current = normalize(Astro.url.pathname);
         </nav>
       </aside>
 
-      <main class="intent-accent min-w-0 flex-1 pb-24">
+      <main class="min-w-0 flex-1 pb-24">
         <slot />
       </main>
     </div>

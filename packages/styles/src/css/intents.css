@@ -1,176 +1,79 @@
 /*
- * The six intent palettes.
+ * The seven intent palettes.
  *
  * ## Shape and intent are separate axes
  *
- * Every palette below fills the same eight roles, so a component theme writes each
- * *shape* once against `intent-*` and gets every *intent* for free:
+ * The obvious way to colour a component is one compound variant per (colour × variant)
+ * pair — seven palettes times six button variants is forty-two entries, which only stays
+ * manageable if a build step generates them. This library has no build step, so it does
+ * the job the other way round: a palette re-points a single custom property, and a theme
+ * writes each *shape* once against it.
  *
- *   solid:   "bg-intent-default text-intent-contrast hover:bg-intent-emphasized"
- *   outline: "border-intent-line text-intent-label hover:bg-intent-subtle"
+ *   solid:   "text-inverted bg-intent hover:bg-intent/75"
+ *   outline: "text-intent ring ring-inset ring-intent/50 hover:bg-intent/10"
  *
- * Adding an intent is one block here plus one line in each theme's `colorPalette`
- * variant — never a new `variant`. If you find yourself writing a `dangerOutline`
- * variant, you've fused the two axes back together.
+ * Two lines cover all fourteen combinations. Adding a palette is one block here plus one
+ * line in each theme's `color` variant — never a new `variant`. If you find yourself
+ * writing an `errorOutline` variant, you have fused the two axes back together.
+ *
+ * ## Why one property is enough
+ *
+ * Because a palette in this system *is* one colour (see `semantic.css`), everything a
+ * variant needs — the tint, the ring, the hover step — is that colour under an alpha
+ * modifier. `bg-intent/10` compiles to a `color-mix()` over `var(--ui-intent)`, resolved
+ * at the element, so the eight-role bookkeeping a per-shade system would need does not
+ * arise.
  *
  * ## Why these are utilities and not variant classes
  *
- * A palette sets custom properties and nothing else. `intent-danger` on the root element
- * re-points all eight roles, and because custom properties inherit, every descendant's
- * `bg-intent-default` follows without the palette being threaded down the tree. That is
- * what Panda's `colorPalette` did, expressed in plain CSS.
+ * A palette sets a custom property and nothing else. `intent-error` on the root element
+ * re-points the property, and because custom properties inherit, every descendant's
+ * `bg-intent` follows without the palette being threaded down the tree.
  *
- * ## The contrast rule
+ * ## `neutral` is the exception
  *
- * `contrast` is picked per palette **and per mode** so it clears WCAG AA (4.5:1) against
- * both `default` and `emphasized`. That is why the palettes are not symmetric:
- *
- * - `accent` and `danger` are dark enough at their solid steps to carry white text, so
- *   they darken on hover (600 → 700 in light, 500 → 600 in dark) and keep white
- *   throughout.
- * - `success`, `warning` and `info` cannot carry white text at a brightness that reads
- *   as green/amber/blue. In dark mode they invert instead: a vivid 400 fill with the 950
- *   shade as text. Hovering still darkens (400 → 500), which preserves contrast.
- *
- * **Changing a solid step means re-checking its `contrast` pair.** The current worst
- * pair is 4.83:1.
+ * A neutral control is not a grey-hued version of a coloured one — it is drawn from the
+ * background ramp (`bg-elevated`, `ring-accented`, `text-default`) so it recedes rather
+ * than reading as a seventh hue. That cannot be expressed by re-pointing one property,
+ * so themes override the neutral pairs explicitly. This utility still exists so
+ * `bg-intent` resolves to something sensible on anything the override does not reach.
  */
 
 /* Brand and primary actions. */
-@utility intent-accent {
-  --ui-intent-subtle: var(--color-neo-50);
-  --ui-intent-muted: var(--color-neo-100);
-  --ui-intent-default: var(--color-neo-600);
-  --ui-intent-emphasized: var(--color-neo-700);
-  --ui-intent-line: var(--color-neo-500);
-  --ui-intent-fg: var(--color-neo-600);
-  --ui-intent-label: var(--color-neo-700);
-  --ui-intent-contrast: var(--color-white);
-
-  @variant dark {
-    --ui-intent-subtle: var(--color-neo-950);
-    --ui-intent-muted: var(--color-neo-900);
-    --ui-intent-default: var(--color-neo-500);
-    --ui-intent-emphasized: var(--color-neo-600);
-    --ui-intent-line: var(--color-neo-400);
-    --ui-intent-fg: var(--color-neo-400);
-    --ui-intent-label: var(--color-neo-200);
-    --ui-intent-contrast: var(--color-white);
-  }
+@utility intent-primary {
+  --ui-intent: var(--ui-primary);
 }
 
-/* Secondary actions. The solid step is near-black on light, near-white on dark. */
-@utility intent-neutral {
-  --ui-intent-subtle: var(--color-zinc-100);
-  --ui-intent-muted: var(--color-zinc-200);
-  --ui-intent-default: var(--color-zinc-900);
-  --ui-intent-emphasized: var(--color-zinc-800);
-  --ui-intent-line: var(--color-zinc-300);
-  --ui-intent-fg: var(--color-zinc-600);
-  --ui-intent-label: var(--color-zinc-900);
-  --ui-intent-contrast: var(--color-white);
-
-  @variant dark {
-    --ui-intent-subtle: var(--color-zinc-800);
-    --ui-intent-muted: var(--color-zinc-700);
-    --ui-intent-default: var(--color-zinc-100);
-    --ui-intent-emphasized: var(--color-zinc-200);
-    --ui-intent-line: var(--color-zinc-700);
-    --ui-intent-fg: var(--color-zinc-400);
-    --ui-intent-label: var(--color-zinc-50);
-    --ui-intent-contrast: var(--color-zinc-900);
-  }
+/* The brand's counterpart, for the second action in a pair. */
+@utility intent-secondary {
+  --ui-intent: var(--ui-secondary);
 }
 
-/* Confirmation and completion. Inverts to dark-on-bright in dark mode. */
+/* Confirmation and completion. */
 @utility intent-success {
-  --ui-intent-subtle: var(--color-emerald-50);
-  --ui-intent-muted: var(--color-emerald-100);
-  --ui-intent-default: var(--color-emerald-700);
-  --ui-intent-emphasized: var(--color-emerald-800);
-  --ui-intent-line: var(--color-emerald-500);
-  --ui-intent-fg: var(--color-emerald-600);
-  --ui-intent-label: var(--color-emerald-700);
-  --ui-intent-contrast: var(--color-white);
-
-  @variant dark {
-    --ui-intent-subtle: var(--color-emerald-950);
-    --ui-intent-muted: var(--color-emerald-900);
-    --ui-intent-default: var(--color-emerald-400);
-    --ui-intent-emphasized: var(--color-emerald-500);
-    --ui-intent-line: var(--color-emerald-500);
-    --ui-intent-fg: var(--color-emerald-400);
-    --ui-intent-label: var(--color-emerald-300);
-    --ui-intent-contrast: var(--color-emerald-950);
-  }
+  --ui-intent: var(--ui-success);
 }
 
-/* Reversible risk. Amber is too bright for white text in *either* mode. */
-@utility intent-warning {
-  --ui-intent-subtle: var(--color-amber-50);
-  --ui-intent-muted: var(--color-amber-100);
-  --ui-intent-default: var(--color-amber-500);
-  --ui-intent-emphasized: var(--color-amber-600);
-  --ui-intent-line: var(--color-amber-500);
-  --ui-intent-fg: var(--color-amber-600);
-  --ui-intent-label: var(--color-amber-700);
-  --ui-intent-contrast: var(--color-zinc-950);
+/* Neutral notices. */
+@utility intent-info {
+  --ui-intent: var(--ui-info);
+}
 
-  @variant dark {
-    --ui-intent-subtle: var(--color-amber-950);
-    --ui-intent-muted: var(--color-amber-900);
-    --ui-intent-default: var(--color-amber-400);
-    --ui-intent-emphasized: var(--color-amber-500);
-    --ui-intent-line: var(--color-amber-500);
-    --ui-intent-fg: var(--color-amber-400);
-    --ui-intent-label: var(--color-amber-300);
-    --ui-intent-contrast: var(--color-amber-950);
-  }
+/* Reversible risk. */
+@utility intent-warning {
+  --ui-intent: var(--ui-warning);
 }
 
 /* Destructive actions and validation failures. */
-@utility intent-danger {
-  --ui-intent-subtle: var(--color-red-50);
-  --ui-intent-muted: var(--color-red-100);
-  --ui-intent-default: var(--color-red-600);
-  --ui-intent-emphasized: var(--color-red-700);
-  --ui-intent-line: var(--color-red-500);
-  --ui-intent-fg: var(--color-red-600);
-  --ui-intent-label: var(--color-red-700);
-  --ui-intent-contrast: var(--color-white);
-
-  @variant dark {
-    --ui-intent-subtle: var(--color-red-950);
-    --ui-intent-muted: var(--color-red-900);
-    --ui-intent-default: var(--color-red-600);
-    --ui-intent-emphasized: var(--color-red-700);
-    --ui-intent-line: var(--color-red-500);
-    --ui-intent-fg: var(--color-red-400);
-    --ui-intent-label: var(--color-red-300);
-    --ui-intent-contrast: var(--color-white);
-  }
+@utility intent-error {
+  --ui-intent: var(--ui-error);
 }
 
-/* Neutral notices. A cyan-leaning blue, kept well away from `neo` so the two never read
- * as one. Inverts to dark-on-bright in dark mode. */
-@utility intent-info {
-  --ui-intent-subtle: var(--color-sky-50);
-  --ui-intent-muted: var(--color-sky-100);
-  --ui-intent-default: var(--color-sky-700);
-  --ui-intent-emphasized: var(--color-sky-800);
-  --ui-intent-line: var(--color-sky-500);
-  --ui-intent-fg: var(--color-sky-600);
-  --ui-intent-label: var(--color-sky-700);
-  --ui-intent-contrast: var(--color-white);
+/* Secondary actions. Overridden by the themes — see the note above. */
+@utility intent-neutral {
+  --ui-intent: var(--ui-color-neutral-500);
 
   @variant dark {
-    --ui-intent-subtle: var(--color-sky-950);
-    --ui-intent-muted: var(--color-sky-900);
-    --ui-intent-default: var(--color-sky-400);
-    --ui-intent-emphasized: var(--color-sky-500);
-    --ui-intent-line: var(--color-sky-500);
-    --ui-intent-fg: var(--color-sky-400);
-    --ui-intent-label: var(--color-sky-300);
-    --ui-intent-contrast: var(--color-sky-950);
+    --ui-intent: var(--ui-color-neutral-400);
   }
 }

@@ -8,10 +8,6 @@ import {
 import { LeafIcon, PlusIcon, ShapesIcon, SunMoonIcon } from "@lucide/vue";
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 
-const VARIANTS = ["outline", "subtle", "elevated", "plain"] as const;
-const PALETTES = ["accent", "neutral", "success", "warning", "danger", "info"] as const;
-const SIZES = ["sm", "md", "lg"] as const;
-
 const items: AccordionItem[] = [
   {
     value: "recipes",
@@ -22,24 +18,21 @@ const items: AccordionItem[] = [
   },
   {
     value: "intents",
-    label: "How are shape and intent kept apart?",
+    label: "How are shape and colour kept apart?",
     icon: ShapesIcon,
     content:
-      "Every intent palette fills the same eight roles, so a theme writes each shape once against the intent-* roles and gets all six intents for free.",
+      "A palette re-points a single custom property, so a theme writes each shape once against intent-* and gets every colour for free.",
   },
   {
     value: "modes",
     label: "What happens in dark mode?",
     icon: SunMoonIcon,
     content:
-      "Components style against semantic utilities such as bg-surface and text-fg-muted, which resolve per colour mode. Nothing inside a component ever branches on dark: itself.",
+      "Components style against semantic utilities such as bg-elevated and text-muted, which resolve per colour mode. Nothing inside a component ever branches on dark: itself.",
   },
 ];
 
-const grid = "grid gap-6";
-const row = "grid gap-2";
 const frame = "max-w-lg";
-const legend = "text-xs font-medium uppercase tracking-wide text-fg-muted";
 
 /**
  * Ark's own root props (`multiple`, `defaultValue`, …) reach the component as attrs, so
@@ -57,9 +50,6 @@ const meta = {
   component: Accordion,
   args: { defaultValue: ["recipes"] },
   argTypes: {
-    variant: { control: "select", options: VARIANTS },
-    colorPalette: { control: "select", options: PALETTES },
-    size: { control: "select", options: SIZES },
     multiple: { control: "boolean" },
     collapsible: { control: "boolean" },
     disabled: { control: "boolean" },
@@ -77,47 +67,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
-
-/** The four shapes. Only the chrome changes; the anatomy is identical. */
-export const Variants: Story = {
-  render: (args) => ({
-    components: { Accordion },
-    setup: () => ({ args, items, VARIANTS, grid, row, frame, legend }),
-    template: `<div :class="[grid, frame]">
-      <div v-for="v in VARIANTS" :key="v" :class="row">
-        <span :class="legend">{{ v }}</span>
-        <Accordion v-bind="args" :items="items" :variant="v" />
-      </div>
-    </div>`,
-  }),
-};
-
-export const Sizes: Story = {
-  render: (args) => ({
-    components: { Accordion },
-    setup: () => ({ args, items, SIZES, grid, row, frame, legend }),
-    template: `<div :class="[grid, frame]">
-      <div v-for="s in SIZES" :key="s" :class="row">
-        <span :class="legend">{{ s }}</span>
-        <Accordion v-bind="args" :items="items" :size="s" />
-      </div>
-    </div>`,
-  }),
-};
-
-/** Shape and intent are independent — the expanded trigger and its icon carry it. */
-export const Intents: Story = {
-  render: (args) => ({
-    components: { Accordion },
-    setup: () => ({ args, items, PALETTES, grid, row, frame, legend }),
-    template: `<div :class="[grid, frame]">
-      <div v-for="p in PALETTES" :key="p" :class="row">
-        <span :class="legend">{{ p }}</span>
-        <Accordion v-bind="args" :items="items" :colorPalette="p" />
-      </div>
-    </div>`,
-  }),
-};
 
 /** `multiple` lets several panels stay open; `collapsible` lets the last one close. */
 export const Multiple: Story = {
@@ -151,7 +100,7 @@ export const TrailingIcon: Story = {
         v-bind="args"
         :items="items"
         :trailing-icon="PlusIcon"
-        :ui="{ trailingIcon: 'data-[state=open]:rotate-45' }"
+        :ui="{ trailingIcon: 'group-data-[state=open]:rotate-45' }"
       />
     </div>`,
   }),
@@ -168,12 +117,12 @@ export const Slots: Story = {
     template: `<div :class="frame">
       <Accordion v-bind="args" :items="items">
         <template #default="{ item, index }">
-          <span class="tabular-nums text-fg-muted">{{ index + 1 }}.</span>
+          <span class="tabular-nums text-muted">{{ index + 1 }}.</span>
           {{ item.label }}
         </template>
         <template #body="{ item, open }">
           <p>{{ item.content }}</p>
-          <p class="mt-2 text-2xs uppercase tracking-wide">{{ open ? "open" : "closed" }}</p>
+          <p class="mt-2 text-xs uppercase tracking-wide">{{ open ? "open" : "closed" }}</p>
         </template>
       </Accordion>
     </div>`,
@@ -197,7 +146,7 @@ export const PerItemSlots: Story = {
       <Accordion v-bind="args" :items="items">
         <template #styling-body="{ item }">
           <p>{{ item.content }}</p>
-          <code class="mt-2 block rounded bg-surface-subtle px-2 py-1 text-2xs">
+          <code class="mt-2 block rounded bg-elevated px-2 py-1 text-xs">
             packages/styles/src/themes
           </code>
         </template>
@@ -219,10 +168,10 @@ export const Customized: Story = {
         v-bind="args"
         :items="items"
         :ui="{
-          root: 'rounded-none border-x-0',
+          item: 'border-accented',
           trigger: 'font-semibold uppercase tracking-wide',
-          trailingIcon: 'text-intent-fg',
-          body: 'text-fg',
+          trailingIcon: 'text-primary',
+          body: 'text-toned',
         }"
       />
     </div>`,
@@ -231,20 +180,22 @@ export const Customized: Story = {
 
 /**
  * The same overrides applied app-wide. Anything a `ui` prop can say, a `ThemeConfig` can
- * say for every accordion at once — including which variant is the default.
+ * say for every accordion at once.
  */
-const flatTheme: ThemeConfig = {
+const boxedTheme: ThemeConfig = {
   accordion: {
-    slots: { trigger: "font-semibold" },
-    defaultVariants: { variant: "plain", colorPalette: "info" },
+    slots: {
+      root: "overflow-hidden rounded-lg border border-default px-4",
+      trigger: "font-semibold",
+    },
   },
 };
 
 export const ThemedApp: Story = {
   render: (args) => ({
     components: { Accordion, NeoUIProvider },
-    setup: () => ({ args, items, frame, flatTheme }),
-    template: `<NeoUIProvider :theme="flatTheme">
+    setup: () => ({ args, items, frame, boxedTheme }),
+    template: `<NeoUIProvider :theme="boxedTheme">
       <div :class="frame">
         <Accordion v-bind="args" :items="items" />
       </div>

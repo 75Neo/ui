@@ -20,23 +20,29 @@ src/
 ```
 
 That is the whole setup. The second import brings in the theme, the semantic utilities
-(`bg-surface`, `text-fg-muted`, `border-line`), the six `intent-*` palettes, and a
+(`bg-elevated`, `text-muted`, `ring-accented`), the seven `intent-*` palettes, and a
 `@source` pointing at `src/themes` — which is what makes Tailwind emit the classes the
 components render. No per-app source configuration, and no build step in this package.
+
+Everything is static CSS. There is no module to install and no generator to run, so an
+app changes a palette, a ramp or the radius scale by redefining a custom property rather
+than by reconfiguring Tailwind.
 
 ## Layers
 
 Each layer may only reference the one above it:
 
-1. **`css/tokens.css`** — raw values. The `neo` brand ramp plus the handful of scales
-   that differ from Tailwind's own (radii, easings, keyframes). The five non-brand
-   palettes _are_ Tailwind's: neutrals are `zinc`, danger is `red`, success is `emerald`,
-   warning is `amber`, info is `sky`.
-2. **`css/semantic.css`** — what those values mean, per colour mode: `bg-canvas`,
-   `bg-surface`, `text-fg-muted`, `border-line`, `outline-focus`, `shadow-md`.
-3. **`css/intents.css`** — the six intent palettes, each re-pointing the same eight
-   `intent-*` roles.
+1. **`css/tokens.css`** — raw values. The seven palette ramps, and the radius scale
+   derived from `--ui-radius`. Each palette is one Tailwind ramp: `primary` and `success`
+   are `green`, `secondary` and `info` are `blue`, `warning` is `yellow`, `error` is
+   `red`, `neutral` is `slate`.
+2. **`css/semantic.css`** — what those values mean, per colour mode: `bg-default`,
+   `bg-elevated`, `text-muted`, `border-accented`, `text-inverted`. A palette resolves to
+   one colour here — step 500 in light, 400 in dark — and every tint a component needs is
+   an alpha modifier away (`bg-primary/10`).
+3. **`css/intents.css`** — the seven intent palettes, each re-pointing one `--ui-intent`
+   property.
 4. **`themes/*.ts`** — components, styled entirely against layers 2 and 3.
 
-Components never reach past layer 2. A theme that writes `bg-neo-600` has hard-coded a
-light-mode value; a theme that writes `bg-red-600` has fused shape and intent together.
+Components never reach past layer 2. A theme that writes `bg-slate-800` has hard-coded a
+light-mode value; a theme that writes `bg-red-500` has fused shape and intent together.

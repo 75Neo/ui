@@ -5,6 +5,6 @@ export {
   type AccordionSlot,
   type AccordionSlotProps,
 } from "./accordion";
-export { Button, type ButtonProps } from "./button";
+export { Button, type ButtonProps, type IconComponent } from "./button";
 export { NeoUIProvider, type NeoUIProviderProps, useComponentTheme } from "./theme";
 export type { ThemeConfig, ThemeOverride } from "@75neo/styles";

@@ -48,17 +48,15 @@ You will also need Tailwind's own build step, either
 ```tsx
 import { Button } from "@75neo/react";
 
-<Button colorPalette="danger" variant="outline">
-  Delete
-</Button>;
+<Button color="error" variant="outline" label="Delete" />;
 ```
 
 Every component takes the same two shaping props:
 
 - **`variant`** — how much emphasis it carries.
-- **`colorPalette`** — what it means.
+- **`color`** — what it means.
 
-The two are independent axes. A variant is written once against the intent roles, so
+The two are independent axes. A variant is written once against the `intent-*` roles, so
 every combination exists without any of them being spelled out. See
 [Theming](/theming).
 

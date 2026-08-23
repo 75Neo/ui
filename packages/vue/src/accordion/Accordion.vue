@@ -24,13 +24,7 @@ const slots = useSlots();
 const { attrsClass, otherAttrs } = useSplitAttrs();
 const theme = useComponentTheme("accordion");
 
-const ui = computed(() =>
-  theme.value({
-    variant: props.variant,
-    size: props.size,
-    colorPalette: props.colorPalette,
-  }),
-);
+const ui = computed(() => theme.value({ disabled: props.disabled }));
 
 const valueOf = (item: AccordionItem, index: number) => String(item[props.valueKey] ?? index);
 const labelOf = (item: AccordionItem) => item[props.labelKey] as string | undefined;
@@ -44,7 +38,11 @@ const hasContent = (item: AccordionItem) =>
 </script>
 
 <template>
-  <Ark.Root v-bind="otherAttrs" :class="ui.root({ class: [props.ui?.root, attrsClass] })">
+  <Ark.Root
+    v-bind="otherAttrs"
+    :disabled="props.disabled"
+    :class="ui.root({ class: [props.ui?.root, attrsClass] })"
+  >
     <Ark.Item
       v-for="(item, index) in props.items"
       :key="valueOf(item, index)"
@@ -53,14 +51,24 @@ const hasContent = (item: AccordionItem) =>
       :class="ui.item({ class: [props.ui?.item, item.ui?.item, item.class] })"
     >
       <Ark.ItemContext v-slot="{ expanded }">
-        <Ark.ItemTrigger :class="ui.trigger({ class: [props.ui?.trigger, item.ui?.trigger] })">
+        <!-- `disabled` is passed per row, so one disabled row dims its own trigger
+             without the rest of the list following. -->
+        <Ark.ItemTrigger
+          :class="
+            ui.trigger({
+              disabled: item.disabled ?? props.disabled,
+              class: [props.ui?.trigger, item.ui?.trigger],
+            })
+          "
+        >
           <slot name="leading" :item="item" :index="index" :open="expanded">
-            <span
+            <component
+              :is="item.icon"
               v-if="item.icon"
               :class="ui.leadingIcon({ class: [props.ui?.leadingIcon, item.ui?.leadingIcon] })"
-            >
-              <component :is="item.icon" aria-hidden="true" focusable="false" />
-            </span>
+              aria-hidden="true"
+              focusable="false"
+            />
           </slot>
 
           <span :class="ui.label({ class: [props.ui?.label, item.ui?.label] })">
@@ -68,15 +76,12 @@ const hasContent = (item: AccordionItem) =>
           </span>
 
           <slot name="trailing" :item="item" :index="index" :open="expanded">
-            <Ark.ItemIndicator
+            <component
+              :is="item.trailingIcon ?? props.trailingIcon ?? ChevronDownIcon"
               :class="ui.trailingIcon({ class: [props.ui?.trailingIcon, item.ui?.trailingIcon] })"
-            >
-              <component
-                :is="item.trailingIcon ?? props.trailingIcon ?? ChevronDownIcon"
-                aria-hidden="true"
-                focusable="false"
-              />
-            </Ark.ItemIndicator>
+              aria-hidden="true"
+              focusable="false"
+            />
           </slot>
         </Ark.ItemTrigger>
 

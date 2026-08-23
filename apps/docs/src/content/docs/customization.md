@@ -44,10 +44,10 @@ prop per part.
 <Accordion
   items={items}
   ui={{
-    root: "rounded-none border-x-0",
+    item: "border-accented",
     trigger: "font-semibold uppercase tracking-wide",
-    trailingIcon: "text-intent-fg",
-    body: "text-fg",
+    trailingIcon: "text-primary",
+    body: "text-toned",
   }}
 />
 ```
@@ -74,11 +74,10 @@ import { NeoUIProvider, type ThemeConfig } from "@75neo/react";
 const theme: ThemeConfig = {
   button: {
     slots: { base: "rounded-full" },
-    defaultVariants: { colorPalette: "neutral" },
+    defaultVariants: { color: "neutral" },
   },
   accordion: {
-    slots: { trigger: "font-semibold" },
-    defaultVariants: { variant: "plain" },
+    slots: { root: "overflow-hidden rounded-lg border border-default px-4" },
   },
 };
 
@@ -123,9 +122,9 @@ const theme: ThemeConfig = {
     variants: {
       variant: {
         // Redefine one the library ships…
-        ghost: { base: "text-fg-muted hover:bg-surface-subtle" },
+        ghost: { base: "text-muted hover:bg-elevated" },
         // …or add a shape it has never heard of.
-        dashed: { base: "border-dashed border-intent-line text-intent-label" },
+        dashed: { base: "text-intent border border-dashed border-intent/50" },
       },
     },
   },

@@ -1,4 +1,4 @@
-import type { AccordionSlots, AccordionVariants, ClassValue } from "@75neo/styles";
+import type { AccordionSlots, ClassValue } from "@75neo/styles";
 import { Accordion as Ark } from "@ark-ui/react/accordion";
 import { ChevronDownIcon, type LucideIcon } from "lucide-react";
 import type { ComponentType, ReactNode } from "react";
@@ -50,7 +50,7 @@ export type AccordionSlot = (props: AccordionSlotProps) => ReactNode;
 export interface AccordionProps
   // `content` is omitted because React types it as the HTML attribute of that name; here
   // it is the panel's render prop.
-  extends Omit<Ark.RootProps, "children" | "className" | "content">, AccordionVariants {
+  extends Omit<Ark.RootProps, "children" | "className" | "content"> {
   /** The rows. */
   items?: AccordionItem[];
   /** The chevron every row's trigger ends with. */
@@ -92,9 +92,7 @@ export const Accordion = ({
   trailingIcon: TrailingIcon = ChevronDownIcon,
   labelKey = "label",
   valueKey = "value",
-  variant,
-  size,
-  colorPalette,
+  disabled = undefined,
   className,
   ui,
   children,
@@ -106,13 +104,17 @@ export const Accordion = ({
   ...rest
 }: AccordionProps) => {
   const theme = useComponentTheme("accordion");
-  const styles = theme({ variant, size, colorPalette });
+  const styles = theme({ disabled });
 
   const contentSlot = (item: AccordionItem) => itemSlots?.[item.slot ?? ""] ?? content;
   const bodySlot = (item: AccordionItem) => itemSlots?.[`${item.slot}-body`] ?? body;
 
   return (
-    <Ark.Root className={styles.root({ class: [ui?.root, className] })} {...rest}>
+    <Ark.Root
+      className={styles.root({ class: [ui?.root, className] })}
+      disabled={disabled}
+      {...rest}
+    >
       {items.map((item, index) => {
         const value = String(item[valueKey] ?? index);
         const label = item[labelKey] as ReactNode;
@@ -136,17 +138,22 @@ export const Accordion = ({
                 return (
                   <>
                     <Ark.ItemTrigger
-                      className={styles.trigger({ class: [ui?.trigger, item.ui?.trigger] })}
+                      className={styles.trigger({
+                        // Per row, not per accordion: one disabled row dims its own
+                        // trigger without the rest of the list following.
+                        disabled: item.disabled ?? disabled,
+                        class: [ui?.trigger, item.ui?.trigger],
+                      })}
                     >
                       {leading?.(slotProps) ??
                         (Icon ? (
-                          <span
+                          <Icon
                             className={styles.leadingIcon({
                               class: [ui?.leadingIcon, item.ui?.leadingIcon],
                             })}
-                          >
-                            <Icon aria-hidden="true" focusable="false" />
-                          </span>
+                            aria-hidden="true"
+                            focusable="false"
+                          />
                         ) : null)}
 
                       <span className={styles.label({ class: [ui?.label, item.ui?.label] })}>
@@ -154,13 +161,13 @@ export const Accordion = ({
                       </span>
 
                       {trailing?.(slotProps) ?? (
-                        <Ark.ItemIndicator
+                        <ItemTrailingIcon
                           className={styles.trailingIcon({
                             class: [ui?.trailingIcon, item.ui?.trailingIcon],
                           })}
-                        >
-                          <ItemTrailingIcon aria-hidden="true" focusable="false" />
-                        </Ark.ItemIndicator>
+                          aria-hidden="true"
+                          focusable="false"
+                        />
                       )}
                     </Ark.ItemTrigger>
 

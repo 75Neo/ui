@@ -35,7 +35,7 @@
     margin-top: --spacing(3);
     font-size: var(--text-lg);
     line-height: var(--leading-relaxed);
-    color: var(--ui-fg-muted);
+    color: var(--ui-text-muted);
   }
 
   .prose h2 {
@@ -57,7 +57,7 @@
   .prose ol {
     margin-top: --spacing(4);
     line-height: var(--leading-relaxed);
-    color: var(--ui-fg-muted);
+    color: var(--ui-text-muted);
   }
 
   .prose li + li {
@@ -76,11 +76,11 @@
 
   .prose strong {
     font-weight: 500;
-    color: var(--ui-fg);
+    color: var(--ui-text);
   }
 
   .prose a {
-    color: var(--ui-intent-label);
+    color: var(--ui-primary);
     text-decoration: underline;
     text-underline-offset: 4px;
   }
@@ -88,7 +88,7 @@
   .prose code {
     font-family: var(--font-mono);
     font-size: 0.875em;
-    color: var(--ui-fg);
+    color: var(--ui-text);
   }
 
   /* Shiki paints its own foreground on every token, so only the frame is ours. */
@@ -120,17 +120,17 @@
   }
 
   .prose th {
-    border-block-end: 1px solid var(--ui-line);
+    border-block-end: 1px solid var(--ui-border);
     padding: --spacing(2.5) --spacing(3);
     font-weight: 500;
-    color: var(--ui-fg);
+    color: var(--ui-text);
   }
 
   .prose td {
-    border-block-end: 1px solid var(--ui-line-subtle);
+    border-block-end: 1px solid var(--ui-border-muted);
     padding: --spacing(2.5) --spacing(3);
     vertical-align: top;
-    color: var(--ui-fg-muted);
+    color: var(--ui-text-muted);
   }
 
   .prose th:first-child,
@@ -140,14 +140,14 @@
 
   .prose blockquote {
     margin-top: --spacing(4);
-    border-inline-start: 2px solid var(--ui-intent-line);
+    border-inline-start: 2px solid var(--ui-primary);
     padding-inline-start: --spacing(4);
-    color: var(--ui-fg-muted);
+    color: var(--ui-text-muted);
   }
 
   .prose hr {
     margin-block: --spacing(10);
     border: 0;
-    border-block-start: 1px solid var(--ui-line);
+    border-block-start: 1px solid var(--ui-border);
   }
 }

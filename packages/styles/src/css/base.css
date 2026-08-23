@@ -1,13 +1,27 @@
 /*
  * The only global rules the system owns. Everything else is a utility.
+ *
+ * Note what is *not* here: a focus ring. Each component carries its own —
+ * `outline-{colour}/25 focus-visible:outline-3`, a wide translucent halo in the
+ * component's own palette rather than one system-wide colour — so there is nothing
+ * global to declare, and a component that wanted a shared ring would be fighting it.
+ * See `themes/button.ts`.
  */
 
 @layer base {
+  html,
+  body {
+    background-color: var(--ui-bg);
+    color: var(--ui-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /*
+   * Tells the browser which way to render native UI — scrollbars, form controls,
+   * spellcheck underlines. Without it those stay light-themed in dark mode.
+   */
   html {
-    /*
-     * Tells the browser which way to render native UI — scrollbars, form controls,
-     * spellcheck underlines. Without it those stay light-themed in dark mode.
-     */
     color-scheme: light;
   }
 
@@ -16,26 +30,11 @@
     color-scheme: dark;
   }
 
-  html,
-  body {
-    background-color: var(--ui-canvas);
-    color: var(--ui-fg);
-    font-family: var(--font-sans);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  ::selection {
-    background-color: var(--ui-intent-muted, var(--color-neo-100));
-    color: var(--ui-intent-label, var(--color-neo-700));
-  }
-
   /*
-   * One focus ring for the whole system. Components override it only to change the
-   * offset — they should never restyle its colour.
+   * Chromium applies an `outline-offset` on focused links. Reset it so a link's focus
+   * outline hugs it the way every other component's does.
    */
-  :focus-visible {
-    outline: 2px solid var(--ui-focus);
-    outline-offset: 2px;
+  a:focus-visible {
+    outline-offset: 0;
   }
 }

@@ -4,5 +4,4 @@ export {
   type AccordionProps,
   type AccordionSlot,
   type AccordionSlotProps,
-  type IconComponent,
 } from "./Accordion.svelte";

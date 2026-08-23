@@ -3,7 +3,7 @@ import { accordion, button } from "@75neo/styles";
 import { Code } from "astro:components";
 
 /**
- * Prints a component's theme the way Nuxt UI prints the object an app would override.
+ * Prints a component's theme as the object an app would override.
  * The value comes from `@75neo/styles` rather than from this file, so it cannot drift
  * out of step with the theme it documents.
  */
@@ -24,11 +24,19 @@ const slots = Object.fromEntries(
 
 const indent = (value: unknown) => JSON.stringify(value, null, 2).replaceAll("\n", "\n  ");
 
-const source = `{
-  slots: ${indent(slots)},
-  variants: ${indent(theme.variants)},
-  defaultVariants: ${indent(theme.defaultVariants)},
-}`;
+// A key the theme does not declare is omitted rather than printed as `undefined` — the
+// accordion has no default variants, and only the button has compound ones.
+const entry = (key: string, value: unknown) =>
+  value === undefined ? [] : [`  ${key}: ${indent(value)},`];
+
+const source = [
+  "{",
+  ...entry("slots", slots),
+  ...entry("variants", theme.variants),
+  ...entry("compoundVariants", theme.compoundVariants),
+  ...entry("defaultVariants", theme.defaultVariants),
+  "}",
+].join("\n");
 ---
 
 <h2 id="theme">Theme</h2>

@@ -8,147 +8,170 @@ order: 2
 The design system is plain CSS. Three layers, each allowed to reference only the one
 above it, plus a handful of global rules.
 
+There is no module to install and no generator to run: the palettes, the semantic ramps
+and the Tailwind aliases they feed are all spelled out as static CSS, and an app changes
+any of them by redefining a custom property rather than by reconfiguring Tailwind.
+
 ## Scales
 
 Most of the system's scales _are_ Tailwind's, unchanged: the 0.25rem spacing ramp, the
-breakpoints, container widths, line heights, tracking, and `--ease-in-out` — already
-`cubic-bezier(0.4, 0, 0.2, 1)`, the everyday curve.
+breakpoints, container widths, line heights, tracking, easings and the default font
+stacks. So is the radius scale — except that every step is derived from one value, so
+rounding the whole system up or down is a single override:
 
-So are five of the six palettes. Neutrals are `zinc`, danger is `red`, success is
-`emerald`, warning is `amber`, info is `sky`. Your own `bg-red-500` still means what you
-expect.
+```css
+:root {
+  --ui-radius: 0.25rem; /* rounded-sm; md is 1.5×, lg 2×, xl 3× … */
+}
+```
 
-Four things differ:
+## Palettes
 
-| Addition     | Why                                                                          |
-| ------------ | ---------------------------------------------------------------------------- |
-| `neo-50…950` | The brand ramp — a desaturated indigo. The one palette Tailwind lacks.       |
-| `radius-*`   | One step rounder throughout: `rounded-md` is 0.5rem, not 0.375rem.           |
-| `text-2xs`   | A rung below `text-xs`, for the smallest UI labels.                          |
-| `ease-*`     | `emphasized`, `accelerate` and `spring`, for entrances, exits and overshoot. |
+Seven, and each is one Tailwind ramp:
 
-## Surfaces, foreground and lines
+| Palette     | Ramp     |
+| ----------- | -------- |
+| `primary`   | `green`  |
+| `secondary` | `blue`   |
+| `success`   | `green`  |
+| `info`      | `blue`   |
+| `warning`   | `yellow` |
+| `error`     | `red`    |
+| `neutral`   | `slate`  |
+
+The one thing to know: **a palette is one colour, not a ramp.** `bg-primary` is step 500
+in light mode and step 400 in dark, and every other shade a component needs is reached
+with an alpha modifier — `bg-primary/10` for a tint, `ring-primary/50` for a border,
+`hover:bg-primary/75` for a hover step. That is why adding a palette is a single line and
+why no component carries per-shade bookkeeping.
+
+The full ramps are still there as `primary-50` … `primary-950`, should you want one.
+`neutral-*` is re-pointed at `slate`, which shadows Tailwind's own neutral ramp; it stays
+reachable as `old-neutral-*`.
+
+## Text, background and border
 
 These resolve per colour mode, so nothing ever branches on `dark:` itself. They are
-ordinary colour tokens, so they compose the ordinary way — `hover:bg-surface-subtle`,
-`divide-line`, `bg-surface/50`, `ring-focus`.
+ordinary colour tokens, so they compose the ordinary way — `hover:bg-elevated`,
+`divide-default`, `bg-muted/50`, `ring-accented`.
 
-### Surfaces
+Note that `text-muted` and `bg-muted` are **different values**: the first is a mid-grey
+for secondary copy, the second a barely-there tint. They are declared in Tailwind's
+per-utility theme namespaces, which is what lets the same word mean the right thing under
+each.
 
-| Utility                 | Role                                          |
-| ----------------------- | --------------------------------------------- |
-| `bg-canvas`             | The page behind everything.                   |
-| `bg-surface`            | A raised surface — cards, panels, menus.      |
-| `bg-surface-subtle`     | Resting tint. The hover state of a plain row. |
-| `bg-surface-muted`      | One step up from subtle.                      |
-| `bg-surface-emphasized` | Pressed and active states.                    |
-| `bg-surface-inverted`   | Near-black on light, near-white on dark.      |
-| `bg-surface-disabled`   | An inactive control's fill.                   |
+### Text
 
-### Foreground
+| Utility            | Role                                           |
+| ------------------ | ---------------------------------------------- |
+| `text-highlighted` | Headings and anything sitting above body copy. |
+| `text-default`     | Body copy.                                     |
+| `text-toned`       | One step down.                                 |
+| `text-muted`       | Secondary copy.                                |
+| `text-dimmed`      | Placeholders and watermarks.                   |
+| `text-inverted`    | Copy on a filled control, or on `bg-inverted`. |
 
-| Utility            | Role                                                                |
-| ------------------ | ------------------------------------------------------------------- |
-| `text-fg`          | Primary copy. 17.7:1 light, 17.0:1 dark.                            |
-| `text-fg-muted`    | Secondary copy. 7.7:1 light, 6.9:1 dark.                            |
-| `text-fg-subtle`   | Placeholders and watermarks. **3.7:1 in dark** — not for body text. |
-| `text-fg-disabled` | Below AA by design; WCAG exempts inactive controls.                 |
-| `text-fg-inverted` | Copy on `bg-surface-inverted`.                                      |
+### Background
 
-### Lines and focus
+| Utility       | Role                                           |
+| ------------- | ---------------------------------------------- |
+| `bg-default`  | The page, and anything sitting flat on it.     |
+| `bg-muted`    | A recessed tint.                               |
+| `bg-elevated` | A raised tint. The hover state of a plain row. |
+| `bg-accented` | One step up: pressed and active states.        |
+| `bg-inverted` | Near-black on light, near-white on dark.       |
 
-| Utility                  | Role                                                           |
-| ------------------------ | -------------------------------------------------------------- |
-| `border-line`            | The default hairline.                                          |
-| `border-line-subtle`     | A divider that should barely register.                         |
-| `border-line-emphasized` | Hovered or focused chrome.                                     |
-| `outline-focus`          | The focus ring. One token, so focus looks the same everywhere. |
+### Border
 
-Elevation is semantic too — `shadow-sm` through `shadow-xl` carry roughly four times the
-alpha in dark mode, because a shadow tuned for white does not read against `zinc-900`.
+`border-default`, `border-muted`, `border-accented`, `border-inverted` — and the same
+four names under `ring-`, `divide-`, `outline-`, `stroke-` and `fill-`, plus a `-bg`
+entry for a border that matches the page.
 
 ## Intent palettes
 
-Shape and intent are separate axes. Every palette fills the same eight roles, so a
-component theme writes each _shape_ once and gets every _intent_ for free.
-
-| Role                   | What it is                                                    |
-| ---------------------- | ------------------------------------------------------------- |
-| `bg-intent-subtle`     | Tinted background — a low-emphasis control at rest.           |
-| `bg-intent-muted`      | The same, one step up: its hover state.                       |
-| `bg-intent-default`    | Solid fill — a high-emphasis control at rest.                 |
-| `bg-intent-emphasized` | The same, one step up: its hover state.                       |
-| `border-intent-line`   | Border on an otherwise unfilled control.                      |
-| `text-intent-fg`       | Icons and de-emphasised accents on a plain background.        |
-| `text-intent-label`    | Label text on `bg-intent-subtle` or on a plain background.    |
-| `text-intent-contrast` | Label text on `bg-intent-default` and `bg-intent-emphasized`. |
-
-Which hue those roles point at is decided by one class:
+Shape and colour are separate axes. The obvious alternative — one compound variant per
+colour × variant pair — needs a build step to generate the combinations, and this library
+has none. So it does the job the other way round: a palette re-points one custom property,
+and a component theme writes each _shape_ once against it.
 
 ```
-intent-accent   intent-neutral   intent-success
-intent-warning  intent-danger    intent-info
+intent-primary   intent-secondary  intent-success  intent-info
+intent-warning   intent-error      intent-neutral
 ```
 
-An `intent-*` class sets custom properties and nothing else. Because custom properties
-inherit, putting one on a root element re-points all eight roles for everything inside
-it — which is how a component's `colorPalette` prop reaches its parts without being
-threaded down the tree.
-
-That is what makes the two axes independent:
+An `intent-*` class sets `--ui-intent` and nothing else. Because custom properties
+inherit, putting one on a root element re-points every `bg-intent` inside it — which is
+how a component's `color` prop reaches its parts without being threaded down the tree.
 
 ```ts
-// Every variant is written once, against the roles.
-solid:   "bg-intent-default text-intent-contrast hover:bg-intent-emphasized",
-outline: "border-intent-line text-intent-label hover:bg-intent-subtle",
+// Every variant is written once, against the intent.
+solid:   "text-inverted bg-intent hover:bg-intent/75",
+outline: "text-intent ring ring-inset ring-intent/50 hover:bg-intent/10",
 
-// Every intent is one class, on the root element.
-colorPalette: {
-  accent: "intent-accent",
-  danger: "intent-danger",
+// Every colour is one class, on the root element.
+color: {
+  primary: "intent-primary",
+  error: "intent-error",
   // …
 },
 ```
 
-Five variants times six palettes is thirty combinations, and none of them is spelled out.
+Six variants times seven palettes is forty-two combinations, written as six shapes plus
+seven one-line palettes. Only the six `neutral` pairs are spelled out — see below.
 
-Nothing stops you using these directly. An `intent-warning` on a `<section>` makes every
-`bg-intent-subtle` and `text-intent-label` inside it amber, components and your own
-markup alike.
+Nothing stops you using this directly. An `intent-warning` on a `<section>` makes every
+`bg-intent/10` and `text-intent` inside it yellow, components and your own markup alike.
 
-### The contrast rule
+### Contrast, and why `neutral` is different
 
-`contrast` is picked per palette **and per mode** so it clears WCAG AA (4.5:1) against
-both `default` and `emphasized`. That is why the palettes are not symmetric:
+Contrast is handled by **inverting, not by tuning**. Text on a filled control is
+`text-inverted`: white in light mode, near-black in dark. Paired with a palette that is a
+500 in light and a lighter 400 in dark, the filled shape reads the same way in both modes
+for every hue — including the yellows and greens that cannot carry white text at any
+recognisable brightness.
 
-- `accent` and `danger` are dark enough at their solid steps to carry white text, so they
-  darken on hover and keep white throughout.
-- `success`, `warning` and `info` cannot carry white text at a brightness that still reads
-  as green, amber or blue. In dark mode they invert instead: a vivid 400 fill with the 950
-  shade as text.
+`neutral` is the exception to the intent mechanism, in every theme. A neutral control is
+not a grey-hued version of a coloured one — it is drawn from the background ramp
+(`bg-elevated`, `ring-accented`, `text-default`) so that it recedes rather than reading as
+an eighth hue. That cannot be expressed by re-pointing `--ui-intent`, so themes override
+the neutral pairs explicitly.
 
-The current worst pair is 4.83:1. `fg-subtle` and `fg-disabled` are the two deliberate
-exceptions, noted above.
+## Focus
+
+There is no global focus ring. Each component carries its own — a wide, translucent halo
+in its own palette:
+
+```
+outline-intent/25 focus-visible:outline-3
+```
+
+A component with no colour axis names a palette outright; the accordion uses
+`outline-primary/25`.
 
 ## Retuning the system
 
-Every value above is a CSS variable, so re-pointing the brand or any semantic role is
-CSS, not configuration.
+Every value above is a CSS variable, so re-pointing a palette or a semantic role is CSS,
+not configuration.
 
 ```css
-/* Move the whole brand ramp. */
-@theme {
-  --color-neo-500: #576eb0;
+/* Move a whole palette — the eleven properties the alias reads through. */
+:root {
+  --ui-color-primary-500: #576eb0;
   /* … the rest of the ramp */
 }
 
-/* Or re-point one semantic role without touching the ramp. */
+/* Or re-point one semantic role without touching a ramp. */
 :root {
-  --ui-focus: var(--color-neo-600);
+  --ui-border-accented: var(--ui-color-neutral-400);
 }
 .dark {
-  --ui-focus: var(--color-neo-300);
+  --ui-border-accented: var(--ui-color-neutral-600);
 }
 ```
+
+Because the Tailwind aliases are declared with `@theme default inline`, the utility
+carries `var(--ui-color-primary-500)` in its own body rather than a value resolved once at
+`:root` — so an override lands everywhere, per colour mode and per subtree, without
+Tailwind being reconfigured.
 
 To change _components_ rather than colours, see [Customization](/customization).

@@ -2,93 +2,288 @@
  * Raw values. Nothing here carries meaning — `semantic.css` and `intents.css` are what
  * decide what a value is *for*.
  *
- * Most of the system's scales are Tailwind's own, unchanged, because they already say
- * what this design system wanted to say:
+ * The whole file is static CSS — this library has no build step and no runtime plugin,
+ * so the palettes and the Tailwind aliases they feed are both spelled out in full. An
+ * app rebrands by redefining custom properties, never by reconfiguring Tailwind.
  *
- * - **Spacing and sizing** — Tailwind's dynamic `--spacing` ramp is 0.25rem per step, so
- *   `h-11` and `p-11` agree the same way the old shared ramp did.
- * - **Breakpoints** — `sm` 40rem … `2xl` 96rem, mobile-first.
- * - **Container widths** — `xs` 20rem … `7xl` 80rem, for `max-w-*`.
- * - **Line heights and tracking** — `leading-snug`, `tracking-tight` and friends.
- * - **Easing** — `--ease-in-out` is already `cubic-bezier(0.4, 0, 0.2, 1)`, the
- *   everyday curve; only the three specialised curves below are added.
+ * Everything not declared here is Tailwind's own scale, unchanged: the 0.25rem spacing
+ * ramp, breakpoints, container widths, line heights, tracking, easings and the default
+ * font stacks. The design system has no quarrel with any of them.
  *
- * The five non-brand palettes are Tailwind's too, referenced by their real names so a
- * consumer's `red-500` still means what they expect: neutrals are **zinc**, danger is
- * **red**, success is **emerald**, warning is **amber**, info is **sky**. Read the steps
- * as roles rather than shades — 50–100 are tinted backgrounds, 200–300 are borders,
- * 500–600 are solid fills, 700–800 are text on a tint, and 950 is the tint's dark-mode
- * counterpart.
+ * ## Two levels of indirection, and why
+ *
+ *   --ui-color-primary-500   the palette's raw ramp     ← re-point to rebrand
+ *   --color-primary-500      the Tailwind theme alias   ← what `bg-primary-500` reads
+ *
+ * An app rebrands by redefining the eleven `--ui-color-primary-*` properties on `:root`.
+ * Because the alias below is declared with `@theme default inline`, the utility carries
+ * `var(--ui-color-primary-500)` in its own body rather than a value resolved once at
+ * `:root`, so the override lands everywhere without Tailwind being reconfigured.
  */
+
+/*
+ * `neutral` is re-pointed at Tailwind's `slate` below, which shadows Tailwind's own
+ * neutral ramp. It is kept reachable under this name so nothing is lost.
+ */
+@theme static {
+  --color-old-neutral-50: oklch(98.5% 0 none);
+  --color-old-neutral-100: oklch(97% 0 none);
+  --color-old-neutral-200: oklch(92.2% 0 none);
+  --color-old-neutral-300: oklch(87% 0 none);
+  --color-old-neutral-400: oklch(70.8% 0 none);
+  --color-old-neutral-500: oklch(55.6% 0 none);
+  --color-old-neutral-600: oklch(43.9% 0 none);
+  --color-old-neutral-700: oklch(37.1% 0 none);
+  --color-old-neutral-800: oklch(26.9% 0 none);
+  --color-old-neutral-900: oklch(20.5% 0 none);
+  --color-old-neutral-950: oklch(14.5% 0 none);
+}
+
+@layer theme {
+  :root,
+  :host {
+    /*
+     * The whole radius scale is derived from this one value, so rounding the entire
+     * system up or down is a single override. `0.25rem` reproduces Tailwind's default
+     * scale step for step.
+     */
+    --ui-radius: 0.25rem;
+
+    /* Layout constants components read directly, rather than each picking its own. */
+    --ui-container: 80rem;
+    --ui-header-height: 4rem;
+
+    /* primary — Tailwind's `green` */
+    --ui-color-primary-50: oklch(98.2% 0.018 155.826);
+    --ui-color-primary-100: oklch(96.2% 0.044 156.743);
+    --ui-color-primary-200: oklch(92.5% 0.084 155.995);
+    --ui-color-primary-300: oklch(87.1% 0.15 154.449);
+    --ui-color-primary-400: oklch(79.2% 0.209 151.711);
+    --ui-color-primary-500: oklch(72.3% 0.219 149.579);
+    --ui-color-primary-600: oklch(62.7% 0.194 149.214);
+    --ui-color-primary-700: oklch(52.7% 0.154 150.069);
+    --ui-color-primary-800: oklch(44.8% 0.119 151.328);
+    --ui-color-primary-900: oklch(39.3% 0.095 152.535);
+    --ui-color-primary-950: oklch(26.6% 0.065 152.934);
+
+    /* secondary — Tailwind's `blue` */
+    --ui-color-secondary-50: oklch(97% 0.014 254.604);
+    --ui-color-secondary-100: oklch(93.2% 0.032 255.585);
+    --ui-color-secondary-200: oklch(88.2% 0.059 254.128);
+    --ui-color-secondary-300: oklch(80.9% 0.105 251.813);
+    --ui-color-secondary-400: oklch(70.7% 0.165 254.624);
+    --ui-color-secondary-500: oklch(62.3% 0.214 259.815);
+    --ui-color-secondary-600: oklch(54.6% 0.245 262.881);
+    --ui-color-secondary-700: oklch(48.8% 0.243 264.376);
+    --ui-color-secondary-800: oklch(42.4% 0.199 265.638);
+    --ui-color-secondary-900: oklch(37.9% 0.146 265.522);
+    --ui-color-secondary-950: oklch(28.2% 0.091 267.935);
+
+    /* success — Tailwind's `green` */
+    --ui-color-success-50: oklch(98.2% 0.018 155.826);
+    --ui-color-success-100: oklch(96.2% 0.044 156.743);
+    --ui-color-success-200: oklch(92.5% 0.084 155.995);
+    --ui-color-success-300: oklch(87.1% 0.15 154.449);
+    --ui-color-success-400: oklch(79.2% 0.209 151.711);
+    --ui-color-success-500: oklch(72.3% 0.219 149.579);
+    --ui-color-success-600: oklch(62.7% 0.194 149.214);
+    --ui-color-success-700: oklch(52.7% 0.154 150.069);
+    --ui-color-success-800: oklch(44.8% 0.119 151.328);
+    --ui-color-success-900: oklch(39.3% 0.095 152.535);
+    --ui-color-success-950: oklch(26.6% 0.065 152.934);
+
+    /* info — Tailwind's `blue` */
+    --ui-color-info-50: oklch(97% 0.014 254.604);
+    --ui-color-info-100: oklch(93.2% 0.032 255.585);
+    --ui-color-info-200: oklch(88.2% 0.059 254.128);
+    --ui-color-info-300: oklch(80.9% 0.105 251.813);
+    --ui-color-info-400: oklch(70.7% 0.165 254.624);
+    --ui-color-info-500: oklch(62.3% 0.214 259.815);
+    --ui-color-info-600: oklch(54.6% 0.245 262.881);
+    --ui-color-info-700: oklch(48.8% 0.243 264.376);
+    --ui-color-info-800: oklch(42.4% 0.199 265.638);
+    --ui-color-info-900: oklch(37.9% 0.146 265.522);
+    --ui-color-info-950: oklch(28.2% 0.091 267.935);
+
+    /* warning — Tailwind's `yellow` */
+    --ui-color-warning-50: oklch(98.7% 0.026 102.212);
+    --ui-color-warning-100: oklch(97.3% 0.071 103.193);
+    --ui-color-warning-200: oklch(94.5% 0.129 101.54);
+    --ui-color-warning-300: oklch(90.5% 0.182 98.111);
+    --ui-color-warning-400: oklch(85.2% 0.199 91.936);
+    --ui-color-warning-500: oklch(79.5% 0.184 86.047);
+    --ui-color-warning-600: oklch(68.1% 0.162 75.834);
+    --ui-color-warning-700: oklch(55.4% 0.135 66.442);
+    --ui-color-warning-800: oklch(47.6% 0.114 61.907);
+    --ui-color-warning-900: oklch(42.1% 0.095 57.708);
+    --ui-color-warning-950: oklch(28.6% 0.066 53.813);
+
+    /* error — Tailwind's `red` */
+    --ui-color-error-50: oklch(97.1% 0.013 17.38);
+    --ui-color-error-100: oklch(93.6% 0.032 17.717);
+    --ui-color-error-200: oklch(88.5% 0.062 18.334);
+    --ui-color-error-300: oklch(80.8% 0.114 19.571);
+    --ui-color-error-400: oklch(70.4% 0.191 22.216);
+    --ui-color-error-500: oklch(63.7% 0.237 25.331);
+    --ui-color-error-600: oklch(57.7% 0.245 27.325);
+    --ui-color-error-700: oklch(50.5% 0.213 27.518);
+    --ui-color-error-800: oklch(44.4% 0.177 26.899);
+    --ui-color-error-900: oklch(39.6% 0.141 25.723);
+    --ui-color-error-950: oklch(25.8% 0.092 26.042);
+
+    /* neutral — Tailwind's `slate` */
+    --ui-color-neutral-50: oklch(98.4% 0.003 247.858);
+    --ui-color-neutral-100: oklch(96.8% 0.007 247.896);
+    --ui-color-neutral-200: oklch(92.9% 0.013 255.508);
+    --ui-color-neutral-300: oklch(86.9% 0.022 252.894);
+    --ui-color-neutral-400: oklch(70.4% 0.04 256.788);
+    --ui-color-neutral-500: oklch(55.4% 0.046 257.417);
+    --ui-color-neutral-600: oklch(44.6% 0.043 257.281);
+    --ui-color-neutral-700: oklch(37.2% 0.044 257.287);
+    --ui-color-neutral-800: oklch(27.9% 0.041 260.031);
+    --ui-color-neutral-900: oklch(20.8% 0.042 265.755);
+    --ui-color-neutral-950: oklch(12.9% 0.042 264.695);
+  }
+}
+
+/*
+ * The Tailwind aliases. `inline` is load-bearing — see the note in `semantic.css`.
+ * `default` lets an app's own `@theme` block win outright, for the cases where
+ * re-pointing `--ui-color-*` is not enough.
+ */
+@theme default inline {
+  --color-primary-50: var(--ui-color-primary-50);
+  --color-primary-100: var(--ui-color-primary-100);
+  --color-primary-200: var(--ui-color-primary-200);
+  --color-primary-300: var(--ui-color-primary-300);
+  --color-primary-400: var(--ui-color-primary-400);
+  --color-primary-500: var(--ui-color-primary-500);
+  --color-primary-600: var(--ui-color-primary-600);
+  --color-primary-700: var(--ui-color-primary-700);
+  --color-primary-800: var(--ui-color-primary-800);
+  --color-primary-900: var(--ui-color-primary-900);
+  --color-primary-950: var(--ui-color-primary-950);
+
+  --color-secondary-50: var(--ui-color-secondary-50);
+  --color-secondary-100: var(--ui-color-secondary-100);
+  --color-secondary-200: var(--ui-color-secondary-200);
+  --color-secondary-300: var(--ui-color-secondary-300);
+  --color-secondary-400: var(--ui-color-secondary-400);
+  --color-secondary-500: var(--ui-color-secondary-500);
+  --color-secondary-600: var(--ui-color-secondary-600);
+  --color-secondary-700: var(--ui-color-secondary-700);
+  --color-secondary-800: var(--ui-color-secondary-800);
+  --color-secondary-900: var(--ui-color-secondary-900);
+  --color-secondary-950: var(--ui-color-secondary-950);
+
+  --color-success-50: var(--ui-color-success-50);
+  --color-success-100: var(--ui-color-success-100);
+  --color-success-200: var(--ui-color-success-200);
+  --color-success-300: var(--ui-color-success-300);
+  --color-success-400: var(--ui-color-success-400);
+  --color-success-500: var(--ui-color-success-500);
+  --color-success-600: var(--ui-color-success-600);
+  --color-success-700: var(--ui-color-success-700);
+  --color-success-800: var(--ui-color-success-800);
+  --color-success-900: var(--ui-color-success-900);
+  --color-success-950: var(--ui-color-success-950);
+
+  --color-info-50: var(--ui-color-info-50);
+  --color-info-100: var(--ui-color-info-100);
+  --color-info-200: var(--ui-color-info-200);
+  --color-info-300: var(--ui-color-info-300);
+  --color-info-400: var(--ui-color-info-400);
+  --color-info-500: var(--ui-color-info-500);
+  --color-info-600: var(--ui-color-info-600);
+  --color-info-700: var(--ui-color-info-700);
+  --color-info-800: var(--ui-color-info-800);
+  --color-info-900: var(--ui-color-info-900);
+  --color-info-950: var(--ui-color-info-950);
+
+  --color-warning-50: var(--ui-color-warning-50);
+  --color-warning-100: var(--ui-color-warning-100);
+  --color-warning-200: var(--ui-color-warning-200);
+  --color-warning-300: var(--ui-color-warning-300);
+  --color-warning-400: var(--ui-color-warning-400);
+  --color-warning-500: var(--ui-color-warning-500);
+  --color-warning-600: var(--ui-color-warning-600);
+  --color-warning-700: var(--ui-color-warning-700);
+  --color-warning-800: var(--ui-color-warning-800);
+  --color-warning-900: var(--ui-color-warning-900);
+  --color-warning-950: var(--ui-color-warning-950);
+
+  --color-error-50: var(--ui-color-error-50);
+  --color-error-100: var(--ui-color-error-100);
+  --color-error-200: var(--ui-color-error-200);
+  --color-error-300: var(--ui-color-error-300);
+  --color-error-400: var(--ui-color-error-400);
+  --color-error-500: var(--ui-color-error-500);
+  --color-error-600: var(--ui-color-error-600);
+  --color-error-700: var(--ui-color-error-700);
+  --color-error-800: var(--ui-color-error-800);
+  --color-error-900: var(--ui-color-error-900);
+  --color-error-950: var(--ui-color-error-950);
+
+  --color-neutral-50: var(--ui-color-neutral-50);
+  --color-neutral-100: var(--ui-color-neutral-100);
+  --color-neutral-200: var(--ui-color-neutral-200);
+  --color-neutral-300: var(--ui-color-neutral-300);
+  --color-neutral-400: var(--ui-color-neutral-400);
+  --color-neutral-500: var(--ui-color-neutral-500);
+  --color-neutral-600: var(--ui-color-neutral-600);
+  --color-neutral-700: var(--ui-color-neutral-700);
+  --color-neutral-800: var(--ui-color-neutral-800);
+  --color-neutral-900: var(--ui-color-neutral-900);
+  --color-neutral-950: var(--ui-color-neutral-950);
+
+  --radius-xs: calc(var(--ui-radius) * 0.5);
+  --radius-sm: var(--ui-radius);
+  --radius-md: calc(var(--ui-radius) * 1.5);
+  --radius-lg: calc(var(--ui-radius) * 2);
+  --radius-xl: calc(var(--ui-radius) * 3);
+  --radius-2xl: calc(var(--ui-radius) * 4);
+  --radius-3xl: calc(var(--ui-radius) * 6);
+}
 
 @theme {
   /*
-   * Brand. A desaturated indigo — the hue the whole system is tuned around, and the one
-   * ramp Tailwind does not already ship.
+   * Motion. Ark UI measures a collapsible panel and sets `--height` on it once it knows
+   * the number, which is the only reason these two can interpolate `height` at all.
    *
-   * Nothing outside `semantic.css` and `intents.css` should reference these directly. A
-   * component that reaches for `neo-600` has hard-coded a light-mode value; the semantic
-   * layer exists so it doesn't have to.
+   * Reduced motion is deliberately *not* applied to the height reveal: collapsing
+   * instantly loses the connection between the trigger and the panel it opened. The
+   * chevron's rotation is gated at its use site instead.
    */
-  --color-neo-50: #f4f6fb;
-  --color-neo-100: #e6eaf5;
-  --color-neo-200: #ccd5ea;
-  --color-neo-300: #a6b6d9;
-  --color-neo-400: #7a90c4;
-  --color-neo-500: #576eb0;
-  --color-neo-600: #425597;
-  --color-neo-700: #36457a;
-  --color-neo-800: #2c3861;
-  --color-neo-900: #1e2743;
-  --color-neo-950: #12172a;
+  --animate-accordion-down: accordion-down 200ms var(--ease-out);
+  --animate-accordion-up: accordion-up 200ms var(--ease-out);
 
-  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Generic overlay primitives — a dialog, a popover and a tooltip compose these two. */
+  --animate-fade-in: fade-in 200ms var(--ease-out);
+  --animate-fade-out: fade-out 200ms var(--ease-out);
+  --animate-scale-in: scale-in 200ms var(--ease-out);
+  --animate-scale-out: scale-out 200ms var(--ease-out);
 
-  /* One rung below Tailwind's `text-xs`, for the smallest UI labels. */
-  --text-2xs: 0.625rem;
-  --text-2xs--line-height: calc(1 / 0.625);
+  @keyframes accordion-down {
+    from {
+      height: 0;
+      overflow: hidden;
+    }
+    to {
+      height: var(--height);
+      overflow: hidden;
+    }
+  }
 
-  /*
-   * Rounder than Tailwind's ramp by one step throughout: `rounded-md` is 0.5rem rather
-   * than 0.375rem. Controls in this system are compact, and at these heights the softer
-   * corner is what keeps a `sm` button from reading as a chip.
-   */
-  --radius-xs: 0.25rem;
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
-  --radius-3xl: 2rem;
-  --radius-4xl: initial;
-
-  /*
-   * `ease-in-out` is the everyday curve. These three are the exceptions: `emphasized`
-   * decelerates harder and is what entrances (a popover opening) should use,
-   * `accelerate` is its exit counterpart, and `spring` overshoots.
-   */
-  --ease-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
-  --ease-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-
-  /*
-   * Motion primitives, deliberately generic rather than per-component: a dialog, a
-   * popover and a toast all want "fade plus scale", so they compose the same two.
-   *
-   * Entrances get `--ease-emphasized` (a hard decelerate — the element arrives and
-   * settles); exits get `--ease-accelerate` and a shorter duration, because a user
-   * dismissing something has already moved on.
-   */
-  --animate-fade-in: fade-in 200ms var(--ease-emphasized);
-  --animate-fade-out: fade-out 120ms var(--ease-accelerate);
-  --animate-scale-in: scale-in 200ms var(--ease-emphasized);
-  --animate-scale-out: scale-out 120ms var(--ease-accelerate);
-  --animate-slide-in-top: slide-in-top 200ms var(--ease-emphasized);
-  --animate-slide-in-bottom: slide-in-bottom 200ms var(--ease-emphasized);
-  --animate-slide-in-left: slide-in-left 200ms var(--ease-emphasized);
-  --animate-slide-in-right: slide-in-right 200ms var(--ease-emphasized);
-  --animate-collapse-in: collapse-in 120ms var(--ease-in-out);
-  --animate-collapse-out: collapse-out 120ms var(--ease-in-out);
+  @keyframes accordion-up {
+    from {
+      height: var(--height);
+      overflow: hidden;
+    }
+    to {
+      height: 0;
+      overflow: hidden;
+    }
+  }
 
   @keyframes fade-in {
     from {
@@ -129,74 +324,28 @@
       transform: scale(0.95);
     }
   }
+}
 
-  @keyframes slide-in-top {
+/*
+ * Reduced motion: keep the fade, drop the movement. Redefining the keyframes covers
+ * every component that references them in one place, rather than each having to gate
+ * itself. Height reveals are left alone, for the reason given above.
+ */
+@media (prefers-reduced-motion: reduce) {
+  @keyframes scale-in {
     from {
-      opacity: 0;
-      transform: translateY(-0.5rem);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes slide-in-bottom {
-    from {
-      opacity: 0;
-      transform: translateY(0.5rem);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes slide-in-left {
-    from {
-      opacity: 0;
-      transform: translateX(-0.5rem);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes slide-in-right {
-    from {
-      opacity: 0;
-      transform: translateX(0.5rem);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  /*
-   * `--height` is set by Ark UI on collapsible content (accordion, collapsible) once it
-   * has measured the panel. Nothing else in the system provides it, so these two belong
-   * to that family of components specifically.
-   */
-  @keyframes collapse-in {
-    from {
-      height: 0;
       opacity: 0;
     }
     to {
-      height: var(--height);
       opacity: 1;
     }
   }
 
-  @keyframes collapse-out {
+  @keyframes scale-out {
     from {
-      height: var(--height);
       opacity: 1;
     }
     to {
-      height: 0;
       opacity: 0;
     }
   }
