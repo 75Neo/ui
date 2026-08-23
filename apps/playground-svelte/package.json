@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "storybook dev -p 6008 --no-open",
-    "build": "storybook build",
     "typecheck": "svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
