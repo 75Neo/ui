@@ -4,6 +4,10 @@
   "description": "Shared Tailwind CSS theme and tailwind-variants component themes for 75NeoUI",
   "license": "MIT",
   "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "build": "tsdown",
     "typecheck": "tsc --noEmit",
