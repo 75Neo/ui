@@ -3,23 +3,7 @@
   "version": "0.0.0",
   "description": "75NeoUI components for React",
   "license": "MIT",
-  "files": [
-    "dist"
-  ],
   "type": "module",
-  "sideEffects": false,
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    },
-    "./package.json": "./package.json"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
@@ -34,8 +18,11 @@
   },
   "devDependencies": {
     "@75neo/tooling": "workspace:*",
+    "@rolldown/plugin-babel": "^0.2.3",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "^6.1.0",
+    "babel-plugin-react-compiler": "^1.0.0",
     "publint": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
