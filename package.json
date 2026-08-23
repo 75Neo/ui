@@ -10,7 +10,7 @@
     "dev:svelte": "turbo run dev --filter playground-svelte",
     "dev:docs": "turbo run dev --filter docs",
     "build": "turbo run build",
-    "check": "turbo run check",
+    "typecheck": "turbo run typecheck",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "lint:packages": "turbo run lint:package --filter './packages/*'",
