@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "storybook dev -p 6008 --no-open",
     "build": "storybook build",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "typecheck": "svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
     "@75neo/svelte": "workspace:*",

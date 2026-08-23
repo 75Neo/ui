@@ -24,7 +24,7 @@
   "scripts": {
     "build": "svelte-package --input src --output dist",
     "dev": "svelte-package --input src --output dist --watch",
-    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "typecheck": "svelte-check --tsconfig ./tsconfig.json",
     "lint:package": "publint",
     "prepack": "pnpm run build"
   },

@@ -5,34 +5,25 @@ on:
     branches: [master]
   pull_request:
 
-# A newer push to the same PR supersedes the run already in flight for it. Pushes to
-# master are left alone: they are what seeds the Turborepo cache and marks the branch
-# green, so superseding one costs more than it saves.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
-# Nothing here writes to the repo or to any registry.
 permissions:
   contents: read
 
 env:
-  # Turborepo phones home with anonymous usage counts by default. CI has nothing to
-  # gain from it and one less network call is one less way for a run to hang.
   TURBO_TELEMETRY_DISABLED: "1"
 
 jobs:
   qa:
     name: QA
     runs-on: ubuntu-latest
-    # The whole job runs in about two minutes. Anything near this is hung.
     timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v7
 
-      # mise reads mise.toml, which is what local dev uses — so the Node and pnpm
-      # versions are pinned in exactly one place and cannot drift.
       - name: Setup mise
         uses: jdx/mise-action@v4
 
@@ -48,9 +39,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      # Turborepo's local cache, carried between runs. Saved under this commit's SHA and
-      # restored from the newest `-turbo-` key, so a re-run of the same commit replays
-      # everything and a new commit still reuses every task whose inputs didn't move.
       - name: Turborepo cache
         uses: actions/cache@v6
         with:
@@ -59,44 +47,24 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-
 
-      # There is no code generation step: Tailwind reads the design system straight
-      # from `packages/styles/src`, so an install is the only prerequisite. Every check
-      # below is guarded on it rather than on step order, because `!cancelled()` would
-      # otherwise run them all against an empty `node_modules`.
       - name: Install
-        id: setup
         run: pnpm install --frozen-lockfile
 
-      # Each check below runs even when an earlier one failed, so a single push reports
-      # every problem at once instead of one per round trip. The job still fails if any
-      # of them do.
       - name: Format
-        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: pnpm format:check
 
       - name: Lint
-        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: pnpm lint
 
-      # tsc / vue-tsc / svelte-check / astro check across all 8 projects. Turborepo runs
-      # them in parallel: none of them needs a dependency built, only its source hashed.
       - name: Types
-        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
-        run: pnpm check
+        run: pnpm typecheck
 
       - name: Build
-        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: pnpm build
 
-      # publint, over the four publishable manifests.
       - name: Package manifests
-        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: pnpm lint:packages
 
-      # The store is restored from the newest key even when the lockfile has moved, and
-      # pnpm never removes what a lockfile stopped referencing. Without this the cached
-      # store only ever grows. Runs before the post-job cache save; never fails the run.
       - name: Prune pnpm store
-        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         continue-on-error: true
         run: pnpm store prune

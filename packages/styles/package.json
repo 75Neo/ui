@@ -29,7 +29,7 @@
   },
   "scripts": {
     "build": "tsdown",
-    "check": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "lint:package": "publint",
     "prepack": "pnpm run build"
   },

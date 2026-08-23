@@ -2,15 +2,12 @@
   "$schema": "https://turborepo.dev/schema.json",
   "ui": "stream",
   "tasks": {
-    "transit": {
-      "dependsOn": ["^transit"]
-    },
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**", "storybook-static/**"]
     },
-    "check": {
-      "dependsOn": ["transit"]
+    "typecheck": {
+      "dependsOn": ["^typecheck"]
     },
     "lint:package": {
       "dependsOn": ["build"]
