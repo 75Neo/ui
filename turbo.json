@@ -7,7 +7,7 @@
       "outputs": ["dist/**", "storybook-static/**"]
     },
     "typecheck": {
-      "dependsOn": ["^typecheck"]
+      "dependsOn": ["build"]
     },
     "lint:package": {
       "dependsOn": ["build"]
