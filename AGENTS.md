@@ -83,25 +83,33 @@ any one file.
 
    ```css
    @import "tailwindcss";
-   @import "@75neo/styles/css";
+   @import "@75neo/styles";
    ```
 
    plus the `@tailwindcss/vite` plugin (or `@tailwindcss/postcss`).
 
 ### The one line that makes it work
 
-Tailwind only emits a class it has seen in a scanned file, and it never scans `node_modules`. The
-component themes live in `@75neo/styles` — outside every app's project root. `src/css/index.css`
+Tailwind only emits a class it has seen in a scanned file, and it never scans `node_modules` on its
+own. The component themes live in `@75neo/styles` — outside every app's project root. `src/css/index.css`
 therefore ends with:
 
 ```css
-@source "../themes";
+@source "./index.js";
 ```
 
-The path is relative to that CSS file, so it resolves identically in a workspace checkout and in a
-consumer's `node_modules`. **This is why component packages must not spell Tailwind classes
-themselves** — nothing scans `packages/react/src`. A class written there produces no CSS, the app
-renders, and the styles are simply absent.
+An explicit `@source` **is** honoured inside `node_modules`, which is what makes this work at all.
+The path is deliberately written for the **built** file rather than for the one it sits in: Tailwind
+copies a `@source` through verbatim and resolves it against whichever file contains it, and the only
+file a consumer ever sees is `dist/style.css` — where `./index.js` is the bundled themes beside it.
+Tailwind scans that bundle as text and finds every class string the themes can produce.
+
+The two files therefore have to stay siblings in `dist`, and pointing this back at `../themes` would
+silently produce a stylesheet with no component classes in it — no error, just an unstyled app.
+
+**This is also why component packages must not spell Tailwind classes themselves** — nothing scans
+`packages/react/src`. A class written there produces no CSS, the app renders, and the styles are
+simply absent.
 
 ### Consequences for day-to-day work
 
@@ -312,11 +320,15 @@ React and Vue build with tsdown, from `defineLibrary()` in `@75neo/tooling` — 
 which is where `fixedExtension: false` comes from, so ESM output lands at `.js` and the exports map
 stays simple. Vue adds the two things a component library of SFCs needs: `unplugin-vue` to compile
 them, and `dts: { vue: true }` to put `vue-tsc` behind the declaration build so the emitted
-`.d.ts` describes props and slots rather than `any`. `@75neo/styles` builds with tsdown too, but
-only for publishing: its `exports` point at `src` so nothing in this workspace needs a build, and
-`publishConfig` swaps in the built entry on publish. The CSS is always published as source, because
-the `@source` inside it resolves relative to its own location. Run `pnpm lint:packages` after
-touching any `exports` field.
+`.d.ts` describes props and slots rather than `any`. `@75neo/styles` builds with tsdown too, through
+`@tsdown/css`: the stylesheet is a second entry, so the five files under `src/css` are inlined into
+one `dist/style.css`. That package publishes `dist` and nothing else.
+
+Its root export carries both payloads under one specifier. Tailwind resolves a CSS `@import` with
+`conditionNames: ["style"]` and nothing else does, so `@import "@75neo/styles"` lands on the stylesheet
+while `import { button } from "@75neo/styles"` falls through to `default` and gets the JavaScript.
+Condition order matters — `types` first, `default` last. Run `pnpm lint:packages` after touching any
+`exports` field.
 
 Nothing from `node_modules` belongs in a published bundle, so the shared config sets
 `deps.onlyBundle: []` and anything that lands there fails the build. `packages/vue` is the one

@@ -1,58 +1,40 @@
 /*
  * The 75NeoUI design system, as CSS.
  *
- * Tokens, semantic colours, intent palettes and a handful of base rules, written for a
- * plain Tailwind app: no module to install, no generator to run, nothing to configure
- * beyond the two imports below.
- *
  * An app pulls the whole system in with two lines, in this order:
  *
  *   @import "tailwindcss";
- *   @import "@75neo/styles/css";
+ *   @import "@75neo/styles";
  *
  * Order matters: everything below extends Tailwind's own theme, so Tailwind has to be
  * loaded first.
  *
- * Layers, outermost first:
- *
- *   1. `tokens.css`    — raw values. The seven palette ramps, the radius scale, motion.
- *   2. `semantic.css`  — what those values *mean* (`bg-elevated`, `text-muted`),
- *                        resolved per colour mode.
- *   3. `intents.css`   — the seven intent palettes, each re-pointing one property.
- *   4. `base.css`      — the handful of global rules.
- *
- * Component styling lives one level up, in `../themes/*.ts`, written entirely against
- * layers 2 and 3.
+ * Every specifier below is written `./…` on purpose. Tailwind resolves a bare specifier
+ * the way Node does — as a package name — so `@import "colors.css"` looks for a *module*
+ * called `colors.css` and fails. tsdown inlines all five into the single published
+ * `dist/style.css`, so a consumer receives one file.
  */
 
-@import "./tokens.css";
-@import "./semantic.css";
-@import "./intents.css";
-@import "./base.css";
+@import "./background.css";
+@import "./border.css";
+@import "./colors.css";
+@import "./radius.css";
+@import "./text.css";
 
 /*
- * Tailwind only emits a class it has seen in a scanned file, and the component themes
- * live in this package — outside whatever project root the app's Tailwind scans. This
- * one line is what replaces per-app source configuration: the path is relative to *this*
- * file, so it resolves the same in a workspace checkout and in `node_modules`.
+ * Tailwind only emits a class it has seen in a scanned file, and it never scans
+ * `node_modules` on its own. The component themes live in this package — outside
+ * whatever project root the consuming app scans — so this line is what replaces per-app
+ * source configuration.
  *
- * It is also why component packages must not spell Tailwind classes themselves — see
- * AGENTS.md. Nothing scans them.
+ * The path is deliberately written for the *built* file, not this one. Tailwind copies a
+ * `@source` through verbatim and resolves it against whichever file contains it, and the
+ * only file a consumer ever sees is `dist/style.css` — where `./index.js` is the bundled
+ * themes sitting right beside it. Tailwind scans that bundle as text and finds every
+ * class string the themes can produce, which is exactly the set the components render.
+ *
+ * So: this package publishes `dist/` and nothing else, and the two files in it have to
+ * stay siblings. Moving either one, or pointing this at `../themes`, silently produces a
+ * stylesheet with no component classes in it — no error, just an unstyled app.
  */
-@source "../themes";
-
-/*
- * Colour mode is opt-in via a class or `data-theme`, with no `prefers-color-scheme`
- * fallback — the host app decides, so a user's saved choice can't be overridden by
- * their OS. `[data-theme]` is accepted alongside the class for apps that would rather
- * not manage one.
- *
- * Each half of the `:where()` matches the marked element *and* its descendants. Without
- * the bare `.dark` / `[data-theme="dark"]`, marking `<html>` would leave `<html>` itself
- * on the light values while everything inside it flipped.
- *
- * `:where()` keeps the variant at zero specificity, so `dark:` utilities still lose to a
- * later plain utility exactly as they would in stock Tailwind.
- */
-@custom-variant dark (&:where(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *));
-@custom-variant light (&:where(.light, .light *, [data-theme="light"], [data-theme="light"] *));
+@source "./index.js";

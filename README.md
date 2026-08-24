@@ -29,11 +29,11 @@ pnpm add @75neo/react tailwindcss
 ```css
 /* main.css */
 @import "tailwindcss";
-@import "@75neo/styles/css";
+@import "@75neo/styles";
 ```
 
 That is the whole setup. The second import brings in the design tokens, the semantic utilities, the
-intent palettes, and a `@source` pointing at the component themes — which is what makes Tailwind
+intent palettes, and a `@source` pointing at the bundled themes — which is what makes Tailwind
 emit the classes the components render. There is nothing per-app to configure.
 
 ```tsx

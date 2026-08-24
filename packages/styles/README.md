@@ -16,13 +16,17 @@ src/
 ```css
 /* main.css */
 @import "tailwindcss";
-@import "@75neo/styles/css";
+@import "@75neo/styles";
 ```
 
 That is the whole setup. The second import brings in the theme, the semantic utilities
 (`bg-elevated`, `text-muted`, `ring-accented`), the seven `intent-*` palettes, and a
-`@source` pointing at `src/themes` — which is what makes Tailwind emit the classes the
-components render. No per-app source configuration, and no build step in this package.
+`@source` pointing at the bundled themes beside it — which is what makes Tailwind emit
+the classes the components render. No per-app source configuration.
+
+One specifier serves both halves of the package: Tailwind resolves a CSS `@import` under
+the `style` condition and gets `dist/style.css`, while `import { button } from "@75neo/styles"`
+gets the JavaScript.
 
 Everything is static CSS. There is no module to install and no generator to run, so an
 app changes a palette, a ramp or the radius scale by redefining a custom property rather

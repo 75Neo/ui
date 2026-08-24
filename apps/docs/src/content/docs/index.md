@@ -26,13 +26,13 @@ pnpm add @75neo/react tailwindcss
 ```
 
 Then pull the design system into your stylesheet. Order matters — everything
-`@75neo/styles/css` defines extends Tailwind's own theme, so Tailwind has to be loaded
+`@75neo/styles` defines extends Tailwind's own theme, so Tailwind has to be loaded
 first.
 
 ```css
 /* main.css */
 @import "tailwindcss";
-@import "@75neo/styles/css";
+@import "@75neo/styles";
 ```
 
 That is the whole setup. The second import carries a `@source` pointing at the component

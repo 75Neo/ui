@@ -3,11 +3,17 @@
   "version": "0.0.0",
   "description": "Shared Tailwind CSS theme and tailwind-variants component themes for 75NeoUI",
   "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "exports": {
-    ".": "./dist/index.js",
-    "./package.json": "./package.json",
-    "./css": "./src/css/index.css"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "style": "./dist/style.css",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
     "build": "tsdown",
@@ -16,11 +22,11 @@
     "prepack": "pnpm run build"
   },
   "dependencies": {
-    "tailwind-merge": "^3.6.0",
     "tailwind-variants": "^3.3.1"
   },
   "devDependencies": {
     "@75neo/tooling": "workspace:*",
+    "@tsdown/css": "^0.22.14",
     "publint": "catalog:",
     "tailwindcss": "catalog:",
     "tsdown": "catalog:",

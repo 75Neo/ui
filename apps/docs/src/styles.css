@@ -6,7 +6,7 @@
  * it is styled by the `.prose` rules below.
  */
 @import "tailwindcss";
-@import "@75neo/styles/css";
+@import "@75neo/styles";
 
 @source "./components";
 @source "./layouts";
