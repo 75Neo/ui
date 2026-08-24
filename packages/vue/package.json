@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@75neo/styles": "workspace:*",
-    "@ark-ui/vue": "^5.38.2",
+    "@ark-ui/vue": "^5.39.0",
     "@lucide/vue": "catalog:"
   },
   "devDependencies": {

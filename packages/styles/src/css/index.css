@@ -1,40 +1,7 @@
-/*
- * The 75NeoUI design system, as CSS.
- *
- * An app pulls the whole system in with two lines, in this order:
- *
- *   @import "tailwindcss";
- *   @import "@75neo/styles";
- *
- * Order matters: everything below extends Tailwind's own theme, so Tailwind has to be
- * loaded first.
- *
- * Every specifier below is written `./…` on purpose. Tailwind resolves a bare specifier
- * the way Node does — as a package name — so `@import "colors.css"` looks for a *module*
- * called `colors.css` and fails. tsdown inlines all five into the single published
- * `dist/style.css`, so a consumer receives one file.
- */
-
 @import "./background.css";
 @import "./border.css";
 @import "./colors.css";
 @import "./radius.css";
 @import "./text.css";
 
-/*
- * Tailwind only emits a class it has seen in a scanned file, and it never scans
- * `node_modules` on its own. The component themes live in this package — outside
- * whatever project root the consuming app scans — so this line is what replaces per-app
- * source configuration.
- *
- * The path is deliberately written for the *built* file, not this one. Tailwind copies a
- * `@source` through verbatim and resolves it against whichever file contains it, and the
- * only file a consumer ever sees is `dist/style.css` — where `./index.js` is the bundled
- * themes sitting right beside it. Tailwind scans that bundle as text and finds every
- * class string the themes can produce, which is exactly the set the components render.
- *
- * So: this package publishes `dist/` and nothing else, and the two files in it have to
- * stay siblings. Moving either one, or pointing this at `../themes`, silently produces a
- * stylesheet with no component classes in it — no error, just an unstyled app.
- */
 @source "./index.js";

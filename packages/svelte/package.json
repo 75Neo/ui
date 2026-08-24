@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@75neo/styles": "workspace:*",
-    "@ark-ui/svelte": "^5.23.1",
+    "@ark-ui/svelte": "^5.24.0",
     "@lucide/svelte": "catalog:"
   },
   "devDependencies": {
