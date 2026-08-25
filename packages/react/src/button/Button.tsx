@@ -1,11 +1,12 @@
 import { button, type ButtonVariants } from "@75neo/styles";
-import type { ButtonHTMLAttributes } from "react";
+import type React from "react";
 
-interface ButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "color">, ButtonVariants {}
+interface ButtonProps extends React.PropsWithChildren<ButtonVariants> {
+  ui?: string;
+}
 
-function Button({ variant, size, color, className, ...props }: ButtonProps) {
-  return <button className={button({ variant, size, color, className })} {...props} />;
+function Button({ variant, size, color, ui, children }: ButtonProps) {
+  return <button className={button({ variant, size, color, className: ui })}>{children}</button>;
 }
 
 export { Button, type ButtonProps };

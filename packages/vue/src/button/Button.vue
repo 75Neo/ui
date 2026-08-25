@@ -5,11 +5,12 @@ const props = defineProps<{
   variant?: ButtonVariants["variant"];
   size?: ButtonVariants["size"];
   color?: ButtonVariants["color"];
+  ui?: string;
 }>();
 </script>
 
 <template>
-  <button :class="button({ variant, size, color })">
+  <button :class="button({ variant, size, color, class: ui })">
     <slot />
   </button>
 </template>
