@@ -17,6 +17,7 @@
   },
   "scripts": {
     "build": "tsdown",
+    "dev": "tsdown --watch",
     "typecheck": "tsc --noEmit",
     "lint:package": "publint",
     "prepack": "pnpm run build"

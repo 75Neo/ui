@@ -1,20 +1,10 @@
 import preview from "../.storybook/preview";
-import { Button } from "@75neo/vue";
+import { Button } from "@75neo/react";
 
 const meta = preview.meta({
   title: "Button",
   component: Button,
-  render: (args) => ({
-    components: { Button },
-    setup() {
-      return { args };
-    },
-    template: `
-      <Button v-bind="args">
-        Button
-      </Button>
-    `,
-  }),
+  render: (args) => <Button {...args}>Button</Button>,
 });
 
 export const Solid = meta.story({

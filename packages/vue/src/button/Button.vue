@@ -9,7 +9,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <button :class="button()">
+  <button :class="button({ variant, size, color })">
     <slot />
   </button>
 </template>

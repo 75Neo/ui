@@ -1,3 +1,5 @@
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --ui-primary: var(--color-purple-600);
   --ui-secondary: var(--color-blue-600);
@@ -19,8 +21,8 @@
 @theme static inline {
   --color-primary: var(--ui-primary);
   --color-secondary: var(--ui-secondary);
-  --color-success: var(--ui-color-success);
-  --color-info: var(--ui-color-info);
-  --color-warning: var(--ui-color-warning);
-  --color-error: var(--ui-color-error);
+  --color-success: var(--ui-success);
+  --color-info: var(--ui-info);
+  --color-warning: var(--ui-warning);
+  --color-error: var(--ui-error);
 }
