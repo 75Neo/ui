@@ -1,7 +1,7 @@
 import { tv, type VariantProps } from "tailwind-variants";
 
 const button = tv({
-  base: "inline-flex justify-center items-center shrink-0 cursor-pointer flex-nowrap text-center align-middle gap-2 rounded-md border border-transparent font-medium select-none outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-transparent disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none active:scale-95",
+  base: "inline-flex shrink-0 cursor-pointer flex-nowrap items-center justify-center gap-2 rounded-md border border-transparent text-center align-middle font-medium transition-colors duration-200 outline-none select-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-95 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none dark:focus-visible:ring-offset-transparent",
   variants: {
     variant: {
       solid: "shadow-sm",
@@ -30,35 +30,35 @@ const button = tv({
       variant: "solid",
       color: "primary",
       class:
-        "bg-primary text-white hover:bg-primary/90 active:bg-primary/80 focus-visible:ring-primary/40",
+        "bg-primary hover:bg-primary/90 active:bg-primary/80 focus-visible:ring-primary/40 text-white",
     },
     {
       variant: "solid",
       color: "secondary",
       class:
-        "bg-secondary text-white hover:bg-secondary/90 active:bg-secondary/80 focus-visible:ring-secondary/40",
+        "bg-secondary hover:bg-secondary/90 active:bg-secondary/80 focus-visible:ring-secondary/40 text-white",
     },
     {
       variant: "solid",
       color: "success",
       class:
-        "bg-success text-white hover:bg-success/90 active:bg-success/80 focus-visible:ring-success/40",
+        "bg-success hover:bg-success/90 active:bg-success/80 focus-visible:ring-success/40 text-white",
     },
     {
       variant: "solid",
       color: "info",
-      class: "bg-info text-white hover:bg-info/90 active:bg-info/80 focus-visible:ring-info/40",
+      class: "bg-info hover:bg-info/90 active:bg-info/80 focus-visible:ring-info/40 text-white",
     },
     {
       variant: "solid",
       color: "warning",
       class:
-        "bg-warning text-white hover:bg-warning/90 active:bg-warning/80 focus-visible:ring-warning/40",
+        "bg-warning hover:bg-warning/90 active:bg-warning/80 focus-visible:ring-warning/40 text-white",
     },
     {
       variant: "solid",
       color: "error",
-      class: "bg-error text-white hover:bg-error/90 active:bg-error/80 focus-visible:ring-error/40",
+      class: "bg-error hover:bg-error/90 active:bg-error/80 focus-visible:ring-error/40 text-white",
     },
     {
       variant: "soft",

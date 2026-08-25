@@ -6,6 +6,8 @@
   "license": "MIT",
   "type": "module",
   "exports": {
+    "./oxlint": "./src/oxlint.ts",
+    "./oxfmt": "./src/oxfmt.ts",
     "./tsdown": "./src/tsdown.ts",
     "./tsconfig/*": "./tsconfig/*",
     "./package.json": "./package.json"
@@ -15,6 +17,8 @@
   },
   "devDependencies": {
     "@vue/tsconfig": "^0.9.1",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:"
   }
