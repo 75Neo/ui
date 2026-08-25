@@ -53,14 +53,14 @@ jobs:
       - name: Format
         run: pnpm format:check
 
+      - name: Build
+        run: pnpm build
+
       - name: Lint
         run: pnpm lint
 
       - name: Type check
         run: pnpm typecheck
-
-      - name: Build
-        run: pnpm build
 
       - name: Package manifests
         run: pnpm lint:packages
