@@ -1,7 +1,19 @@
 :root {
+  --ui-primary: var(--color-purple-600);
+  --ui-secondary: var(--color-blue-600);
+  --ui-success: var(--color-green-500);
+  --ui-info: var(--color-blue-600);
+  --ui-warning: var(--color-yellow-600);
+  --ui-error: var(--color-red-600);
 }
 
 .dark {
+  --ui-primary: var(--color-purple-500);
+  --ui-secondary: var(--color-blue-500);
+  --ui-success: var(--color-green-600);
+  --ui-info: var(--color-blue-500);
+  --ui-warning: var(--color-yellow-500);
+  --ui-error: var(--color-red-500);
 }
 
 @theme static inline {

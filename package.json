@@ -1,13 +1,11 @@
 {
   "name": "75NeoUI",
   "version": "0.0.0",
-  "description": "A component library for React, Vue, and Svelte",
+  "description": "A component library for React, and Vue",
   "type": "module",
   "scripts": {
-    "dev": "turbo run dev --filter 'playground-*'",
     "dev:react": "turbo run dev --filter playground-react",
     "dev:vue": "turbo run dev --filter playground-vue",
-    "dev:svelte": "turbo run dev --filter playground-svelte",
     "dev:docs": "turbo run dev --filter docs",
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
@@ -20,8 +18,7 @@
   "devDependencies": {
     "oxfmt": "^0.64.0",
     "oxlint": "^1.79.0",
-    "turbo": "^2.10.11",
-    "typescript": "catalog:"
+    "turbo": "^2.10.11"
   },
   "devEngines": {
     "packageManager": {

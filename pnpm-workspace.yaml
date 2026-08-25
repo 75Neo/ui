@@ -15,24 +15,18 @@ catalog:
   tailwindcss: ^4.3.3
 
   # Icons
-  "@lucide/svelte": ^1.33.0
   "@lucide/vue": ^1.33.0
   lucide-react: ^1.33.0
 
   # React
   "@types/react": ^19.2.18
-  "@types/react-dom": ^19.2.4
+  "@types/react-dom": ^19.2.5
   react: ^19.2.8
   react-dom: ^19.2.8
 
   # Vue
   vue: ^3.5.41
   vue-tsc: ^3.3.11
-
-  # Svelte
-  "@sveltejs/vite-plugin-svelte": ^7.3.0
-  svelte: ^5.56.10
-  svelte-check: ^4.7.6
 
   # Storybook
   "@storybook/addon-docs": ^10.5.10
