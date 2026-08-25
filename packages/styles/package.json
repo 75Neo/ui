@@ -17,6 +17,7 @@
   },
   "scripts": {
     "build": "tsdown",
+    "dev": "tsdown --watch",
     "typecheck": "tsc --noEmit",
     "lint:package": "publint",
     "prepack": "pnpm run build"
@@ -28,7 +29,6 @@
     "@75neo/tooling": "workspace:*",
     "@tsdown/css": "^0.22.14",
     "publint": "catalog:",
-    "tailwindcss": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:"
   },

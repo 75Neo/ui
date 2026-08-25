@@ -1,7 +1,8 @@
-@import "./background.css";
-@import "./border.css";
 @import "./colors.css";
-@import "./radius.css";
-@import "./text.css";
-
 @source "./index.js";
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+}

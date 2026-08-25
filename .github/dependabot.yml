@@ -37,14 +37,6 @@ updates:
           - "@ark-ui/vue"
           - "@lucide/vue"
           - "@vitejs/plugin-vue"
-      svelte:
-        patterns:
-          - "svelte"
-          - "svelte-check"
-          - "@sveltejs/*"
-          - "@tsconfig/svelte"
-          - "@ark-ui/svelte"
-          - "@lucide/svelte"
       storybook:
         patterns:
           - "storybook"
@@ -53,7 +45,6 @@ updates:
         patterns:
           - "tailwindcss"
           - "@tailwindcss/*"
-          - "tailwind-merge"
           - "tailwind-variants"
       tooling:
         patterns:

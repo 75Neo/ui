@@ -6,7 +6,6 @@ build/
 ## Build system / framework caches
 .turbo/
 .astro/
-.svelte-kit/
 storybook-static/
 
 ## Editors / OS
