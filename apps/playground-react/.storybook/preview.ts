@@ -1,4 +1,4 @@
-import { definePreview } from "@storybook/vue3-vite";
+import { definePreview } from "@storybook/react-vite";
 import addonThemes from "@storybook/addon-themes";
 import "../src/index.css";
 

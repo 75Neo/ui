@@ -29,8 +29,8 @@ catalog:
   vue-tsc: ^3.3.11
 
   # Storybook
-  "@storybook/addon-docs": ^10.5.10
   storybook: ^10.5.10
+  "@storybook/addon-themes": ^10.5.10
 
 allowBuilds:
   esbuild: false

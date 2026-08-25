@@ -15,7 +15,7 @@
     "@75neo/styles": "workspace:*",
     "@75neo/tooling": "workspace:*",
     "@lucide/vue": "catalog:",
-    "@storybook/addon-docs": "catalog:",
+    "@storybook/addon-themes": "catalog:",
     "@storybook/vue3-vite": "^10.5.10",
     "@tailwindcss/vite": "catalog:",
     "@types/node": "catalog:",

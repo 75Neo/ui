@@ -1,3 +1,8 @@
 @import "./colors.css";
-
 @source "./index.js";
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+}

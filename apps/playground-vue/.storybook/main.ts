@@ -1,9 +1,7 @@
-import type { StorybookConfig } from "@storybook/vue3-vite";
+import { defineMain } from "@storybook/vue3-vite/node";
 
-const config: StorybookConfig = {
-  stories: ["../src/**/*.stories.@(ts|tsx)", "../src/**/*.mdx"],
-  addons: ["@storybook/addon-docs"],
+export default defineMain({
+  stories: ["../src/**/*.stories.ts"],
+  addons: ["@storybook/addon-themes"],
   framework: "@storybook/vue3-vite",
-};
-
-export default config;
+});
