@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@75neo/tooling": "workspace:*",
-    "@vue/test-utils": "^2.4.11",
+    "@vue/test-utils": "^2.5.0",
     "happy-dom": "catalog:",
     "publint": "catalog:",
     "tsdown": "catalog:",
