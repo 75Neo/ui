@@ -6,7 +6,7 @@ catalog:
   # Tooling
   "@types/node": ^24.13.3
   oxfmt: ^0.64.0
-  oxlint: ^1.79.0
+  oxlint: ^1.80.0
   publint: ^0.3.24
   tsdown: ^0.22.14
   typescript: ~6.0.3
@@ -17,8 +17,8 @@ catalog:
   tailwindcss: ^4.3.3
 
   # Icons
-  "@lucide/vue": ^1.33.0
-  lucide-react: ^1.33.0
+  "@lucide/vue": ^1.34.0
+  lucide-react: ^1.34.0
 
   # React
   "@types/react": ^19.2.18
@@ -27,7 +27,7 @@ catalog:
   react-dom: ^19.2.8
 
   # Vue
-  vue: ^3.5.41
+  vue: ^3.5.42
   vue-tsc: ^3.3.11
 
   # Storybook
