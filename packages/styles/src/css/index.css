@@ -3,13 +3,6 @@
 
 @layer base {
   body {
-    @apply antialiased;
-    background-color: var(--ui-bg);
-    color: var(--ui-text);
-    color-scheme: light;
-  }
-
-  .dark body {
-    color-scheme: dark;
+    @apply text-default bg-default antialiased scheme-light dark:scheme-dark;
   }
 }

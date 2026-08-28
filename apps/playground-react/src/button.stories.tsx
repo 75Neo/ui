@@ -35,7 +35,7 @@ export const Colors = meta.story({
   render: () => (
     <div className="flex items-center gap-2">
       <Button color="primary">Primary</Button>
-      <Button color="secondary">Secondary</Button>
+      <Button color="neutral">Neutral</Button>
       <Button color="success">Success</Button>
       <Button color="info">Info</Button>
       <Button color="warning">Warning</Button>
@@ -76,7 +76,7 @@ export const Icons = meta.story({
 
 export const States = meta.story({
   render: () => (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
         <Button loading>Saving...</Button>
         <Button loading variant="outline">
@@ -105,10 +105,37 @@ export const States = meta.story({
         <Button disabled variant="soft">
           Disabled
         </Button>
+        <Button disabled variant="ghost">
+          Disabled
+        </Button>
         <Button disabled leadingIcon={<Plus />}>
           Disabled
         </Button>
       </div>
     </div>
   ),
+});
+
+export const Matrix = meta.story({
+  render: () => {
+    const variants = ["solid", "soft", "outline", "ghost"] as const;
+    const colors = ["primary", "neutral", "success", "info", "warning", "error"] as const;
+
+    return (
+      <div className="flex flex-col gap-6">
+        {variants.map((v) => (
+          <div key={v} className="flex flex-col gap-2">
+            <h3 className="text-toned text-sm font-semibold capitalize">{v}</h3>
+            <div className="flex flex-wrap items-center gap-2">
+              {colors.map((c) => (
+                <Button key={c} variant={v} color={c}>
+                  {c}
+                </Button>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  },
 });

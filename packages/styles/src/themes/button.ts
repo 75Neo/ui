@@ -2,7 +2,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 const button = tv({
   slots: {
-    base: "inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded border border-transparent text-center align-middle font-medium transition-all duration-150 outline-none select-none focus-visible:ring-1 focus-visible:ring-offset-1 active:scale-[0.98] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none",
+    base: "focus-visible:ring-offset-primary inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-transparent text-center align-middle font-medium transition-colors duration-150 outline-none select-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:pointer-events-none aria-disabled:cursor-not-allowed aria-disabled:opacity-75",
     leadingIcon: "shrink-0 [&>svg]:size-full",
     label: "min-w-0 truncate",
     trailingIcon: "shrink-0 [&>svg]:size-full",
@@ -35,7 +35,7 @@ const button = tv({
     },
     color: {
       primary: {},
-      secondary: {},
+      neutral: {},
       success: {},
       info: {},
       warning: {},
@@ -46,6 +46,7 @@ const button = tv({
     },
   },
   compoundVariants: [
+    // Solid variants
     {
       variant: "solid",
       color: "primary",
@@ -55,9 +56,9 @@ const button = tv({
     },
     {
       variant: "solid",
-      color: "secondary",
+      color: "neutral",
       class: {
-        base: "bg-secondary hover:bg-secondary/90 active:bg-secondary/80 focus-visible:ring-secondary/40 text-white",
+        base: "bg-inverted text-inverted hover:bg-inverted/90 active:bg-inverted/90 focus-visible:ring-inverted/40",
       },
     },
     {
@@ -78,7 +79,7 @@ const button = tv({
       variant: "solid",
       color: "warning",
       class: {
-        base: "bg-warning hover:bg-warning/90 active:bg-warning/80 focus-visible:ring-warning/40 text-white",
+        base: "bg-warning hover:bg-warning/90 active:bg-warning/80 focus-visible:ring-warning/40 font-semibold text-neutral-950",
       },
     },
     {
@@ -88,132 +89,139 @@ const button = tv({
         base: "bg-error hover:bg-error/90 active:bg-error/80 focus-visible:ring-error/40 text-white",
       },
     },
+
+    // Soft variants
     {
       variant: "soft",
       color: "primary",
       class: {
-        base: "bg-primary/8 text-primary hover:bg-primary/15 active:bg-primary/25 focus-visible:ring-primary/40",
+        base: "bg-primary/10 text-primary hover:bg-primary/18 active:bg-primary/26 dark:bg-primary/15 dark:text-primary dark:hover:bg-primary/25 dark:active:bg-primary/35 focus-visible:ring-primary/40",
       },
     },
     {
       variant: "soft",
-      color: "secondary",
+      color: "neutral",
       class: {
-        base: "bg-secondary/8 text-secondary hover:bg-secondary/15 active:bg-secondary/25 focus-visible:ring-secondary/40",
+        base: "bg-elevated text-default hover:bg-accented active:bg-accented dark:bg-accented dark:hover:bg-elevated dark:active:bg-elevated focus-visible:ring-inverted/40",
       },
     },
     {
       variant: "soft",
       color: "success",
       class: {
-        base: "bg-success/8 text-success hover:bg-success/15 active:bg-success/25 focus-visible:ring-success/40",
+        base: "bg-success/10 text-success hover:bg-success/18 active:bg-success/26 dark:bg-success/15 dark:text-success dark:hover:bg-success/25 dark:active:bg-success/35 focus-visible:ring-success/40",
       },
     },
     {
       variant: "soft",
       color: "info",
       class: {
-        base: "bg-info/8 text-info hover:bg-info/15 active:bg-info/25 focus-visible:ring-info/40",
+        base: "bg-info/10 text-info hover:bg-info/18 active:bg-info/26 dark:bg-info/15 dark:text-info dark:hover:bg-info/25 dark:active:bg-info/35 focus-visible:ring-info/40",
       },
     },
     {
       variant: "soft",
       color: "warning",
       class: {
-        base: "bg-warning/8 text-warning hover:bg-warning/15 active:bg-warning/25 focus-visible:ring-warning/40",
+        base: "bg-warning/15 hover:bg-warning/22 active:bg-warning/30 dark:bg-warning/15 dark:text-warning dark:hover:bg-warning/25 dark:active:bg-warning/35 focus-visible:ring-warning/40 text-neutral-900",
       },
     },
     {
       variant: "soft",
       color: "error",
       class: {
-        base: "bg-error/8 text-error hover:bg-error/15 active:bg-error/25 focus-visible:ring-error/40",
+        base: "bg-error/10 text-error hover:bg-error/18 active:bg-error/26 dark:bg-error/15 dark:text-error dark:hover:bg-error/25 dark:active:bg-error/35 focus-visible:ring-error/40",
       },
     },
+
+    // Outline variants
     {
       variant: "outline",
       color: "primary",
       class: {
-        base: "border-primary/40 text-primary hover:border-primary hover:bg-primary/8 active:bg-primary/15 focus-visible:ring-primary/40",
+        base: "border-primary/45 text-primary hover:border-primary hover:bg-primary/10 active:bg-primary/18 dark:border-primary/50 dark:text-primary dark:hover:border-primary dark:hover:bg-primary/15 dark:active:bg-primary/25 focus-visible:ring-primary/40",
       },
     },
     {
       variant: "outline",
-      color: "secondary",
+      color: "neutral",
       class: {
-        base: "border-secondary/40 text-secondary hover:border-secondary hover:bg-secondary/8 active:bg-secondary/15 focus-visible:ring-secondary/40",
+        base: "border-default text-default hover:border-accented hover:bg-elevated active:bg-elevated dark:border-accented dark:hover:border-default dark:hover:bg-accented dark:active:bg-accented focus-visible:ring-inverted/40",
       },
     },
     {
       variant: "outline",
       color: "success",
       class: {
-        base: "border-success/40 text-success hover:border-success hover:bg-success/8 active:bg-success/15 focus-visible:ring-success/40",
+        base: "border-success/45 text-success hover:border-success hover:bg-success/10 active:bg-success/18 dark:border-success/50 dark:hover:border-success dark:hover:bg-success/15 dark:active:bg-success/25 focus-visible:ring-success/40",
       },
     },
     {
       variant: "outline",
       color: "info",
       class: {
-        base: "border-info/40 text-info hover:border-info hover:bg-info/8 active:bg-info/15 focus-visible:ring-info/40",
+        base: "border-info/45 text-info hover:border-info hover:bg-info/10 active:bg-info/18 dark:border-info/50 dark:hover:border-info dark:hover:bg-info/15 dark:active:bg-info/25 focus-visible:ring-info/40",
       },
     },
     {
       variant: "outline",
       color: "warning",
       class: {
-        base: "border-warning/40 text-warning hover:border-warning hover:bg-warning/8 active:bg-warning/15 focus-visible:ring-warning/40",
+        base: "border-warning/55 hover:border-warning hover:bg-warning/10 active:bg-warning/18 dark:border-warning/50 dark:text-warning dark:hover:border-warning dark:hover:bg-warning/15 dark:active:bg-warning/25 focus-visible:ring-warning/40 text-neutral-900",
       },
     },
     {
       variant: "outline",
       color: "error",
       class: {
-        base: "border-error/40 text-error hover:border-error hover:bg-error/8 active:bg-error/15 focus-visible:ring-error/40",
+        base: "border-error/45 text-error hover:border-error hover:bg-error/10 active:bg-error/18 dark:border-error/50 dark:hover:border-error dark:hover:bg-error/15 dark:active:bg-error/25 focus-visible:ring-error/40",
       },
     },
+
+    // Ghost variants
     {
       variant: "ghost",
       color: "primary",
       class: {
-        base: "text-primary hover:bg-primary/8 active:bg-primary/15 focus-visible:ring-primary/40",
+        base: "text-primary hover:bg-primary/10 active:bg-primary/18 dark:hover:bg-primary/15 dark:active:bg-primary/25 focus-visible:ring-primary/40",
       },
     },
     {
       variant: "ghost",
-      color: "secondary",
+      color: "neutral",
       class: {
-        base: "text-secondary hover:bg-secondary/8 active:bg-secondary/15 focus-visible:ring-secondary/40",
+        base: "text-default hover:bg-elevated active:bg-elevated dark:hover:bg-accented dark:active:bg-accented focus-visible:ring-inverted/40",
       },
     },
     {
       variant: "ghost",
       color: "success",
       class: {
-        base: "text-success hover:bg-success/8 active:bg-success/15 focus-visible:ring-success/40",
+        base: "text-success hover:bg-success/10 active:bg-success/18 dark:hover:bg-success/15 dark:active:bg-success/25 focus-visible:ring-success/40",
       },
     },
     {
       variant: "ghost",
       color: "info",
       class: {
-        base: "text-info hover:bg-info/8 active:bg-info/15 focus-visible:ring-info/40",
+        base: "text-info hover:bg-info/10 active:bg-info/18 dark:hover:bg-info/15 dark:active:bg-info/25 focus-visible:ring-info/40",
       },
     },
     {
       variant: "ghost",
       color: "warning",
       class: {
-        base: "text-warning hover:bg-warning/8 active:bg-warning/15 focus-visible:ring-warning/40",
+        base: "hover:bg-warning/10 active:bg-warning/18 dark:text-warning dark:hover:bg-warning/15 dark:active:bg-warning/25 focus-visible:ring-warning/40 text-neutral-900",
       },
     },
     {
       variant: "ghost",
       color: "error",
       class: {
-        base: "text-error hover:bg-error/8 active:bg-error/15 focus-visible:ring-error/40",
+        base: "text-error hover:bg-error/10 active:bg-error/18 dark:hover:bg-error/15 dark:active:bg-error/25 focus-visible:ring-error/40",
       },
     },
+
     {
       compact: true,
       size: "xs",
