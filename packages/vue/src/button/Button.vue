@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { button, type ButtonVariants } from "@75neo/styles";
 import { Loader2 } from "@lucide/vue";
+import type { Component } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -10,7 +11,7 @@ const props = withDefaults(
     compact?: ButtonVariants["compact"];
     ui?: string;
     loading?: boolean;
-    loadingIcon?: unknown;
+    loadingIcon?: Component | object;
     disabled?: boolean;
     type?: "button" | "submit" | "reset";
   }>(),
@@ -25,6 +26,7 @@ const slots = defineSlots<{
   leading?: (props: Record<string, never>) => unknown;
   default?: (props: Record<string, never>) => unknown;
   trailing?: (props: Record<string, never>) => unknown;
+  loading?: (props: Record<string, never>) => unknown;
 }>();
 
 const {
@@ -48,8 +50,13 @@ const {
     :aria-busy="loading || undefined"
   >
     <span v-if="loading || slots.leading" :class="leadingIconSlot()">
-      <slot v-if="!loading" name="leading" />
-      <Loader2 v-else class="animate-spin" />
+      <template v-if="loading">
+        <slot name="loading">
+          <component :is="loadingIcon" v-if="loadingIcon" />
+          <Loader2 v-else class="animate-spin" />
+        </slot>
+      </template>
+      <slot v-else name="leading" />
     </span>
     <span v-if="slots.default" :class="labelSlot()">
       <slot />

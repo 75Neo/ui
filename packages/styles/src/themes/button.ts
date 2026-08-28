@@ -46,7 +46,6 @@ const button = tv({
     },
   },
   compoundVariants: [
-    /* Solid */
     {
       variant: "solid",
       color: "primary",
@@ -89,7 +88,6 @@ const button = tv({
         base: "bg-error hover:bg-error/90 active:bg-error/80 focus-visible:ring-error/40 text-white",
       },
     },
-    /* Soft */
     {
       variant: "soft",
       color: "primary",
@@ -132,7 +130,6 @@ const button = tv({
         base: "bg-error/8 text-error hover:bg-error/15 active:bg-error/25 focus-visible:ring-error/40",
       },
     },
-    /* Outline */
     {
       variant: "outline",
       color: "primary",
@@ -175,7 +172,6 @@ const button = tv({
         base: "border-error/40 text-error hover:border-error hover:bg-error/8 active:bg-error/15 focus-visible:ring-error/40",
       },
     },
-    /* Ghost */
     {
       variant: "ghost",
       color: "primary",
@@ -218,7 +214,6 @@ const button = tv({
         base: "text-error hover:bg-error/8 active:bg-error/15 focus-visible:ring-error/40",
       },
     },
-    /* Compact overrides */
     {
       compact: true,
       size: "xs",

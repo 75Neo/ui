@@ -1,8 +1,5 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ======================== */
-/* Background               */
-/* ======================== */
 :root {
   --ui-bg: white;
   --ui-bg-muted: var(--color-neutral-50);
@@ -18,9 +15,6 @@
   --ui-bg-inverted: white;
 }
 
-/* ======================== */
-/* Text                     */
-/* ======================== */
 :root {
   --ui-text-dimmed: var(--color-neutral-400);
   --ui-text-muted: var(--color-neutral-500);
@@ -38,9 +32,6 @@
   --ui-text-inverted: var(--color-neutral-900);
 }
 
-/* ======================== */
-/* Border                   */
-/* ======================== */
 :root {
   --ui-border: var(--color-neutral-200);
   --ui-border-muted: var(--color-neutral-200);
@@ -54,9 +45,6 @@
   --ui-border-inverted: white;
 }
 
-/* ======================== */
-/* Semantic colors          */
-/* ======================== */
 :root {
   --ui-primary: var(--color-blue-600);
   --ui-secondary: var(--color-zinc-600);
@@ -74,18 +62,14 @@
   --ui-error: var(--color-red-500);
 }
 
-/* ======================== */
-/* Tailwind theme mapping   */
-/* ======================== */
 @theme static inline {
-  /* Backgrounds — light defaults */
   --color-bg: white;
   --color-bg-muted: var(--color-neutral-50);
   --color-elevated: var(--color-neutral-100);
+  --color-bg-elevated: var(--color-neutral-100);
   --color-bg-accented: var(--color-neutral-200);
   --color-bg-inverted: var(--color-neutral-900);
 
-  /* Text — light defaults */
   --color-text-dimmed: var(--color-neutral-400);
   --color-text-muted: var(--color-neutral-500);
   --color-text-toned: var(--color-neutral-600);
@@ -93,13 +77,11 @@
   --color-text-highlighted: var(--color-neutral-900);
   --color-text-inverted: white;
 
-  /* Borders — light defaults */
   --color-border: var(--color-neutral-200);
   --color-border-muted: var(--color-neutral-200);
   --color-border-accented: var(--color-neutral-300);
   --color-border-inverted: var(--color-neutral-900);
 
-  /* Semantic colors — light defaults */
   --color-primary: var(--color-blue-600);
   --color-secondary: var(--color-zinc-600);
   --color-success: var(--color-green-600);
