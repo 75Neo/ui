@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { button, type ButtonVariants } from "@75neo/styles";
+import { computed } from "vue";
+import { button, type ButtonVariants, type SlotClass } from "@75neo/styles";
+import { useComponentUI } from "../composables/useComponentUI";
 import { Loader2 } from "@lucide/vue";
 import type { Component } from "vue";
 
@@ -9,7 +11,12 @@ const props = withDefaults(
     size?: ButtonVariants["size"];
     color?: ButtonVariants["color"];
     compact?: ButtonVariants["compact"];
-    ui?: string;
+    ui?: {
+      base?: SlotClass;
+      leadingIcon?: SlotClass;
+      label?: SlotClass;
+      trailingIcon?: SlotClass;
+    };
     loading?: boolean;
     loadingIcon?: Component | object;
     disabled?: boolean;
@@ -29,27 +36,31 @@ const slots = defineSlots<{
   loading?: (props: Record<string, never>) => unknown;
 }>();
 
-const {
-  base: baseSlot,
-  leadingIcon: leadingIconSlot,
-  label: labelSlot,
-  trailingIcon: trailingIconSlot,
-} = button({
-  variant: props.variant,
-  size: props.size,
-  color: props.color,
-  compact: props.compact,
-});
+const tvSlots = computed(() =>
+  button({
+    variant: props.variant,
+    size: props.size,
+    color: props.color,
+    compact: props.compact,
+  }),
+);
+
+const resolved = useComponentUI(
+  "button",
+  tvSlots,
+  computed(() => props.ui),
+);
 </script>
 
 <template>
   <button
     :type="type"
-    :class="baseSlot({ class: ui })"
-    :disabled="disabled"
+    :class="resolved.base()"
+    :disabled="disabled || loading"
     :aria-busy="loading || undefined"
+    :aria-disabled="loading || undefined"
   >
-    <span v-if="loading || slots.leading" :class="leadingIconSlot()">
+    <span v-if="loading || slots.leading" :class="resolved.leadingIcon()">
       <template v-if="loading">
         <slot name="loading">
           <component :is="loadingIcon" v-if="loadingIcon" />
@@ -58,10 +69,10 @@ const {
       </template>
       <slot v-else name="leading" />
     </span>
-    <span v-if="slots.default" :class="labelSlot()">
+    <span v-if="slots.default" :class="resolved.label()">
       <slot />
     </span>
-    <span v-if="slots.trailing" :class="trailingIconSlot()">
+    <span v-if="slots.trailing" :class="resolved.trailingIcon()">
       <slot name="trailing" />
     </span>
   </button>

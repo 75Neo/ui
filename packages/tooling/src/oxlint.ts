@@ -3,6 +3,9 @@ import type { OxlintConfig } from "oxlint";
 export const ignorePatterns = [
   "**/dist/**",
   "**/storybook-static/**",
+  "**/node_modules/**",
+  ".turbo/**",
+  "**/.turbo/**",
   ".agents/skills/**",
   ".claude/skills/**",
 ];
@@ -13,6 +16,10 @@ export const oxlintConfig: OxlintConfig = {
   categories: {
     correctness: "error",
     suspicious: "warn",
+    pedantic: "off",
+    perf: "off",
+    style: "off",
+    restriction: "off",
   },
   settings: {
     tailwindcss: {
@@ -36,8 +43,14 @@ export const oxlintConfig: OxlintConfig = {
     },
     {
       files: ["packages/vue/**", "apps/playground-vue/**"],
-      plugins: ["vue"],
       rules: {},
+    },
+    {
+      files: ["**/*.test.*", "**/__tests__/**", "**/*.spec.*"],
+      rules: {
+        "unicorn/consistent-function-scoping": "off",
+        "tailwindcss/no-unknown-classes": "off",
+      },
     },
   ],
 };

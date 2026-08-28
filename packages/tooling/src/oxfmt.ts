@@ -8,6 +8,6 @@ export const oxfmtConfig: OxfmtConfig = {
   trailingComma: "all",
   ignorePatterns,
   sortTailwindcss: {
-    functions: ["tv"],
+    functions: ["tv", "twMerge", "tw", "cn", "cva", "cx"],
   },
 };

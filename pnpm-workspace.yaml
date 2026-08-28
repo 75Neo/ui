@@ -34,5 +34,9 @@ catalog:
   storybook: ^10.5.10
   "@storybook/addon-themes": ^10.5.10
 
+  # Testing
+  vitest: ^4.1.11
+  happy-dom: ^20.11.8
+
 allowBuilds:
   esbuild: false
