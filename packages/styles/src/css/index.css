@@ -3,6 +3,6 @@
 
 @layer base {
   body {
-    @apply antialiased;
+    @apply text-default bg-default antialiased scheme-light dark:scheme-dark;
   }
 }

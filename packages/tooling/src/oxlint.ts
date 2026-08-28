@@ -16,7 +16,7 @@ export const oxlintConfig: OxlintConfig = {
   },
   settings: {
     tailwindcss: {
-      entryPoint: "apps/docs/src/css/main.css",
+      entryPoint: "packages/styles/src/css/lint.css",
     },
   },
   ignorePatterns,

@@ -1,166 +1,259 @@
 import { tv, type VariantProps } from "tailwind-variants";
 
 const button = tv({
-  base: "inline-flex shrink-0 cursor-pointer flex-nowrap items-center justify-center gap-2 rounded-md border border-transparent text-center align-middle font-medium transition-colors duration-200 outline-none select-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-95 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none dark:focus-visible:ring-offset-transparent",
+  slots: {
+    base: "focus-visible:ring-offset-primary inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-transparent text-center align-middle font-medium transition-colors duration-150 outline-none select-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:pointer-events-none aria-disabled:cursor-not-allowed aria-disabled:opacity-75",
+    leadingIcon: "shrink-0 [&>svg]:size-full",
+    label: "min-w-0 truncate",
+    trailingIcon: "shrink-0 [&>svg]:size-full",
+  },
   variants: {
     variant: {
-      solid: "shadow-sm",
-      soft: "",
-      outline: "",
-      text: "",
+      solid: {
+        base: "shadow-xs",
+      },
+      soft: {},
+      outline: {},
+      ghost: {},
     },
     size: {
-      xs: "h-6 gap-1 px-2 text-xs",
-      sm: "h-8 gap-1.5 px-3 text-sm",
-      md: "h-10 gap-2 px-4 text-base",
-      lg: "h-11 gap-2 px-5 text-lg",
-      xl: "h-14 gap-2.5 px-6 text-lg",
+      xs: {
+        base: "h-6 gap-1 px-2 text-xs",
+      },
+      sm: {
+        base: "h-7 gap-1 px-2.5 text-xs",
+      },
+      md: {
+        base: "h-8 gap-1.5 px-3 text-sm",
+      },
+      lg: {
+        base: "h-9 gap-1.5 px-3.5 text-sm",
+      },
+      xl: {
+        base: "h-10 gap-2 px-4 text-base",
+      },
     },
     color: {
-      primary: "",
-      secondary: "",
-      success: "",
-      info: "",
-      warning: "",
-      error: "",
+      primary: {},
+      neutral: {},
+      success: {},
+      info: {},
+      warning: {},
+      error: {},
+    },
+    compact: {
+      true: {},
     },
   },
   compoundVariants: [
+    // Solid variants
     {
       variant: "solid",
       color: "primary",
-      class:
-        "bg-primary hover:bg-primary/90 active:bg-primary/80 focus-visible:ring-primary/40 text-white",
+      class: {
+        base: "bg-primary hover:bg-primary/90 active:bg-primary/80 focus-visible:ring-primary/40 text-white",
+      },
     },
     {
       variant: "solid",
-      color: "secondary",
-      class:
-        "bg-secondary hover:bg-secondary/90 active:bg-secondary/80 focus-visible:ring-secondary/40 text-white",
+      color: "neutral",
+      class: {
+        base: "bg-inverted text-inverted hover:bg-inverted/90 active:bg-inverted/90 focus-visible:ring-inverted/40",
+      },
     },
     {
       variant: "solid",
       color: "success",
-      class:
-        "bg-success hover:bg-success/90 active:bg-success/80 focus-visible:ring-success/40 text-white",
+      class: {
+        base: "bg-success hover:bg-success/90 active:bg-success/80 focus-visible:ring-success/40 text-white",
+      },
     },
     {
       variant: "solid",
       color: "info",
-      class: "bg-info hover:bg-info/90 active:bg-info/80 focus-visible:ring-info/40 text-white",
+      class: {
+        base: "bg-info hover:bg-info/90 active:bg-info/80 focus-visible:ring-info/40 text-white",
+      },
     },
     {
       variant: "solid",
       color: "warning",
-      class:
-        "bg-warning hover:bg-warning/90 active:bg-warning/80 focus-visible:ring-warning/40 text-white",
+      class: {
+        base: "bg-warning hover:bg-warning/90 active:bg-warning/80 focus-visible:ring-warning/40 font-semibold text-neutral-950",
+      },
     },
     {
       variant: "solid",
       color: "error",
-      class: "bg-error hover:bg-error/90 active:bg-error/80 focus-visible:ring-error/40 text-white",
+      class: {
+        base: "bg-error hover:bg-error/90 active:bg-error/80 focus-visible:ring-error/40 text-white",
+      },
     },
+
+    // Soft variants
     {
       variant: "soft",
       color: "primary",
-      class:
-        "bg-primary/10 text-primary hover:bg-primary/20 active:bg-primary/30 focus-visible:ring-primary/40",
+      class: {
+        base: "bg-primary/10 text-primary hover:bg-primary/18 active:bg-primary/26 dark:bg-primary/15 dark:text-primary dark:hover:bg-primary/25 dark:active:bg-primary/35 focus-visible:ring-primary/40",
+      },
     },
     {
       variant: "soft",
-      color: "secondary",
-      class:
-        "bg-secondary/10 text-secondary hover:bg-secondary/20 active:bg-secondary/30 focus-visible:ring-secondary/40",
+      color: "neutral",
+      class: {
+        base: "bg-elevated text-default hover:bg-accented active:bg-accented dark:bg-accented dark:hover:bg-elevated dark:active:bg-elevated focus-visible:ring-inverted/40",
+      },
     },
     {
       variant: "soft",
       color: "success",
-      class:
-        "bg-success/10 text-success hover:bg-success/20 active:bg-success/30 focus-visible:ring-success/40",
+      class: {
+        base: "bg-success/10 text-success hover:bg-success/18 active:bg-success/26 dark:bg-success/15 dark:text-success dark:hover:bg-success/25 dark:active:bg-success/35 focus-visible:ring-success/40",
+      },
     },
     {
       variant: "soft",
       color: "info",
-      class: "bg-info/10 text-info hover:bg-info/20 active:bg-info/30 focus-visible:ring-info/40",
+      class: {
+        base: "bg-info/10 text-info hover:bg-info/18 active:bg-info/26 dark:bg-info/15 dark:text-info dark:hover:bg-info/25 dark:active:bg-info/35 focus-visible:ring-info/40",
+      },
     },
     {
       variant: "soft",
       color: "warning",
-      class:
-        "bg-warning/10 text-warning hover:bg-warning/20 active:bg-warning/30 focus-visible:ring-warning/40",
+      class: {
+        base: "bg-warning/15 hover:bg-warning/22 active:bg-warning/30 dark:bg-warning/15 dark:text-warning dark:hover:bg-warning/25 dark:active:bg-warning/35 focus-visible:ring-warning/40 text-neutral-900",
+      },
     },
     {
       variant: "soft",
       color: "error",
-      class:
-        "bg-error/10 text-error hover:bg-error/20 active:bg-error/30 focus-visible:ring-error/40",
+      class: {
+        base: "bg-error/10 text-error hover:bg-error/18 active:bg-error/26 dark:bg-error/15 dark:text-error dark:hover:bg-error/25 dark:active:bg-error/35 focus-visible:ring-error/40",
+      },
     },
+
+    // Outline variants
     {
       variant: "outline",
       color: "primary",
-      class:
-        "border-primary text-primary hover:bg-primary/10 active:bg-primary/20 focus-visible:ring-primary/40",
+      class: {
+        base: "border-primary/45 text-primary hover:border-primary hover:bg-primary/10 active:bg-primary/18 dark:border-primary/50 dark:text-primary dark:hover:border-primary dark:hover:bg-primary/15 dark:active:bg-primary/25 focus-visible:ring-primary/40",
+      },
     },
     {
       variant: "outline",
-      color: "secondary",
-      class:
-        "border-secondary text-secondary hover:bg-secondary/10 active:bg-secondary/20 focus-visible:ring-secondary/40",
+      color: "neutral",
+      class: {
+        base: "border-default text-default hover:border-accented hover:bg-elevated active:bg-elevated dark:border-accented dark:hover:border-default dark:hover:bg-accented dark:active:bg-accented focus-visible:ring-inverted/40",
+      },
     },
     {
       variant: "outline",
       color: "success",
-      class:
-        "border-success text-success hover:bg-success/10 active:bg-success/20 focus-visible:ring-success/40",
+      class: {
+        base: "border-success/45 text-success hover:border-success hover:bg-success/10 active:bg-success/18 dark:border-success/50 dark:hover:border-success dark:hover:bg-success/15 dark:active:bg-success/25 focus-visible:ring-success/40",
+      },
     },
     {
       variant: "outline",
       color: "info",
-      class: "border-info text-info hover:bg-info/10 active:bg-info/20 focus-visible:ring-info/40",
+      class: {
+        base: "border-info/45 text-info hover:border-info hover:bg-info/10 active:bg-info/18 dark:border-info/50 dark:hover:border-info dark:hover:bg-info/15 dark:active:bg-info/25 focus-visible:ring-info/40",
+      },
     },
     {
       variant: "outline",
       color: "warning",
-      class:
-        "border-warning text-warning hover:bg-warning/10 active:bg-warning/20 focus-visible:ring-warning/40",
+      class: {
+        base: "border-warning/55 hover:border-warning hover:bg-warning/10 active:bg-warning/18 dark:border-warning/50 dark:text-warning dark:hover:border-warning dark:hover:bg-warning/15 dark:active:bg-warning/25 focus-visible:ring-warning/40 text-neutral-900",
+      },
     },
     {
       variant: "outline",
       color: "error",
-      class:
-        "border-error text-error hover:bg-error/10 active:bg-error/20 focus-visible:ring-error/40",
+      class: {
+        base: "border-error/45 text-error hover:border-error hover:bg-error/10 active:bg-error/18 dark:border-error/50 dark:hover:border-error dark:hover:bg-error/15 dark:active:bg-error/25 focus-visible:ring-error/40",
+      },
     },
+
+    // Ghost variants
     {
-      variant: "text",
+      variant: "ghost",
       color: "primary",
-      class: "text-primary hover:bg-primary/10 active:bg-primary/20 focus-visible:ring-primary/40",
+      class: {
+        base: "text-primary hover:bg-primary/10 active:bg-primary/18 dark:hover:bg-primary/15 dark:active:bg-primary/25 focus-visible:ring-primary/40",
+      },
     },
     {
-      variant: "text",
-      color: "secondary",
-      class:
-        "text-secondary hover:bg-secondary/10 active:bg-secondary/20 focus-visible:ring-secondary/40",
+      variant: "ghost",
+      color: "neutral",
+      class: {
+        base: "text-default hover:bg-elevated active:bg-elevated dark:hover:bg-accented dark:active:bg-accented focus-visible:ring-inverted/40",
+      },
     },
     {
-      variant: "text",
+      variant: "ghost",
       color: "success",
-      class: "text-success hover:bg-success/10 active:bg-success/20 focus-visible:ring-success/40",
+      class: {
+        base: "text-success hover:bg-success/10 active:bg-success/18 dark:hover:bg-success/15 dark:active:bg-success/25 focus-visible:ring-success/40",
+      },
     },
     {
-      variant: "text",
+      variant: "ghost",
       color: "info",
-      class: "text-info hover:bg-info/10 active:bg-info/20 focus-visible:ring-info/40",
+      class: {
+        base: "text-info hover:bg-info/10 active:bg-info/18 dark:hover:bg-info/15 dark:active:bg-info/25 focus-visible:ring-info/40",
+      },
     },
     {
-      variant: "text",
+      variant: "ghost",
       color: "warning",
-      class: "text-warning hover:bg-warning/10 active:bg-warning/20 focus-visible:ring-warning/40",
+      class: {
+        base: "hover:bg-warning/10 active:bg-warning/18 dark:text-warning dark:hover:bg-warning/15 dark:active:bg-warning/25 focus-visible:ring-warning/40 text-neutral-900",
+      },
     },
     {
-      variant: "text",
+      variant: "ghost",
       color: "error",
-      class: "text-error hover:bg-error/10 active:bg-error/20 focus-visible:ring-error/40",
+      class: {
+        base: "text-error hover:bg-error/10 active:bg-error/18 dark:hover:bg-error/15 dark:active:bg-error/25 focus-visible:ring-error/40",
+      },
     },
+
+    {
+      compact: true,
+      size: "xs",
+      class: { base: "h-5! gap-1! px-1.5! text-[11px]" },
+    },
+    {
+      compact: true,
+      size: "sm",
+      class: { base: "h-6! gap-1! px-2! text-[11px]" },
+    },
+    {
+      compact: true,
+      size: "md",
+      class: { base: "h-7! gap-1.5! px-2.5! text-xs" },
+    },
+    {
+      compact: true,
+      size: "lg",
+      class: { base: "h-8! gap-1.5! px-3! text-xs" },
+    },
+    {
+      compact: true,
+      size: "xl",
+      class: { base: "h-9! gap-2! px-3.5! text-sm" },
+    },
+  ],
+  compoundSlots: [
+    { size: "xs", slots: ["leadingIcon", "trailingIcon"], class: "size-3" },
+    { size: "sm", slots: ["leadingIcon", "trailingIcon"], class: "size-3.5" },
+    { size: "md", slots: ["leadingIcon", "trailingIcon"], class: "size-4" },
+    { size: "lg", slots: ["leadingIcon", "trailingIcon"], class: "size-4" },
+    { size: "xl", slots: ["leadingIcon", "trailingIcon"], class: "size-5" },
   ],
   defaultVariants: {
     variant: "solid",

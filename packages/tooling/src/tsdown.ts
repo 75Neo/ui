@@ -1,9 +1,9 @@
 import type { UserConfig } from "tsdown";
 
 /**
- * Shared tsdown configuration for every publishable 75NeoUI packages
+ * Shared tsdown configuration for all publishable 75NeoUI packages.
  *
- * @param overrides Merged over the shared config, for a package that needs to differ
+ * @param overrides Merged over the shared config for packages that need customizations
  */
 export function defineLibrary(overrides: UserConfig = {}): UserConfig {
   return {

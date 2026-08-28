@@ -4,5 +4,4 @@ import Vue from "unplugin-vue/rolldown";
 export default defineLibrary({
   plugins: [Vue({ isProduction: true })],
   dts: { vue: true },
-  deps: { onlyBundle: ["tailwind-variants"] },
 });
