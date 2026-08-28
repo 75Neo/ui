@@ -1,28 +1,109 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ======================== */
+/* Background               */
+/* ======================== */
 :root {
-  --ui-primary: var(--color-purple-600);
-  --ui-secondary: var(--color-blue-600);
-  --ui-success: var(--color-green-500);
-  --ui-info: var(--color-blue-600);
-  --ui-warning: var(--color-yellow-600);
-  --ui-error: var(--color-red-600);
+  --ui-bg: white;
+  --ui-bg-muted: var(--color-neutral-50);
+  --ui-bg-elevated: var(--color-neutral-100);
+  --ui-bg-accented: var(--color-neutral-200);
+  --ui-bg-inverted: var(--color-neutral-900);
+}
+.dark {
+  --ui-bg: var(--color-neutral-900);
+  --ui-bg-muted: var(--color-neutral-800);
+  --ui-bg-elevated: var(--color-neutral-800);
+  --ui-bg-accented: var(--color-neutral-700);
+  --ui-bg-inverted: white;
 }
 
+/* ======================== */
+/* Text                     */
+/* ======================== */
+:root {
+  --ui-text-dimmed: var(--color-neutral-400);
+  --ui-text-muted: var(--color-neutral-500);
+  --ui-text-toned: var(--color-neutral-600);
+  --ui-text: var(--color-neutral-700);
+  --ui-text-highlighted: var(--color-neutral-900);
+  --ui-text-inverted: white;
+}
 .dark {
-  --ui-primary: var(--color-purple-500);
-  --ui-secondary: var(--color-blue-500);
+  --ui-text-dimmed: var(--color-neutral-500);
+  --ui-text-muted: var(--color-neutral-400);
+  --ui-text-toned: var(--color-neutral-300);
+  --ui-text: var(--color-neutral-200);
+  --ui-text-highlighted: white;
+  --ui-text-inverted: var(--color-neutral-900);
+}
+
+/* ======================== */
+/* Border                   */
+/* ======================== */
+:root {
+  --ui-border: var(--color-neutral-200);
+  --ui-border-muted: var(--color-neutral-200);
+  --ui-border-accented: var(--color-neutral-300);
+  --ui-border-inverted: var(--color-neutral-900);
+}
+.dark {
+  --ui-border: var(--color-neutral-800);
+  --ui-border-muted: var(--color-neutral-700);
+  --ui-border-accented: var(--color-neutral-700);
+  --ui-border-inverted: white;
+}
+
+/* ======================== */
+/* Semantic colors          */
+/* ======================== */
+:root {
+  --ui-primary: var(--color-blue-600);
+  --ui-secondary: var(--color-zinc-600);
   --ui-success: var(--color-green-600);
-  --ui-info: var(--color-blue-500);
-  --ui-warning: var(--color-yellow-500);
+  --ui-info: var(--color-sky-500);
+  --ui-warning: var(--color-amber-500);
+  --ui-error: var(--color-red-600);
+}
+.dark {
+  --ui-primary: var(--color-blue-500);
+  --ui-secondary: var(--color-zinc-400);
+  --ui-success: var(--color-green-500);
+  --ui-info: var(--color-sky-400);
+  --ui-warning: var(--color-amber-500);
   --ui-error: var(--color-red-500);
 }
 
+/* ======================== */
+/* Tailwind theme mapping   */
+/* ======================== */
 @theme static inline {
-  --color-primary: var(--ui-primary);
-  --color-secondary: var(--ui-secondary);
-  --color-success: var(--ui-success);
-  --color-info: var(--ui-info);
-  --color-warning: var(--ui-warning);
-  --color-error: var(--ui-error);
+  /* Backgrounds — light defaults */
+  --color-bg: white;
+  --color-bg-muted: var(--color-neutral-50);
+  --color-elevated: var(--color-neutral-100);
+  --color-bg-accented: var(--color-neutral-200);
+  --color-bg-inverted: var(--color-neutral-900);
+
+  /* Text — light defaults */
+  --color-text-dimmed: var(--color-neutral-400);
+  --color-text-muted: var(--color-neutral-500);
+  --color-text-toned: var(--color-neutral-600);
+  --color-text: var(--color-neutral-700);
+  --color-text-highlighted: var(--color-neutral-900);
+  --color-text-inverted: white;
+
+  /* Borders — light defaults */
+  --color-border: var(--color-neutral-200);
+  --color-border-muted: var(--color-neutral-200);
+  --color-border-accented: var(--color-neutral-300);
+  --color-border-inverted: var(--color-neutral-900);
+
+  /* Semantic colors — light defaults */
+  --color-primary: var(--color-blue-600);
+  --color-secondary: var(--color-zinc-600);
+  --color-success: var(--color-green-600);
+  --color-info: var(--color-sky-500);
+  --color-warning: var(--color-amber-500);
+  --color-error: var(--color-red-600);
 }

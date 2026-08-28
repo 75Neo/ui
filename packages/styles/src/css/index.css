@@ -4,5 +4,12 @@
 @layer base {
   body {
     @apply antialiased;
+    background-color: var(--ui-bg);
+    color: var(--ui-text);
+    color-scheme: light;
+  }
+
+  .dark body {
+    color-scheme: dark;
   }
 }
