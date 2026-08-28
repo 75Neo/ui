@@ -40,3 +40,4 @@ catalog:
 
 allowBuilds:
   esbuild: false
+  puppeteer: false

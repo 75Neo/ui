@@ -1,3 +1,9 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="assets/banner-light.png">
+  <img alt="75NeoUI — One design system, two frameworks. React • Vue • Ark UI • Tailwind CSS" src="assets/banner-dark.png" width="100%">
+</picture>
+
 # 75NeoUI
 
 75NeoUI harnesses the combined strengths of [Ark UI](https://ark-ui.com), [Tailwind CSS](https://tailwindcss.com) and [Tailwind Variants](https://www.tailwind-variants.org) to offer a refined set of tools for building sophisticated, accessible and highly performant interfaces — one design system, two frameworks.
