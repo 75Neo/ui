@@ -1,1 +1,4 @@
-export { default as Button } from "./button/Button.vue";
+export { default as Button } from "./components/Button.vue";
+export { default as Theme } from "./components/Theme.vue";
+export { provideThemeContext, injectThemeContext, type ThemeContext } from "./composables/useTheme";
+export { useComponentUI } from "./composables/useComponentUI";

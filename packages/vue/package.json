@@ -15,20 +15,26 @@
     "build": "tsdown",
     "dev": "tsdown --watch",
     "typecheck": "vue-tsc --noEmit",
+    "test": "vitest run",
     "lint:package": "publint",
     "prepack": "pnpm run build"
   },
   "dependencies": {
     "@75neo/styles": "workspace:*",
     "@ark-ui/vue": "^5.39.0",
-    "@lucide/vue": "catalog:"
+    "@lucide/vue": "catalog:",
+    "defu": "^6.1.7",
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
     "@75neo/tooling": "workspace:*",
+    "@vue/test-utils": "^2.4.11",
+    "happy-dom": "catalog:",
     "publint": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:",
     "unplugin-vue": "^7.2.0",
+    "vitest": "catalog:",
     "vue": "catalog:",
     "vue-tsc": "catalog:"
   },
