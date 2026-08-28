@@ -5,7 +5,7 @@
   "editor.quickSuggestions": {
     "strings": "on"
   },
-  "tailwindCSS.classAttributes": ["class", "ui"],
+  "tailwindCSS.classAttributes": ["class", "ui", "className"],
   "tailwindCSS.classFunctions": ["tv"],
-  "tailwindCSS.experimental.configFile": "apps/docs/src/css/main.css"
+  "tailwindCSS.experimental.configFile": "packages/styles/src/css/lint.css"
 }
