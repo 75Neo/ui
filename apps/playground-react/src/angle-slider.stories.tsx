@@ -25,35 +25,35 @@ export const Default = meta.story({
   ),
 });
 
+function ControlledDemo() {
+  const [value, setValue] = useState(90);
+
+  return (
+    <div className="flex flex-col items-center gap-4 py-8">
+      <AngleSlider label="Rotation" value={value} onValueChange={(e) => setValue(e.value)} />
+      <div className="text-muted text-sm">
+        Value: <span className="text-default font-mono font-semibold">{value}°</span>
+        <button
+          type="button"
+          onClick={() => setValue((v) => (v + 45) % 360)}
+          className="bg-muted hover:bg-accented ml-3 rounded px-2 py-1 text-xs"
+        >
+          +45°
+        </button>
+        <button
+          type="button"
+          onClick={() => setValue(0)}
+          className="bg-muted hover:bg-accented ml-1 rounded px-2 py-1 text-xs"
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export const Controlled = meta.story({
-  render: () => {
-    const ControlledDemo = () => {
-      const [value, setValue] = useState(90);
-      return (
-        <div className="flex flex-col items-center gap-4 py-8">
-          <AngleSlider label="Rotation" value={value} onValueChange={(e) => setValue(e.value)} />
-          <div className="text-muted text-sm">
-            Value: <span className="text-default font-mono font-semibold">{value}°</span>
-            <button
-              type="button"
-              onClick={() => setValue((v) => (v + 45) % 360)}
-              className="bg-muted hover:bg-accented ml-3 rounded px-2 py-1 text-xs"
-            >
-              +45°
-            </button>
-            <button
-              type="button"
-              onClick={() => setValue(0)}
-              className="bg-muted hover:bg-accented ml-1 rounded px-2 py-1 text-xs"
-            >
-              Reset
-            </button>
-          </div>
-        </div>
-      );
-    };
-    return <ControlledDemo />;
-  },
+  render: () => <ControlledDemo />,
 });
 
 export const Sizes = meta.story({
@@ -199,71 +199,70 @@ export const Composition = meta.story({
   ),
 });
 
-export const Playground = meta.story({
-  render: () => {
-    const Demo = () => {
-      const [value, setValue] = useState(45);
-      const [step, setStep] = useState(1);
-      const [size, setSize] = useState<"sm" | "md" | "lg">("md");
-      const [disabled, setDisabled] = useState(false);
+function PlaygroundDemo() {
+  const [value, setValue] = useState(45);
+  const [step, setStep] = useState(1);
+  const [size, setSize] = useState<"sm" | "md" | "lg">("md");
+  const [disabled, setDisabled] = useState(false);
 
-      return (
-        <div className="mx-auto flex max-w-md flex-col items-center gap-6 py-8">
-          <AngleSlider
-            label="Playground"
+  return (
+    <div className="mx-auto flex max-w-md flex-col items-center gap-6 py-8">
+      <AngleSlider
+        label="Playground"
+        value={value}
+        onValueChange={(e) => setValue(e.value)}
+        step={step}
+        size={size}
+        disabled={disabled}
+      />
+      <div className="border-default w-full space-y-3 rounded-lg border p-4">
+        <div className="flex items-center justify-between gap-4">
+          <label className="text-sm font-medium">Value: {value}°</label>
+          <input
+            type="range"
+            min={0}
+            max={360}
             value={value}
-            onValueChange={(e) => setValue(e.value)}
-            step={step}
-            size={size}
-            disabled={disabled}
+            onChange={(e) => setValue(Number(e.target.value))}
+            className="accent-primary flex-1"
           />
-          <div className="border-default w-full space-y-3 rounded-lg border p-4">
-            <div className="flex items-center justify-between gap-4">
-              <label className="text-sm font-medium">Value: {value}°</label>
-              <input
-                type="range"
-                min={0}
-                max={360}
-                value={value}
-                onChange={(e) => setValue(Number(e.target.value))}
-                className="accent-primary flex-1"
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <label className="text-sm">Step</label>
-              <select
-                value={step}
-                onChange={(e) => setStep(Number(e.target.value))}
-                className="border-default bg-default rounded border px-2 py-1 text-sm"
-              >
-                <option value={1}>1</option>
-                <option value={5}>5</option>
-                <option value={15}>15</option>
-                <option value={45}>45</option>
-              </select>
-              <label className="ml-4 text-sm">Size</label>
-              <select
-                value={size}
-                onChange={(e) => setSize(e.target.value as never)}
-                className="border-default bg-default rounded border px-2 py-1 text-sm"
-              >
-                <option value="sm">sm</option>
-                <option value="md">md</option>
-                <option value="lg">lg</option>
-              </select>
-              <label className="ml-auto flex items-center gap-1.5 text-sm">
-                <input
-                  type="checkbox"
-                  checked={disabled}
-                  onChange={(e) => setDisabled(e.target.checked)}
-                />
-                Disabled
-              </label>
-            </div>
-          </div>
         </div>
-      );
-    };
-    return <Demo />;
-  },
+        <div className="flex items-center gap-2">
+          <label className="text-sm">Step</label>
+          <select
+            value={step}
+            onChange={(e) => setStep(Number(e.target.value))}
+            className="border-default bg-default rounded border px-2 py-1 text-sm"
+          >
+            <option value={1}>1</option>
+            <option value={5}>5</option>
+            <option value={15}>15</option>
+            <option value={45}>45</option>
+          </select>
+          <label className="ml-4 text-sm">Size</label>
+          <select
+            value={size}
+            onChange={(e) => setSize(e.target.value as never)}
+            className="border-default bg-default rounded border px-2 py-1 text-sm"
+          >
+            <option value="sm">sm</option>
+            <option value="md">md</option>
+            <option value="lg">lg</option>
+          </select>
+          <label className="ml-auto flex items-center gap-1.5 text-sm">
+            <input
+              type="checkbox"
+              checked={disabled}
+              onChange={(e) => setDisabled(e.target.checked)}
+            />
+            Disabled
+          </label>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export const Playground = meta.story({
+  render: () => <PlaygroundDemo />,
 });

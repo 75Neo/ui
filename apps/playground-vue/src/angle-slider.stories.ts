@@ -156,15 +156,16 @@ export const Invalid = meta.story({
   }),
 });
 
+const onSubmit = (e: Event) => {
+  const form = e.target as HTMLFormElement;
+  const data = new FormData(form);
+  alert(`Submitted value: ${data.get("angle") ?? "(empty)"}`);
+};
+
 export const WithForm = meta.story({
   render: () => ({
     components: { AngleSlider },
     setup() {
-      const onSubmit = (e: Event) => {
-        const form = e.target as HTMLFormElement;
-        const data = new FormData(form);
-        alert(`Submitted value: ${data.get("angle") ?? "(empty)"}`);
-      };
       return { onSubmit };
     },
     template: `
