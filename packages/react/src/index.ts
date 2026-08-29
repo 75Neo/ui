@@ -19,6 +19,24 @@ export {
   type AngleSliderProps,
   type AngleSliderUI,
 } from "./components/AngleSlider";
+export {
+  Carousel,
+  CarouselRoot,
+  CarouselControl,
+  CarouselItemGroup,
+  CarouselItem,
+  CarouselIndicatorGroup,
+  CarouselIndicator,
+  CarouselPrevTrigger,
+  CarouselNextTrigger,
+  CarouselAutoplayTrigger,
+  CarouselAutoplayIndicator,
+  CarouselProgressText,
+  CarouselContext,
+  type CarouselProps,
+  type CarouselItemData,
+  type CarouselUI,
+} from "./components/Carousel";
 export { Theme, type ThemeProps } from "./components/Theme";
 export {
   ThemeProvider,
