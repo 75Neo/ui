@@ -32,6 +32,7 @@ export const oxlintConfig: OxlintConfig = {
     "tailwindcss/no-unknown-classes": "error",
     "tailwindcss/no-conflicting-classes": "error",
     "tailwindcss/enforce-sort-order": "off",
+    "typescript/no-explicit-any": "error",
   },
   overrides: [
     {

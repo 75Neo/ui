@@ -13,8 +13,8 @@ function wrapper(ui?: Record<string, Record<string, SlotClass>>) {
 
 describe("useComponentUI", () => {
   const baseSlots = {
-    base: (size: string) => `base-${size}`,
-    label: (text: string) => `label-${text}`,
+    base: (...args: unknown[]) => `base-${args[0] as string}`,
+    label: (...args: unknown[]) => `label-${args[0] as string}`,
   };
 
   it("returns slot functions that produce base classes when no overrides exist", () => {

@@ -12,8 +12,8 @@ vi.mock("../useTheme", () => ({
 }));
 
 const baseSlots = {
-  base: (size: string) => `base-${size}`,
-  label: (text: string) => `label-${text}`,
+  base: (...args: unknown[]) => `base-${args[0] as string}`,
+  label: (...args: unknown[]) => `label-${args[0] as string}`,
 };
 
 beforeEach(() => {
@@ -95,7 +95,7 @@ describe("useComponentUI", () => {
     const variant = ref<string>("md");
     const tvSlots = computed(() => ({
       base: () => `base-${variant.value}`,
-      label: (t: string) => `label-${t}`,
+      label: (...args: unknown[]) => `label-${args[0] as string}`,
     }));
     const result = useComponentUI("button", tvSlots);
 
