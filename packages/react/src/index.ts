@@ -20,6 +20,15 @@ export {
   type AngleSliderUI,
 } from "./components/AngleSlider";
 export {
+  Avatar,
+  AvatarRoot,
+  AvatarFallback,
+  AvatarImage,
+  AvatarContext,
+  type AvatarProps,
+  type AvatarUI,
+} from "./components/Avatar";
+export {
   Carousel,
   CarouselRoot,
   CarouselControl,

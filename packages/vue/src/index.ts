@@ -1,6 +1,7 @@
 export { default as Button } from "./components/Button.vue";
 export { default as Accordion } from "./components/Accordion.vue";
 export { default as AngleSlider } from "./components/AngleSlider.vue";
+export { default as Avatar } from "./components/Avatar.vue";
 export {
   default as Carousel,
   CarouselRoot,
