@@ -5,6 +5,20 @@ export {
   type AccordionItem,
   type AccordionUI,
 } from "./components/Accordion";
+export {
+  AngleSlider,
+  AngleSliderRoot,
+  AngleSliderLabel,
+  AngleSliderControl,
+  AngleSliderThumb,
+  AngleSliderMarkerGroup,
+  AngleSliderMarker,
+  AngleSliderValueText,
+  AngleSliderHiddenInput,
+  AngleSliderContext,
+  type AngleSliderProps,
+  type AngleSliderUI,
+} from "./components/AngleSlider";
 export { Theme, type ThemeProps } from "./components/Theme";
 export {
   ThemeProvider,
