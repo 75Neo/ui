@@ -9,10 +9,10 @@ function applySlotClass(resolved: string, override: SlotClass | undefined): stri
   return twMerge(resolved, override);
 }
 
-type TVSlotFn = (...args: any[]) => string;
+type TVSlotFn = (...args: unknown[]) => string;
 type TVSlots = Record<string, TVSlotFn>;
 
-export function useComponentUI<T extends TVSlots>(
+export function useComponentUI<T extends Record<string, unknown>>(
   name: string,
   slots: MaybeRef<T>,
   uiProp?: MaybeRef<ComponentUI | undefined>,
@@ -22,7 +22,7 @@ export function useComponentUI<T extends TVSlots>(
   return computed(() => {
     const propUi = toValue(uiProp) ?? {};
     const contextUi = (themeUi.value[name] ?? {}) as Record<string, SlotClass>;
-    const currentSlots = toValue(slots);
+    const currentSlots = toValue(slots) as unknown as TVSlots;
 
     const resolved: Record<string, TVSlotFn> = {};
 
