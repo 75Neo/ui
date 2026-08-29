@@ -53,9 +53,11 @@ Use a kebab-case name for the theme key and a PascalCase name for the component.
 - Stories in both playgrounds, React and Vue
 - Build, typecheck, lint, and format checks passing
 
+> **Rule: single-file components** — Each component must be implemented in a single file per package/view layer (e.g., `packages/react/src/components/Carousel.tsx` and `packages/vue/src/components/Carousel.vue`) and must not be split across multiple files. All variants, primitives, composables, and subcomponents for that component belong in that single file.
+
 ### Step 1 — Add the theme in packages/styles
 
-Create a new file in the themes folder for your component. Define its slots, variants, compound variants, and default variants with tailwind-variants. Slots should be lowercase and semantic, one per visual part that needs styling or overriding. Use design tokens from the colors and radius system rather than hardcoded colors. If the component needs animations, add them to the shared animations CSS and reference them with data-state selectors. Export both the theme object and its variant props type. Then re-export the new theme from the styles entry point so it is available to the other packages.
+Create a new file in the themes folder for your component. Define its slots, variants, compound variants, and default variants with tailwind-variants. Slots should be lowercase and semantic, one per visual part that needs styling or overriding. Use design tokens from the colors and radius system rather than hardcoded colors. If the component needs animations, add them to the shared animations CSS and reference them with data-state selectors. Export both the theme object and its variant props type. Then re-export the new theme from the styles entry point so it is available to the other packages. Theme itself remains a single file per component.
 
 ### Step 2 — Add the React component in packages/react
 
