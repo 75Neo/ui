@@ -15,7 +15,6 @@ Thoughtfully crafted for products people live in. Every token, variant and inter
 Visit the documentation to explore components, theming and design tokens.
 
 - **Docs site:** `apps/docs` (Astro) — run `pnpm dev:docs` locally
-- **Playgrounds:** Storybook for React (`pnpm dev:react` → http://localhost:6006) and Vue (`pnpm dev:vue` → http://localhost:6007)
 
 ## Installation
 
@@ -53,7 +52,7 @@ bun add @75neo/vue @75neo/styles
 @source "./node_modules/@75neo/react";
 ```
 
-> The path in `@source` is **relative to the CSS file**. The playgrounds use `apps/playground-react/src/index.css:1-3` → `@source "../node_modules/@75neo/react"` because the CSS lives in `src/`. For a CSS file at the project root, use `./node_modules/...`.
+> The path in `@source` is **relative to the CSS file**. For a CSS file at the project root, use `./node_modules/...`.
 
 2. Use components:
 
@@ -84,7 +83,7 @@ export function App() {
 @source "./node_modules/@75neo/vue";
 ```
 
-> The playground uses `apps/playground-vue/src/index.css:1-3` → `@source "../node_modules/@75neo/vue"` — same rule, relative to the CSS file.
+> The path in `@source` is **relative to the CSS file** — same rule as above.
 
 2. Use components:
 
@@ -119,12 +118,10 @@ Thank you for considering contributing to 75NeoUI.
 # install
 pnpm install
 
-# build all packages (styles → react/vue → apps)
+# build all packages (styles → react/vue → docs)
 pnpm build
 
-# playgrounds
-pnpm dev:react   # Storybook React on http://localhost:6006
-pnpm dev:vue     # Storybook Vue   on http://localhost:6007
+# docs
 pnpm dev:docs    # Astro docs
 
 # quality checks (see AGENTS.md)
@@ -134,7 +131,7 @@ pnpm format:check
 pnpm lint:packages
 ```
 
-Follow the setup in `mise.toml:1-3` (`mise install` gives Node 24 + pnpm 11) and `package.json:31-33` (`node >=24`, `pnpm ^11.20.0`).
+Follow the setup in `mise.toml:1-3` (`mise install` gives Node 24 + pnpm 11) and `package.json:29-31` (`node >=24`, `pnpm ^11.20.0`).
 
 ## Credits
 

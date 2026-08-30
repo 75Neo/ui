@@ -37,10 +37,6 @@ updates:
           - "@ark-ui/vue"
           - "@lucide/vue"
           - "@vitejs/plugin-vue"
-      storybook:
-        patterns:
-          - "storybook"
-          - "@storybook/*"
       tailwind:
         patterns:
           - "tailwindcss"

@@ -2,7 +2,6 @@ import type { OxlintConfig } from "oxlint";
 
 export const ignorePatterns = [
   "**/dist/**",
-  "**/storybook-static/**",
   "**/node_modules/**",
   ".turbo/**",
   "**/.turbo/**",
@@ -36,14 +35,14 @@ export const oxlintConfig: OxlintConfig = {
   },
   overrides: [
     {
-      files: ["packages/react/**", "apps/playground-react/**"],
+      files: ["packages/react/**"],
       rules: {
         "react/rules-of-hooks": "error",
         "react/react-in-jsx-scope": "off",
       },
     },
     {
-      files: ["packages/vue/**", "apps/playground-vue/**"],
+      files: ["packages/vue/**"],
       rules: {},
     },
     {

@@ -6,7 +6,6 @@ build/
 ## Build system / framework caches
 .turbo/
 .astro/
-storybook-static/
 
 ## Editors / OS
 .DS_Store

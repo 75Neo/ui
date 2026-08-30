@@ -4,8 +4,6 @@
   "description": "A component library for React, and Vue",
   "type": "module",
   "scripts": {
-    "dev:react": "turbo run dev --filter playground-react",
-    "dev:vue": "turbo run dev --filter playground-vue",
     "dev:docs": "turbo run dev --filter docs",
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
