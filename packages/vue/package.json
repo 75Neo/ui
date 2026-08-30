@@ -20,6 +20,7 @@
     "prepack": "pnpm run build"
   },
   "dependencies": {
+    "@75neo/core": "workspace:*",
     "@75neo/styles": "workspace:*",
     "@ark-ui/vue": "^5.39.0",
     "@lucide/vue": "catalog:",

@@ -3,9 +3,9 @@ import { tv, type VariantProps } from "tailwind-variants";
 const button = tv({
   slots: {
     base: "focus-visible:ring-offset-primary inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-transparent text-center align-middle font-medium transition-colors duration-150 outline-none select-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:pointer-events-none aria-disabled:cursor-not-allowed aria-disabled:opacity-75",
-    leadingIcon: "shrink-0 [&>svg]:size-full",
+    leading: "shrink-0 [&>svg]:size-full",
     label: "min-w-0 truncate",
-    trailingIcon: "shrink-0 [&>svg]:size-full",
+    trailing: "shrink-0 [&>svg]:size-full",
   },
   variants: {
     variant: {
@@ -35,6 +35,7 @@ const button = tv({
     },
     color: {
       primary: {},
+      secondary: {},
       neutral: {},
       success: {},
       info: {},
@@ -46,12 +47,18 @@ const button = tv({
     },
   },
   compoundVariants: [
-    // Solid variants
     {
       variant: "solid",
       color: "primary",
       class: {
         base: "bg-primary hover:bg-primary/90 active:bg-primary/80 focus-visible:ring-primary/40 text-white",
+      },
+    },
+    {
+      variant: "solid",
+      color: "secondary",
+      class: {
+        base: "bg-secondary hover:bg-secondary/90 active:bg-secondary/80 focus-visible:ring-secondary/40 text-white",
       },
     },
     {
@@ -89,13 +96,18 @@ const button = tv({
         base: "bg-error hover:bg-error/90 active:bg-error/80 focus-visible:ring-error/40 text-white",
       },
     },
-
-    // Soft variants
     {
       variant: "soft",
       color: "primary",
       class: {
         base: "bg-primary/10 text-primary hover:bg-primary/18 active:bg-primary/26 dark:bg-primary/15 dark:text-primary dark:hover:bg-primary/25 dark:active:bg-primary/35 focus-visible:ring-primary/40",
+      },
+    },
+    {
+      variant: "soft",
+      color: "secondary",
+      class: {
+        base: "bg-secondary/10 text-secondary hover:bg-secondary/18 active:bg-secondary/26 dark:bg-secondary/15 dark:text-secondary dark:hover:bg-secondary/25 dark:active:bg-secondary/35 focus-visible:ring-secondary/40",
       },
     },
     {
@@ -133,13 +145,18 @@ const button = tv({
         base: "bg-error/10 text-error hover:bg-error/18 active:bg-error/26 dark:bg-error/15 dark:text-error dark:hover:bg-error/25 dark:active:bg-error/35 focus-visible:ring-error/40",
       },
     },
-
-    // Outline variants
     {
       variant: "outline",
       color: "primary",
       class: {
         base: "border-primary/45 text-primary hover:border-primary hover:bg-primary/10 active:bg-primary/18 dark:border-primary/50 dark:text-primary dark:hover:border-primary dark:hover:bg-primary/15 dark:active:bg-primary/25 focus-visible:ring-primary/40",
+      },
+    },
+    {
+      variant: "outline",
+      color: "secondary",
+      class: {
+        base: "border-secondary/45 text-secondary hover:border-secondary hover:bg-secondary/10 active:bg-secondary/18 dark:border-secondary/50 dark:hover:border-secondary dark:hover:bg-secondary/15 dark:active:bg-secondary/25 focus-visible:ring-secondary/40",
       },
     },
     {
@@ -177,13 +194,18 @@ const button = tv({
         base: "border-error/45 text-error hover:border-error hover:bg-error/10 active:bg-error/18 dark:border-error/50 dark:hover:border-error dark:hover:bg-error/15 dark:active:bg-error/25 focus-visible:ring-error/40",
       },
     },
-
-    // Ghost variants
     {
       variant: "ghost",
       color: "primary",
       class: {
         base: "text-primary hover:bg-primary/10 active:bg-primary/18 dark:hover:bg-primary/15 dark:active:bg-primary/25 focus-visible:ring-primary/40",
+      },
+    },
+    {
+      variant: "ghost",
+      color: "secondary",
+      class: {
+        base: "text-secondary hover:bg-secondary/10 active:bg-secondary/18 dark:hover:bg-secondary/15 dark:active:bg-secondary/25 focus-visible:ring-secondary/40",
       },
     },
     {
@@ -249,11 +271,11 @@ const button = tv({
     },
   ],
   compoundSlots: [
-    { size: "xs", slots: ["leadingIcon", "trailingIcon"], class: "size-3" },
-    { size: "sm", slots: ["leadingIcon", "trailingIcon"], class: "size-3.5" },
-    { size: "md", slots: ["leadingIcon", "trailingIcon"], class: "size-4" },
-    { size: "lg", slots: ["leadingIcon", "trailingIcon"], class: "size-4" },
-    { size: "xl", slots: ["leadingIcon", "trailingIcon"], class: "size-5" },
+    { size: "xs", slots: ["leading", "trailing"], class: "size-3" },
+    { size: "sm", slots: ["leading", "trailing"], class: "size-3.5" },
+    { size: "md", slots: ["leading", "trailing"], class: "size-4" },
+    { size: "lg", slots: ["leading", "trailing"], class: "size-4" },
+    { size: "xl", slots: ["leading", "trailing"], class: "size-5" },
   ],
   defaultVariants: {
     variant: "solid",

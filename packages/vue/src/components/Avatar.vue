@@ -1,11 +1,3 @@
-<script lang="ts">
-export type AvatarUI = {
-  root?: string | ((cls: string) => string);
-  image?: string | ((cls: string) => string);
-  fallback?: string | ((cls: string) => string);
-};
-</script>
-
 <script setup lang="ts">
 import { computed } from "vue";
 import {
@@ -13,32 +5,32 @@ import {
   AvatarFallback as ArkFallback,
   AvatarImage as ArkImage,
 } from "@ark-ui/vue/avatar";
-import { avatar, type AvatarVariants, type SlotClass } from "@75neo/styles";
+import { avatar, type AvatarVariants } from "@75neo/styles";
+import { avatarKey, resolveAvatarFallback, type AvatarUI } from "@75neo/core";
 import { useComponentUI } from "../composables/useComponentUI";
 
 const props = withDefaults(
   defineProps<{
-    size?: AvatarVariants["size"];
-    shape?: AvatarVariants["shape"];
     src?: string;
     alt?: string;
-    name?: string;
-    fallback?: string;
+    /** Fallback text; when omitted, initials are derived from `alt`. */
+    text?: string;
+    size?: AvatarVariants["size"];
+    color?: AvatarVariants["color"];
+    shape?: AvatarVariants["shape"];
     ui?: AvatarUI;
-    ids?: {
-      root?: string;
-      image?: string;
-      fallback?: string;
-    };
+    class?: unknown;
+    ids?: { root?: string; image?: string; fallback?: string };
   }>(),
   {
-    size: undefined,
-    shape: undefined,
     src: undefined,
     alt: undefined,
-    name: undefined,
-    fallback: undefined,
+    text: undefined,
+    size: undefined,
+    color: undefined,
+    shape: undefined,
     ui: undefined,
+    class: undefined,
     ids: undefined,
   },
 );
@@ -47,50 +39,39 @@ const emit = defineEmits<{
   statusChange: [details: { status: "loading" | "loaded" | "error" }];
 }>();
 
-function getInitials(name: string): string {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return "";
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-}
+const slots = defineSlots<{
+  /** Takes precedence over the fallback text. */
+  icon?: () => unknown;
+  /** Falls back to the resolved initials. */
+  fallback?: (bag: { initials: string }) => unknown;
+}>();
 
-const fallbackContent = computed(() => {
-  if (props.fallback !== undefined) return props.fallback;
-  if (props.name) return getInitials(props.name);
-  return "";
-});
+const initials = computed(() => resolveAvatarFallback(props.text, props.alt));
 
 const tvSlots = computed(() =>
-  avatar({
-    size: props.size,
-    shape: props.shape,
-  }),
+  avatar({ size: props.size, color: props.color, shape: props.shape }),
 );
 
 const resolved = useComponentUI(
-  "avatar",
+  avatarKey,
   tvSlots,
-  computed(() => props.ui as Record<string, SlotClass> | undefined),
+  computed(() => props.ui),
 );
-
-function onStatusChange(details: { status: "loading" | "loaded" | "error" }) {
-  emit("statusChange", details);
-}
 </script>
 
 <template>
-  <ArkRoot data-slot="root" :ids="ids" :class="resolved.root()" @status-change="onStatusChange">
-    <slot>
-      <ArkFallback data-slot="fallback" :class="resolved.fallback()">
-        <slot name="fallback">{{ fallbackContent }}</slot>
-      </ArkFallback>
-      <ArkImage
-        v-if="src"
-        data-slot="image"
-        :src="src"
-        :alt="alt ?? ''"
-        :class="resolved.image()"
-      />
-    </slot>
+  <ArkRoot
+    data-slot="root"
+    :ids="ids"
+    :class="resolved.root({ class: props.class as string })"
+    @status-change="emit('statusChange', $event)"
+  >
+    <ArkImage v-if="src" data-slot="image" :src="src" :alt="alt ?? ''" :class="resolved.image()" />
+    <ArkFallback data-slot="fallback" :class="resolved.fallback()">
+      <span v-if="slots.icon" data-slot="icon" :class="resolved.icon()">
+        <slot name="icon" />
+      </span>
+      <slot v-else name="fallback" :initials="initials">{{ initials }}</slot>
+    </ArkFallback>
   </ArkRoot>
 </template>

@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, type ReactNode } from "react";
 import { defu } from "defu";
-import type { ThemeUI } from "@75neo/styles";
+import type { ThemeUI } from "@75neo/core";
 
 export interface ThemeContextValue {
   ui: ThemeUI;

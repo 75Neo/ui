@@ -1,5 +1,5 @@
 import preview from "../.storybook/preview";
-import { Avatar, AvatarFallback, AvatarImage, AvatarRoot, Theme } from "@75neo/react";
+import { Avatar, Theme } from "@75neo/react";
 import { User } from "lucide-react";
 import { useState } from "react";
 
@@ -8,43 +8,41 @@ const meta = preview.meta({
   component: Avatar,
 });
 
+const sizes = ["xs", "sm", "md", "lg", "xl"] as const;
+const colors = ["neutral", "primary", "secondary", "success", "info", "warning", "error"] as const;
+
 export const Default = meta.story({
   render: () => (
     <div className="flex items-center gap-4">
-      <Avatar src="https://github.com/nstcrystal.png" alt="Alex" fallback="AL" size="md" />
-      <Avatar src="https://github.com/2giosangmitom.png" alt="Jamie" name="Jamie Doe" size="md" />
-      <Avatar fallback="JD" size="md" />
+      <Avatar src="https://github.com/nstcrystal.png" alt="Alex" text="AL" size="md" />
+      <Avatar text="JD" size="md" />
+      <Avatar icon={<User className="size-5" />} size="md" />
     </div>
   ),
 });
 
 export const Sizes = meta.story({
   render: () => (
-    <div className="flex items-end gap-4">
-      <div className="flex flex-col items-center gap-2">
-        <Avatar fallback="XS" size="xs" />
-        <span className="text-muted text-xs">xs</span>
-      </div>
-      <div className="flex flex-col items-center gap-2">
-        <Avatar fallback="SM" size="sm" />
-        <span className="text-muted text-xs">sm</span>
-      </div>
-      <div className="flex flex-col items-center gap-2">
-        <Avatar fallback="MD" size="md" />
-        <span className="text-muted text-xs">md</span>
-      </div>
-      <div className="flex flex-col items-center gap-2">
-        <Avatar fallback="LG" size="lg" />
-        <span className="text-muted text-xs">lg</span>
-      </div>
-      <div className="flex flex-col items-center gap-2">
-        <Avatar fallback="XL" size="xl" />
-        <span className="text-muted text-xs">xl</span>
-      </div>
-      <div className="flex flex-col items-center gap-2">
-        <Avatar fallback="2XL" size="2xl" />
-        <span className="text-muted text-xs">2xl</span>
-      </div>
+    <div className="flex flex-wrap items-end gap-4">
+      {sizes.map((s) => (
+        <div key={s} className="flex flex-col items-center gap-2">
+          <Avatar text={s.toUpperCase()} size={s} />
+          <span className="text-muted text-xs">{s}</span>
+        </div>
+      ))}
+    </div>
+  ),
+});
+
+export const Colors = meta.story({
+  render: () => (
+    <div className="flex flex-wrap items-center gap-4">
+      {colors.map((c) => (
+        <div key={c} className="flex flex-col items-center gap-2">
+          <Avatar text={c.slice(0, 2).toUpperCase()} color={c} size="lg" />
+          <span className="text-muted text-xs">{c}</span>
+        </div>
+      ))}
     </div>
   ),
 });
@@ -52,18 +50,9 @@ export const Sizes = meta.story({
 export const Shapes = meta.story({
   render: () => (
     <div className="flex items-center gap-4">
-      <div className="flex flex-col items-center gap-2">
-        <Avatar fallback="CN" shape="circle" size="lg" />
-        <span className="text-muted text-xs">circle</span>
-      </div>
-      <div className="flex flex-col items-center gap-2">
-        <Avatar fallback="SQ" shape="square" size="lg" />
-        <span className="text-muted text-xs">square</span>
-      </div>
-      <div className="flex flex-col items-center gap-2">
-        <Avatar src="https://github.com/nstcrystal.png" alt="Shape" shape="square" size="lg" />
-        <span className="text-muted text-xs">square + image</span>
-      </div>
+      <Avatar text="CN" shape="circle" size="lg" />
+      <Avatar text="SQ" shape="square" size="lg" />
+      <Avatar src="https://github.com/nstcrystal.png" alt="Shape" shape="square" size="lg" />
     </div>
   ),
 });
@@ -72,49 +61,26 @@ export const Fallbacks = meta.story({
   render: () => (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-4">
-        <Avatar fallback="PA" size="md" />
-        <Avatar name="Ada Lovelace" size="md" />
-        <Avatar name="John" size="md" />
+        <Avatar text="PA" size="md" />
+        <Avatar alt="Ada Lovelace" size="md" />
+        <Avatar text="AB" size="md" color="primary" />
         <Avatar fallback={<User className="size-5" />} size="md" />
       </div>
-      <p className="text-muted text-xs">
-        Fallback supports initials via <code>fallback</code> or auto-derived from <code>name</code>,
-        and custom ReactNode (e.g. icon).
-      </p>
-    </div>
-  ),
-});
-
-export const WithImage = meta.story({
-  render: () => (
-    <div className="flex items-center gap-4">
-      <Avatar src="https://github.com/nstcrystal.png" alt="User 1" fallback="U1" size="md" />
-      <Avatar src="https://github.com/2giosangmitom.png" alt="User 2" fallback="U2" size="lg" />
-      <Avatar src="https://github.com/nstcrystal.png" alt="User 3" fallback="U3" size="xl" />
-    </div>
-  ),
-});
-
-export const BrokenImage = meta.story({
-  render: () => (
-    <div className="flex flex-col gap-3">
       <div className="flex items-center gap-4">
-        <Avatar src="https://invalid.example/broken.jpg" alt="Broken" fallback="FB" size="md" />
-        <Avatar
-          src="https://invalid.example/broken.jpg"
-          alt="Broken"
-          name="Fallback User"
-          size="md"
-        />
+        <Avatar src="https://github.com/nstcrystal.png" alt="User" text="U1" size="md" />
+        <Avatar src="https://invalid.example/broken.jpg" alt="Broken" text="FB" size="md" />
       </div>
-      <p className="text-muted text-xs">When image fails to load, fallback is shown via Ark UI.</p>
+      <p className="text-muted text-xs">
+        Fallback via <code>text</code>, initials derived from <code>alt</code>, or the{" "}
+        <code>fallback</code> slot; broken image shows fallback.
+      </p>
     </div>
   ),
 });
 
 function StatusDemo() {
   const [status, setStatus] = useState("loading");
-  const [key, setKey] = useState(0);
+  const [src, setSrc] = useState("https://github.com/nstcrystal.png");
   return (
     <div className="flex flex-col gap-3">
       <output className="text-sm">
@@ -122,20 +88,21 @@ function StatusDemo() {
       </output>
       <div className="flex items-center gap-4">
         <Avatar
-          key={key}
-          src={
-            key % 2 === 0
-              ? "https://github.com/nstcrystal.png"
-              : "https://github.com/2giosangmitom.png"
-          }
+          src={src}
           alt="Status"
-          fallback="ST"
+          text="ST"
           onStatusChange={(e) => setStatus(e.status)}
           size="lg"
         />
         <button
           type="button"
-          onClick={() => setKey((k) => k + 1)}
+          onClick={() =>
+            setSrc((s) =>
+              s.includes("nstcrystal")
+                ? "https://github.com/2giosangmitom.png"
+                : "https://github.com/nstcrystal.png",
+            )
+          }
           className="bg-muted hover:bg-accented rounded px-2 py-1 text-xs"
         >
           Change src
@@ -149,101 +116,80 @@ export const WithStatus = meta.story({
   render: () => <StatusDemo />,
 });
 
-export const Composition = meta.story({
+export const Slots = meta.story({
   render: () => (
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-4">
-        <AvatarRoot size="lg" shape="circle">
-          <AvatarFallback>PA</AvatarFallback>
-          <AvatarImage src="https://github.com/nstcrystal.png" alt="avatar" />
-        </AvatarRoot>
-        <AvatarRoot size="lg" shape="square">
-          <AvatarFallback>
-            <User className="size-6" />
-          </AvatarFallback>
-          <AvatarImage src="https://github.com/2giosangmitom.png" alt="avatar" />
-        </AvatarRoot>
+        <Avatar size="lg" color="primary" src="https://github.com/nstcrystal.png" alt="Pham An" />
+        <Avatar size="lg" shape="square" icon={<User className="size-6" />} />
+        <Avatar
+          size="lg"
+          color="info"
+          alt="Vo Quang Chien"
+          fallback={({ initials }) => <span className="text-xs">{initials}</span>}
+        />
       </div>
-      <p className="text-muted text-xs">Built from primitives for full customization.</p>
+      <p className="text-muted text-xs">
+        <code>icon</code> and <code>fallback</code> render props — <code>fallback</code> receives{" "}
+        <code>{"{ initials }"}</code>
+      </p>
     </div>
   ),
 });
 
 export const Themed = meta.story({
   render: () => (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-4">
-        <Avatar fallback="TH" size="lg" />
-        <Theme
-          ui={{
-            avatar: {
-              root: "ring-2 ring-primary ring-offset-2",
-              fallback: "bg-primary text-white",
-            },
-          }}
-        >
-          <Avatar fallback="TH" size="lg" />
-        </Theme>
-        <Avatar
-          fallback="TH"
-          size="lg"
-          ui={{ root: "ring-2 ring-success", fallback: "bg-success text-white" }}
-        />
-      </div>
-      <p className="text-muted text-xs">
-        Middle: themed via <code>Theme</code> provider, right: per-instance <code>ui</code> prop.
-      </p>
+    <div className="flex items-center gap-4">
+      <Avatar text="TH" size="lg" />
+      <Theme
+        ui={{
+          avatar: { root: "ring-2 ring-primary ring-offset-2", fallback: "bg-primary text-white" },
+        }}
+      >
+        <Avatar text="TH" size="lg" />
+      </Theme>
+      <Avatar
+        text="TH"
+        size="lg"
+        ui={{ root: "ring-2 ring-success", fallback: "bg-success text-white" }}
+      />
     </div>
   ),
 });
 
 export const Group = meta.story({
   render: () => (
-    <div className="flex flex-col gap-4">
-      <div className="flex -space-x-2">
-        <Avatar fallback="AL" size="md" className="ring-2 ring-white" />
-        <Avatar fallback="JD" size="md" className="ring-2 ring-white" />
-        <Avatar
-          src="https://github.com/nstcrystal.png"
-          alt="G1"
-          fallback="G1"
-          size="md"
-          className="ring-2 ring-white"
-        />
-        <Avatar
-          src="https://github.com/2giosangmitom.png"
-          alt="G2"
-          fallback="G2"
-          size="md"
-          className="ring-2 ring-white"
-        />
-        <Avatar fallback="+3" size="md" className="bg-accented ring-2 ring-white" />
-      </div>
-      <p className="text-muted text-xs">Stack avatars with negative space for group display.</p>
+    <div className="flex -space-x-2">
+      <Avatar text="AL" size="md" className="ring-2 ring-white" />
+      <Avatar text="JD" size="md" className="ring-2 ring-white" />
+      <Avatar
+        src="https://github.com/nstcrystal.png"
+        alt="G1"
+        text="G1"
+        size="md"
+        className="ring-2 ring-white"
+      />
+      <Avatar text="+3" size="md" className="bg-accented ring-2 ring-white" />
     </div>
   ),
 });
 
 export const Matrix = meta.story({
-  render: () => {
-    const sizes = ["xs", "sm", "md", "lg", "xl", "2xl"] as const;
-    const shapes = ["circle", "square"] as const;
-    return (
-      <div className="flex flex-col gap-6">
-        {shapes.map((shape) => (
-          <div key={shape} className="flex flex-col gap-2">
-            <h3 className="text-toned text-sm font-semibold capitalize">{shape}</h3>
-            <div className="flex flex-wrap items-end gap-3">
-              {sizes.map((size) => (
-                <div key={`${shape}-${size}`} className="flex flex-col items-center gap-1">
-                  <Avatar fallback={size.toUpperCase()} size={size} shape={shape} />
-                  <span className="text-muted text-[10px]">{size}</span>
-                </div>
-              ))}
-            </div>
+  render: () => (
+    <div className="flex flex-col gap-6">
+      {(["circle", "square"] as const).map((shape) => (
+        <div key={shape} className="flex flex-col gap-2">
+          <h3 className="text-toned text-sm font-semibold capitalize">{shape}</h3>
+          <div className="flex flex-wrap items-end gap-3">
+            {sizes.map((size) => (
+              <div key={`${shape}-${size}`} className="flex flex-col items-center gap-1">
+                <Avatar text={size.toUpperCase()} size={size} shape={shape} />
+                <span className="text-muted text-[10px]">{size}</span>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    );
-  },
+        </div>
+      ))}
+    </div>
+  ),
 });

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import type { ThemeUI } from "@75neo/styles";
+import type { ThemeUI } from "@75neo/core";
 import { provideThemeContext } from "../composables/useTheme";
 
 const props = defineProps<{

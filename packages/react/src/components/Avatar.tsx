@@ -1,55 +1,34 @@
 import * as React from "react";
 import { Avatar as ArkAvatar } from "@ark-ui/react/avatar";
-import { avatar, type AvatarVariants, type SlotClass } from "@75neo/styles";
+import { avatar, type AvatarVariants } from "@75neo/styles";
+import { avatarKey, resolveAvatarFallback, type AvatarUI } from "@75neo/core";
 import { useComponentUI } from "../hooks/useComponentUI";
+import { renderSlot, type Slot } from "../utils/renderSlot";
 
-export type AvatarUI = {
-  root?: SlotClass;
-  image?: SlotClass;
-  fallback?: SlotClass;
-};
-
-export type AvatarProps = Omit<React.ComponentProps<typeof ArkAvatar.Root>, "children"> & {
-  size?: AvatarVariants["size"];
-  shape?: AvatarVariants["shape"];
+export type AvatarProps = Omit<
+  React.ComponentProps<typeof ArkAvatar.Root>,
+  "children" | "content" | "icon"
+> & {
   src?: string;
   alt?: string;
-  name?: string;
-  fallback?: React.ReactNode;
+  /** Fallback text; when omitted, initials are derived from `alt`. */
+  text?: string;
+  size?: AvatarVariants["size"];
+  color?: AvatarVariants["color"];
+  shape?: AvatarVariants["shape"];
   ui?: AvatarUI;
-  children?: React.ReactNode;
+  /** Mirrors Vue's `#icon` slot; takes precedence over the fallback text. */
+  icon?: Slot;
+  /** Mirrors Vue's `#fallback` slot; falls back to the resolved initials. */
+  fallback?: Slot<{ initials: string }>;
 };
 
-function getInitials(name: string): string {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return "";
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-}
-
 export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
-  ({ ui, size, shape, src, alt, name, fallback, children, className, ...props }, ref) => {
-    const tvSlots = React.useMemo(() => avatar({ size, shape }), [size, shape]);
-    const resolved = useComponentUI("avatar", tvSlots, ui);
+  ({ ui, size, color, shape, src, alt, text, icon, fallback, className, ...props }, ref) => {
+    const tvSlots = React.useMemo(() => avatar({ size, color, shape }), [size, color, shape]);
+    const resolved = useComponentUI(avatarKey, tvSlots, ui);
 
-    const fallbackContent = React.useMemo(() => {
-      if (fallback !== undefined) return fallback;
-      if (name) return getInitials(name);
-      return undefined;
-    }, [fallback, name]);
-
-    if (children) {
-      return (
-        <ArkAvatar.Root
-          ref={ref}
-          className={resolved.root({ className })}
-          data-slot="root"
-          {...props}
-        >
-          {children}
-        </ArkAvatar.Root>
-      );
-    }
+    const initials = resolveAvatarFallback(text, alt);
 
     return (
       <ArkAvatar.Root
@@ -58,78 +37,25 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
         data-slot="root"
         {...props}
       >
-        <ArkAvatar.Fallback className={resolved.fallback()} data-slot="fallback">
-          {fallbackContent}
-        </ArkAvatar.Fallback>
         {src && (
           <ArkAvatar.Image
             src={src}
             alt={alt ?? ""}
-            className={resolved.image()}
             data-slot="image"
+            className={resolved.image()}
           />
         )}
+        <ArkAvatar.Fallback data-slot="fallback" className={resolved.fallback()}>
+          {icon != null ? (
+            <span data-slot="icon" className={resolved.icon()}>
+              {renderSlot(icon)}
+            </span>
+          ) : (
+            renderSlot(fallback, { initials }, initials)
+          )}
+        </ArkAvatar.Fallback>
       </ArkAvatar.Root>
     );
   },
 );
 Avatar.displayName = "Avatar";
-
-// --- Primitive exports for composition ---
-
-export const AvatarRoot = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentProps<typeof ArkAvatar.Root> & {
-    size?: AvatarVariants["size"];
-    shape?: AvatarVariants["shape"];
-    ui?: AvatarUI;
-  }
->(({ size, shape, ui, className, ...props }, ref) => {
-  const tvSlots = React.useMemo(() => avatar({ size, shape }), [size, shape]);
-  const resolved = useComponentUI("avatar", tvSlots, ui);
-  return (
-    <ArkAvatar.Root
-      ref={ref}
-      className={resolved.root({ className })}
-      data-slot="root"
-      {...props}
-    />
-  );
-});
-AvatarRoot.displayName = "AvatarRoot";
-
-export const AvatarFallback = React.forwardRef<
-  HTMLSpanElement,
-  React.ComponentProps<typeof ArkAvatar.Fallback> & { ui?: AvatarUI }
->(({ className, ui, ...props }, ref) => {
-  const tvSlots = React.useMemo(() => avatar({}), []);
-  const resolved = useComponentUI("avatar", tvSlots, ui);
-  return (
-    <ArkAvatar.Fallback
-      ref={ref}
-      className={resolved.fallback({ className })}
-      data-slot="fallback"
-      {...props}
-    />
-  );
-});
-AvatarFallback.displayName = "AvatarFallback";
-
-export const AvatarImage = React.forwardRef<
-  HTMLImageElement,
-  React.ComponentProps<typeof ArkAvatar.Image> & { ui?: AvatarUI }
->(({ className, ui, ...props }, ref) => {
-  const tvSlots = React.useMemo(() => avatar({}), []);
-  const resolved = useComponentUI("avatar", tvSlots, ui);
-  return (
-    <ArkAvatar.Image
-      ref={ref}
-      className={resolved.image({ className })}
-      data-slot="image"
-      {...props}
-    />
-  );
-});
-AvatarImage.displayName = "AvatarImage";
-
-export const AvatarContext = ArkAvatar.Context;

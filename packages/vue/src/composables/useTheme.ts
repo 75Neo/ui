@@ -1,6 +1,6 @@
 import { type InjectionKey, type Ref, computed, inject, provide } from "vue";
 import { defu } from "defu";
-import type { ThemeUI } from "@75neo/styles";
+import type { ThemeUI } from "@75neo/core";
 
 export interface ThemeContext {
   ui: Ref<ThemeUI>;

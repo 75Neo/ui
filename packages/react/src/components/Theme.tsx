@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { ThemeUI } from "@75neo/styles";
+import type { ThemeUI } from "@75neo/core";
 import { ThemeProvider } from "../context/ThemeContext";
 
 export interface ThemeProps {

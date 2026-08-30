@@ -1,13 +1,6 @@
 import { computed, type MaybeRef, toValue } from "vue";
-import { twMerge } from "tailwind-merge";
-import type { SlotClass, ComponentUI } from "@75neo/styles";
+import { applySlotClass, type ComponentUI, type SlotClass } from "@75neo/core";
 import { injectThemeContext } from "./useTheme";
-
-function applySlotClass(resolved: string, override: SlotClass | undefined): string {
-  if (!override) return resolved;
-  if (typeof override === "function") return override(resolved);
-  return twMerge(resolved, override);
-}
 
 type TVSlotFn = (...args: unknown[]) => string;
 type TVSlots = Record<string, TVSlotFn>;

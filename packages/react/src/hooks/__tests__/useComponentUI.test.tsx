@@ -3,7 +3,7 @@ import { renderHook } from "@testing-library/react";
 import { type ReactNode } from "react";
 import { useComponentUI } from "../useComponentUI";
 import { ThemeProvider } from "../../context/ThemeContext";
-import type { SlotClass } from "@75neo/styles";
+import type { SlotClass } from "@75neo/core";
 
 function wrapper(ui?: Record<string, Record<string, SlotClass>>) {
   return function Wrapper({ children }: { children: ReactNode }) {

@@ -1,15 +1,3 @@
-<script lang="ts">
-export type AngleSliderUI = {
-  root?: string | ((cls: string) => string);
-  label?: string | ((cls: string) => string);
-  control?: string | ((cls: string) => string);
-  thumb?: string | ((cls: string) => string);
-  markerGroup?: string | ((cls: string) => string);
-  marker?: string | ((cls: string) => string);
-  valueText?: string | ((cls: string) => string);
-};
-</script>
-
 <script setup lang="ts">
 import { computed } from "vue";
 import {
@@ -20,9 +8,11 @@ import {
   AngleSliderMarkerGroup as ArkMarkerGroup,
   AngleSliderMarker as ArkMarker,
   AngleSliderValueText as ArkValueText,
+  AngleSliderContext as ArkContext,
   AngleSliderHiddenInput as ArkHiddenInput,
 } from "@ark-ui/vue/angle-slider";
-import { angleSlider, type SlotClass } from "@75neo/styles";
+import { angleSlider, type AngleSliderVariants } from "@75neo/styles";
+import { ANGLE_SLIDER_DEFAULT_MARKERS, angleSliderKey, type AngleSliderUI } from "@75neo/core";
 import { useComponentUI } from "../composables/useComponentUI";
 
 const props = withDefaults(
@@ -35,21 +25,14 @@ const props = withDefaults(
     step?: number;
     name?: string;
     id?: string;
-    ids?: {
-      root?: string;
-      thumb?: string;
-      hiddenInput?: string;
-      control?: string;
-      valueText?: string;
-      label?: string;
-    };
     ariaLabel?: string;
     ariaLabelledby?: string;
-    size?: "sm" | "md" | "lg";
+    size?: AngleSliderVariants["size"];
     label?: string;
     markers?: number[];
     showValueText?: boolean;
     ui?: AngleSliderUI;
+    class?: unknown;
   }>(),
   {
     modelValue: undefined,
@@ -60,14 +43,14 @@ const props = withDefaults(
     step: undefined,
     name: undefined,
     id: undefined,
-    ids: undefined,
     ariaLabel: undefined,
     ariaLabelledby: undefined,
     size: "md",
     label: undefined,
-    markers: () => [0, 45, 90, 135, 180, 225, 270, 315],
+    markers: () => ANGLE_SLIDER_DEFAULT_MARKERS,
     showValueText: true,
     ui: undefined,
+    class: undefined,
   },
 );
 
@@ -77,27 +60,20 @@ const emit = defineEmits<{
   valueChangeEnd: [details: { value: number; valueAsDegree: string }];
 }>();
 
-const tvSlots = computed(() =>
-  angleSlider({ size: props.size, disabled: props.disabled || undefined }),
-);
+const slots = defineSlots<{
+  /** Falls back to the `label` prop. */
+  label?: () => unknown;
+  /** Falls back to Ark's formatted degree string. */
+  valueText?: (bag: { value: number; valueAsDegree: string }) => unknown;
+}>();
+
+const tvSlots = computed(() => angleSlider({ size: props.size, disabled: props.disabled }));
 
 const resolved = useComponentUI(
-  "angleSlider",
+  angleSliderKey,
   tvSlots,
-  computed(() => props.ui as Record<string, SlotClass> | undefined),
+  computed(() => props.ui),
 );
-
-function onUpdateModelValue(value: number) {
-  emit("update:modelValue", value);
-}
-
-function onValueChange(details: { value: number; valueAsDegree: string }) {
-  emit("valueChange", details);
-}
-
-function onValueChangeEnd(details: { value: number; valueAsDegree: string }) {
-  emit("valueChangeEnd", details);
-}
 </script>
 
 <template>
@@ -110,40 +86,46 @@ function onValueChangeEnd(details: { value: number; valueAsDegree: string }) {
     :step="step"
     :name="name"
     :id="id"
-    :ids="ids"
     :aria-label="ariaLabel"
     :aria-labelledby="ariaLabelledby"
     data-slot="root"
-    :class="resolved.root()"
-    @update:model-value="onUpdateModelValue"
-    @value-change="onValueChange"
-    @value-change-end="onValueChangeEnd"
+    :class="resolved.root({ class: props.class as string })"
+    @update:model-value="emit('update:modelValue', $event)"
+    @value-change="emit('valueChange', $event)"
+    @value-change-end="emit('valueChangeEnd', $event)"
   >
-    <slot>
-      <ArkLabel v-if="label" data-slot="label" :class="resolved.label()">
-        {{ label }}
-      </ArkLabel>
+    <ArkLabel v-if="label || slots.label" data-slot="label" :class="resolved.label()">
+      <slot name="label">{{ label }}</slot>
+    </ArkLabel>
 
-      <ArkControl data-slot="control" :class="resolved.control()">
-        <ArkMarkerGroup
-          v-if="markers.length > 0"
-          data-slot="markerGroup"
-          :class="resolved.markerGroup()"
-        >
-          <ArkMarker
-            v-for="value in markers"
-            :key="value"
-            :value="value"
-            data-slot="marker"
-            :class="resolved.marker()"
-          />
-        </ArkMarkerGroup>
-        <ArkThumb data-slot="thumb" :class="resolved.thumb()" />
-      </ArkControl>
+    <ArkControl data-slot="control" :class="resolved.control()">
+      <ArkMarkerGroup
+        v-if="markers.length > 0"
+        data-slot="markerGroup"
+        :class="resolved.markerGroup()"
+      >
+        <ArkMarker
+          v-for="marker in markers"
+          :key="marker"
+          :value="marker"
+          data-slot="marker"
+          :class="resolved.marker()"
+        />
+      </ArkMarkerGroup>
+      <ArkThumb data-slot="thumb" :class="resolved.thumb()" />
+    </ArkControl>
 
-      <ArkValueText v-if="showValueText" data-slot="valueText" :class="resolved.valueText()" />
+    <template v-if="showValueText">
+      <!-- Ark falls back to its own formatted degree string only when no default slot
+           reaches it at all, so the two forms must be separate elements. -->
+      <ArkValueText v-if="slots.valueText" data-slot="valueText" :class="resolved.valueText()">
+        <ArkContext v-slot="api">
+          <slot name="valueText" :value="api.value" :value-as-degree="api.valueAsDegree" />
+        </ArkContext>
+      </ArkValueText>
+      <ArkValueText v-else data-slot="valueText" :class="resolved.valueText()" />
+    </template>
 
-      <ArkHiddenInput />
-    </slot>
+    <ArkHiddenInput />
   </ArkRoot>
 </template>

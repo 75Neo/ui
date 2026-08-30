@@ -255,4 +255,6 @@
   --color-error-900: var(--ui-color-error-900);
   --color-error-950: var(--ui-color-error-950);
   --color-error: var(--ui-error);
+
+  --color-inverted: var(--ui-bg-inverted);
 }

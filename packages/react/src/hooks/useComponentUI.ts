@@ -1,13 +1,6 @@
 import { useMemo } from "react";
-import { twMerge } from "tailwind-merge";
-import type { SlotClass, ComponentUI } from "@75neo/styles";
+import { applySlotClass, type ComponentUI, type SlotClass } from "@75neo/core";
 import { useThemeContext } from "../context/ThemeContext";
-
-function applySlotClass(resolved: string, override: SlotClass | undefined): string {
-  if (!override) return resolved;
-  if (typeof override === "function") return override(resolved);
-  return twMerge(resolved, override);
-}
 
 type TVSlotFn = (...args: unknown[]) => string;
 type TVSlots = Record<string, TVSlotFn>;

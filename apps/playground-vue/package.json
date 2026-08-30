@@ -21,6 +21,7 @@
     "@types/node": "catalog:",
     "@vitejs/plugin-vue": "^6.0.8",
     "storybook": "catalog:",
+    "storybook-vue-addon": "^0.7.1",
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",

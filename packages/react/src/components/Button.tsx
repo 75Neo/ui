@@ -1,21 +1,21 @@
-import { button, type ButtonVariants, type SlotClass } from "@75neo/styles";
-import { useComponentUI } from "../hooks/useComponentUI";
-import { Loader2 } from "lucide-react";
 import { useMemo } from "react";
 import type React from "react";
+import { Loader2 } from "lucide-react";
+import { button, type ButtonVariants } from "@75neo/styles";
+import { buttonKey, type ButtonUI } from "@75neo/core";
+import { useComponentUI } from "../hooks/useComponentUI";
+import { renderSlot, type Slot } from "../utils/renderSlot";
 
 interface ButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color">, ButtonVariants {
-  ui?: {
-    base?: SlotClass;
-    leadingIcon?: SlotClass;
-    label?: SlotClass;
-    trailingIcon?: SlotClass;
-  };
-  leadingIcon?: React.ReactNode;
-  trailingIcon?: React.ReactNode;
+  ui?: ButtonUI;
+  /** Mirrors Vue's `#leading` slot. */
+  leading?: Slot;
+  /** Mirrors Vue's `#trailing` slot. */
+  trailing?: Slot;
   loading?: boolean;
-  loadingIcon?: React.ReactNode;
+  /** Mirrors Vue's `#loadingIcon` slot; replaces the default spinner. */
+  loadingIcon?: Slot;
 }
 
 function Button({
@@ -25,8 +25,8 @@ function Button({
   compact,
   ui,
   className,
-  leadingIcon,
-  trailingIcon,
+  leading,
+  trailing,
   loading = false,
   loadingIcon,
   disabled = false,
@@ -35,34 +35,41 @@ function Button({
   ...props
 }: ButtonProps) {
   const tvSlots = useMemo(
-    () =>
-      button({
-        variant,
-        size,
-        color,
-        compact,
-      }),
+    () => button({ variant, size, color, compact }),
     [variant, size, color, compact],
   );
 
-  const resolved = useComponentUI("button", tvSlots, ui);
+  const resolved = useComponentUI(buttonKey, tvSlots, ui);
+
+  const isDisabled = disabled || loading;
 
   return (
     <button
       type={type}
+      data-slot="base"
       className={resolved.base({ className })}
-      disabled={disabled || loading}
-      aria-busy={loading || undefined}
-      aria-disabled={loading || undefined}
+      disabled={isDisabled}
+      aria-busy={loading ? true : undefined}
+      aria-disabled={isDisabled ? true : undefined}
       {...props}
     >
-      {(leadingIcon || loading) && (
-        <span className={resolved.leadingIcon()}>
-          {loading ? (loadingIcon ?? <Loader2 className="animate-spin" />) : leadingIcon}
+      {(leading != null || loading) && (
+        <span data-slot="leading" className={resolved.leading()}>
+          {loading
+            ? renderSlot(loadingIcon, undefined, <Loader2 className="animate-spin" />)
+            : renderSlot(leading)}
         </span>
       )}
-      {children && <span className={resolved.label()}>{children}</span>}
-      {trailingIcon && <span className={resolved.trailingIcon()}>{trailingIcon}</span>}
+      {children != null && (
+        <span data-slot="label" className={resolved.label()}>
+          {children}
+        </span>
+      )}
+      {trailing != null && (
+        <span data-slot="trailing" className={resolved.trailing()}>
+          {renderSlot(trailing)}
+        </span>
+      )}
     </button>
   );
 }

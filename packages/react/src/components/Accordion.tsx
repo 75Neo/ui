@@ -1,40 +1,26 @@
 import * as React from "react";
 import { Accordion as ArkAccordion } from "@ark-ui/react/accordion";
-import { accordion, type SlotClass } from "@75neo/styles";
-import { useComponentUI } from "../hooks/useComponentUI";
 import { ChevronDown } from "lucide-react";
-import { twMerge } from "tailwind-merge";
+import { accordion } from "@75neo/styles";
+import {
+  accordionKey,
+  applySlotClass,
+  resolveAccordionValue,
+  toValueArray,
+  type AccordionItemData,
+  type AccordionUI,
+} from "@75neo/core";
+import { useComponentUI } from "../hooks/useComponentUI";
+import { renderSlot, type Slot } from "../utils/renderSlot";
 
-export type AccordionItem = {
-  label?: string;
-  content?: string;
-  value?: string;
-  disabled?: boolean;
-  icon?: React.ReactNode;
-  trailingIcon?: React.ReactNode;
-  ui?: Partial<
-    Record<
-      "item" | "header" | "trigger" | "leadingIcon" | "label" | "trailingIcon" | "content" | "body",
-      SlotClass
-    >
-  >;
-};
+export type AccordionItem = AccordionItemData<React.ReactNode>;
 
-export type AccordionUI = {
-  root?: SlotClass;
-  item?: SlotClass;
-  header?: SlotClass;
-  trigger?: SlotClass;
-  content?: SlotClass;
-  body?: SlotClass;
-  leadingIcon?: SlotClass;
-  trailingIcon?: SlotClass;
-  label?: SlotClass;
-};
+/** Scope handed to every per-item slot, matching Vue's `{ item, index }`. */
+export type AccordionSlotBag = { item: AccordionItem; index: number };
 
 export type AccordionProps = Omit<
   React.ComponentProps<typeof ArkAccordion.Root>,
-  "value" | "defaultValue" | "children"
+  "value" | "defaultValue" | "children" | "multiple" | "content" | "label"
 > & {
   items?: AccordionItem[];
   type?: "single" | "multiple";
@@ -42,33 +28,16 @@ export type AccordionProps = Omit<
   disabled?: boolean;
   defaultValue?: string | string[];
   value?: string | string[];
-  trailingIcon?: React.ReactNode;
-  valueKey?: string;
-  labelKey?: string;
   ui?: AccordionUI;
-  children?: React.ReactNode;
+  /** Mirrors Vue's `#leading` slot; falls back to `item.leading`. */
+  leading?: Slot<AccordionSlotBag>;
+  /** Mirrors Vue's `#label` slot; falls back to `item.label`. */
+  label?: Slot<AccordionSlotBag>;
+  /** Mirrors Vue's `#trailing` slot; falls back to `item.trailing`, then a chevron. */
+  trailing?: Slot<AccordionSlotBag>;
+  /** Mirrors Vue's `#content` slot; falls back to `item.content`. */
+  content?: Slot<AccordionSlotBag>;
 };
-
-function getValue(item: AccordionItem, index: number, valueKey: string): string {
-  const record = item as unknown as Record<string, unknown>;
-  const keyedValue = record[valueKey];
-  if (typeof keyedValue === "string" && keyedValue.length > 0) return keyedValue;
-  if (typeof item.value === "string" && item.value.length > 0) return item.value;
-  return String(index);
-}
-
-function getLabel(item: AccordionItem, labelKey: string): string {
-  const record = item as unknown as Record<string, unknown>;
-  const keyedLabel = record[labelKey];
-  if (typeof keyedLabel === "string") return keyedLabel;
-  return item.label ?? "";
-}
-
-function applySlotClass(base: string, slotClass?: SlotClass): string {
-  if (!slotClass) return base;
-  if (typeof slotClass === "function") return slotClass(base);
-  return twMerge(base, slotClass);
-}
 
 export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
   (
@@ -80,103 +49,84 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
       disabled = false,
       defaultValue,
       value,
-      trailingIcon,
-      valueKey = "value",
-      labelKey = "label",
-      children,
+      leading,
+      label,
+      trailing,
+      content,
+      className,
       ...props
     },
     ref,
   ) => {
     const tvSlots = React.useMemo(() => accordion({ disabled }), [disabled]);
-    const resolved = useComponentUI("accordion", tvSlots, ui);
-
-    const multiple = type === "multiple";
-
-    const arkDefaultValue = React.useMemo(() => {
-      if (defaultValue == null) return undefined;
-      return Array.isArray(defaultValue) ? defaultValue : [defaultValue];
-    }, [defaultValue]);
-
-    const arkValue = React.useMemo(() => {
-      if (value == null) return undefined;
-      return Array.isArray(value) ? value : [value];
-    }, [value]);
-
-    if (items?.length) {
-      return (
-        <ArkAccordion.Root
-          ref={ref}
-          multiple={multiple}
-          collapsible={collapsible}
-          disabled={disabled}
-          defaultValue={arkDefaultValue}
-          value={arkValue}
-          className={resolved.root()}
-          data-slot="root"
-          {...props}
-        >
-          {items.map((item, index) => {
-            const v = getValue(item, index, valueKey);
-            const label = getLabel(item, labelKey);
-
-            const itemClass = applySlotClass(resolved.item(), item.ui?.item);
-            const triggerClass = applySlotClass(resolved.trigger(), item.ui?.trigger);
-            const leadingClass = applySlotClass(resolved.leadingIcon(), item.ui?.leadingIcon);
-            const labelClass = applySlotClass(resolved.label(), item.ui?.label);
-            const trailingClass = applySlotClass(resolved.trailingIcon(), item.ui?.trailingIcon);
-            const contentClass = applySlotClass(resolved.content(), item.ui?.content);
-            const bodyClass = applySlotClass(resolved.body(), item.ui?.body);
-            const headerClass = applySlotClass(resolved.header(), item.ui?.header);
-
-            return (
-              <ArkAccordion.Item
-                key={v}
-                value={v}
-                disabled={item.disabled || disabled}
-                className={itemClass}
-                data-slot="item"
-              >
-                <div data-slot="header" className={headerClass}>
-                  <ArkAccordion.ItemTrigger data-slot="trigger" className={triggerClass}>
-                    {item.icon && (
-                      <span data-slot="leadingIcon" className={leadingClass}>
-                        {item.icon}
-                      </span>
-                    )}
-                    <span data-slot="label" className={labelClass}>
-                      {label}
-                    </span>
-                    <ArkAccordion.ItemIndicator data-slot="trailingIcon" className={trailingClass}>
-                      {item.trailingIcon ?? trailingIcon ?? <ChevronDown />}
-                    </ArkAccordion.ItemIndicator>
-                  </ArkAccordion.ItemTrigger>
-                </div>
-                <ArkAccordion.ItemContent data-slot="content" className={contentClass}>
-                  <div data-slot="body" className={bodyClass}>
-                    {item.content}
-                  </div>
-                </ArkAccordion.ItemContent>
-              </ArkAccordion.Item>
-            );
-          })}
-        </ArkAccordion.Root>
-      );
-    }
+    const resolved = useComponentUI(accordionKey, tvSlots, ui);
 
     return (
       <ArkAccordion.Root
         ref={ref}
-        multiple={multiple}
+        multiple={type === "multiple"}
         collapsible={collapsible}
         disabled={disabled}
-        defaultValue={arkDefaultValue}
-        value={arkValue}
-        className={resolved.root()}
+        defaultValue={toValueArray(defaultValue)}
+        value={toValueArray(value)}
+        className={resolved.root({ className })}
         data-slot="root"
         {...props}
       >
-        {children}
+        {items?.map((item, index) => {
+          const bag: AccordionSlotBag = { item, index };
+          const itemValue = resolveAccordionValue(item, index);
+          const hasLeading = leading != null || item.leading != null;
+
+          return (
+            <ArkAccordion.Item
+              key={itemValue}
+              value={itemValue}
+              disabled={item.disabled || disabled}
+              data-slot="item"
+              className={applySlotClass(resolved.item(), item.ui?.item)}
+            >
+              <div
+                data-slot="header"
+                className={applySlotClass(resolved.header(), item.ui?.header)}
+              >
+                <ArkAccordion.ItemTrigger
+                  data-slot="trigger"
+                  className={applySlotClass(resolved.trigger(), item.ui?.trigger)}
+                >
+                  {hasLeading && (
+                    <span
+                      data-slot="leading"
+                      className={applySlotClass(resolved.leading(), item.ui?.leading)}
+                    >
+                      {renderSlot(leading, bag, item.leading)}
+                    </span>
+                  )}
+                  <span
+                    data-slot="label"
+                    className={applySlotClass(resolved.label(), item.ui?.label)}
+                  >
+                    {renderSlot(label, bag, item.label)}
+                  </span>
+                  <ArkAccordion.ItemIndicator
+                    data-slot="trailing"
+                    className={applySlotClass(resolved.trailing(), item.ui?.trailing)}
+                  >
+                    {renderSlot(trailing, bag, item.trailing ?? <ChevronDown />)}
+                  </ArkAccordion.ItemIndicator>
+                </ArkAccordion.ItemTrigger>
+              </div>
+              <ArkAccordion.ItemContent
+                data-slot="content"
+                className={applySlotClass(resolved.content(), item.ui?.content)}
+              >
+                <div data-slot="body" className={applySlotClass(resolved.body(), item.ui?.body)}>
+                  {renderSlot(content, bag, item.content)}
+                </div>
+              </ArkAccordion.ItemContent>
+            </ArkAccordion.Item>
+          );
+        })}
       </ArkAccordion.Root>
     );
   },

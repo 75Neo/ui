@@ -2,32 +2,33 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 const carousel = tv({
   slots: {
-    root: "flex w-full flex-col gap-4",
-    control: "flex w-full items-center justify-between gap-2",
-    itemGroup: "flex overflow-hidden rounded-lg",
+    root: "relative focus:outline-none",
+    viewport: "overflow-hidden",
+    container: "flex items-start",
     item: "min-w-0 shrink-0 basis-full",
-    indicatorGroup: "flex items-center justify-center gap-2",
-    indicator:
-      "bg-muted hover:bg-accented data-[current]:bg-primary size-2.5 rounded-full transition-colors duration-200 disabled:opacity-50",
-    prevTrigger:
-      "bg-elevated hover:bg-accented border-default inline-flex size-8 shrink-0 items-center justify-center rounded-md border text-sm transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4",
-    nextTrigger:
-      "bg-elevated hover:bg-accented border-default inline-flex size-8 shrink-0 items-center justify-center rounded-md border text-sm transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4",
-    autoplayTrigger:
-      "bg-elevated hover:bg-accented border-default inline-flex size-8 shrink-0 items-center justify-center rounded-md border text-sm transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4",
-    autoplayIndicator: "inline-flex items-center justify-center [&_svg]:size-4",
-    progressText: "text-muted text-sm tabular-nums",
+    controls: "",
+    arrows: "",
+    prev: "absolute rounded-full",
+    next: "absolute rounded-full",
+    dots: "absolute inset-x-0 -bottom-7 flex flex-wrap items-center justify-center gap-3",
+    dot: [
+      "bg-accented outline-inverted/25 size-3 cursor-pointer rounded-full focus-visible:outline-3",
+      "transition",
+    ],
   },
   variants: {
     orientation: {
-      horizontal: {
-        itemGroup: "flex-row",
-      },
       vertical: {
-        root: "flex-col",
-        control: "flex-col",
-        itemGroup: "flex-col",
-        indicatorGroup: "flex-col",
+        container: "-mt-4 flex-col",
+        item: "pt-4",
+        prev: "top-4 left-1/2 -translate-x-1/2 rotate-90 sm:-top-12 rtl:-rotate-90",
+        next: "bottom-4 left-1/2 -translate-x-1/2 rotate-90 sm:-bottom-12 rtl:-rotate-90",
+      },
+      horizontal: {
+        container: "-ms-4 flex-row",
+        item: "ps-4",
+        prev: "start-4 top-1/2 -translate-y-1/2 sm:-start-12",
+        next: "end-4 top-1/2 -translate-y-1/2 sm:-end-12",
       },
     },
   },

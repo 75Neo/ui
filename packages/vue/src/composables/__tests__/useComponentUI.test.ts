@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { ref } from "vue";
 import { useComponentUI } from "../useComponentUI";
-import type { ThemeUI } from "@75neo/styles";
+import type { ThemeUI } from "@75neo/core";
 
 let mockThemeUi: ThemeUI = {};
 

@@ -3,48 +3,19 @@ export {
   Accordion,
   type AccordionProps,
   type AccordionItem,
-  type AccordionUI,
+  type AccordionSlotBag,
 } from "./components/Accordion";
 export {
   AngleSlider,
-  AngleSliderRoot,
-  AngleSliderLabel,
-  AngleSliderControl,
-  AngleSliderThumb,
-  AngleSliderMarkerGroup,
-  AngleSliderMarker,
-  AngleSliderValueText,
-  AngleSliderHiddenInput,
-  AngleSliderContext,
   type AngleSliderProps,
-  type AngleSliderUI,
+  type AngleSliderValueBag,
 } from "./components/AngleSlider";
-export {
-  Avatar,
-  AvatarRoot,
-  AvatarFallback,
-  AvatarImage,
-  AvatarContext,
-  type AvatarProps,
-  type AvatarUI,
-} from "./components/Avatar";
+export { Avatar, type AvatarProps } from "./components/Avatar";
 export {
   Carousel,
-  CarouselRoot,
-  CarouselControl,
-  CarouselItemGroup,
-  CarouselItem,
-  CarouselIndicatorGroup,
-  CarouselIndicator,
-  CarouselPrevTrigger,
-  CarouselNextTrigger,
-  CarouselAutoplayTrigger,
-  CarouselAutoplayIndicator,
-  CarouselProgressText,
-  CarouselContext,
   type CarouselProps,
-  type CarouselItemData,
-  type CarouselUI,
+  type CarouselItem,
+  type CarouselSlotBag,
 } from "./components/Carousel";
 export { Theme, type ThemeProps } from "./components/Theme";
 export {
@@ -53,3 +24,17 @@ export {
   useThemeContext,
   type ThemeContextValue,
 } from "./context/ThemeContext";
+export { useComponentUI } from "./hooks/useComponentUI";
+export { renderSlot, type Slot } from "./utils/renderSlot";
+
+// The shared contract, re-exported so React and Vue publish identical type names.
+export type {
+  SlotClass,
+  ComponentUI,
+  ThemeUI,
+  AccordionUI,
+  AngleSliderUI,
+  AvatarUI,
+  ButtonUI,
+  CarouselUI,
+} from "@75neo/core";
