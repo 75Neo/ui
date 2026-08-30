@@ -15,34 +15,28 @@
     "build": "tsdown",
     "dev": "tsdown --watch",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "lint:package": "publint",
-    "prepack": "pnpm run build"
+    "prepack": "pnpm build"
   },
   "dependencies": {
     "@75neo/core": "workspace:*",
-    "@75neo/styles": "workspace:*",
-    "@ark-ui/react": "^5.39.0",
-    "defu": "^6.1.7",
-    "lucide-react": "catalog:",
-    "tailwind-merge": "^3.6.0"
+    "@75neo/themes": "workspace:*",
+    "@ark-ui/react": "^5.39.1",
+    "defu": "catalog:",
+    "lucide-react": "catalog:"
   },
   "devDependencies": {
-    "@75neo/tooling": "workspace:*",
     "@rolldown/plugin-babel": "^0.2.3",
-    "@testing-library/jest-dom": "^7.0.1",
-    "@testing-library/react": "^16.3.2",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "@vitejs/plugin-react": "^6.1.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "@vitest/browser-playwright": "catalog:",
     "babel-plugin-react-compiler": "^1.0.0",
-    "jsdom": "^30.0.1",
     "publint": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:",
-    "vitest": "catalog:"
+    "vitest-browser-react": "catalog:"
   },
   "peerDependencies": {
     "react": ">=18",

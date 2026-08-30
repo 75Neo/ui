@@ -1,0 +1,70 @@
+:root {
+  --ui-bg: white;
+  --ui-bg-muted: var(--color-slate-50);
+  --ui-bg-elevated: var(--color-slate-100);
+  --ui-bg-accented: var(--color-slate-200);
+  --ui-bg-inverted: var(--color-slate-900);
+
+  --ui-text-dimmed: var(--color-slate-400);
+  --ui-text-muted: var(--color-slate-500);
+  --ui-text-toned: var(--color-slate-600);
+  --ui-text: var(--color-slate-700);
+  --ui-text-highlighted: var(--color-slate-900);
+  --ui-text-inverted: white;
+
+  --ui-border: var(--color-slate-200);
+  --ui-border-muted: var(--color-slate-200);
+  --ui-border-accented: var(--color-slate-300);
+  --ui-border-inverted: var(--color-slate-900);
+
+  --ui-primary: var(--color-blue-500);
+  --ui-secondary: var(--color-purple-600);
+  --ui-success: var(--color-green-600);
+  --ui-info: var(--color-blue-500);
+  --ui-warning: var(--color-yellow-500);
+  --ui-error: var(--color-red-600);
+}
+
+.dark {
+  --ui-bg: black;
+  --ui-bg-muted: var(--color-slate-50);
+  --ui-bg-elevated: var(--color-slate-100);
+  --ui-bg-accented: var(--color-slate-200);
+  --ui-bg-inverted: var(--color-slate-900);
+
+  --ui-text-dimmed: var(--color-slate-400);
+  --ui-text-muted: var(--color-slate-500);
+  --ui-text-toned: var(--color-slate-600);
+  --ui-text: var(--color-slate-700);
+  --ui-text-highlighted: var(--color-slate-900);
+  --ui-text-inverted: white;
+
+  --ui-border: var(--color-slate-200);
+  --ui-border-muted: var(--color-slate-200);
+  --ui-border-accented: var(--color-slate-300);
+  --ui-border-inverted: var(--color-slate-900);
+
+  --ui-primary: var(--color-blue-500);
+  --ui-secondary: var(--color-purple-600);
+  --ui-success: var(--color-green-600);
+  --ui-info: var(--color-blue-500);
+  --ui-warning: var(--color-yellow-500);
+  --ui-error: var(--color-red-600);
+}
+
+@theme inline {
+  --color-primary: var(--ui-primary);
+  --color-secondary: var(--ui-secondary);
+  --color-success: var(--ui-success);
+  --color-info: var(--ui-info);
+  --color-warning: var(--ui-warning);
+  --color-error: var(--ui-error);
+}
+
+@utility text-default {
+  color: var(--ui-text);
+}
+
+@utility bg-default {
+  background-color: var(--ui-bg);
+}

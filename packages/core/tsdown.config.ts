@@ -1,3 +1,13 @@
-import { defineLibrary } from "@75neo/tooling/tsdown";
+import { defineConfig } from "tsdown/config";
 
-export default defineLibrary();
+export default defineConfig({
+  entry: ["src/index.ts"],
+  format: ["esm"],
+  platform: "neutral",
+  fixedExtension: false,
+  dts: true,
+  clean: true,
+  treeshake: true,
+  exports: true,
+  publint: true,
+});

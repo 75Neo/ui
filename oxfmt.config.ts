@@ -1,4 +1,13 @@
 import { defineConfig } from "oxfmt";
-import { oxfmtConfig } from "./packages/tooling/src/oxfmt.ts";
 
-export default defineConfig(oxfmtConfig);
+export default defineConfig({
+  printWidth: 100,
+  semi: true,
+  tabWidth: 2,
+  singleQuote: false,
+  trailingComma: "all",
+  sortTailwindcss: {
+    functions: ["tv"],
+  },
+  ignorePatterns: [".agents/**/*.md"],
+});
