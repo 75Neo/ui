@@ -4,6 +4,10 @@
     "ark-ui": {
       "type": "local",
       "command": ["npx", "-y", "@ark-ui/mcp"]
+    },
+    "Astro docs": {
+      "type": "remote",
+      "url": "https://mcp.docs.astro.build/mcp"
     }
   }
 }

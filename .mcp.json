@@ -1,8 +1,12 @@
 {
   "mcpServers": {
-    "ark-ui": {
+    "ArkUI": {
       "command": "npx",
       "args": ["-y", "@ark-ui/mcp"]
+    },
+    "Astro docs": {
+      "type": "http",
+      "url": "https://mcp.docs.astro.build/mcp"
     }
   }
 }
