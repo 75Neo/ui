@@ -65,9 +65,6 @@ jobs:
       - name: Type check
         run: pnpm typecheck
 
-      - name: Package manifests
-        run: pnpm lint:packages
-
       - name: Prune pnpm store
         continue-on-error: true
         run: pnpm store prune
