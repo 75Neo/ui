@@ -4,14 +4,10 @@ export type {
   ComponentKey,
   ComponentThemes,
   PropsOf,
-  ResolvedComponentTheme,
-  ResolvedTheme,
   SlotsOf,
-  Theme,
   ThemeConfig,
-  ThemeOverride,
-  ThemeScope,
+  ThemeOverride
 } from "./types/theme";
-export { applyTVClasses, createThemeScope, resolveTheme } from "./utils/theme";
+export {} from "./utils/theme";
 
 export * from "./contracts/button";

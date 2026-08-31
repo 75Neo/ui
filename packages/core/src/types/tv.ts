@@ -1,3 +1,3 @@
-export type TVClasses = string | ((classes: string) => string);
+export type TVClasses = string;
 
-export type TVSlot<S extends string = string> = Partial<Record<S, TVClasses>>;
+export type TVSlot<S extends string> = Partial<Record<S, TVClasses>>;

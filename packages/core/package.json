@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "@75neo/themes": "workspace:*",
-    "tailwind-variants": "catalog:"
+    "tailwind-variants": "catalog:",
+    "defu": "catalog:"
   },
   "devDependencies": {
     "publint": "catalog:",
