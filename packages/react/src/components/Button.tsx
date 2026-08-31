@@ -9,10 +9,6 @@ export interface ButtonProps
     Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color">,
     ButtonContract<React.ReactNode> {}
 
-/**
- * Every themeable prop is destructured without a default on purpose: `undefined` is what tells
- * the resolver that the theme may fill the value in. Explicit props still win.
- */
 export function Button({
   ui,
   variant,
@@ -31,10 +27,11 @@ export function Button({
   ...rest
 }: ButtonProps) {
   const theme = useComponentTheme(ButtonKey, ui);
-  const defaults = theme.props;
+  const defaults = theme.props ?? {};
+  const slots = theme.ui;
 
-  const isLoading = loading ?? defaults.loading ?? false;
-  const isDisabled = (disabled ?? defaults.disabled ?? false) || isLoading;
+  const isLoading = loading ?? false;
+  const isDisabled = (disabled ?? false) || isLoading;
 
   const tv = button({
     variant: variant ?? defaults.variant,
@@ -42,30 +39,30 @@ export function Button({
     color: color ?? defaults.color,
   });
 
-  const showLeading = isLoading || (leading ?? defaults.leading ?? false) || leadingIcon != null;
-  const showTrailing = (trailing ?? defaults.trailing ?? false) || trailingIcon != null;
+  const showLeading = isLoading || (leading ?? false) || leadingIcon != null;
+  const showTrailing = (trailing ?? false) || trailingIcon != null;
 
   return (
     <button
       {...rest}
       type={type}
       data-slot="base"
-      className={theme.class("base", tv.base({ class: className }))}
+      className={tv.base({ class: [className, slots?.base] })}
       disabled={isDisabled}
       aria-busy={isLoading || undefined}
     >
       {showLeading && (
-        <span data-slot="leading" className={theme.class("leading", tv.leading())}>
+        <span data-slot="leading" className={tv.leading({ class: slots?.leading })}>
           {isLoading ? (loadingIcon ?? <Loader2 className="animate-spin" />) : leadingIcon}
         </span>
       )}
       {children != null && (
-        <span data-slot="label" className={theme.class("label", tv.label())}>
+        <span data-slot="label" className={tv.label({ class: slots?.label })}>
           {children}
         </span>
       )}
       {showTrailing && (
-        <span data-slot="trailing" className={theme.class("trailing", tv.trailing())}>
+        <span data-slot="trailing" className={tv.trailing({ class: slots?.trailing })}>
           {trailingIcon}
         </span>
       )}

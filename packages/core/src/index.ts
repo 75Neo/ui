@@ -6,8 +6,9 @@ export type {
   PropsOf,
   SlotsOf,
   ThemeConfig,
-  ThemeOverride
+  ThemeOverride,
+  ThemeOverrideOf,
 } from "./types/theme";
-export {} from "./utils/theme";
+export { applyThemeConfigs, applyThemeOverrides } from "./utils/theme";
 
 export * from "./contracts/button";

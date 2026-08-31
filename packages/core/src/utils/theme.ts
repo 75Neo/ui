@@ -1,4 +1,5 @@
-import type { ThemeOverride } from "../types/theme";
+import type { ThemeConfig, ThemeOverride } from "../types/theme";
+import type { TVSlot } from "../types/tv";
 import { cn } from "tailwind-variants";
 import { defu } from "defu";
 
@@ -6,17 +7,37 @@ export function applyThemeOverrides<U extends string, P extends object>(
   a: ThemeOverride<U, P>,
   b: ThemeOverride<U, P>,
 ): ThemeOverride<U, P> {
-  const result = structuredClone(a);
+  const result: ThemeOverride<U, P> = { props: defu(b.props, a.props) as Partial<P> };
 
-  result.props = defu(b.props, result.props) as Partial<P>;
+  if (a.ui || b.ui) {
+    const ui: TVSlot<U> = { ...a.ui };
 
-  if (!result.ui) {
-    result.ui = b.ui;
-  } else if (b.ui) {
-    for (const k of Object.keys(b.ui) as U[]) {
-      result.ui[k] = cn(result.ui[k], b.ui[k]);
+    if (b.ui) {
+      for (const k of Object.keys(b.ui) as U[]) {
+        ui[k] = cn(ui[k], b.ui[k]);
+      }
     }
+
+    result.ui = ui;
   }
 
   return result;
+}
+
+export function applyThemeConfigs(a: ThemeConfig, b: ThemeConfig): ThemeConfig {
+  const base = a as Record<symbol, ThemeOverride | undefined>;
+  const overrides = b as Record<symbol, ThemeOverride | undefined>;
+  const result: Record<symbol, ThemeOverride | undefined> = {};
+
+  for (const key of Object.getOwnPropertySymbols(base)) {
+    const override = base[key];
+    if (override) result[key] = applyThemeOverrides(override, {});
+  }
+
+  for (const key of Object.getOwnPropertySymbols(overrides)) {
+    const override = overrides[key];
+    if (override) result[key] = applyThemeOverrides(result[key] ?? {}, override);
+  }
+
+  return result as ThemeConfig;
 }

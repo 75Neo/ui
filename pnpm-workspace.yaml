@@ -18,8 +18,8 @@ catalog:
   tailwind-variants: ^3.3.1
 
   # Icons
-  "@lucide/vue": ^1.35.0
-  lucide-react: ^1.35.0
+  "@lucide/vue": ^1.37.0
+  lucide-react: ^1.37.0
 
   # React
   "@types/react": ^19.2.18

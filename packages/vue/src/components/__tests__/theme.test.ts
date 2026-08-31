@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { h } from "vue";
+import { defineComponent, h } from "vue";
 import { render } from "vitest-browser-vue";
-import { ButtonKey, type ThemeConfig } from "@75neo/core";
+import { ButtonKey, type ThemeConfig, type ThemeOverrideOf } from "@75neo/core";
+import { useComponentTheme } from "../../composables/useComponentTheme.ts";
 import Button from "../Button.vue";
 import Theme from "../Theme.vue";
 
@@ -33,28 +34,8 @@ describe("Theme", () => {
   });
 
   it("resolves nested themes nearest-first and merges per slot", () => {
-    const outer: ThemeConfig = { [ButtonKey]: { ui: { base: "outer", leading: "mr-2" } } };
-    const inner: ThemeConfig = {
-      [ButtonKey]: { ui: { base: "inner" }, props: { size: "lg", leading: true } },
-    };
-
-    const { container } = render(Theme, {
-      props: { theme: outer },
-      slots: {
-        default: () =>
-          h(Theme, { theme: inner }, { default: () => h(Button, null, () => "Button") }),
-      },
-    });
-
-    expect(base(container).className).toBe("inner");
-    expect(slot(container, "leading")!.className).toBe("mr-2");
-  });
-
-  it("hands a functional override the classes produced by the layers beneath it", () => {
-    const outer: ThemeConfig = { [ButtonKey]: { ui: { base: "outer" } } };
-    const inner: ThemeConfig = {
-      [ButtonKey]: { ui: { base: (classes) => `${classes} inner` } },
-    };
+    const outer: ThemeConfig = { [ButtonKey]: { ui: { base: "p-2 rounded-sm", leading: "mr-2" } } };
+    const inner: ThemeConfig = { [ButtonKey]: { ui: { base: "p-5" } } };
 
     const { container } = render(Theme, {
       props: { theme: outer },
@@ -63,35 +44,55 @@ describe("Theme", () => {
           h(
             Theme,
             { theme: inner },
-            {
-              default: () =>
-                h(
-                  Button,
-                  { ui: { base: (classes: string) => `${classes} local` } },
-                  () => "Button",
-                ),
-            },
+            { default: () => h(Button, { leading: true }, () => "Button") },
           ),
       },
     });
 
-    expect(base(container).className).toBe("outer inner local");
+    expect(base(container).className).toBe("rounded-sm p-5");
+    expect(slot(container, "leading")!.className).toBe("mr-2");
   });
 
-  it("applies theme props as defaults that explicit props override", () => {
-    const theme: ThemeConfig = { [ButtonKey]: { props: { disabled: true } } };
+  it("keeps classes from every layer that do not conflict", () => {
+    const outer: ThemeConfig = { [ButtonKey]: { ui: { base: "rounded-sm" } } };
+    const inner: ThemeConfig = { [ButtonKey]: { ui: { base: "font-bold" } } };
 
-    const { container: themed } = render(Theme, {
-      props: { theme },
-      slots: { default: () => h(Button, null, () => "Button") },
+    const { container } = render(Theme, {
+      props: { theme: outer },
+      slots: {
+        default: () =>
+          h(
+            Theme,
+            { theme: inner },
+            { default: () => h(Button, { ui: { base: "p-5" } }, () => "Button") },
+          ),
+      },
     });
-    expect((base(themed) as HTMLButtonElement).disabled).toBe(true);
 
-    const { container: explicit } = render(Theme, {
-      props: { theme },
-      slots: { default: () => h(Button, { disabled: false }, () => "Button") },
+    expect(base(container).className).toBe("rounded-sm font-bold p-5");
+  });
+
+  it("merges theme props with the nearest theme winning", () => {
+    let resolved: ThemeOverrideOf<typeof ButtonKey>["props"];
+
+    const Probe = defineComponent(() => {
+      resolved = useComponentTheme(ButtonKey).value.props;
+      return () => null;
     });
-    expect((base(explicit) as HTMLButtonElement).disabled).toBe(false);
+
+    render(Theme, {
+      props: { theme: { [ButtonKey]: { props: { size: "lg", color: "error" } } } },
+      slots: {
+        default: () =>
+          h(
+            Theme,
+            { theme: { [ButtonKey]: { props: { color: "primary" } } } },
+            { default: () => h(Probe) },
+          ),
+      },
+    });
+
+    expect(resolved).toEqual({ size: "lg", color: "primary" });
   });
 
   it("leaves components outside any Theme untouched", () => {

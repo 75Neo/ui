@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ThemeConfig } from "@75neo/core";
-import { provideThemeScope } from "../composables/useTheme";
+import { provideTheme } from "../composables/useComponentTheme";
 
 const props = defineProps<{
   /** A layer of per-component overrides, keyed by component. */
@@ -9,7 +9,7 @@ const props = defineProps<{
 
 defineSlots<{ default?: () => unknown }>();
 
-provideThemeScope(() => props.theme);
+provideTheme(() => props.theme);
 </script>
 
 <template>

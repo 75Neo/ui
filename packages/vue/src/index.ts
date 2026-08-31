@@ -1,6 +1,10 @@
 export { default as Button } from "./components/Button.vue";
 export { default as Theme } from "./components/Theme.vue";
-export { injectThemeScope, provideThemeScope, useComponentTheme } from "./composables/useTheme";
+export {
+  provideTheme,
+  useComponentTheme,
+  useThemeConfig,
+} from "./composables/useComponentTheme.ts";
 
 // Re-exported so applications need only one import for the theme API.
 export {
@@ -12,12 +16,12 @@ export {
   type ComponentKey,
   type ComponentThemes,
   type PropsOf,
-  type ResolvedTheme,
   type SlotsOf,
-  type Theme as ThemeLayer,
   type ThemeConfig,
   type ThemeOverride,
-  type ThemeScope,
+  type ThemeOverrideOf,
   type TVClasses,
   type TVSlot,
+  applyThemeConfigs,
+  applyThemeOverrides,
 } from "@75neo/core";

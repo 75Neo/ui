@@ -36,6 +36,19 @@ describe("applyThemeOverrides", () => {
     expect(applied).toEqual({ ui: { base: "p-12 m-5", leading: "font-bold" }, props: {} });
   });
 
+  it("shares no object with either input", () => {
+    const a: TestThemeOverride = { ui: { base: "p-5" }, props: { color: "error" } };
+    const b: TestThemeOverride = { ui: { leading: "font-bold" } };
+
+    const applied = applyThemeOverrides(a, b);
+    applied.ui!.base = "p-12";
+    applied.ui!.leading = "font-normal";
+    applied.props!.color = "primary";
+
+    expect(a).toEqual({ ui: { base: "p-5" }, props: { color: "error" } });
+    expect(b).toEqual({ ui: { leading: "font-bold" } });
+  });
+
   it("override old props", () => {
     const a: TestThemeOverride = {
       props: {

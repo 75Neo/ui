@@ -1,7 +1,9 @@
 import type React from "react";
+import { useEffect } from "react";
 import { describe, expect, it } from "vitest";
 import { render } from "vitest-browser-react";
-import { ButtonKey, type ThemeConfig } from "@75neo/core";
+import { ButtonKey, type ThemeConfig, type ThemeOverrideOf } from "@75neo/core";
+import { useComponentTheme } from "../../hooks/useComponentTheme";
 import { Button } from "../Button";
 import { Theme } from "../Theme";
 
@@ -40,54 +42,56 @@ describe("Theme", () => {
   });
 
   it("resolves nested themes nearest-first and merges per slot", async () => {
-    const outer: ThemeConfig = { [ButtonKey]: { ui: { base: "outer", leading: "mr-2" } } };
-    const inner: ThemeConfig = {
-      [ButtonKey]: { ui: { base: "inner" }, props: { size: "lg", leading: true } },
-    };
+    const outer: ThemeConfig = { [ButtonKey]: { ui: { base: "p-2 rounded-sm", leading: "mr-2" } } };
+    const inner: ThemeConfig = { [ButtonKey]: { ui: { base: "p-5" } } };
 
     const container = await mount(
       <Theme theme={outer}>
         <Theme theme={inner}>
-          <Button>Button</Button>
+          <Button leading>Button</Button>
         </Theme>
       </Theme>,
     );
 
-    expect(base(container).className).toBe("inner");
+    expect(base(container).className).toBe("rounded-sm p-5");
     expect(slot(container, "leading")!.className).toBe("mr-2");
   });
 
-  it("hands a functional override the classes produced by the layers beneath it", async () => {
-    const outer: ThemeConfig = { [ButtonKey]: { ui: { base: "outer" } } };
-    const inner: ThemeConfig = { [ButtonKey]: { ui: { base: (classes) => `${classes} inner` } } };
+  it("keeps classes from every layer that do not conflict", async () => {
+    const outer: ThemeConfig = { [ButtonKey]: { ui: { base: "rounded-sm" } } };
+    const inner: ThemeConfig = { [ButtonKey]: { ui: { base: "font-bold" } } };
 
     const container = await mount(
       <Theme theme={outer}>
         <Theme theme={inner}>
-          <Button ui={{ base: (classes) => `${classes} local` }}>Button</Button>
+          <Button ui={{ base: "p-5" }}>Button</Button>
         </Theme>
       </Theme>,
     );
 
-    expect(base(container).className).toBe("outer inner local");
+    expect(base(container).className).toBe("rounded-sm font-bold p-5");
   });
 
-  it("applies theme props as defaults that explicit props override", async () => {
-    const theme: ThemeConfig = { [ButtonKey]: { props: { disabled: true } } };
+  it("merges theme props with the nearest theme winning", async () => {
+    let resolved: ThemeOverrideOf<typeof ButtonKey>["props"];
 
-    const themed = await mount(
-      <Theme theme={theme}>
-        <Button>Button</Button>
+    function Probe() {
+      const theme = useComponentTheme(ButtonKey);
+      useEffect(() => {
+        resolved = theme.props;
+      }, [theme]);
+      return null;
+    }
+
+    await mount(
+      <Theme theme={{ [ButtonKey]: { props: { size: "lg", color: "error" } } }}>
+        <Theme theme={{ [ButtonKey]: { props: { color: "primary" } } }}>
+          <Probe />
+        </Theme>
       </Theme>,
     );
-    expect(base(themed).disabled).toBe(true);
 
-    const explicit = await mount(
-      <Theme theme={theme}>
-        <Button disabled={false}>Button</Button>
-      </Theme>,
-    );
-    expect(base(explicit).disabled).toBe(false);
+    expect(resolved).toEqual({ size: "lg", color: "primary" });
   });
 
   it("leaves components outside any Theme untouched", async () => {

@@ -1,6 +1,6 @@
 export { Button, type ButtonProps } from "./components/Button";
 export { Theme, type ThemeProps } from "./components/Theme";
-export { ThemeScopeContext } from "./context/ThemeContext";
+export { ThemeContext } from "./context/ThemeContext";
 export { useComponentTheme } from "./hooks/useComponentTheme";
 
 // Re-exported so applications need only one import for the theme API.
@@ -12,12 +12,12 @@ export {
   type ComponentKey,
   type ComponentThemes,
   type PropsOf,
-  type ResolvedTheme,
   type SlotsOf,
-  type Theme as ThemeLayer,
   type ThemeConfig,
   type ThemeOverride,
-  type ThemeScope,
+  type ThemeOverrideOf,
   type TVClasses,
   type TVSlot,
+  applyThemeConfigs,
+  applyThemeOverrides,
 } from "@75neo/core";
