@@ -1,5 +1,5 @@
 @import "./colors.css";
-@import "./animations.css";
+@import "./keyframes.css";
 @source "./index.js";
 
 @layer base {

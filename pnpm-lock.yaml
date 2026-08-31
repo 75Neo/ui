@@ -235,6 +235,9 @@ catalogs:
     react-dom:
       specifier: ^19.2.8
       version: 19.2.8
+    tailwind-variants:
+      specifier: ^3.3.1
+      version: 3.3.1
     tailwindcss:
       specifier: ^4.3.3
       version: 4.3.3
@@ -331,6 +334,9 @@ importers:
       '@75neo/themes':
         specifier: workspace:*
         version: link:../themes
+      tailwind-variants:
+        specifier: 'catalog:'
+        version: 3.3.1(tailwind-merge@3.6.0)(tailwindcss@4.3.3)
     devDependencies:
       publint:
         specifier: 'catalog:'
@@ -400,7 +406,7 @@ importers:
   packages/themes:
     dependencies:
       tailwind-variants:
-        specifier: ^3.3.1
+        specifier: 'catalog:'
         version: 3.3.1(tailwind-merge@3.6.0)(tailwindcss@4.3.3)
     devDependencies:
       '@tsdown/css':

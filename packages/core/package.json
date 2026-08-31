@@ -18,7 +18,8 @@
     "prepack": "pnpm build"
   },
   "dependencies": {
-    "@75neo/themes": "workspace:*"
+    "@75neo/themes": "workspace:*",
+    "tailwind-variants": "catalog:"
   },
   "devDependencies": {
     "publint": "catalog:",

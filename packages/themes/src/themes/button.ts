@@ -30,9 +30,6 @@ export const button = tv({
       warning: {},
       error: {},
     },
-    compact: {
-      true: {},
-    },
   },
   compoundVariants: [],
   compoundSlots: [],
@@ -44,3 +41,4 @@ export const button = tv({
 });
 
 export type ButtonVariants = VariantProps<typeof button>;
+export type ButtonSlots = keyof ReturnType<typeof button>;
