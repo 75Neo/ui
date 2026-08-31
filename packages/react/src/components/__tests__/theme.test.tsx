@@ -2,7 +2,7 @@ import type React from "react";
 import { useEffect } from "react";
 import { describe, expect, it } from "vitest";
 import { render } from "vitest-browser-react";
-import { ButtonKey, type ThemeConfig, type ThemeOverrideOf } from "@75neo/core";
+import type { ThemeConfig, ThemeOverrideOf } from "@75neo/core";
 import { useComponentTheme } from "../../hooks/useComponentTheme";
 import { Button } from "../Button";
 import { Theme } from "../Theme";
@@ -23,7 +23,7 @@ function base(container: HTMLElement): HTMLButtonElement {
 describe("Theme", () => {
   it("applies a theme's ui override to a component below it", async () => {
     const container = await mount(
-      <Theme theme={{ [ButtonKey]: { ui: { base: "p-2" } } }}>
+      <Theme theme={{ button: { ui: { base: "p-2" } } }}>
         <Button>Button</Button>
       </Theme>,
     );
@@ -33,7 +33,7 @@ describe("Theme", () => {
 
   it("lets the component's ui prop beat the theme", async () => {
     const container = await mount(
-      <Theme theme={{ [ButtonKey]: { ui: { base: "p-2" } } }}>
+      <Theme theme={{ button: { ui: { base: "p-2" } } }}>
         <Button ui={{ base: "p-5" }}>Button</Button>
       </Theme>,
     );
@@ -42,8 +42,8 @@ describe("Theme", () => {
   });
 
   it("resolves nested themes nearest-first and merges per slot", async () => {
-    const outer: ThemeConfig = { [ButtonKey]: { ui: { base: "p-2 rounded-sm", leading: "mr-2" } } };
-    const inner: ThemeConfig = { [ButtonKey]: { ui: { base: "p-5" } } };
+    const outer: ThemeConfig = { button: { ui: { base: "p-2 rounded-sm", leading: "mr-2" } } };
+    const inner: ThemeConfig = { button: { ui: { base: "p-5" } } };
 
     const container = await mount(
       <Theme theme={outer}>
@@ -58,8 +58,8 @@ describe("Theme", () => {
   });
 
   it("keeps classes from every layer that do not conflict", async () => {
-    const outer: ThemeConfig = { [ButtonKey]: { ui: { base: "rounded-sm" } } };
-    const inner: ThemeConfig = { [ButtonKey]: { ui: { base: "font-bold" } } };
+    const outer: ThemeConfig = { button: { ui: { base: "rounded-sm" } } };
+    const inner: ThemeConfig = { button: { ui: { base: "font-bold" } } };
 
     const container = await mount(
       <Theme theme={outer}>
@@ -73,10 +73,10 @@ describe("Theme", () => {
   });
 
   it("merges theme props with the nearest theme winning", async () => {
-    let resolved: ThemeOverrideOf<typeof ButtonKey>["props"];
+    let resolved: ThemeOverrideOf<"button">["props"];
 
     function Probe() {
-      const theme = useComponentTheme(ButtonKey);
+      const theme = useComponentTheme("button");
       useEffect(() => {
         resolved = theme.props;
       }, [theme]);
@@ -84,8 +84,8 @@ describe("Theme", () => {
     }
 
     await mount(
-      <Theme theme={{ [ButtonKey]: { props: { size: "lg", color: "error" } } }}>
-        <Theme theme={{ [ButtonKey]: { props: { color: "primary" } } }}>
+      <Theme theme={{ button: { props: { size: "lg", color: "error" } } }}>
+        <Theme theme={{ button: { props: { color: "primary" } } }}>
           <Probe />
         </Theme>
       </Theme>,

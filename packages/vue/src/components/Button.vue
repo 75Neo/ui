@@ -2,7 +2,7 @@
 import { type Component, computed } from "vue";
 import { Loader2 } from "@lucide/vue";
 import { button } from "@75neo/themes";
-import { ButtonKey, type ButtonProps } from "@75neo/core";
+import type { ButtonProps } from "@75neo/core";
 import { useComponentTheme } from "../composables/useComponentTheme";
 
 const props = defineProps<
@@ -20,7 +20,7 @@ const slots = defineSlots<{
   loadingIcon?: () => unknown;
 }>();
 
-const theme = useComponentTheme(ButtonKey, () => props.ui);
+const theme = useComponentTheme("button", () => props.ui);
 
 const resolved = computed(() => {
   const defaults = theme.value.props ?? {};

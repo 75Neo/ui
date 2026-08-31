@@ -56,8 +56,19 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Playwright browsers cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
       - name: Test
-        run: pnpm turbo run test
+        run: pnpm test
 
       - name: Lint
         run: pnpm lint

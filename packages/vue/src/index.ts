@@ -8,7 +8,6 @@ export {
 
 // Re-exported so applications need only one import for the theme API.
 export {
-  ButtonKey,
   type ButtonProps,
   type ButtonTheme,
   type ButtonUI,

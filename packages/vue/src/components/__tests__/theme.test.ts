@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { defineComponent, h } from "vue";
 import { render } from "vitest-browser-vue";
-import { ButtonKey, type ThemeConfig, type ThemeOverrideOf } from "@75neo/core";
+import type { ThemeConfig, ThemeOverrideOf } from "@75neo/core";
 import { useComponentTheme } from "../../composables/useComponentTheme.ts";
 import Button from "../Button.vue";
 import Theme from "../Theme.vue";
@@ -17,7 +17,7 @@ function slot(container: HTMLElement, name: string): HTMLElement | null {
 describe("Theme", () => {
   it("applies a theme's ui override to a component below it", () => {
     const { container } = render(Theme, {
-      props: { theme: { [ButtonKey]: { ui: { base: "p-2" } } } },
+      props: { theme: { button: { ui: { base: "p-2" } } } },
       slots: { default: () => h(Button, null, () => "Button") },
     });
 
@@ -26,7 +26,7 @@ describe("Theme", () => {
 
   it("lets the component's ui prop beat the theme", () => {
     const { container } = render(Theme, {
-      props: { theme: { [ButtonKey]: { ui: { base: "p-2" } } } },
+      props: { theme: { button: { ui: { base: "p-2" } } } },
       slots: { default: () => h(Button, { ui: { base: "p-5" } }, () => "Button") },
     });
 
@@ -34,8 +34,8 @@ describe("Theme", () => {
   });
 
   it("resolves nested themes nearest-first and merges per slot", () => {
-    const outer: ThemeConfig = { [ButtonKey]: { ui: { base: "p-2 rounded-sm", leading: "mr-2" } } };
-    const inner: ThemeConfig = { [ButtonKey]: { ui: { base: "p-5" } } };
+    const outer: ThemeConfig = { button: { ui: { base: "p-2 rounded-sm", leading: "mr-2" } } };
+    const inner: ThemeConfig = { button: { ui: { base: "p-5" } } };
 
     const { container } = render(Theme, {
       props: { theme: outer },
@@ -54,8 +54,8 @@ describe("Theme", () => {
   });
 
   it("keeps classes from every layer that do not conflict", () => {
-    const outer: ThemeConfig = { [ButtonKey]: { ui: { base: "rounded-sm" } } };
-    const inner: ThemeConfig = { [ButtonKey]: { ui: { base: "font-bold" } } };
+    const outer: ThemeConfig = { button: { ui: { base: "rounded-sm" } } };
+    const inner: ThemeConfig = { button: { ui: { base: "font-bold" } } };
 
     const { container } = render(Theme, {
       props: { theme: outer },
@@ -73,20 +73,20 @@ describe("Theme", () => {
   });
 
   it("merges theme props with the nearest theme winning", () => {
-    let resolved: ThemeOverrideOf<typeof ButtonKey>["props"];
+    let resolved: ThemeOverrideOf<"button">["props"];
 
     const Probe = defineComponent(() => {
-      resolved = useComponentTheme(ButtonKey).value.props;
+      resolved = useComponentTheme("button").value.props;
       return () => null;
     });
 
     render(Theme, {
-      props: { theme: { [ButtonKey]: { props: { size: "lg", color: "error" } } } },
+      props: { theme: { button: { props: { size: "lg", color: "error" } } } },
       slots: {
         default: () =>
           h(
             Theme,
-            { theme: { [ButtonKey]: { props: { color: "primary" } } } },
+            { theme: { button: { props: { color: "primary" } } } },
             { default: () => h(Probe) },
           ),
       },

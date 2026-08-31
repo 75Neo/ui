@@ -1,12 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { applyThemeOverrides } from "../theme";
-import type { ComponentContract, ThemeOverrideOf } from "../../types/theme";
-
-const Key: unique symbol = Symbol("test");
+import { applyThemeConfigs, applyThemeOverrides } from "../theme";
+import type { ComponentContract, ThemeConfig, ThemeOverrideOf } from "../../types/theme";
 
 declare global {
   interface Neo75ComponentThemes {
-    [Key]: ComponentContract<
+    test: ComponentContract<
       "base" | "leading",
       {
         size?: "md" | "lg";
@@ -16,7 +14,7 @@ declare global {
   }
 }
 
-type TestThemeOverride = ThemeOverrideOf<typeof Key>;
+type TestThemeOverride = ThemeOverrideOf<"test">;
 
 describe("applyThemeOverrides", () => {
   it("replace conflict classes in correct slot", () => {
@@ -68,5 +66,20 @@ describe("applyThemeOverrides", () => {
       },
       ui: undefined,
     });
+  });
+});
+
+describe("applyThemeConfigs", () => {
+  it("produces a config that survives serialization", () => {
+    const outer: ThemeConfig = { test: { ui: { base: "rounded-sm" }, props: { color: "error" } } };
+    const inner: ThemeConfig = { test: { ui: { base: "p-5" } } };
+
+    const merged = applyThemeConfigs(outer, inner);
+
+    // Components are keyed by namespaced strings rather than symbols so a merged
+    // config crosses SSR and server/client boundaries intact. Symbol keys would
+    // leave an empty object behind with no error.
+    expect(Object.keys(merged)).toEqual(["test"]);
+    expect(JSON.parse(JSON.stringify(merged))).toEqual(merged);
   });
 });

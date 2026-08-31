@@ -1,7 +1,7 @@
 import type React from "react";
 import { Loader2 } from "lucide-react";
 import { button } from "@75neo/themes";
-import { ButtonKey, type ButtonProps as ButtonContract } from "@75neo/core";
+import type { ButtonProps as ButtonContract } from "@75neo/core";
 import { useComponentTheme } from "../hooks/useComponentTheme";
 
 export interface ButtonProps
@@ -26,7 +26,7 @@ export function Button({
   type = "button",
   ...rest
 }: ButtonProps) {
-  const theme = useComponentTheme(ButtonKey, ui);
+  const theme = useComponentTheme("button", ui);
   const defaults = theme.props ?? {};
   const slots = theme.ui;
 

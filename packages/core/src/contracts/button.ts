@@ -20,10 +20,8 @@ export interface ButtonProps<F> {
 
 export type ButtonTheme = ThemeOverride<ButtonSlots, ButtonVariants>;
 
-export const ButtonKey: unique symbol = Symbol("75neo.button");
-
 declare global {
   interface Neo75ComponentThemes {
-    [ButtonKey]: ComponentContract<ButtonSlots, ButtonVariants>;
+    button: ComponentContract<ButtonSlots, ButtonVariants>;
   }
 }
