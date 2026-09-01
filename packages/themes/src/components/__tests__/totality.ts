@@ -1,4 +1,4 @@
-import { type Recipe, variantValues } from "../../variants";
+import { type Recipe, variantValues } from "@75neo/core";
 
 /** A compound-variant entry: variant values to match on, plus the classes they add. */
 type CompoundVariant = Record<string, string | string[] | unknown>;

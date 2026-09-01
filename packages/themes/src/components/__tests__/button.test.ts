@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { variantValues } from "../../variants";
+import { variantValues } from "@75neo/core";
 import { button } from "../button";
 import { assertRecipeIsTotal } from "./totality";
 

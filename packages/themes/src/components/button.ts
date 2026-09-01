@@ -300,3 +300,23 @@ declare global {
     button: ComponentContract<ButtonSlots, ButtonVariants>;
   }
 }
+
+/**
+ * Which of Button's optional slots render.
+ *
+ * `hasLeading` and `hasTrailing` are the framework's answer to "is there anything to
+ * put in this slot" -- a `ReactNode` prop in React, a prop or a filled `<slot>` in
+ * Vue. The rule itself is the same in both, so it lives here rather than twice.
+ */
+export function showButtonSlots(props: {
+  loading?: boolean;
+  leading?: boolean;
+  trailing?: boolean;
+  hasLeading?: boolean;
+  hasTrailing?: boolean;
+}): { leading: boolean; trailing: boolean } {
+  return {
+    leading: (props.loading ?? false) || (props.leading ?? false) || (props.hasLeading ?? false),
+    trailing: (props.trailing ?? false) || (props.hasTrailing ?? false),
+  };
+}

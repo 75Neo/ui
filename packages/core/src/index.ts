@@ -1,3 +1,5 @@
+export type { Recipe, RecipeSlots, RecipeVariants } from "./types/recipe";
+export { variantValues } from "./types/recipe";
 export type { TVClasses, TVSlot } from "./types/tv";
 export type {
   ComponentContract,
@@ -10,3 +12,4 @@ export type {
   ThemeOverrideOf,
 } from "./types/theme";
 export { applyThemeConfigs, applyThemeOverrides } from "./utils/theme";
+export { type ResolvedTheme, resolveTheme } from "./utils/resolve";

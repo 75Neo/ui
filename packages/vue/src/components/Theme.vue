@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ThemeConfig } from "@75neo/core";
-import { provideTheme } from "../composables/useComponentTheme";
+import { provideTheme } from "../composables/theme";
 
 const props = defineProps<{
   theme: ThemeConfig;
