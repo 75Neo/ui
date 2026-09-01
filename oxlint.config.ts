@@ -52,4 +52,5 @@ export default defineConfig({
       },
     },
   ],
+  ignorePatterns: [".agents/**/*.md"],
 });
