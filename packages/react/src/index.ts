@@ -3,7 +3,6 @@ export { Theme, type ThemeProps } from "./components/Theme";
 export { ThemeContext } from "./context/ThemeContext";
 export { useComponentTheme } from "./hooks/useComponentTheme";
 
-// Re-exported so applications need only one import for the theme API.
 export {
   type ButtonTheme,
   type ButtonUI,

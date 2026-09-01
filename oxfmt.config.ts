@@ -8,6 +8,8 @@ export default defineConfig({
   trailingComma: "all",
   sortTailwindcss: {
     functions: ["tv"],
+    attributes: ["ui"],
+    stylesheet: "packages/themes/src/tokens/lint.css",
   },
   ignorePatterns: [".agents/**/*.md"],
 });

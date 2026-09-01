@@ -4,14 +4,14 @@
     overflow: hidden;
   }
   to {
-    height: fit-content;
+    height: var(--ui-collapsible-height, auto);
     overflow: hidden;
   }
 }
 
 @keyframes accordion-up {
   from {
-    height: fit-content;
+    height: var(--ui-collapsible-height, auto);
     overflow: hidden;
   }
   to {

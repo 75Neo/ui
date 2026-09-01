@@ -6,7 +6,6 @@ export {
   useThemeConfig,
 } from "./composables/useComponentTheme.ts";
 
-// Re-exported so applications need only one import for the theme API.
 export {
   type ButtonProps,
   type ButtonTheme,

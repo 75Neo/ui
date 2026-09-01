@@ -16,7 +16,6 @@ const slots = defineSlots<{
   default?: () => unknown;
   leading?: () => unknown;
   trailing?: () => unknown;
-  /** Replaces the spinner shown while `loading` is set. */
   loadingIcon?: () => unknown;
 }>();
 

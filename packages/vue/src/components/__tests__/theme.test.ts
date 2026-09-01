@@ -21,7 +21,7 @@ describe("Theme", () => {
       slots: { default: () => h(Button, null, () => "Button") },
     });
 
-    expect(base(container).className).toBe("p-2");
+    expect(base(container).className).toContain("p-2");
   });
 
   it("lets the component's ui prop beat the theme", () => {
@@ -30,7 +30,9 @@ describe("Theme", () => {
       slots: { default: () => h(Button, { ui: { base: "p-5" } }, () => "Button") },
     });
 
-    expect(base(container).className).toBe("p-5");
+    const cls = base(container).className;
+    expect(cls).toContain("p-5");
+    expect(cls).not.toContain("p-2");
   });
 
   it("resolves nested themes nearest-first and merges per slot", () => {
@@ -49,8 +51,12 @@ describe("Theme", () => {
       },
     });
 
-    expect(base(container).className).toBe("rounded-sm p-5");
-    expect(slot(container, "leading")!.className).toBe("mr-2");
+    const cls = base(container).className;
+    expect(cls).toContain("rounded-sm");
+    expect(cls).toContain("p-5");
+    expect(cls).not.toContain("p-2");
+    expect(cls).not.toContain("rounded-md");
+    expect(slot(container, "leading")!.className).toContain("mr-2");
   });
 
   it("keeps classes from every layer that do not conflict", () => {
@@ -69,7 +75,11 @@ describe("Theme", () => {
       },
     });
 
-    expect(base(container).className).toBe("rounded-sm font-bold p-5");
+    const cls = base(container).className;
+    expect(cls).toContain("rounded-sm");
+    expect(cls).toContain("font-bold");
+    expect(cls).toContain("p-5");
+    expect(cls).not.toContain("rounded-md");
   });
 
   it("merges theme props with the nearest theme winning", () => {
@@ -98,7 +108,10 @@ describe("Theme", () => {
   it("leaves components outside any Theme untouched", () => {
     const { container } = render(Button, { slots: { default: () => "Button" } });
 
-    expect(base(container).className).toBe("");
+    const cls = base(container).className;
+    expect(cls).toContain("inline-flex");
+    expect(cls).toContain("bg-primary");
+    expect(cls).toContain("h-8");
     expect(slot(container, "label")).not.toBeNull();
   });
 });

@@ -6,7 +6,7 @@ import { colors, sizes, variants } from "./button-matrix";
 function Row({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div>
-      <p className="mb-2 text-xs text-neutral-400">{label}</p>
+      <p className="mb-2 text-xs text-dimmed">{label}</p>
       <div className="flex flex-wrap items-center gap-2">{children}</div>
     </div>
   );

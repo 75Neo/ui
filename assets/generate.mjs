@@ -1,21 +1,4 @@
 #!/usr/bin/env node
-/**
- * 75Neo — brand asset generator
- *
- * Run:  npm install --no-save puppeteer && node assets/generate.mjs
- *
- * ── The mark ───────────────────────────────────────────────────────────────
- * Two brackets: a top-left corner and a bottom-right corner, each drawn the way
- * a rounded box is drawn — straight edges, one rounded turn, square-cut ends.
- * The turn is the idea: `--ui-radius` is the value every component in this
- * system inherits, so it is the shape the system is recognised by.
- *
- * The radius is drawn larger than a real button's ratio (a button is 6px on 32px;
- * the mark is 13 on 49). Logos are optically corrected — at the token's true
- * ratio the turn disappears entirely by 16px, and the mark stops meaning anything.
- *
- * Colours are the published tokens from packages/styles/src/css/colors.css.
- */
 
 import fs from "node:fs";
 import { createRequire } from "node:module";
@@ -36,7 +19,6 @@ try {
   process.exit(0);
 }
 
-// ── Tokens ───────────────────────────────────────────────────────────────────
 const TOKENS = {
   light: {
     bg: "#ffffff",
@@ -80,20 +62,15 @@ const TOKENS = {
   },
 };
 
-// ── Brand ground ─────────────────────────────────────────────────────────────
-// primary-600, not primary-500. Both are published tokens, but white on
-// primary-500 is 3.68:1 and the mark mushes into the ground by 32px; primary-600
-// gives 5.17:1 and stays crisp at avatar sizes.
 const BRAND_GROUND = "#2563eb";
 
-// ── Mark geometry ────────────────────────────────────────────────────────────
 const MARK = {
-  box: 64, // viewBox
-  weight: 11, // stroke width
-  radius: 13, // corner radius, on the centreline
-  arm: 31, // arm length measured from the corner
-  tl: 13, // top-left corner, on the centreline
-  br: 51, // bottom-right corner
+  box: 64,
+  weight: 11,
+  radius: 13,
+  arm: 31,
+  tl: 13,
+  br: 51,
 };
 
 const { radius: R, arm: A, tl: TL, br: BR, weight: W, box: BOX } = MARK;
@@ -101,7 +78,6 @@ const { radius: R, arm: A, tl: TL, br: BR, weight: W, box: BOX } = MARK;
 const BRACKET_TL = `M ${TL} ${TL + A} L ${TL} ${TL + R} A ${R} ${R} 0 0 1 ${TL + R} ${TL} L ${TL + A} ${TL}`;
 const BRACKET_BR = `M ${BR} ${BR - A} L ${BR} ${BR - R} A ${R} ${R} 0 0 1 ${BR - R} ${BR} L ${BR - A} ${BR}`;
 
-/** The mark. `color` may be any CSS colour or the string "currentColor". */
 function markSVG(color, { size = BOX, label = "75Neo" } = {}) {
   return `<svg width="${size}" height="${size}" viewBox="0 0 ${BOX} ${BOX}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${label}">
   <g stroke="${color}" stroke-width="${W}" stroke-linecap="butt" fill="none">
@@ -111,13 +87,9 @@ function markSVG(color, { size = BOX, label = "75Neo" } = {}) {
 </svg>`;
 }
 
-/** Inline mark for use inside the banner/lockup HTML. */
 const markInline = (color, px) =>
   `<svg width="${px}" height="${px}" viewBox="0 0 ${BOX} ${BOX}" fill="none" aria-hidden="true"><g stroke="${color}" stroke-width="${W}" stroke-linecap="butt" fill="none"><path d="${BRACKET_TL}"/><path d="${BRACKET_BR}"/></g></svg>`;
 
-// ── Wordmark ─────────────────────────────────────────────────────────────────
-// "75Neo" in one weight, "UI" a step lighter and dimmed: the product reads as
-// part of the company rather than a separate name.
 const wordmark = (t, { product = true, size = 34 } = {}) => `
   <span class="wm" style="font-size:${size}px">
     <b>75</b><b>Neo</b>${product ? `<i>UI</i>` : ""}
@@ -130,8 +102,6 @@ const WORDMARK_CSS = (t) => `
   .wm i{font-style:normal;font-weight:500;color:${t.textMuted};letter-spacing:-0.02em}
 `;
 
-// ── Supported frameworks ─────────────────────────────────────────────────────
-// Each project's own mark and brand colour. Do not restyle them.
 const FRAMEWORKS = [
   {
     name: "React",
@@ -150,7 +120,6 @@ const FRAMEWORKS = [
 const frameworkIcon = (f, px) =>
   `<svg width="${px}" height="${px}" viewBox="0 0 24 24" fill="${f.color}" role="img" aria-label="${f.name}"><path d="${f.path}"/></svg>`;
 
-// ── Brand pattern: the mark itself, tessellated ──────────────────────────────
 const PATTERN_TILE = 152;
 
 function patternURI(color, opacity) {
@@ -159,7 +128,6 @@ function patternURI(color, opacity) {
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
 }
 
-// ── Banner ───────────────────────────────────────────────────────────────────
 const BANNER_W = 1280;
 const BANNER_H = 360;
 
@@ -186,8 +154,6 @@ function bannerHTML(theme) {
        -webkit-font-smoothing:antialiased;font-family:'Instrument Sans',system-ui,sans-serif;
        display:flex;align-items:center;gap:56px;padding:0 64px}
 
-  /* The mark, tessellated. Masked away from the wordmark so the texture is felt
-     at the edges and never competes with the type it sits behind. */
   .field{position:absolute;inset:0;background-image:${patternURI(patternColor, 0.6)};
          background-size:${PATTERN_TILE}px ${PATTERN_TILE}px;background-position:-38px -52px;
          opacity:${theme === "light" ? 0.55 : 0.65};
@@ -208,8 +174,6 @@ function bannerHTML(theme) {
       background:${t.bg};border:1px solid ${t.border};border-radius:16px;
       box-shadow:0 1px 2px rgba(15,23,42,${theme === "light" ? ".05" : ".4"}),
                  0 18px 40px -24px rgba(15,23,42,${theme === "light" ? ".28" : ".7"})}
-  /* Light sits the mark on a translucent wash of its own brand colour; dark tints
-     an elevated surface instead, since a wash on a dark card reads as nothing. */
   .fw__tile{width:68px;height:68px;border-radius:15px;display:flex;align-items:center;justify-content:center;
             background:${
               theme === "light"
@@ -234,7 +198,6 @@ function bannerHTML(theme) {
   <div class="frameworks">${cards}</div>
 </body></html>`;
 }
-// ── Lockup (mark + wordmark, transparent) ────────────────────────────────────
 function lockupHTML(theme) {
   const t = TOKENS[theme];
   return `<!doctype html><html><head><meta charset="utf-8">
@@ -247,7 +210,6 @@ ${WORDMARK_CSS(t)}
 </style></head><body><div id="c">${markInline(t.primary, 40)}${wordmark(t, { size: 38 })}</div></body></html>`;
 }
 
-// ── Render ───────────────────────────────────────────────────────────────────
 const write = (name, body) => {
   fs.writeFileSync(join(HERE, name), body);
   console.log(`  ${name}`);
@@ -282,13 +244,8 @@ const shoot = async (html, { width, height, scale = 2, selector, out, transparen
 
 console.log("\nraster — logo");
 const LOGO_RASTERS = [
-  // Transparent: the mark nearly fills the canvas, since whatever places it
-  // supplies its own clear space.
   { out: "logo-light.png", mark: TOKENS.light.primary, ground: null, mark_px: 448 },
   { out: "logo-dark.png", mark: TOKENS.dark.primary, ground: null, mark_px: 448 },
-  // Solid brand plate for avatars, app icons and social. The ground is the asset,
-  // so the clear space has to be built in: 96px on a 320px mark is 30% of its
-  // height, comfortably over the 25% minimum.
   { out: "logo-brand.png", mark: "#ffffff", ground: BRAND_GROUND, mark_px: 320 },
 ];
 

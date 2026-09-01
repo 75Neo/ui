@@ -76,9 +76,6 @@ describe("applyThemeConfigs", () => {
 
     const merged = applyThemeConfigs(outer, inner);
 
-    // Components are keyed by namespaced strings rather than symbols so a merged
-    // config crosses SSR and server/client boundaries intact. Symbol keys would
-    // leave an empty object behind with no error.
     expect(Object.keys(merged)).toEqual(["test"]);
     expect(JSON.parse(JSON.stringify(merged))).toEqual(merged);
   });

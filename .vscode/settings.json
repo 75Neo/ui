@@ -9,6 +9,7 @@
   "tailwindCSS.classFunctions": ["tv"],
   "tailwindCSS.experimental.configFile": {
     "packages/themes/src/tokens/lint.css": "packages/**",
-    "apps/docs/src/assets/css/main.css": "apps/docs/**"
+    "apps/docs/src/assets/css/main.css": "apps/docs/**",
+    "apps/playground/src/assets/css/main.css": "apps/playground/**"
   }
 }
