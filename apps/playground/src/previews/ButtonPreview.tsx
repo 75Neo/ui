@@ -1,7 +1,11 @@
 import type { ReactNode } from "react";
 import { ArrowRight, Rocket } from "lucide-react";
+import { button, variantValues } from "@75neo/themes";
 import { Button } from "@75neo/react";
-import { colors, sizes, variants } from "./button-matrix";
+
+const variants = variantValues(button, "variant");
+const sizes = variantValues(button, "size");
+const colors = variantValues(button, "color");
 
 function Row({ label, children }: { label: string; children: ReactNode }) {
   return (

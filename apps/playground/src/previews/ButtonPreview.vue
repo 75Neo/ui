@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { ArrowRight, Rocket } from "@lucide/vue";
+import { button, variantValues } from "@75neo/themes";
 import { Button } from "@75neo/vue";
-import { colors, sizes, variants } from "./button-matrix";
+
+const variants = variantValues(button, "variant");
+const sizes = variantValues(button, "size");
+const colors = variantValues(button, "color");
 
 const label = "text-dimmed mb-2 text-xs";
 const row = "flex flex-wrap items-center gap-2";
