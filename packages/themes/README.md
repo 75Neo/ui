@@ -1,6 +1,6 @@
 # @75neo/themes
 
-Tailwind CSS v4 design tokens and `tailwind-variants` component recipes for 75NeoUI.
+Tailwind CSS v4 design tokens and `tailwind-variants` component recipes for 75NeoUI. This is the styling layer consumed by `@75neo/react` and `@75neo/vue` — every component's classes live here, not in the adapters.
 
 ```css
 @import "tailwindcss";
@@ -41,6 +41,21 @@ pairing clears WCAG AA (4.5:1) in both themes.
 
 Ramps are available as an escape hatch: `bg-primary-50` … `bg-error-950`.
 `neutral` has no ramp, so Tailwind's built-in `neutral-*` palette is untouched.
+
+## Components
+
+One recipe per component — the only place styling lives. Each module exports the `tv()` recipe, its slot and variant types, the `ui` prop type, and the registry augmentation:
+
+- `accordion` · `angle-slider` · `avatar` · `button` · `carousel`
+
+Import a recipe directly when you need its runtime metadata:
+
+```ts
+import { button, variantValues } from "@75neo/themes";
+
+variantValues(button, "color"); // ["primary", "secondary", "neutral", ...]
+Object.keys(button.slots); // ["base", "leading", "trailing", "label"]
+```
 
 ## Overriding
 

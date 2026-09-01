@@ -1,17 +1,13 @@
-#!/usr/bin/env node
-
 import fs from "node:fs";
-import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
-import { join, resolve, dirname } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const require = createRequire(join(process.cwd(), "/"));
 
 let puppeteer;
 try {
-  puppeteer = require("puppeteer");
+  puppeteer = (await import("puppeteer")).default;
 } catch {
   console.log(
     "puppeteer is not installed. run:\n  npm install --no-save puppeteer && node assets/generate.mjs",
@@ -19,6 +15,7 @@ try {
   process.exit(0);
 }
 
+// ── Tokens ───────────────────────────────────────────────────────────────────
 const TOKENS = {
   light: {
     bg: "#ffffff",
@@ -62,10 +59,12 @@ const TOKENS = {
   },
 };
 
+// ── Brand ────────────────────────────────────────────────────────────────────
 const BRAND_GROUND = "#2563eb";
 const BRAND_CANVAS = 512;
 const BRAND_MARK = 320;
 
+// ── Mark geometry ────────────────────────────────────────────────────────────
 const MARK = {
   box: 64,
   weight: 11,
@@ -76,10 +75,11 @@ const MARK = {
 };
 
 const { radius: R, arm: A, tl: TL, br: BR, weight: W, box: BOX } = MARK;
-
 const BRACKET_TL = `M ${TL} ${TL + A} L ${TL} ${TL + R} A ${R} ${R} 0 0 1 ${TL + R} ${TL} L ${TL + A} ${TL}`;
 const BRACKET_BR = `M ${BR} ${BR - A} L ${BR} ${BR - R} A ${R} ${R} 0 0 1 ${BR - R} ${BR} L ${BR - A} ${BR}`;
+const MARK_PATHS = `<path d="${BRACKET_TL}"/><path d="${BRACKET_BR}"/>`;
 
+// ── SVG helpers ──────────────────────────────────────────────────────────────
 function markSVG(color, { size = BOX, label = "75Neo" } = {}) {
   return `<svg width="${size}" height="${size}" viewBox="0 0 ${BOX} ${BOX}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${label}">
   <g stroke="${color}" stroke-width="${W}" stroke-linecap="butt" fill="none">
@@ -89,10 +89,6 @@ function markSVG(color, { size = BOX, label = "75Neo" } = {}) {
 </svg>`;
 }
 
-/**
- * The mark centred on a filled square — the app-icon treatment, used wherever
- * the logo needs its own ground (favicons, avatars, tab icons).
- */
 function brandSVG(color, ground, { size = BOX, label = "75Neo" } = {}) {
   const scale = BRAND_MARK / BRAND_CANVAS;
   const inset = (BOX - BOX * scale) / 2;
@@ -108,8 +104,9 @@ function brandSVG(color, ground, { size = BOX, label = "75Neo" } = {}) {
 }
 
 const markInline = (color, px) =>
-  `<svg width="${px}" height="${px}" viewBox="0 0 ${BOX} ${BOX}" fill="none" aria-hidden="true"><g stroke="${color}" stroke-width="${W}" stroke-linecap="butt" fill="none"><path d="${BRACKET_TL}"/><path d="${BRACKET_BR}"/></g></svg>`;
+  `<svg width="${px}" height="${px}" viewBox="0 0 ${BOX} ${BOX}" fill="none" aria-hidden="true"><g stroke="${color}" stroke-width="${W}" stroke-linecap="butt" fill="none">${MARK_PATHS}</g></svg>`;
 
+// ── Wordmark ─────────────────────────────────────────────────────────────────
 const wordmark = (t, { product = true, size = 34 } = {}) => `
   <span class="wm" style="font-size:${size}px">
     <b>75</b><b>Neo</b>${product ? `<i>UI</i>` : ""}
@@ -122,6 +119,7 @@ const WORDMARK_CSS = (t) => `
   .wm i{font-style:normal;font-weight:500;color:${t.textMuted};letter-spacing:-0.02em}
 `;
 
+// ── Frameworks ───────────────────────────────────────────────────────────────
 const FRAMEWORKS = [
   {
     name: "React",
@@ -137,17 +135,19 @@ const FRAMEWORKS = [
   },
 ];
 
-const frameworkIcon = (f, px) =>
+const frameworkIcon = (f, px = 36) =>
   `<svg width="${px}" height="${px}" viewBox="0 0 24 24" fill="${f.color}" role="img" aria-label="${f.name}"><path d="${f.path}"/></svg>`;
 
+// ── Pattern ──────────────────────────────────────────────────────────────────
 const PATTERN_TILE = 152;
 
-function patternURI(color, opacity) {
+function patternURI(color, opacity = 0.6) {
   const inset = (PATTERN_TILE - BOX) / 2;
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${PATTERN_TILE}" height="${PATTERN_TILE}" viewBox="0 0 ${PATTERN_TILE} ${PATTERN_TILE}"><g transform="translate(${inset} ${inset})" stroke="${color}" stroke-opacity="${opacity}" stroke-width="${W}" fill="none"><path d="${BRACKET_TL}"/><path d="${BRACKET_BR}"/></g></svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${PATTERN_TILE}" height="${PATTERN_TILE}" viewBox="0 0 ${PATTERN_TILE} ${PATTERN_TILE}"><g transform="translate(${inset} ${inset})" stroke="${color}" stroke-opacity="${opacity}" stroke-width="${W}" fill="none">${MARK_PATHS}</g></svg>`;
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
 }
 
+// ── Banner ───────────────────────────────────────────────────────────────────
 const BANNER_W = 1280;
 const BANNER_H = 360;
 
@@ -158,7 +158,7 @@ function bannerHTML(theme) {
   const cards = FRAMEWORKS.map(
     (f) => `
       <div class="fw" style="--fw:${f.color}">
-        <span class="fw__tile">${frameworkIcon(f, 36)}</span>
+        <span class="fw__tile">${frameworkIcon(f)}</span>
         <div class="fw__meta"><b>${f.name}</b><code>${f.pkg}</code></div>
       </div>`,
   ).join("");
@@ -191,9 +191,7 @@ function bannerHTML(theme) {
 
   .frameworks{position:relative;z-index:2;width:588px;flex:none;display:flex;gap:16px}
   .fw{flex:1;display:flex;flex-direction:column;gap:22px;padding:28px;
-      background:${t.bg};border:1px solid ${t.border};border-radius:16px;
-      box-shadow:0 1px 2px rgba(15,23,42,${theme === "light" ? ".05" : ".4"}),
-                 0 18px 40px -24px rgba(15,23,42,${theme === "light" ? ".28" : ".7"})}
+      background:${t.bg};border:1px solid ${t.border};border-radius:16px}
   .fw__tile{width:68px;height:68px;border-radius:15px;display:flex;align-items:center;justify-content:center;
             background:${
               theme === "light"
@@ -211,13 +209,14 @@ function bannerHTML(theme) {
 
   <div class="left">
     <div class="lockup">${markInline(t.primary, 40)}${wordmark(t, { size: 34 })}</div>
-    <h1>One design system.<br><em>Two frameworks.</em></h1>
-    <p class="desc">Accessible, token-driven components built on Ark UI and Tailwind CSS. Same API, same tokens, either framework.</p>
+    <h1>Tuned for clarity.<br><em>Built for the long stay.</em></h1>
+    <p class="desc">Token-driven primitives on Ark UI and Tailwind Variants — consistent, accessible, and calm at any scale.</p>
   </div>
 
   <div class="frameworks">${cards}</div>
 </body></html>`;
 }
+
 function lockupHTML(theme) {
   const t = TOKENS[theme];
   return `<!doctype html><html><head><meta charset="utf-8">
@@ -230,67 +229,71 @@ ${WORDMARK_CSS(t)}
 </style></head><body><div id="c">${markInline(t.primary, 40)}${wordmark(t, { size: 38 })}</div></body></html>`;
 }
 
-const write = (name, body) => {
-  fs.writeFileSync(join(HERE, name), body);
+// ── I/O ──────────────────────────────────────────────────────────────────────
+function writeAsset(name, content) {
+  fs.writeFileSync(join(HERE, name), content);
   console.log(`  ${name}`);
-};
+}
 
+async function capture(
+  browser,
+  html,
+  { width, height, scale = 2, selector, out, transparent = false },
+) {
+  const file = join(tmpdir(), `75neo-${out}.html`);
+  fs.writeFileSync(file, html);
+  const page = await browser.newPage();
+  await page.setViewport({ width, height, deviceScaleFactor: scale });
+  await page.goto(`file://${file}`, { waitUntil: "networkidle0", timeout: 30_000 });
+  await page.evaluate(() => document.fonts.ready);
+  await new Promise((r) => setTimeout(r, 450));
+  const target = selector ? await page.$(selector) : page;
+  await target.screenshot({ path: resolve(HERE, out), type: "png", omitBackground: transparent });
+  await page.close();
+  console.log(`  ${out}`);
+}
+
+// ── Run ──────────────────────────────────────────────────────────────────────
 console.log("\n75Neo — brand assets\n");
 
 console.log("vector");
-write("logo.svg", markSVG("currentColor", { label: "75Neo" }));
+writeAsset("logo.svg", markSVG("currentColor", { label: "75Neo" }));
 for (const theme of ["light", "dark"]) {
-  write(`logo-${theme}.svg`, markSVG(TOKENS[theme].primary, { label: "75Neo" }));
+  writeAsset(`logo-${theme}.svg`, markSVG(TOKENS[theme].primary, { label: "75Neo" }));
 }
-write("logo-brand.svg", brandSVG("#ffffff", BRAND_GROUND));
+writeAsset("logo-brand.svg", brandSVG("#ffffff", BRAND_GROUND));
 
 const browser = await puppeteer.launch({
   headless: true,
   args: ["--no-sandbox", "--disable-setuid-sandbox"],
 });
 
-const shoot = async (html, { width, height, scale = 2, selector, out, transparent = false }) => {
-  const file = join(tmpdir(), `75neo-${out}.html`);
-  fs.writeFileSync(file, html);
-  const tab = await browser.newPage();
-  await tab.setViewport({ width, height, deviceScaleFactor: scale });
-  await tab.goto(`file://${file}`, { waitUntil: "networkidle0", timeout: 30000 });
-  await tab.evaluate(() => document.fonts.ready);
-  await new Promise((r) => setTimeout(r, 450));
-  const target = selector ? await tab.$(selector) : tab;
-  await target.screenshot({ path: resolve(HERE, out), type: "png", omitBackground: transparent });
-  await tab.close();
-  console.log(`  ${out}`);
-};
-
 console.log("\nraster — logo");
-const LOGO_RASTERS = [
+for (const { out, mark, ground, mark_px } of [
   { out: "logo-light.png", mark: TOKENS.light.primary, ground: null, mark_px: 448 },
   { out: "logo-dark.png", mark: TOKENS.dark.primary, ground: null, mark_px: 448 },
   { out: "logo-brand.png", mark: "#ffffff", ground: BRAND_GROUND, mark_px: BRAND_MARK },
-];
-
-for (const v of LOGO_RASTERS) {
+]) {
   const html = `<!doctype html><html><head><meta charset="utf-8"><style>
     *{margin:0;padding:0;box-sizing:border-box}
     html,body{width:${BRAND_CANVAS}px;height:${BRAND_CANVAS}px;background:transparent}
     #c{width:${BRAND_CANVAS}px;height:${BRAND_CANVAS}px;display:flex;align-items:center;justify-content:center;
-       background:${v.ground ?? "transparent"}}
-    #c svg{width:${v.mark_px}px;height:${v.mark_px}px;display:block}
-  </style></head><body><div id="c">${markInline(v.mark, v.mark_px)}</div></body></html>`;
-  await shoot(html, {
+       background:${ground ?? "transparent"}}
+    #c svg{width:${mark_px}px;height:${mark_px}px;display:block}
+  </style></head><body><div id="c">${markInline(mark, mark_px)}</div></body></html>`;
+  await capture(browser, html, {
     width: BRAND_CANVAS,
     height: BRAND_CANVAS,
     scale: 1,
     selector: "#c",
-    out: v.out,
-    transparent: !v.ground,
+    out,
+    transparent: !ground,
   });
 }
 
 console.log("\nraster — lockup");
 for (const theme of ["light", "dark"]) {
-  await shoot(lockupHTML(theme), {
+  await capture(browser, lockupHTML(theme), {
     width: 640,
     height: 200,
     selector: "#c",
@@ -301,7 +304,11 @@ for (const theme of ["light", "dark"]) {
 
 console.log("\nraster — banner");
 for (const theme of ["light", "dark"]) {
-  await shoot(bannerHTML(theme), { width: BANNER_W, height: BANNER_H, out: `banner-${theme}.png` });
+  await capture(browser, bannerHTML(theme), {
+    width: BANNER_W,
+    height: BANNER_H,
+    out: `banner-${theme}.png`,
+  });
 }
 
 await browser.close();
