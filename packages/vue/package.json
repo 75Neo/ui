@@ -22,8 +22,7 @@
     "@75neo/core": "workspace:*",
     "@75neo/themes": "workspace:*",
     "@ark-ui/vue": "^5.39.1",
-    "@lucide/vue": "catalog:",
-    "defu": "catalog:"
+    "@lucide/vue": "catalog:"
   },
   "devDependencies": {
     "@vitest/browser-playwright": "catalog:",

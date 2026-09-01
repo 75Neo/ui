@@ -22,7 +22,6 @@
     "@75neo/core": "workspace:*",
     "@75neo/themes": "workspace:*",
     "@ark-ui/react": "^5.39.1",
-    "defu": "catalog:",
     "lucide-react": "catalog:"
   },
   "devDependencies": {
