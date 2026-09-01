@@ -12,12 +12,13 @@
     "lint:fix": "oxlint --fix",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
-    "test": "vitest run"
+    "test": "turbo run test"
   },
   "devDependencies": {
     "oxfmt": "^0.64.0",
     "oxlint": "^1.80.0",
     "oxlint-tailwindcss": "^1.10.2",
+    "playwright": "^1.62.1",
     "puppeteer": "^25.9.0",
     "turbo": "^2.10.12",
     "vitest": "catalog:"
