@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { h } from "vue";
+import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-vue";
 import type { ThemeConfig } from "@75neo/core";
+import { accordion } from "@75neo/themes";
+import Accordion from "../Accordion.vue";
 import Button from "../Button.vue";
 import Theme from "../Theme.vue";
 
@@ -71,5 +74,39 @@ describe("Theme", () => {
     const cls = base(container).className;
     expect(cls).toContain("p-9");
     expect(cls).not.toContain("p-2");
+  });
+});
+
+const items = [
+  { value: "one", label: "First", content: "The first body." },
+  { value: "two", label: "Second", content: "The second body." },
+];
+
+/**
+ * Accordion is the first component to wrap Ark UI, so what is worth testing here is the
+ * wiring between Ark's parts and this adapter's slots -- not the cascade, which
+ * `@75neo/core` already covers against the resolver.
+ *
+ * Expansion is asserted through `aria-expanded` rather than a `data-state` attribute:
+ * Ark stamps `data-state` on the content only while it is closed, so it is absent, not
+ * `"open"`, once the item expands.
+ */
+describe("Accordion", () => {
+  it("renders every slot the recipe declares", () => {
+    const { container } = render(Accordion, { props: { items } });
+
+    for (const name of Object.keys(accordion.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("expands the item whose trigger is activated", async () => {
+    const { container } = render(Accordion, { props: { items } });
+    const trigger = slot(container, "trigger")!;
+
+    expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    await userEvent.click(trigger);
+
+    await expect.poll(() => trigger.getAttribute("aria-expanded")).toBe("true");
   });
 });

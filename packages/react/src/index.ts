@@ -1,3 +1,4 @@
+export { Accordion, type AccordionProps } from "./components/Accordion";
 export { Button, type ButtonProps } from "./components/Button";
 export { Theme, type ThemeProps } from "./components/Theme";
 export { useResolvedTheme } from "./hooks/useResolvedTheme";
@@ -16,4 +17,10 @@ export {
   type TVSlot,
 } from "@75neo/core";
 
-export { type ButtonTheme, type ButtonUI } from "@75neo/themes";
+export {
+  type AccordionItem,
+  type AccordionTheme,
+  type AccordionUI,
+  type ButtonTheme,
+  type ButtonUI,
+} from "@75neo/themes";

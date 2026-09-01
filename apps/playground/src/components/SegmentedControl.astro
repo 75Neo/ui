@@ -1,0 +1,44 @@
+---
+/**
+ * A labelled group of exclusive options whose current value lives on the
+ * `<html>` element as `data-{name}`. The active segment is painted by attribute
+ * selectors in `main.css`, so it is correct on first paint with no JavaScript.
+ */
+interface Props {
+  /** Root data attribute this control writes, e.g. `theme` → `data-theme`. */
+  name: string;
+  label: string;
+  options: readonly { value: string; label: string }[];
+}
+
+const { name, label, options } = Astro.props;
+---
+
+<div class="flex items-center gap-2">
+  <span
+    id={`${name}-label`}
+    class="text-dimmed hidden font-mono text-[0.6875rem] sm:inline"
+    data-identifier
+  >
+    {label}
+  </span>
+  <div
+    role="group"
+    aria-labelledby={`${name}-label`}
+    class="border-muted bg-muted flex gap-px rounded-md border p-px"
+  >
+    {
+      options.map((option) => (
+        <button
+          type="button"
+          data-control={name}
+          data-option={`${name}:${option.value}`}
+          data-value={option.value}
+          class="text-muted hover:text-highlighted focus-visible:ring-primary/40 cursor-pointer rounded-[0.25rem] px-2 py-1 font-mono text-[0.6875rem] leading-none transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none"
+        >
+          {option.label}
+        </button>
+      ))
+    }
+  </div>
+</div>

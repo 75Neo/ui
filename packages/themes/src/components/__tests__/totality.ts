@@ -9,7 +9,7 @@ type CompoundVariant = Record<string, string | string[] | unknown>;
  */
 type CallableRecipe = Recipe & {
   (props?: Record<string, string>): Record<string, () => string>;
-  compoundVariants: CompoundVariant[];
+  compoundVariants?: CompoundVariant[];
 };
 
 /** Every combination of the given variant keys, in declaration order. */
@@ -61,10 +61,15 @@ function entryMatches(entry: CompoundVariant, combo: Record<string, string>): bo
  * describes itself.
  */
 export function assertRecipeIsTotal(recipe: CallableRecipe): void {
-  const compoundKeys = [...new Set(recipe.compoundVariants.flatMap(matchedKeys))];
+  const compounds = recipe.compoundVariants ?? [];
+  const compoundKeys = [...new Set(compounds.flatMap(matchedKeys))];
 
-  for (const combo of combinations(recipe, compoundKeys)) {
-    if (!recipe.compoundVariants.some((entry) => entryMatches(entry, combo))) {
+  // A recipe whose variants never interact declares no compound table, and there is
+  // nothing to cover. Only the keys a compound entry actually discriminates on have to
+  // be total -- walking the cross product of no keys would otherwise demand an entry
+  // matching the empty combination, which no recipe can supply.
+  for (const combo of compoundKeys.length > 0 ? combinations(recipe, compoundKeys) : []) {
+    if (!compounds.some((entry) => entryMatches(entry, combo))) {
       throw new Error(`no compound variant matches ${describe(combo)}`);
     }
   }

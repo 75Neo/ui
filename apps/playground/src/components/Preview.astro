@@ -1,30 +1,70 @@
 ---
+/**
+ * One specimen stage: the same matrix rendered by both adapters, on the page's
+ * current surface, with the section's own notes held in a rail alongside it.
+ */
 interface Props {
   title: string;
-  description?: string;
+  description: string;
+  /** Facts read off the recipe, shown as a small ledger under the notes. */
+  meta?: readonly { term: string; value: string }[];
 }
 
-const { title, description } = Astro.props;
+const { title, description, meta = [] } = Astro.props;
 
-const column = "min-w-0 flex-1 basis-full sm:basis-0";
-const label =
-  "mb-3 text-[0.6875rem] font-medium tracking-widest text-dimmed uppercase";
+const frameLabel = "text-highlighted font-mono text-xs leading-none";
+const framePackage = "text-dimmed font-mono text-[0.625rem] leading-none";
+const frameHeader =
+  "bg-muted border-muted flex items-center justify-between gap-3 border-b px-4 py-2.5";
+const stage = "p-5 sm:p-7";
 ---
 
-<section class="mb-12">
-  <h2 class="text-sm font-medium text-highlighted">{title}</h2>
-  {description && <p class="mt-1 text-sm text-muted">{description}</p>}
+<section class="grid gap-6 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-12">
+  <div class="lg:sticky lg:top-28 lg:self-start">
+    <h2 class="text-highlighted text-base font-semibold tracking-[-0.015em]">
+      {title}
+    </h2>
+    <p class="text-muted mt-2 max-w-[46ch] text-sm/6 text-pretty">{description}</p>
 
-  <div
-    class="bg-muted mt-4 flex flex-wrap rounded-lg border"
-  >
-    <div class={`${column} border-b p-6 sm:border-r sm:border-b-0`}>
-      <p class={label}>React</p>
-      <slot name="react" />
-    </div>
-    <div class={`${column} p-6`}>
-      <p class={label}>Vue</p>
-      <slot name="vue" />
+    {
+      meta.length > 0 && (
+        <dl class="border-muted divide-muted mt-6 divide-y border-t text-xs">
+          {meta.map(({ term, value }) => (
+            <div class="flex items-baseline justify-between gap-4 py-2">
+              <dt class="text-dimmed font-mono" data-identifier>
+                {term}
+              </dt>
+              <dd class="text-toned text-right font-mono" data-identifier>
+                {value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )
+    }
+  </div>
+
+  <div class="border-muted shadow-stage bg-default overflow-hidden rounded-xl border">
+    <div class="grid md:grid-cols-2">
+      <article class="border-muted min-w-0 border-b md:border-r md:border-b-0">
+        <header class={frameHeader}>
+          <h3 class={frameLabel} data-identifier>react</h3>
+          <span class={framePackage} data-identifier>@75neo/react</span>
+        </header>
+        <div data-stage class={stage}>
+          <slot name="react" />
+        </div>
+      </article>
+
+      <article class="min-w-0">
+        <header class={frameHeader}>
+          <h3 class={frameLabel} data-identifier>vue</h3>
+          <span class={framePackage} data-identifier>@75neo/vue</span>
+        </header>
+        <div data-stage class={stage}>
+          <slot name="vue" />
+        </div>
+      </article>
     </div>
   </div>
 </section>

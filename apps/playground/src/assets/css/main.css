@@ -1,7 +1,121 @@
 @import "tailwindcss";
 
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+
 @import "../../../../../packages/themes/src/tokens/index.css";
 
 @source "../../../../../packages/themes/src";
 @source "../../../../../packages/react/src";
 @source "../../../../../packages/vue/src";
+
+@theme {
+  --font-sans:
+    "Geist Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /*
+   * Shadows are tinted with the theme's own neutral, so they read as the same
+   * light source in both light and dark rather than as grey haze on grey.
+   */
+  --shadow-stage:
+    0 1px 2px 0 color-mix(in oklab, var(--ui-text) 8%, transparent),
+    0 10px 28px -14px color-mix(in oklab, var(--ui-text) 16%, transparent);
+
+  /* One z-index scale for the whole playground. */
+  --z-index-stage-tab: 1;
+  --z-index-header: 20;
+  --z-index-skip-link: 30;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      transition-duration: 1ms !important;
+      animation-duration: 1ms !important;
+    }
+  }
+
+  /* Identifiers — slot names, variant values, prop names — are code, not prose. */
+  code,
+  kbd,
+  [data-identifier] {
+    font-variant-ligatures: none;
+    font-variant-numeric: tabular-nums;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ui-primary);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--ui-primary-accented);
+    color: var(--ui-primary-emphasis);
+  }
+}
+
+@layer components {
+  /*
+   * The specimen stage. Components are shown against a real page surface so
+   * their own edges, shadows and transparency read truthfully; the dot grid
+   * gives that surface a floor without adding a color to the palette.
+   */
+  [data-stage] {
+    background-color: var(--ui-bg);
+    background-image: radial-gradient(var(--ui-border-muted) 1px, transparent 1px);
+    background-position: -0.5px -0.5px;
+    background-size: 0.5rem 0.5rem;
+  }
+
+  [data-surface="muted"] [data-stage] {
+    background-color: var(--ui-bg-muted);
+  }
+
+  [data-surface="elevated"] [data-stage] {
+    background-color: var(--ui-bg-elevated);
+  }
+
+  /*
+   * Islands hydrate after paint. Without this the specimen pops in at full
+   * opacity a beat late; with it the stage settles instead of flashing.
+   */
+  astro-island:not([ssr]) > * {
+    animation: stage-settle 260ms ease-out both;
+  }
+
+  @keyframes stage-settle {
+    from {
+      opacity: 0;
+      transform: translateY(0.25rem);
+    }
+  }
+
+  /*
+   * A segment is active when its value matches the matching attribute on the
+   * root element. CSS cannot compare two attributes to each other, so the
+   * pairs are written out; in exchange the active segment is right on first
+   * paint, before any script runs.
+   */
+  :root[data-theme="light"] [data-option="theme:light"],
+  :root[data-theme="dark"] [data-option="theme:dark"],
+  :root[data-theme="auto"] [data-option="theme:auto"],
+  :root[data-surface="default"] [data-option="surface:default"],
+  :root[data-surface="muted"] [data-option="surface:muted"],
+  :root[data-surface="elevated"] [data-option="surface:elevated"] {
+    background-color: var(--ui-bg);
+    color: var(--ui-text-highlighted);
+    /* Tinted to the theme's own neutral rather than a generic black. */
+    box-shadow: 0 1px 2px -1px color-mix(in oklab, var(--ui-text) 22%, transparent);
+  }
+}

@@ -1,27 +1,110 @@
 ---
 import Playground from "../layouts/Playground.astro";
 import { previews } from "../routes";
+
+const steps = [
+  {
+    path: "packages/themes/src/components/<name>.ts",
+    note: "The recipe, its types, and the registry augmentation.",
+  },
+  {
+    path: "packages/{react,vue}/src/components/<Name>",
+    note: "One adapter file each. No styling logic in either.",
+  },
+  {
+    path: "apps/playground/src/previews/",
+    note: "A .tsx and a .vue preview, plus a route and a page.",
+  },
+  {
+    path: "A test calling assertRecipeIsTotal",
+    note: "Every variant combination covered, none of them duplicated.",
+  },
+];
 ---
 
-<Playground title="Playground">
-  <p class="text-muted mb-6 max-w-prose text-sm">
-    Every component rendered from package source, React and Vue side by side. Edits to
-    <code class="text-toned">packages/*/src</code> hot-reload here with no
-    build step.
-  </p>
+<Playground
+  eyebrow="overview"
+  title="Every component, both frameworks"
+  description="The playground renders each component twice — once through @75neo/react and once through @75neo/vue — from the same recipe in @75neo/themes. Edits to packages/*/src hot-reload here with no build step."
+>
+  <section aria-labelledby="components" class="max-w-5xl">
+    <h2
+      id="components"
+      class="text-dimmed border-muted border-b pb-3 font-mono text-xs"
+      data-identifier
+    >
+      components · {previews.length}
+    </h2>
 
-  <ul class="flex flex-col gap-2 text-sm">
-    {
-      previews.map(({ href, label }) => (
-        <li>
-          <a
-            href={href}
-            class="text-highlighted hover:text-muted underline underline-offset-4"
-          >
-            {label}
-          </a>
-        </li>
-      ))
-    }
-  </ul>
+    <ul>
+      {
+        previews.map(({ href, label, summary, key }) => (
+          <li>
+            <a
+              href={href}
+              class="group border-muted focus-visible:ring-primary/40 grid items-baseline gap-x-12 gap-y-2 border-b py-7 transition-colors duration-200 focus-visible:rounded-sm focus-visible:ring-2 focus-visible:outline-none lg:grid-cols-[11rem_minmax(0,1fr)_auto]"
+            >
+              <h3 class="text-highlighted group-hover:text-primary text-xl font-medium tracking-[-0.02em] transition-colors duration-200">
+                {label}
+              </h3>
+              <p class="text-muted max-w-[58ch] text-sm/6 text-pretty">{summary}</p>
+              <span
+                class="text-dimmed group-hover:text-primary font-mono text-xs transition-colors duration-200 lg:text-right"
+                data-identifier
+              >
+                {key}
+                <span class="ml-1.5 inline-block transition-transform duration-200 group-hover:translate-x-0.5">
+                  →
+                </span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section
+    aria-labelledby="next"
+    class="border-accented mt-14 rounded-xl border border-dashed p-7 sm:p-10 lg:mt-20"
+  >
+    <div class="grid gap-8 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:gap-16">
+      <div>
+        <h2
+          id="next"
+          class="text-highlighted text-lg font-semibold tracking-[-0.02em] text-balance"
+        >
+          Adding the next component
+        </h2>
+        <p class="text-muted mt-3 text-sm/6 text-pretty">
+          Each one takes four files and lands in the list above on its own. The
+          sequence is written out in <code
+            class="text-toned font-mono text-xs"
+            data-identifier>AGENTS.md</code
+          >; what follows is the short version.
+        </p>
+      </div>
+
+      <ol class="divide-muted border-muted divide-y border-t">
+        {
+          steps.map(({ path, note }, index) => (
+            <li class="flex gap-5 py-3.5">
+              <span
+                class="text-dimmed w-4 shrink-0 pt-px font-mono text-xs"
+                data-identifier
+              >
+                {index + 1}
+              </span>
+              <div class="min-w-0">
+                <p class="text-toned font-mono text-xs break-all" data-identifier>
+                  {path}
+                </p>
+                <p class="text-muted mt-1 text-sm/6">{note}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
 </Playground>

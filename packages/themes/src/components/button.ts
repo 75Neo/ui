@@ -1,5 +1,5 @@
 import { tv, type VariantProps } from "tailwind-variants";
-import type { ComponentContract, ThemeOverride, TVSlot } from "@75neo/core";
+import type { ComponentContract, MustBeNever, ThemeOverride, TVSlot } from "@75neo/core";
 
 export const button = tv({
   slots: {
@@ -284,8 +284,6 @@ export interface ButtonProps<F> {
   leadingIcon?: F;
   trailingIcon?: F;
 }
-
-type MustBeNever<T extends never> = T;
 
 /**
  * Compile-time guard: adding a variant to the recipe without adding the matching

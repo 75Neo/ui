@@ -1,3 +1,4 @@
+export { default as Accordion } from "./components/Accordion.vue";
 export { default as Button } from "./components/Button.vue";
 export { default as Theme } from "./components/Theme.vue";
 export { useResolvedTheme } from "./composables/theme";
@@ -16,4 +17,12 @@ export {
   type TVSlot,
 } from "@75neo/core";
 
-export { type ButtonProps, type ButtonTheme, type ButtonUI } from "@75neo/themes";
+export {
+  type AccordionItem,
+  type AccordionProps,
+  type AccordionTheme,
+  type AccordionUI,
+  type ButtonProps,
+  type ButtonTheme,
+  type ButtonUI,
+} from "@75neo/themes";

@@ -19,3 +19,25 @@
     overflow: hidden;
   }
 }
+
+@keyframes accordion-right {
+  from {
+    width: 0;
+    overflow: hidden;
+  }
+  to {
+    width: var(--ui-collapsible-width, auto);
+    overflow: hidden;
+  }
+}
+
+@keyframes accordion-left {
+  from {
+    width: var(--ui-collapsible-width, auto);
+    overflow: hidden;
+  }
+  to {
+    width: 0;
+    overflow: hidden;
+  }
+}

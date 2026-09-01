@@ -63,6 +63,8 @@ const TOKENS = {
 };
 
 const BRAND_GROUND = "#2563eb";
+const BRAND_CANVAS = 512;
+const BRAND_MARK = 320;
 
 const MARK = {
   box: 64,
@@ -83,6 +85,24 @@ function markSVG(color, { size = BOX, label = "75Neo" } = {}) {
   <g stroke="${color}" stroke-width="${W}" stroke-linecap="butt" fill="none">
     <path d="${BRACKET_TL}"/>
     <path d="${BRACKET_BR}"/>
+  </g>
+</svg>`;
+}
+
+/**
+ * The mark centred on a filled square — the app-icon treatment, used wherever
+ * the logo needs its own ground (favicons, avatars, tab icons).
+ */
+function brandSVG(color, ground, { size = BOX, label = "75Neo" } = {}) {
+  const scale = BRAND_MARK / BRAND_CANVAS;
+  const inset = (BOX - BOX * scale) / 2;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${BOX} ${BOX}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${label}">
+  <rect width="${BOX}" height="${BOX}" fill="${ground}"/>
+  <g transform="translate(${inset} ${inset}) scale(${scale})">
+    <g stroke="${color}" stroke-width="${W}" stroke-linecap="butt" fill="none">
+      <path d="${BRACKET_TL}"/>
+      <path d="${BRACKET_BR}"/>
+    </g>
   </g>
 </svg>`;
 }
@@ -222,6 +242,7 @@ write("logo.svg", markSVG("currentColor", { label: "75Neo" }));
 for (const theme of ["light", "dark"]) {
   write(`logo-${theme}.svg`, markSVG(TOKENS[theme].primary, { label: "75Neo" }));
 }
+write("logo-brand.svg", brandSVG("#ffffff", BRAND_GROUND));
 
 const browser = await puppeteer.launch({
   headless: true,
@@ -246,20 +267,20 @@ console.log("\nraster — logo");
 const LOGO_RASTERS = [
   { out: "logo-light.png", mark: TOKENS.light.primary, ground: null, mark_px: 448 },
   { out: "logo-dark.png", mark: TOKENS.dark.primary, ground: null, mark_px: 448 },
-  { out: "logo-brand.png", mark: "#ffffff", ground: BRAND_GROUND, mark_px: 320 },
+  { out: "logo-brand.png", mark: "#ffffff", ground: BRAND_GROUND, mark_px: BRAND_MARK },
 ];
 
 for (const v of LOGO_RASTERS) {
   const html = `<!doctype html><html><head><meta charset="utf-8"><style>
     *{margin:0;padding:0;box-sizing:border-box}
-    html,body{width:512px;height:512px;background:transparent}
-    #c{width:512px;height:512px;display:flex;align-items:center;justify-content:center;
+    html,body{width:${BRAND_CANVAS}px;height:${BRAND_CANVAS}px;background:transparent}
+    #c{width:${BRAND_CANVAS}px;height:${BRAND_CANVAS}px;display:flex;align-items:center;justify-content:center;
        background:${v.ground ?? "transparent"}}
     #c svg{width:${v.mark_px}px;height:${v.mark_px}px;display:block}
   </style></head><body><div id="c">${markInline(v.mark, v.mark_px)}</div></body></html>`;
   await shoot(html, {
-    width: 512,
-    height: 512,
+    width: BRAND_CANVAS,
+    height: BRAND_CANVAS,
     scale: 1,
     selector: "#c",
     out: v.out,

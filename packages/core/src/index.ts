@@ -5,6 +5,7 @@ export type {
   ComponentContract,
   ComponentKey,
   ComponentThemes,
+  MustBeNever,
   PropsOf,
   SlotsOf,
   ThemeConfig,
