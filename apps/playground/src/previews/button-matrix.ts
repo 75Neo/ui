@@ -1,4 +1,4 @@
-import type { ButtonProps } from "@75neo/core";
+import type { ButtonProps } from "@75neo/themes";
 
 type Props = ButtonProps<unknown>;
 

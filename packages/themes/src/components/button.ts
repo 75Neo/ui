@@ -1,4 +1,5 @@
 import { tv, type VariantProps } from "tailwind-variants";
+import type { ComponentContract, ThemeOverride, TVSlot } from "@75neo/core";
 
 export const button = tv({
   slots: {
@@ -255,3 +256,47 @@ export const button = tv({
 
 export type ButtonVariants = VariantProps<typeof button>;
 export type ButtonSlots = keyof ReturnType<typeof button>;
+
+export type ButtonUI = TVSlot<ButtonSlots>;
+
+export type ButtonTheme = ThemeOverride<ButtonSlots, ButtonVariants>;
+
+/**
+ * Everything a Button accepts that is not framework-specific. `F` is however the
+ * framework spells an icon: a `ReactNode` in React, a `Component` in Vue.
+ *
+ * The variant props are written out rather than derived from the recipe because
+ * `@vue/compiler-sfc` resolves `defineProps` types from source alone: it cannot
+ * evaluate the recipe's inferred type, so neither `VariantProps<typeof button>`
+ * nor a mapped type over `button.variants` reaches Vue as finite keys.
+ * `ButtonVariantsAreExposed` below closes the gap that leaves.
+ */
+export interface ButtonProps<F> {
+  ui?: ButtonUI;
+  variant?: ButtonVariants["variant"];
+  size?: ButtonVariants["size"];
+  color?: ButtonVariants["color"];
+  disabled?: boolean;
+  loading?: boolean;
+  loadingIcon?: F;
+  leading?: boolean;
+  trailing?: boolean;
+  leadingIcon?: F;
+  trailingIcon?: F;
+}
+
+type MustBeNever<T extends never> = T;
+
+/**
+ * Compile-time guard: adding a variant to the recipe without adding the matching
+ * prop above is a type error here rather than a prop that silently does nothing.
+ */
+export type ButtonVariantsAreExposed = MustBeNever<
+  Exclude<keyof ButtonVariants, keyof ButtonProps<unknown>>
+>;
+
+declare global {
+  interface Neo75ComponentThemes {
+    button: ComponentContract<ButtonSlots, ButtonVariants>;
+  }
+}

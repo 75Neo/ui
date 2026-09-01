@@ -1,7 +1,7 @@
 import type React from "react";
 import { Loader2 } from "lucide-react";
 import { button } from "@75neo/themes";
-import type { ButtonProps as ButtonContract } from "@75neo/core";
+import type { ButtonProps as ButtonContract } from "@75neo/themes";
 import { useComponentTheme } from "../hooks/useComponentTheme";
 
 export interface ButtonProps

@@ -4,8 +4,6 @@ export { ThemeContext } from "./context/ThemeContext";
 export { useComponentTheme } from "./hooks/useComponentTheme";
 
 export {
-  type ButtonTheme,
-  type ButtonUI,
   type ComponentContract,
   type ComponentKey,
   type ComponentThemes,
@@ -19,3 +17,5 @@ export {
   applyThemeConfigs,
   applyThemeOverrides,
 } from "@75neo/core";
+
+export { type ButtonTheme, type ButtonUI } from "@75neo/themes";

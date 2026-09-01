@@ -10,5 +10,3 @@ export type {
   ThemeOverrideOf,
 } from "./types/theme";
 export { applyThemeConfigs, applyThemeOverrides } from "./utils/theme";
-
-export * from "./contracts/button";

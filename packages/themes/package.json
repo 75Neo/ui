@@ -26,6 +26,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@75neo/core": "workspace:*",
     "tailwind-variants": "catalog:"
   },
   "devDependencies": {

@@ -2,7 +2,7 @@
 import { type Component, computed } from "vue";
 import { Loader2 } from "@lucide/vue";
 import { button } from "@75neo/themes";
-import type { ButtonProps } from "@75neo/core";
+import type { ButtonProps } from "@75neo/themes";
 import { useComponentTheme } from "../composables/useComponentTheme";
 
 const props = defineProps<
