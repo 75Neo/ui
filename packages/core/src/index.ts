@@ -1,8 +1,14 @@
-export type { SlotClass, ComponentUI, ThemeUI } from "./types";
-export { applySlotClass, getInitials } from "./utils";
+export type { TVClasses, TVSlot } from "./types/tv";
+export type {
+  ComponentContract,
+  ComponentKey,
+  ComponentThemes,
+  PropsOf,
+  SlotsOf,
+  ThemeConfig,
+  ThemeOverride,
+  ThemeOverrideOf,
+} from "./types/theme";
+export { applyThemeConfigs, applyThemeOverrides } from "./utils/theme";
 
 export * from "./contracts/button";
-export * from "./contracts/accordion";
-export * from "./contracts/angle-slider";
-export * from "./contracts/avatar";
-export * from "./contracts/carousel";

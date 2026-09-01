@@ -1,81 +1,89 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { type Component, computed } from "vue";
 import { Loader2 } from "@lucide/vue";
-import { button, type ButtonVariants } from "@75neo/styles";
-import { buttonKey, type ButtonUI } from "@75neo/core";
-import { useComponentUI } from "../composables/useComponentUI";
+import { button } from "@75neo/themes";
+import type { ButtonProps } from "@75neo/core";
+import { useComponentTheme } from "../composables/useComponentTheme";
 
-const props = withDefaults(
-  defineProps<{
-    variant?: ButtonVariants["variant"];
-    size?: ButtonVariants["size"];
-    color?: ButtonVariants["color"];
-    compact?: ButtonVariants["compact"];
-    ui?: ButtonUI;
-    loading?: boolean;
-    disabled?: boolean;
+const props = defineProps<
+  ButtonProps<Component> & {
     type?: "button" | "submit" | "reset";
     class?: unknown;
-  }>(),
-  {
-    variant: undefined,
-    size: undefined,
-    color: undefined,
-    compact: undefined,
-    ui: undefined,
-    loading: false,
-    disabled: false,
-    type: "button",
-    class: undefined,
-  },
-);
+  }
+>();
 
 const slots = defineSlots<{
   default?: () => unknown;
   leading?: () => unknown;
   trailing?: () => unknown;
-  /** Replaces the default spinner while `loading` is set. */
+  /** Replaces the spinner shown while `loading` is set. */
   loadingIcon?: () => unknown;
 }>();
 
-const tvSlots = computed(() =>
-  button({
-    variant: props.variant,
-    size: props.size,
-    color: props.color,
-    compact: props.compact,
-  }),
-);
+const theme = useComponentTheme("button", () => props.ui);
 
-const resolved = useComponentUI(
-  buttonKey,
-  tvSlots,
-  computed(() => props.ui),
+const resolved = computed(() => {
+  const defaults = theme.value.props ?? {};
+  return {
+    variant: props.variant ?? defaults.variant,
+    size: props.size ?? defaults.size,
+    color: props.color ?? defaults.color,
+    disabled: props.disabled ?? false,
+    loading: props.loading ?? false,
+    leading: props.leading ?? false,
+    trailing: props.trailing ?? false,
+  };
+});
+
+const classes = computed(() => {
+  const slotClasses = theme.value.ui;
+  const tv = button({
+    variant: resolved.value.variant,
+    size: resolved.value.size,
+    color: resolved.value.color,
+  });
+
+  return {
+    base: tv.base({ class: [props.class as string, slotClasses?.base] }),
+    leading: tv.leading({ class: slotClasses?.leading }),
+    label: tv.label({ class: slotClasses?.label }),
+    trailing: tv.trailing({ class: slotClasses?.trailing }),
+  };
+});
+
+const showLeading = computed(
+  () => resolved.value.loading || resolved.value.leading || !!props.leadingIcon || !!slots.leading,
+);
+const showTrailing = computed(
+  () => resolved.value.trailing || !!props.trailingIcon || !!slots.trailing,
 );
 </script>
 
 <template>
   <button
-    :type="type"
+    :type="type ?? 'button'"
     data-slot="base"
-    :class="resolved.base({ class: props.class as string })"
-    :disabled="disabled || loading"
-    :aria-busy="loading ? true : undefined"
-    :aria-disabled="disabled || loading ? true : undefined"
+    :class="classes.base"
+    :disabled="resolved.disabled || resolved.loading"
+    :aria-busy="resolved.loading || undefined"
   >
-    <span v-if="loading || slots.leading" data-slot="leading" :class="resolved.leading()">
-      <template v-if="loading">
+    <span v-if="showLeading" data-slot="leading" :class="classes.leading">
+      <template v-if="resolved.loading">
         <slot name="loadingIcon">
-          <Loader2 class="animate-spin" />
+          <component :is="loadingIcon ?? Loader2" class="animate-spin" />
         </slot>
       </template>
-      <slot v-else name="leading" />
+      <slot v-else name="leading">
+        <component :is="leadingIcon" v-if="leadingIcon" />
+      </slot>
     </span>
-    <span v-if="slots.default" data-slot="label" :class="resolved.label()">
+    <span v-if="slots.default" data-slot="label" :class="classes.label">
       <slot />
     </span>
-    <span v-if="slots.trailing" data-slot="trailing" :class="resolved.trailing()">
-      <slot name="trailing" />
+    <span v-if="showTrailing" data-slot="trailing" :class="classes.trailing">
+      <slot name="trailing">
+        <component :is="trailingIcon" v-if="trailingIcon" />
+      </slot>
     </span>
   </button>
 </template>

@@ -1,12 +1,18 @@
-import type { ReactNode } from "react";
-import type { ThemeUI } from "@75neo/core";
-import { ThemeProvider } from "../context/ThemeContext";
+import { type ReactNode, createElement, useContext, useMemo } from "react";
+import { type ThemeConfig, applyThemeConfigs } from "@75neo/core";
+import { ThemeContext } from "../context/ThemeContext";
 
 export interface ThemeProps {
-  ui?: ThemeUI;
-  children: ReactNode;
+  theme: ThemeConfig;
+  children?: ReactNode;
 }
 
-export function Theme({ ui, children }: ThemeProps) {
-  return <ThemeProvider ui={ui}>{children}</ThemeProvider>;
+export function Theme({ theme, children }: ThemeProps) {
+  const parent = useContext(ThemeContext);
+  const config = useMemo(
+    () => (parent ? applyThemeConfigs(parent, theme) : theme),
+    [parent, theme],
+  );
+
+  return createElement(ThemeContext.Provider, { value: config }, children);
 }

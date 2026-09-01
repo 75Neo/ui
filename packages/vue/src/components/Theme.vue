@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import type { ThemeUI } from "@75neo/core";
-import { provideThemeContext } from "../composables/useTheme";
+import type { ThemeConfig } from "@75neo/core";
+import { provideTheme } from "../composables/useComponentTheme";
 
 const props = defineProps<{
-  ui?: ThemeUI;
+  theme: ThemeConfig;
 }>();
 
-const ui = computed(() => props.ui ?? {});
-provideThemeContext(ui);
+defineSlots<{ default?: () => unknown }>();
+
+provideTheme(() => props.theme);
 </script>
 
 <template>

@@ -1,0 +1,37 @@
+{
+  "name": "@75neo/themes",
+  "version": "0.0.0",
+  "description": "Shared Tailwind CSS theme and tailwind-variants component themes for 75NeoUI",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "style": "./dist/style.css",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "prepack": "pnpm build"
+  },
+  "dependencies": {
+    "tailwind-variants": "catalog:"
+  },
+  "devDependencies": {
+    "@tsdown/css": "^0.22.14",
+    "publint": "catalog:",
+    "tailwindcss": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
+  }
+}

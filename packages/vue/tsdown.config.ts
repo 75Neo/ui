@@ -1,7 +1,15 @@
-import { defineLibrary } from "@75neo/tooling/tsdown";
+import { defineConfig } from "tsdown/config";
 import Vue from "unplugin-vue/rolldown";
 
-export default defineLibrary({
+export default defineConfig({
+  entry: ["src/index.ts"],
+  format: ["esm"],
   plugins: [Vue({ isProduction: true })],
+  platform: "neutral",
   dts: { vue: true },
+  fixedExtension: false,
+  clean: true,
+  treeshake: true,
+  exports: true,
+  publint: true,
 });

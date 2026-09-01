@@ -10,3 +10,7 @@ build/
 ## Editors / OS
 .DS_Store
 *.log
+
+## Test artifacts
+.vitest-attachments/
+__screenshots__/

@@ -5,20 +5,23 @@
   "type": "module",
   "scripts": {
     "dev:docs": "turbo run dev --filter docs",
+    "dev": "turbo run dev",
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "lint:packages": "turbo run lint:package --filter './packages/*'",
     "format": "oxfmt",
-    "format:check": "oxfmt --check"
+    "format:check": "oxfmt --check",
+    "test": "turbo run test"
   },
   "devDependencies": {
     "oxfmt": "^0.64.0",
     "oxlint": "^1.80.0",
-    "oxlint-tailwindcss": "^1.10.0",
+    "oxlint-tailwindcss": "^1.10.2",
+    "playwright": "^1.62.1",
     "puppeteer": "^25.9.0",
-    "turbo": "^2.10.12"
+    "turbo": "^2.10.12",
+    "vitest": "catalog:"
   },
   "devEngines": {
     "packageManager": {
@@ -26,8 +29,5 @@
       "version": "^11.20.0",
       "onFail": "warn"
     }
-  },
-  "engines": {
-    "node": ">=24"
   }
 }

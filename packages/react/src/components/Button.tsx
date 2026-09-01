@@ -1,77 +1,71 @@
-import { useMemo } from "react";
 import type React from "react";
 import { Loader2 } from "lucide-react";
-import { button, type ButtonVariants } from "@75neo/styles";
-import { buttonKey, type ButtonUI } from "@75neo/core";
-import { useComponentUI } from "../hooks/useComponentUI";
-import { renderSlot, type Slot } from "../utils/renderSlot";
+import { button } from "@75neo/themes";
+import type { ButtonProps as ButtonContract } from "@75neo/core";
+import { useComponentTheme } from "../hooks/useComponentTheme";
 
-interface ButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color">, ButtonVariants {
-  ui?: ButtonUI;
-  /** Mirrors Vue's `#leading` slot. */
-  leading?: Slot;
-  /** Mirrors Vue's `#trailing` slot. */
-  trailing?: Slot;
-  loading?: boolean;
-  /** Mirrors Vue's `#loadingIcon` slot; replaces the default spinner. */
-  loadingIcon?: Slot;
-}
+export interface ButtonProps
+  extends
+    Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color">,
+    ButtonContract<React.ReactNode> {}
 
-function Button({
+export function Button({
+  ui,
   variant,
   size,
   color,
-  compact,
-  ui,
-  className,
+  disabled,
+  loading,
   leading,
   trailing,
-  loading = false,
+  leadingIcon,
+  trailingIcon,
   loadingIcon,
-  disabled = false,
-  type = "button",
+  className,
   children,
-  ...props
+  type = "button",
+  ...rest
 }: ButtonProps) {
-  const tvSlots = useMemo(
-    () => button({ variant, size, color, compact }),
-    [variant, size, color, compact],
-  );
+  const theme = useComponentTheme("button", ui);
+  const defaults = theme.props ?? {};
+  const slots = theme.ui;
 
-  const resolved = useComponentUI(buttonKey, tvSlots, ui);
+  const isLoading = loading ?? false;
+  const isDisabled = (disabled ?? false) || isLoading;
 
-  const isDisabled = disabled || loading;
+  const tv = button({
+    variant: variant ?? defaults.variant,
+    size: size ?? defaults.size,
+    color: color ?? defaults.color,
+  });
+
+  const showLeading = isLoading || (leading ?? false) || leadingIcon != null;
+  const showTrailing = (trailing ?? false) || trailingIcon != null;
 
   return (
     <button
+      {...rest}
       type={type}
       data-slot="base"
-      className={resolved.base({ className })}
+      className={tv.base({ class: [className, slots?.base] })}
       disabled={isDisabled}
-      aria-busy={loading ? true : undefined}
-      aria-disabled={isDisabled ? true : undefined}
-      {...props}
+      aria-busy={isLoading || undefined}
     >
-      {(leading != null || loading) && (
-        <span data-slot="leading" className={resolved.leading()}>
-          {loading
-            ? renderSlot(loadingIcon, undefined, <Loader2 className="animate-spin" />)
-            : renderSlot(leading)}
+      {showLeading && (
+        <span data-slot="leading" className={tv.leading({ class: slots?.leading })}>
+          {isLoading ? (loadingIcon ?? <Loader2 className="animate-spin" />) : leadingIcon}
         </span>
       )}
       {children != null && (
-        <span data-slot="label" className={resolved.label()}>
+        <span data-slot="label" className={tv.label({ class: slots?.label })}>
           {children}
         </span>
       )}
-      {trailing != null && (
-        <span data-slot="trailing" className={resolved.trailing()}>
-          {renderSlot(trailing)}
+      {showTrailing && (
+        <span data-slot="trailing" className={tv.trailing({ class: slots?.trailing })}>
+          {trailingIcon}
         </span>
       )}
     </button>
   );
 }
-
-export { Button, type ButtonProps };

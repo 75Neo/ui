@@ -1,9 +1,0 @@
-@import "./colors.css";
-@import "./animations.css";
-@source "./index.js";
-
-@layer base {
-  body {
-    @apply text-default bg-default antialiased scheme-light dark:scheme-dark;
-  }
-}

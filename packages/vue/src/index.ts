@@ -1,22 +1,26 @@
 export { default as Button } from "./components/Button.vue";
-export { default as Accordion } from "./components/Accordion.vue";
-export { default as AngleSlider } from "./components/AngleSlider.vue";
-export { default as Avatar } from "./components/Avatar.vue";
-export { default as Carousel } from "./components/Carousel.vue";
 export { default as Theme } from "./components/Theme.vue";
-export { provideThemeContext, injectThemeContext, type ThemeContext } from "./composables/useTheme";
-export { useComponentUI } from "./composables/useComponentUI";
+export {
+  provideTheme,
+  useComponentTheme,
+  useThemeConfig,
+} from "./composables/useComponentTheme.ts";
 
-// The shared contract, re-exported so React and Vue publish identical type names.
-export type {
-  SlotClass,
-  ComponentUI,
-  ThemeUI,
-  AccordionItemData,
-  AccordionUI,
-  AngleSliderUI,
-  AvatarUI,
-  ButtonUI,
-  CarouselItemData,
-  CarouselUI,
+// Re-exported so applications need only one import for the theme API.
+export {
+  type ButtonProps,
+  type ButtonTheme,
+  type ButtonUI,
+  type ComponentContract,
+  type ComponentKey,
+  type ComponentThemes,
+  type PropsOf,
+  type SlotsOf,
+  type ThemeConfig,
+  type ThemeOverride,
+  type ThemeOverrideOf,
+  type TVClasses,
+  type TVSlot,
+  applyThemeConfigs,
+  applyThemeOverrides,
 } from "@75neo/core";
