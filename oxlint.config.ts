@@ -17,5 +17,13 @@ export default defineConfig({
       files: ["packages/vue/**"],
       plugins: ["vue"],
     },
+    /** Playground previews — the automatic JSX runtime is on here, so no `react-in-jsx-scope`. */
+    {
+      files: ["apps/playground/**"],
+      plugins: ["react", "vue"],
+      rules: {
+        "react/rules-of-hooks": "error",
+      },
+    },
   ],
 });

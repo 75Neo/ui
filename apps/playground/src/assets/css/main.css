@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+/* The tokens flip on a `.dark` class (see `tokens/colors.css`), not on `prefers-color-scheme`,
+   so point Tailwind's `dark:` variant at the same switch the toggle in the layout throws.
+   Declared before the tokens are imported so their `dark:scheme-dark` picks it up too. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Tokens straight from source. The bare `@75neo/themes` specifier resolves CSS through the
+   package `style` field, which points at a built `dist/style.css` — that would put a package
+   build back into the dev loop. */
+@import "../../../../../packages/themes/src/tokens/index.css";
+
+/* Tailwind's automatic content detection is rooted at this app, so every class that lives in
+   the theme and component sources has to be declared. `tokens/index.css` carries its own
+   `@source "./index.js"`, but that file only exists next to the built stylesheet; from source
+   it silently matches nothing, which is why these three are not redundant. */
+@source "../../../../../packages/themes/src";
+@source "../../../../../packages/react/src";
+@source "../../../../../packages/vue/src";

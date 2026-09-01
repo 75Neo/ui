@@ -1,0 +1,32 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+
+const column = "min-w-0 flex-1 basis-full sm:basis-0";
+const label =
+  "mb-3 text-[0.6875rem] font-medium tracking-widest text-neutral-400 uppercase dark:text-neutral-500";
+---
+
+<section class="mb-12">
+  <h2 class="text-sm font-medium text-neutral-900 dark:text-neutral-100">{title}</h2>
+  {description && <p class="mt-1 text-sm text-neutral-500">{description}</p>}
+
+  <!-- The two frameworks sit side by side so a rendering divergence is visible without
+       switching tabs — the whole reason this app exists. -->
+  <div
+    class="mt-4 flex flex-wrap rounded-lg border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950"
+  >
+    <div class={`${column} border-b border-neutral-200 p-6 sm:border-r sm:border-b-0 dark:border-neutral-800`}>
+      <p class={label}>React</p>
+      <slot name="react" />
+    </div>
+    <div class={`${column} p-6`}>
+      <p class={label}>Vue</p>
+      <slot name="vue" />
+    </div>
+  </div>
+</section>

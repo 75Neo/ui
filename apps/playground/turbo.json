@@ -1,0 +1,14 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    // Astro generates its types into `.astro` before it builds or type-checks, and
+    // `typecheck` produces nothing else.
+    "build": {
+      "outputs": ["$TURBO_EXTENDS$", ".astro/**"]
+    },
+    "typecheck": {
+      "outputs": [".astro/**"]
+    }
+  }
+}

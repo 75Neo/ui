@@ -1,0 +1,27 @@
+---
+import Playground from "../layouts/Playground.astro";
+import { previews } from "../routes";
+---
+
+<Playground title="Playground">
+  <p class="mb-6 max-w-prose text-sm text-neutral-500">
+    Every component rendered from package source, React and Vue side by side. Edits to
+    <code class="text-neutral-700 dark:text-neutral-300">packages/*/src</code> hot-reload here with no
+    build step.
+  </p>
+
+  <ul class="flex flex-col gap-2 text-sm">
+    {
+      previews.map(({ href, label }) => (
+        <li>
+          <a
+            href={href}
+            class="text-neutral-900 underline underline-offset-4 hover:text-neutral-500 dark:text-neutral-100"
+          >
+            {label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</Playground>

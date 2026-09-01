@@ -1,0 +1,16 @@
+---
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import ButtonPreview from "../previews/ButtonPreview.tsx";
+import ButtonPreviewVue from "../previews/ButtonPreview.vue";
+---
+
+<Playground title="Button">
+  <Preview
+    title="Full matrix"
+    description="Every variant × color, then sizes and states. The two columns render the same matrix from @75neo/react and @75neo/vue."
+  >
+    <Fragment slot="react"><ButtonPreview client:load /></Fragment>
+    <Fragment slot="vue"><ButtonPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>
