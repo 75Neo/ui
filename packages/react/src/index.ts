@@ -1,4 +1,5 @@
 export { Accordion, type AccordionProps } from "./components/Accordion";
+export { AngleSlider, type AngleSliderProps } from "./components/AngleSlider";
 export { Button, type ButtonProps } from "./components/Button";
 export { Theme, type ThemeProps } from "./components/Theme";
 export { useResolvedTheme } from "./hooks/useResolvedTheme";
@@ -21,6 +22,8 @@ export {
   type AccordionItem,
   type AccordionTheme,
   type AccordionUI,
+  type AngleSliderTheme,
+  type AngleSliderUI,
   type ButtonTheme,
   type ButtonUI,
 } from "@75neo/themes";

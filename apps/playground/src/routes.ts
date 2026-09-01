@@ -16,6 +16,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "accordion",
   },
   {
+    href: "/angle-slider",
+    label: "AngleSlider",
+    summary:
+      "A circular dial for picking a rotation, across three sizes and seven colors, with markers and a live readout.",
+    key: "angleSlider",
+  },
+  {
     href: "/button",
     label: "Button",
     summary:

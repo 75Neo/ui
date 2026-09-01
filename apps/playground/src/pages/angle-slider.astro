@@ -1,0 +1,75 @@
+---
+import { angleSlider, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import AngleSliderPreview from "../previews/AngleSliderPreview.tsx";
+import AngleSliderPreviewVue from "../previews/AngleSliderPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(angleSlider.slots);
+const variantKeys = [...angleSlider.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(angleSlider, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "angleSlider" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="AngleSlider"
+  description="A circular dial for the case where the thing being set is a rotation, with the readout sitting inside the ring. The arc is an SVG circle drawn with pathLength=360, so one user unit is one degree and its dash array is Ark's raw --value with no arithmetic. Every other offset is a percentage of the dial, so a size change moves one number: the width of the control."
+  hasStage
+>
+  <Preview
+    title="Variant matrix"
+    description="The size scale, then every color, then the behaviours Ark drives — markers, a coarse step, disabled, read-only, and a controlled dial. The controlled row is the one place the adapters differ on purpose: value and onValueChange in React, v-model in Vue."
+    meta={meta}
+  >
+    <Fragment slot="react"><AngleSliderPreview client:load /></Fragment>
+    <Fragment slot="vue"><AngleSliderPreviewVue client:load /></Fragment>
+  </Preview>
+
+  <aside class="border-muted mt-16 border-t pt-8 lg:mt-24">
+    <div class="grid gap-6 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-12">
+      <h2 class="text-highlighted text-base font-semibold tracking-[-0.015em]">
+        Where this comes from
+      </h2>
+      <dl class="grid gap-x-12 gap-y-4 text-sm sm:grid-cols-2">
+        {
+          [
+            {
+              term: "packages/themes/src/components/angle-slider.ts",
+              value: "The recipe, its slot and variant types, and the registry entry.",
+            },
+            {
+              term: "packages/react/src/components/AngleSlider.tsx",
+              value: "The React adapter — Ark's parts, wearing the recipe's slots.",
+            },
+            {
+              term: "packages/vue/src/components/AngleSlider.vue",
+              value: "The Vue adapter, with props written out by hand.",
+            },
+            {
+              term: "packages/themes/src/tokens/colors.css",
+              value: "The semantic colors the arc, the thumb and the readout read from.",
+            },
+          ].map(({ term, value }) => (
+            <div>
+              <dt class="text-toned font-mono text-xs break-all" data-identifier>
+                {term}
+              </dt>
+              <dd class="text-muted mt-1.5 text-sm/6">{value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </aside>
+</Playground>

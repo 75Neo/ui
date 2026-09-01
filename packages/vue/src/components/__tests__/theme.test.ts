@@ -3,8 +3,9 @@ import { h } from "vue";
 import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-vue";
 import type { ThemeConfig } from "@75neo/core";
-import { accordion } from "@75neo/themes";
+import { accordion, angleSlider } from "@75neo/themes";
 import Accordion from "../Accordion.vue";
+import AngleSlider from "../AngleSlider.vue";
 import Button from "../Button.vue";
 import Theme from "../Theme.vue";
 
@@ -108,5 +109,34 @@ describe("Accordion", () => {
     await userEvent.click(trigger);
 
     await expect.poll(() => trigger.getAttribute("aria-expanded")).toBe("true");
+  });
+});
+
+/**
+ * The dial's thumb and markers are full-size overlays that Ark rotates, with the visible
+ * dot drawn as a `::before` -- so what is worth testing is that the geometry did not cost
+ * the thumb its keyboard wiring. The optional parts are all passed so the slot sweep sees
+ * every slot the recipe declares.
+ */
+describe("AngleSlider", () => {
+  it("renders every slot the recipe declares", () => {
+    const { container } = render(AngleSlider, {
+      props: { label: "Rotation", showValue: true, markers: [0, 90, 180, 270] },
+    });
+
+    for (const name of Object.keys(angleSlider.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("advances the angle by one step per arrow key", async () => {
+    const { container } = render(AngleSlider, { props: { defaultValue: 0, step: 15 } });
+    const thumb = slot(container, "thumb")!;
+
+    expect(thumb.getAttribute("aria-valuenow")).toBe("0");
+    thumb.focus();
+    await userEvent.keyboard("{ArrowRight}");
+
+    await expect.poll(() => thumb.getAttribute("aria-valuenow")).toBe("15");
   });
 });

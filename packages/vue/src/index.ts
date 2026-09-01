@@ -1,4 +1,5 @@
 export { default as Accordion } from "./components/Accordion.vue";
+export { default as AngleSlider } from "./components/AngleSlider.vue";
 export { default as Button } from "./components/Button.vue";
 export { default as Theme } from "./components/Theme.vue";
 export { useResolvedTheme } from "./composables/theme";
@@ -22,6 +23,9 @@ export {
   type AccordionProps,
   type AccordionTheme,
   type AccordionUI,
+  type AngleSliderProps,
+  type AngleSliderTheme,
+  type AngleSliderUI,
   type ButtonProps,
   type ButtonTheme,
   type ButtonUI,
