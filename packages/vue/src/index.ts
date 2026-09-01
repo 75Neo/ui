@@ -2,6 +2,7 @@ export { default as Accordion } from "./components/Accordion.vue";
 export { default as AngleSlider } from "./components/AngleSlider.vue";
 export { default as Avatar } from "./components/Avatar.vue";
 export { default as Button } from "./components/Button.vue";
+export { default as Carousel } from "./components/Carousel.vue";
 export { default as Theme } from "./components/Theme.vue";
 export { useResolvedTheme } from "./composables/theme";
 
@@ -33,4 +34,8 @@ export {
   type ButtonProps,
   type ButtonTheme,
   type ButtonUI,
+  type CarouselItem,
+  type CarouselProps,
+  type CarouselTheme,
+  type CarouselUI,
 } from "@75neo/themes";

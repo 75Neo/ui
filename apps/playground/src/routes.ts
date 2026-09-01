@@ -36,4 +36,11 @@ export const previews: readonly PreviewRoute[] = [
       "Six sizes across two shapes with image, fallback, and custom image support for NextImage and NuxtImg.",
     key: "avatar",
   },
+  {
+    href: "/carousel",
+    label: "Carousel",
+    summary:
+      "A looping, autoplaying slideshow with keyboard, drag and indicator navigation, wrapping Ark UI.",
+    key: "carousel",
+  },
 ];

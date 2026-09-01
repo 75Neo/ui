@@ -46,7 +46,8 @@ export function resolveTheme<R extends Recipe>(
   const variants: Record<string, unknown> = {};
 
   for (const key of recipe.variantKeys) {
-    variants[key] = own[key] ?? defaults[key];
+    const k = String(key);
+    variants[k] = own[k] ?? defaults[k];
   }
 
   const themeUI = override?.ui;

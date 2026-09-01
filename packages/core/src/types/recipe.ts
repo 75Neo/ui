@@ -8,7 +8,7 @@
 export interface Recipe {
   variants: Record<string, Record<string, unknown>>;
   slots: Record<string, unknown>;
-  variantKeys: readonly string[];
+  variantKeys: readonly (string | number)[];
 }
 
 /** The slot names a recipe declares. */
