@@ -3,7 +3,6 @@ import { type ThemeConfig, applyThemeConfigs } from "@75neo/core";
 import { ThemeContext } from "../context/ThemeContext";
 
 export interface ThemeProps {
-  /** A layer of per-component overrides, keyed by component. */
   theme: ThemeConfig;
   children?: ReactNode;
 }
