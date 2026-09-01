@@ -11,5 +11,5 @@ export type {
   ThemeOverride,
   ThemeOverrideOf,
 } from "./types/theme";
-export { applyThemeConfigs, applyThemeOverrides } from "./utils/theme";
+export { layerTheme } from "./utils/layer";
 export { type ResolvedTheme, resolveTheme } from "./utils/resolve";

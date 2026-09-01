@@ -1,5 +1,5 @@
 import { type ReactNode, createElement, useContext, useMemo } from "react";
-import { type ThemeConfig, applyThemeConfigs } from "@75neo/core";
+import { type ThemeConfig, layerTheme } from "@75neo/core";
 import { ThemeContext } from "../context/ThemeContext";
 
 export interface ThemeProps {
@@ -9,10 +9,7 @@ export interface ThemeProps {
 
 export function Theme({ theme, children }: ThemeProps) {
   const parent = useContext(ThemeContext);
-  const config = useMemo(
-    () => (parent ? applyThemeConfigs(parent, theme) : theme),
-    [parent, theme],
-  );
+  const config = useMemo(() => (parent ? layerTheme(parent, theme) : theme), [parent, theme]);
 
   return createElement(ThemeContext.Provider, { value: config }, children);
 }

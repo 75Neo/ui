@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { tv } from "tailwind-variants";
-import { applyThemeConfigs } from "../theme";
+import { layerTheme } from "../layer";
 import { resolveTheme } from "../resolve";
 import type { ComponentContract, ThemeConfig } from "../../types/theme";
 
@@ -93,7 +93,7 @@ describe("resolveTheme", () => {
     const outer: ThemeConfig = { probe: { ui: { base: "p-2 rounded-sm", leading: "mr-2" } } };
     const inner: ThemeConfig = { probe: { ui: { base: "p-5" } } };
 
-    const { class: classes } = resolveTheme(recipe, applyThemeConfigs(outer, inner).probe);
+    const { class: classes } = resolveTheme(recipe, layerTheme(outer, inner).probe);
 
     expect(classes.base).toContain("rounded-sm");
     expect(classes.base).not.toContain("rounded-md");
@@ -106,7 +106,7 @@ describe("resolveTheme", () => {
     const outer: ThemeConfig = { probe: { props: { size: "lg", color: "error" } } };
     const inner: ThemeConfig = { probe: { props: { color: "primary" } } };
 
-    const { props } = resolveTheme(recipe, applyThemeConfigs(outer, inner).probe);
+    const { props } = resolveTheme(recipe, layerTheme(outer, inner).probe);
 
     expect(props).toEqual({ size: "lg", color: "primary" });
   });

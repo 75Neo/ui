@@ -12,7 +12,7 @@ import {
   type Recipe,
   type ResolvedTheme,
   type ThemeConfig,
-  applyThemeConfigs,
+  layerTheme,
   resolveTheme,
 } from "@75neo/core";
 
@@ -22,7 +22,7 @@ export function provideTheme(theme: MaybeRefOrGetter<ThemeConfig>): ComputedRef<
   const parent = useThemeConfig();
   const config = computed(() => {
     const own = toValue(theme);
-    return parent ? applyThemeConfigs(parent.value, own) : own;
+    return parent ? layerTheme(parent.value, own) : own;
   });
 
   provide(themeConfigKey, config);

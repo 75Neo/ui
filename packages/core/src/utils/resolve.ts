@@ -20,7 +20,7 @@ export interface ResolvedTheme<R extends Recipe> {
  * The cascade, weakest first:
  *
  * 1. the recipe's own classes;
- * 2. `override.ui`, the theme layers already folded together by `applyThemeConfigs`;
+ * 2. `override.ui`, the theme layers already folded together by `layerTheme`;
  * 3. `props.ui`, the component's own per-slot override;
  * 4. `className`, written at the call site, which applies to `base` only.
  *
