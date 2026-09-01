@@ -11,5 +11,5 @@ export default defineConfig({
     attributes: ["ui"],
     stylesheet: "packages/themes/src/tokens/lint.css",
   },
-  ignorePatterns: [".agents/**/*.md"],
+  ignorePatterns: [".agents/**", ".claude/**"],
 });
