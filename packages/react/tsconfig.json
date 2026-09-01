@@ -1,7 +1,6 @@
 {
   "extends": ["../../tsconfig.base.json"],
   "compilerOptions": {
-    // React components render into the DOM, and the browser-mode tests read it back.
     "lib": ["ES2023", "DOM"],
     "jsx": "react-jsx"
   }

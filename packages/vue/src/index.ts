@@ -1,26 +1,28 @@
+export { default as Accordion } from "./components/Accordion.vue";
 export { default as Button } from "./components/Button.vue";
 export { default as Theme } from "./components/Theme.vue";
-export {
-  provideTheme,
-  useComponentTheme,
-  useThemeConfig,
-} from "./composables/useComponentTheme.ts";
+export { useResolvedTheme } from "./composables/theme";
 
-// Re-exported so applications need only one import for the theme API.
 export {
-  type ButtonProps,
-  type ButtonTheme,
-  type ButtonUI,
   type ComponentContract,
   type ComponentKey,
   type ComponentThemes,
   type PropsOf,
+  type Recipe,
+  type ResolvedTheme,
   type SlotsOf,
   type ThemeConfig,
   type ThemeOverride,
   type ThemeOverrideOf,
-  type TVClasses,
   type TVSlot,
-  applyThemeConfigs,
-  applyThemeOverrides,
 } from "@75neo/core";
+
+export {
+  type AccordionItem,
+  type AccordionProps,
+  type AccordionTheme,
+  type AccordionUI,
+  type ButtonProps,
+  type ButtonTheme,
+  type ButtonUI,
+} from "@75neo/themes";

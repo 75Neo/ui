@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { type Component, computed } from "vue";
 import { Loader2 } from "@lucide/vue";
-import { button } from "@75neo/themes";
-import type { ButtonProps } from "@75neo/core";
-import { useComponentTheme } from "../composables/useComponentTheme";
+import { type ButtonProps, button, showButtonSlots } from "@75neo/themes";
+import { useResolvedTheme } from "../composables/theme";
 
 const props = defineProps<
   ButtonProps<Component> & {
@@ -16,46 +15,24 @@ const slots = defineSlots<{
   default?: () => unknown;
   leading?: () => unknown;
   trailing?: () => unknown;
-  /** Replaces the spinner shown while `loading` is set. */
   loadingIcon?: () => unknown;
 }>();
 
-const theme = useComponentTheme("button", () => props.ui);
-
-const resolved = computed(() => {
-  const defaults = theme.value.props ?? {};
-  return {
-    variant: props.variant ?? defaults.variant,
-    size: props.size ?? defaults.size,
-    color: props.color ?? defaults.color,
-    disabled: props.disabled ?? false,
-    loading: props.loading ?? false,
-    leading: props.leading ?? false,
-    trailing: props.trailing ?? false,
-  };
-});
-
-const classes = computed(() => {
-  const slotClasses = theme.value.ui;
-  const tv = button({
-    variant: resolved.value.variant,
-    size: resolved.value.size,
-    color: resolved.value.color,
-  });
-
-  return {
-    base: tv.base({ class: [props.class as string, slotClasses?.base] }),
-    leading: tv.leading({ class: slotClasses?.leading }),
-    label: tv.label({ class: slotClasses?.label }),
-    trailing: tv.trailing({ class: slotClasses?.trailing }),
-  };
-});
-
-const showLeading = computed(
-  () => resolved.value.loading || resolved.value.leading || !!props.leadingIcon || !!slots.leading,
+const theme = useResolvedTheme(
+  button,
+  "button",
+  () => props,
+  () => props.class as string | undefined,
 );
-const showTrailing = computed(
-  () => resolved.value.trailing || !!props.trailingIcon || !!slots.trailing,
+
+const show = computed(() =>
+  showButtonSlots({
+    loading: props.loading,
+    leading: props.leading,
+    trailing: props.trailing,
+    hasLeading: !!props.leadingIcon || !!slots.leading,
+    hasTrailing: !!props.trailingIcon || !!slots.trailing,
+  }),
 );
 </script>
 
@@ -63,12 +40,12 @@ const showTrailing = computed(
   <button
     :type="type ?? 'button'"
     data-slot="base"
-    :class="classes.base"
-    :disabled="resolved.disabled || resolved.loading"
-    :aria-busy="resolved.loading || undefined"
+    :class="theme.class.base"
+    :disabled="(props.disabled ?? false) || (props.loading ?? false)"
+    :aria-busy="props.loading || undefined"
   >
-    <span v-if="showLeading" data-slot="leading" :class="classes.leading">
-      <template v-if="resolved.loading">
+    <span v-if="show.leading" data-slot="leading" :class="theme.class.leading">
+      <template v-if="props.loading">
         <slot name="loadingIcon">
           <component :is="loadingIcon ?? Loader2" class="animate-spin" />
         </slot>
@@ -77,10 +54,10 @@ const showTrailing = computed(
         <component :is="leadingIcon" v-if="leadingIcon" />
       </slot>
     </span>
-    <span v-if="slots.default" data-slot="label" :class="classes.label">
+    <span v-if="slots.default" data-slot="label" :class="theme.class.label">
       <slot />
     </span>
-    <span v-if="showTrailing" data-slot="trailing" :class="classes.trailing">
+    <span v-if="show.trailing" data-slot="trailing" :class="theme.class.trailing">
       <slot name="trailing">
         <component :is="trailingIcon" v-if="trailingIcon" />
       </slot>

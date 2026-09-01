@@ -1,0 +1,70 @@
+---
+/**
+ * One specimen stage: the same matrix rendered by both adapters, on the page's
+ * current surface, with the section's own notes held in a rail alongside it.
+ */
+interface Props {
+  title: string;
+  description: string;
+  /** Facts read off the recipe, shown as a small ledger under the notes. */
+  meta?: readonly { term: string; value: string }[];
+}
+
+const { title, description, meta = [] } = Astro.props;
+
+const frameLabel = "text-highlighted font-mono text-xs leading-none";
+const framePackage = "text-dimmed font-mono text-[0.625rem] leading-none";
+const frameHeader =
+  "bg-muted border-muted flex items-center justify-between gap-3 border-b px-4 py-2.5";
+const stage = "p-5 sm:p-7";
+---
+
+<section class="grid gap-6 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-12">
+  <div class="lg:sticky lg:top-28 lg:self-start">
+    <h2 class="text-highlighted text-base font-semibold tracking-[-0.015em]">
+      {title}
+    </h2>
+    <p class="text-muted mt-2 max-w-[46ch] text-sm/6 text-pretty">{description}</p>
+
+    {
+      meta.length > 0 && (
+        <dl class="border-muted divide-muted mt-6 divide-y border-t text-xs">
+          {meta.map(({ term, value }) => (
+            <div class="flex items-baseline justify-between gap-4 py-2">
+              <dt class="text-dimmed font-mono" data-identifier>
+                {term}
+              </dt>
+              <dd class="text-toned text-right font-mono" data-identifier>
+                {value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )
+    }
+  </div>
+
+  <div class="border-muted shadow-stage bg-default overflow-hidden rounded-xl border">
+    <div class="grid md:grid-cols-2">
+      <article class="border-muted min-w-0 border-b md:border-r md:border-b-0">
+        <header class={frameHeader}>
+          <h3 class={frameLabel} data-identifier>react</h3>
+          <span class={framePackage} data-identifier>@75neo/react</span>
+        </header>
+        <div data-stage class={stage}>
+          <slot name="react" />
+        </div>
+      </article>
+
+      <article class="min-w-0">
+        <header class={frameHeader}>
+          <h3 class={frameLabel} data-identifier>vue</h3>
+          <span class={framePackage} data-identifier>@75neo/vue</span>
+        </header>
+        <div data-stage class={stage}>
+          <slot name="vue" />
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

@@ -1,9 +1,18 @@
 @import "./colors.css";
 @import "./keyframes.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
 @source "./index.js";
 
 @layer base {
+  *,
+  ::after,
+  ::before {
+    border-color: var(--ui-border);
+  }
+
   body {
-    @apply text-default bg-default antialiased scheme-light dark:scheme-dark;
+    @apply bg-default text-default antialiased scheme-light dark:scheme-dark;
   }
 }

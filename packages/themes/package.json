@@ -22,9 +22,11 @@
     "build": "tsdown",
     "dev": "tsdown --watch",
     "typecheck": "tsc --noEmit",
-    "prepack": "pnpm build"
+    "prepack": "pnpm build",
+    "test": "vitest run"
   },
   "dependencies": {
+    "@75neo/core": "workspace:*",
     "tailwind-variants": "catalog:"
   },
   "devDependencies": {

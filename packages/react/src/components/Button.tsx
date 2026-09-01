@@ -1,8 +1,7 @@
 import type React from "react";
 import { Loader2 } from "lucide-react";
-import { button } from "@75neo/themes";
-import type { ButtonProps as ButtonContract } from "@75neo/core";
-import { useComponentTheme } from "../hooks/useComponentTheme";
+import { type ButtonProps as ButtonContract, button, showButtonSlots } from "@75neo/themes";
+import { useResolvedTheme } from "../hooks/useResolvedTheme";
 
 export interface ButtonProps
   extends
@@ -26,43 +25,37 @@ export function Button({
   type = "button",
   ...rest
 }: ButtonProps) {
-  const theme = useComponentTheme("button", ui);
-  const defaults = theme.props ?? {};
-  const slots = theme.ui;
-
   const isLoading = loading ?? false;
-  const isDisabled = (disabled ?? false) || isLoading;
-
-  const tv = button({
-    variant: variant ?? defaults.variant,
-    size: size ?? defaults.size,
-    color: color ?? defaults.color,
+  const theme = useResolvedTheme(button, "button", { ui, variant, size, color }, className);
+  const show = showButtonSlots({
+    loading: isLoading,
+    leading,
+    trailing,
+    hasLeading: leadingIcon != null,
+    hasTrailing: trailingIcon != null,
   });
-
-  const showLeading = isLoading || (leading ?? false) || leadingIcon != null;
-  const showTrailing = (trailing ?? false) || trailingIcon != null;
 
   return (
     <button
       {...rest}
       type={type}
       data-slot="base"
-      className={tv.base({ class: [className, slots?.base] })}
-      disabled={isDisabled}
+      className={theme.class.base}
+      disabled={(disabled ?? false) || isLoading}
       aria-busy={isLoading || undefined}
     >
-      {showLeading && (
-        <span data-slot="leading" className={tv.leading({ class: slots?.leading })}>
+      {show.leading && (
+        <span data-slot="leading" className={theme.class.leading}>
           {isLoading ? (loadingIcon ?? <Loader2 className="animate-spin" />) : leadingIcon}
         </span>
       )}
       {children != null && (
-        <span data-slot="label" className={tv.label({ class: slots?.label })}>
+        <span data-slot="label" className={theme.class.label}>
           {children}
         </span>
       )}
-      {showTrailing && (
-        <span data-slot="trailing" className={tv.trailing({ class: slots?.trailing })}>
+      {show.trailing && (
+        <span data-slot="trailing" className={theme.class.trailing}>
           {trailingIcon}
         </span>
       )}

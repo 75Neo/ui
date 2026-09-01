@@ -1,0 +1,37 @@
+---
+import Playground from "../layouts/Playground.astro";
+import { previews } from "../routes";
+---
+
+<Playground
+  eyebrow="404"
+  title="No page at this address"
+  description="The playground only serves an overview and one page per component, so a mistyped path lands here. Everything it does serve is listed below."
+>
+  <ul class="border-muted divide-muted max-w-2xl divide-y border-y">
+    {
+      [{ href: "/", label: "Overview", summary: "Every component in the library." }, ...previews]
+        .map(({ href, label, summary }) => (
+          <li>
+            <a
+              href={href}
+              class="group focus-visible:ring-primary/40 flex items-baseline justify-between gap-8 py-5 focus-visible:rounded-sm focus-visible:ring-2 focus-visible:outline-none"
+            >
+              <span class="min-w-0">
+                <span class="text-highlighted group-hover:text-primary block text-base font-medium transition-colors duration-200">
+                  {label}
+                </span>
+                <span class="text-muted mt-1 block text-sm/6">{summary}</span>
+              </span>
+              <span
+                class="text-dimmed group-hover:text-primary shrink-0 font-mono text-xs transition-colors duration-200"
+                data-identifier
+              >
+                {href}
+              </span>
+            </a>
+          </li>
+        ))
+    }
+  </ul>
+</Playground>

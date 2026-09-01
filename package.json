@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev:docs": "turbo run dev --filter docs",
+    "dev:play": "turbo run dev --filter playground",
     "dev": "turbo run dev",
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",

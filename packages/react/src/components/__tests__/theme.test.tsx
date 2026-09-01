@@ -1,9 +1,10 @@
 import type React from "react";
-import { useEffect } from "react";
 import { describe, expect, it } from "vitest";
+import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-react";
-import type { ThemeConfig, ThemeOverrideOf } from "@75neo/core";
-import { useComponentTheme } from "../../hooks/useComponentTheme";
+import type { ThemeConfig } from "@75neo/core";
+import { accordion } from "@75neo/themes";
+import { Accordion } from "../Accordion";
 import { Button } from "../Button";
 import { Theme } from "../Theme";
 
@@ -20,28 +21,34 @@ function base(container: HTMLElement): HTMLButtonElement {
   return slot(container, "base") as HTMLButtonElement;
 }
 
+/**
+ * The cascade itself is tested in `@75neo/core`, against the resolver. What is left
+ * here is the wiring only this adapter can get wrong: that `Theme` reaches a component
+ * through context, that nesting composes, and that React's `className` arrives at the
+ * resolver as the strongest layer.
+ */
 describe("Theme", () => {
-  it("applies a theme's ui override to a component below it", async () => {
+  it("renders the recipe's own classes with no Theme above it", async () => {
+    const container = await mount(<Button>Button</Button>);
+
+    const cls = base(container).className;
+    expect(cls).toContain("inline-flex");
+    expect(cls).toContain("bg-primary");
+    expect(cls).toContain("h-8");
+    expect(slot(container, "label")).not.toBeNull();
+  });
+
+  it("reaches a component below it through context", async () => {
     const container = await mount(
       <Theme theme={{ button: { ui: { base: "p-2" } } }}>
         <Button>Button</Button>
       </Theme>,
     );
 
-    expect(base(container).className).toBe("p-2");
+    expect(base(container).className).toContain("p-2");
   });
 
-  it("lets the component's ui prop beat the theme", async () => {
-    const container = await mount(
-      <Theme theme={{ button: { ui: { base: "p-2" } } }}>
-        <Button ui={{ base: "p-5" }}>Button</Button>
-      </Theme>,
-    );
-
-    expect(base(container).className).toBe("p-5");
-  });
-
-  it("resolves nested themes nearest-first and merges per slot", async () => {
+  it("composes with a Theme nested inside it", async () => {
     const outer: ThemeConfig = { button: { ui: { base: "p-2 rounded-sm", leading: "mr-2" } } };
     const inner: ThemeConfig = { button: { ui: { base: "p-5" } } };
 
@@ -53,51 +60,56 @@ describe("Theme", () => {
       </Theme>,
     );
 
-    expect(base(container).className).toBe("rounded-sm p-5");
-    expect(slot(container, "leading")!.className).toBe("mr-2");
+    const cls = base(container).className;
+    expect(cls).toContain("rounded-sm");
+    expect(cls).toContain("p-5");
+    expect(cls).not.toContain("p-2");
+    expect(slot(container, "leading")!.className).toContain("mr-2");
   });
 
-  it("keeps classes from every layer that do not conflict", async () => {
-    const outer: ThemeConfig = { button: { ui: { base: "rounded-sm" } } };
-    const inner: ThemeConfig = { button: { ui: { base: "font-bold" } } };
-
+  it("lets className beat the theme", async () => {
     const container = await mount(
-      <Theme theme={outer}>
-        <Theme theme={inner}>
-          <Button ui={{ base: "p-5" }}>Button</Button>
-        </Theme>
+      <Theme theme={{ button: { ui: { base: "p-2" } } }}>
+        <Button className="p-9">Button</Button>
       </Theme>,
     );
 
-    expect(base(container).className).toBe("rounded-sm font-bold p-5");
+    const cls = base(container).className;
+    expect(cls).toContain("p-9");
+    expect(cls).not.toContain("p-2");
   });
+});
 
-  it("merges theme props with the nearest theme winning", async () => {
-    let resolved: ThemeOverrideOf<"button">["props"];
+const items = [
+  { value: "one", label: "First", content: "The first body." },
+  { value: "two", label: "Second", content: "The second body." },
+];
 
-    function Probe() {
-      const theme = useComponentTheme("button");
-      useEffect(() => {
-        resolved = theme.props;
-      }, [theme]);
-      return null;
+/**
+ * Accordion is the first component to wrap Ark UI, so what is worth testing here is the
+ * wiring between Ark's parts and this adapter's slots -- not the cascade, which
+ * `@75neo/core` already covers against the resolver.
+ *
+ * Expansion is asserted through `aria-expanded` rather than a `data-state` attribute:
+ * Ark stamps `data-state` on the content only while it is closed, so it is absent, not
+ * `"open"`, once the item expands.
+ */
+describe("Accordion", () => {
+  it("renders every slot the recipe declares", async () => {
+    const container = await mount(<Accordion items={items} />);
+
+    for (const name of Object.keys(accordion.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
     }
-
-    await mount(
-      <Theme theme={{ button: { props: { size: "lg", color: "error" } } }}>
-        <Theme theme={{ button: { props: { color: "primary" } } }}>
-          <Probe />
-        </Theme>
-      </Theme>,
-    );
-
-    expect(resolved).toEqual({ size: "lg", color: "primary" });
   });
 
-  it("leaves components outside any Theme untouched", async () => {
-    const container = await mount(<Button>Button</Button>);
+  it("expands the item whose trigger is activated", async () => {
+    const container = await mount(<Accordion items={items} />);
+    const trigger = slot(container, "trigger")!;
 
-    expect(base(container).className).toBe("");
-    expect(slot(container, "label")).not.toBeNull();
+    expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    await userEvent.click(trigger);
+
+    await expect.poll(() => trigger.getAttribute("aria-expanded")).toBe("true");
   });
 });
