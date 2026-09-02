@@ -31,7 +31,6 @@ export {
   type ButtonTheme,
   type ButtonUI,
   type CarouselItem,
-  type CarouselProps as CarouselContractProps,
   type CarouselTheme,
   type CarouselUI,
 } from "@75neo/themes";

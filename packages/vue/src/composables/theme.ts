@@ -18,6 +18,11 @@ import {
 
 const themeConfigKey: InjectionKey<ComputedRef<ThemeConfig>> = Symbol("75neo.theme-config");
 
+/**
+ * Publish a theme to every component below this one, folded onto any theme already
+ * provided above it. `Theme.vue` is the only caller -- everything else reaches the
+ * theme through `useResolvedTheme`.
+ */
 export function provideTheme(theme: MaybeRefOrGetter<ThemeConfig>): ComputedRef<ThemeConfig> {
   const parent = useThemeConfig();
   const config = computed(() => {
@@ -29,6 +34,7 @@ export function provideTheme(theme: MaybeRefOrGetter<ThemeConfig>): ComputedRef<
   return config;
 }
 
+/** The theme provided above this component, or `undefined` if there is none. */
 export function useThemeConfig(): ComputedRef<ThemeConfig> | undefined {
   return inject(themeConfigKey, undefined);
 }

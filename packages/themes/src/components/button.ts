@@ -1,6 +1,16 @@
 import { tv, type VariantProps } from "tailwind-variants";
 import type { ComponentContract, MustBeNever, ThemeOverride, TVSlot } from "@75neo/core";
 
+/**
+ * A button is one interactive box with three optional children: a leading slot, a
+ * label, and a trailing slot. `variant` and `color` are independent -- the four
+ * variants each pick a different way to spend a color, and the compound table below
+ * holds one entry per pair, which is what `assertRecipeIsTotal` checks.
+ *
+ * `size` styles `base` directly, while the icon slots pick their size up from
+ * `compoundSlots`, so the two icon boxes never drift apart or out of step with the
+ * text.
+ */
 export const button = tv({
   slots: {
     base: "inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-transparent text-center align-middle font-medium whitespace-nowrap transition-[color,background-color,border-color,box-shadow] duration-150 outline-none select-none focus-visible:ring-[3px] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50",
@@ -300,11 +310,22 @@ declare global {
 }
 
 /**
- * Which of Button's optional slots render.
+ * Decide whether Button's optional `leading` and `trailing` slots render.
  *
- * `hasLeading` and `hasTrailing` are the framework's answer to "is there anything to
- * put in this slot" -- a `ReactNode` prop in React, a prop or a filled `<slot>` in
- * Vue. The rule itself is the same in both, so it lives here rather than twice.
+ * Both are wrappers with nothing of their own to show, and both are sized by the
+ * recipe -- `size-4` at `md`, plus the `gap` `base` sets between children. Rendering
+ * one that stays empty therefore costs real width, so a slot renders only when
+ * something will fill it, or when the caller asked for the space on purpose.
+ *
+ * Three things fill the leading slot: the caller reserved it with `leading`, the
+ * caller supplied leading content, or the button is loading -- the spinner is drawn
+ * in the leading slot, so `loading` implies it. Trailing has no such third case,
+ * which is the whole of the asymmetry below.
+ *
+ * `hasLeading` and `hasTrailing` are each framework's answer to "is there content for
+ * this slot": a non-null icon prop in React, an icon prop or a filled `<slot>` in Vue.
+ * The frameworks answer that question differently but apply the same rule to the
+ * answer, so the rule lives here instead of twice in the adapters.
  */
 export function showButtonSlots(props: {
   loading?: boolean;
@@ -314,7 +335,7 @@ export function showButtonSlots(props: {
   hasTrailing?: boolean;
 }): { leading: boolean; trailing: boolean } {
   return {
-    leading: (props.loading ?? false) || (props.leading ?? false) || (props.hasLeading ?? false),
-    trailing: (props.trailing ?? false) || (props.hasTrailing ?? false),
+    leading: Boolean(props.loading || props.leading || props.hasLeading),
+    trailing: Boolean(props.trailing || props.hasTrailing),
   };
 }

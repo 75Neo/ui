@@ -1,6 +1,15 @@
 import { tv, type VariantProps } from "tailwind-variants";
 import type { ComponentContract, MustBeNever, ThemeOverride, TVSlot } from "@75neo/core";
 
+/**
+ * The fallback sits under the image rather than beside it: Ark renders both and hides
+ * the fallback once the image loads, so `base` carries the shape, the background and
+ * the clipping, and `image` and `fallback` each fill it. Nothing here needs to know
+ * which of the two is currently visible.
+ *
+ * `size` sets one box on `base` and the matching type scale on `fallback`, because
+ * initials in a fixed type size stop fitting well below `md`.
+ */
 export const avatar = tv({
   slots: {
     base: "relative inline-flex shrink-0 items-center justify-center overflow-hidden bg-muted align-middle select-none",

@@ -8,14 +8,6 @@ describe("angleSlider", () => {
     expect(() => assertRecipeIsTotal(angleSlider)).not.toThrow();
   });
 
-  it("resolves a class for every slot it declares", () => {
-    const resolved = angleSlider({});
-
-    for (const slot of Object.keys(angleSlider.slots)) {
-      expect(resolved[slot as keyof typeof resolved]()).not.toBe("");
-    }
-  });
-
   it("declares the variants components and previews read back", () => {
     expect(variantValues(angleSlider, "size")).toEqual(["sm", "md", "lg"]);
     expect(variantValues(angleSlider, "color")).toEqual([

@@ -1,6 +1,6 @@
 export type { Recipe, RecipeSlots, RecipeVariants } from "./types/recipe";
 export { variantValues } from "./types/recipe";
-export type { TVClasses, TVSlot } from "./types/tv";
+export type { TVSlot } from "./types/tv";
 export type {
   ComponentContract,
   ComponentKey,

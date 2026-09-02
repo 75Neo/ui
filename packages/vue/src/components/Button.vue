@@ -41,7 +41,7 @@ const show = computed(() =>
     :type="type ?? 'button'"
     data-slot="base"
     :class="theme.class.base"
-    :disabled="(props.disabled ?? false) || (props.loading ?? false)"
+    :disabled="props.disabled || props.loading"
     :aria-busy="props.loading || undefined"
   >
     <span v-if="show.leading" data-slot="leading" :class="theme.class.leading">
