@@ -1,0 +1,38 @@
+---
+import { datePicker, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import DatePickerPreview from "../previews/DatePickerPreview.tsx";
+import DatePickerPreviewVue from "../previews/DatePickerPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(datePicker.slots);
+const variantKeys = [...datePicker.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(datePicker, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "datePicker" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="DatePicker"
+  description="One recipe in @75neo/themes, rendered by both adapters. The day, month and year views share one table and one cell trigger, so the recipe styles the calendar once."
+  hasStage
+>
+  <Preview
+    title="Sizes, accents and the three selection modes"
+    description="Three sizes, then every accent color, then the calendar opening on click, six fixed weeks, a German reading, a disabled field, several days at once and a range. The last one is controlled and prints its own value."
+    meta={meta}
+  >
+    <Fragment slot="react"><DatePickerPreview client:load /></Fragment>
+    <Fragment slot="vue"><DatePickerPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

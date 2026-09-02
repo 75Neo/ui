@@ -4,12 +4,13 @@ import { userEvent } from "vitest/browser";
 import { Circle } from "lucide-react";
 import { render } from "vitest-browser-react";
 import type { ThemeConfig } from "@75neo/core";
-import { accordion, angleSlider, combobox, dateInput } from "@75neo/themes";
+import { accordion, angleSlider, combobox, dateInput, datePicker } from "@75neo/themes";
 import { Accordion } from "../Accordion";
 import { AngleSlider } from "../AngleSlider";
 import { Button } from "../Button";
 import { Combobox } from "../Combobox";
 import { DateInput } from "../DateInput";
+import { DatePicker } from "../DatePicker";
 import { Theme } from "../Theme";
 
 async function mount(ui: React.ReactElement): Promise<HTMLElement> {
@@ -26,9 +27,10 @@ function base(container: HTMLElement): HTMLButtonElement {
 }
 
 /**
- * The Combobox's list is portalled to the document body, so a query scoped to the render
- * container would miss it. One component is rendered per test and unmounted after it,
- * so the document is as narrow a scope as the container.
+ * The popup half of the Combobox and the DatePicker is portalled to the document body,
+ * so a query scoped to the render container would miss it. One component is rendered
+ * per test and unmounted after it, so the document is as narrow a scope as the
+ * container.
  */
 function anywhere(name: string): HTMLElement | null {
   return document.querySelector<HTMLElement>(`[data-slot='${name}']`);
@@ -234,5 +236,30 @@ describe("DateInput", () => {
     await userEvent.keyboard("7");
 
     await expect.poll(() => month.textContent).toContain("7");
+  });
+});
+
+/**
+ * The calendar renders all three views at once and hides the two that are not showing,
+ * so the slot sweep needs no interaction. What does need it is the selection: a day
+ * chosen in the grid has to reach the field the reader can see.
+ */
+describe("DatePicker", () => {
+  it("renders every slot the recipe declares", async () => {
+    await mount(<DatePicker label="Due" selectionMode="range" />);
+
+    for (const name of Object.keys(datePicker.slots)) {
+      expect(anywhere(name), name).not.toBeNull();
+    }
+  });
+
+  it("writes the day it is given into the field", async () => {
+    const container = await mount(<DatePicker />);
+    await userEvent.click(slot(container, "trigger")!);
+
+    const fifteenth = everywhere("tableCellTrigger").find((cell) => cell.textContent === "15")!;
+    await userEvent.click(fifteenth);
+
+    await expect.poll(() => (slot(container, "input") as HTMLInputElement).value).toContain("15");
   });
 });

@@ -22,4 +22,5 @@ export * from "./components/collapsible";
 export * from "./components/color-picker";
 export * from "./components/combobox";
 export * from "./components/date-input";
+export * from "./components/date-picker";
 export * from "./components/table-of-contents";
