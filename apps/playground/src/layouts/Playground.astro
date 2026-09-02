@@ -1,7 +1,6 @@
 ---
 import "../assets/css/main.css";
 import SegmentedControl from "../components/SegmentedControl.astro";
-import { previews } from "../routes";
 
 interface Props {
   title: string;
@@ -16,7 +15,6 @@ interface Props {
 }
 
 const { title, eyebrow, description, hasStage = false } = Astro.props;
-const current = Astro.url.pathname.replace(/\/$/, "") || "/";
 
 const shell = "mx-auto w-full max-w-page px-5 sm:px-8 lg:px-12";
 ---
@@ -120,31 +118,6 @@ const shell = "mx-auto w-full max-w-page px-5 sm:px-8 lg:px-12";
           />
         </div>
       </div>
-
-      <nav aria-label="Components" class="border-muted border-t">
-        <div class={`${shell} -mb-px flex gap-1 overflow-x-auto`}>
-          {
-            [
-              { href: "/", label: "Overview" },
-              { href: "/tokens", label: "Tokens" },
-              ...previews,
-            ].map(({ href, label }) => (
-              <a
-                href={href}
-                aria-current={current === href ? "page" : undefined}
-                class:list={[
-                  "border-b-2 px-2.5 py-2.5 text-sm whitespace-nowrap focus-visible:rounded-t-sm",
-                  current === href
-                    ? "border-primary text-highlighted font-medium"
-                    : "text-muted hover:text-highlighted border-transparent",
-                ]}
-              >
-                {label}
-              </a>
-            ))
-          }
-        </div>
-      </nav>
     </header>
 
     <div class="border-muted border-b">
