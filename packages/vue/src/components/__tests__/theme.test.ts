@@ -4,10 +4,11 @@ import { userEvent } from "vitest/browser";
 import { Circle } from "@lucide/vue";
 import { render } from "vitest-browser-vue";
 import type { ThemeConfig } from "@75neo/core";
-import { accordion, angleSlider } from "@75neo/themes";
+import { accordion, angleSlider, combobox } from "@75neo/themes";
 import Accordion from "../Accordion.vue";
 import AngleSlider from "../AngleSlider.vue";
 import Button from "../Button.vue";
+import Combobox from "../Combobox.vue";
 import Theme from "../Theme.vue";
 
 function slot(container: HTMLElement, name: string): HTMLElement | null {
@@ -16,6 +17,19 @@ function slot(container: HTMLElement, name: string): HTMLElement | null {
 
 function base(container: HTMLElement): HTMLElement {
   return slot(container, "base")!;
+}
+
+/**
+ * The Combobox's list is teleported to the document body, so a query scoped to the render
+ * container would miss it. One component is rendered per test and unmounted after it,
+ * so the document is as narrow a scope as the container.
+ */
+function anywhere(name: string): HTMLElement | null {
+  return document.querySelector<HTMLElement>(`[data-slot='${name}']`);
+}
+
+function everywhere(name: string): HTMLElement[] {
+  return [...document.querySelectorAll<HTMLElement>(`[data-slot='${name}']`)];
 }
 
 /**
@@ -141,5 +155,53 @@ describe("AngleSlider", () => {
     await userEvent.keyboard("{ArrowRight}");
 
     await expect.poll(() => thumb.getAttribute("aria-valuenow")).toBe("15");
+  });
+});
+
+// Every option carries an icon so the slot sweep below sees `leadingIcon`, which is
+// otherwise only rendered for options that have one.
+const options = [
+  { value: "react", label: "React", icon: Circle },
+  { value: "vue", label: "Vue", icon: Circle },
+  { value: "svelte", label: "Svelte", icon: Circle },
+];
+
+/**
+ * The Combobox owns its filter rather than handing the job to Ark, so what is worth
+ * testing is that typing narrows the collection and that an unmatched query reaches the
+ * empty message. The popup is not teleported, so every part of it is inside the rendered
+ * container.
+ */
+describe("Combobox", () => {
+  it("renders every slot the recipe declares", () => {
+    render(Combobox, { props: { items: options, label: "Framework" } });
+
+    for (const name of Object.keys(combobox.slots)) {
+      // Ark mounts the empty message only while nothing matches, which is the next test.
+      if (name === "empty") continue;
+      expect(anywhere(name), name).not.toBeNull();
+    }
+  });
+
+  it("narrows the list to what has been typed", async () => {
+    const { container } = render(Combobox, { props: { items: options } });
+
+    expect(everywhere("item")).toHaveLength(3);
+
+    slot(container, "input")!.focus();
+    await userEvent.keyboard("vu");
+
+    await expect.poll(() => everywhere("item").length).toBe(1);
+  });
+
+  it("shows the empty message when nothing matches", async () => {
+    const { container } = render(Combobox, {
+      props: { items: options, emptyMessage: "Nothing here." },
+    });
+
+    slot(container, "input")!.focus();
+    await userEvent.keyboard("zzz");
+
+    await expect.poll(() => anywhere("empty")?.textContent?.trim()).toBe("Nothing here.");
   });
 });

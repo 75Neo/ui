@@ -9,6 +9,7 @@ import { CheckboxPreview } from "../previews/CheckboxPreview";
 import { ClipboardPreview } from "../previews/ClipboardPreview";
 import { CollapsiblePreview } from "../previews/CollapsiblePreview";
 import { ColorPickerPreview } from "../previews/ColorPickerPreview";
+import { ComboboxPreview } from "../previews/ComboboxPreview";
 import { TableOfContentsPreview } from "../previews/TableOfContentsPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import AngleSliderPreviewVue from "../previews/AngleSliderPreview.vue";
@@ -19,6 +20,7 @@ import CheckboxPreviewVue from "../previews/CheckboxPreview.vue";
 import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
 import CollapsiblePreviewVue from "../previews/CollapsiblePreview.vue";
 import ColorPickerPreviewVue from "../previews/ColorPickerPreview.vue";
+import ComboboxPreviewVue from "../previews/ComboboxPreview.vue";
 import TableOfContentsPreviewVue from "../previews/TableOfContentsPreview.vue";
 
 /**
@@ -52,6 +54,7 @@ const vue = framework === "vue";
 {react && name === "Clipboard" && <ClipboardPreview client:visible />}
 {react && name === "Collapsible" && <CollapsiblePreview client:visible />}
 {react && name === "ColorPicker" && <ColorPickerPreview client:visible />}
+{react && name === "Combobox" && <ComboboxPreview client:visible />}
 {react && name === "TableOfContents" && <TableOfContentsPreview client:visible />}
 
 {vue && name === "Accordion" && <AccordionPreviewVue client:visible />}
@@ -63,4 +66,5 @@ const vue = framework === "vue";
 {vue && name === "Clipboard" && <ClipboardPreviewVue client:visible />}
 {vue && name === "Collapsible" && <CollapsiblePreviewVue client:visible />}
 {vue && name === "ColorPicker" && <ColorPickerPreviewVue client:visible />}
+{vue && name === "Combobox" && <ComboboxPreviewVue client:visible />}
 {vue && name === "TableOfContents" && <TableOfContentsPreviewVue client:visible />}
