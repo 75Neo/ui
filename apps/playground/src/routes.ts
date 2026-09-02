@@ -37,6 +37,20 @@ export const previews: readonly PreviewRoute[] = [
     key: "avatar",
   },
   {
+    href: "/clipboard",
+    label: "Clipboard",
+    summary:
+      "A read-only field holding a value and a button that copies it, across three sizes and seven colors.",
+    key: "clipboard",
+  },
+  {
+    href: "/table-of-contents",
+    label: "TableOfContents",
+    summary:
+      "A rail of heading links that follows the reading position, with an indicator that slides to the section on screen.",
+    key: "tableOfContents",
+  },
+  {
     href: "/carousel",
     label: "Carousel",
     summary:

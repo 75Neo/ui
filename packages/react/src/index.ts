@@ -3,6 +3,8 @@ export { AngleSlider, type AngleSliderProps } from "./components/AngleSlider";
 export { Avatar, type AvatarProps } from "./components/Avatar";
 export { Button, type ButtonProps } from "./components/Button";
 export { Carousel, type CarouselProps } from "./components/Carousel";
+export { Clipboard, type ClipboardProps } from "./components/Clipboard";
+export { TableOfContents, type TableOfContentsProps } from "./components/TableOfContents";
 export { Theme, type ThemeProps } from "./components/Theme";
 export { useResolvedTheme } from "./hooks/useResolvedTheme";
 
@@ -33,4 +35,9 @@ export {
   type CarouselItem,
   type CarouselTheme,
   type CarouselUI,
+  type ClipboardTheme,
+  type ClipboardUI,
+  type TableOfContentsItem,
+  type TableOfContentsTheme,
+  type TableOfContentsUI,
 } from "@75neo/themes";

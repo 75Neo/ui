@@ -1,0 +1,38 @@
+---
+import { tableOfContents, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import TableOfContentsPreview from "../previews/TableOfContentsPreview.tsx";
+import TableOfContentsPreviewVue from "../previews/TableOfContentsPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(tableOfContents.slots);
+const variantKeys = [...tableOfContents.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(tableOfContents, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "tableOfContents" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="TableOfContents"
+  description="One recipe in @75neo/themes, rendered by both adapters. Depth is styled off the data-depth attribute Ark sets per row rather than declared as a variant, because one list holds headings at several levels."
+  hasStage
+>
+  <Preview
+    title="A rail against its own scroller"
+    description="Scroll either panel. The indicator slides to whichever heading is on screen, and the rail scrolls itself to keep that row visible. Both specimens watch their own scroller rather than the page, which is what scrollEl is for."
+    meta={meta}
+  >
+    <Fragment slot="react"><TableOfContentsPreview client:load /></Fragment>
+    <Fragment slot="vue"><TableOfContentsPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>
