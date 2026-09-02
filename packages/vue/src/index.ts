@@ -5,6 +5,7 @@ export { default as Button } from "./components/Button.vue";
 export { default as Carousel } from "./components/Carousel.vue";
 export { default as Checkbox } from "./components/Checkbox.vue";
 export { default as Clipboard } from "./components/Clipboard.vue";
+export { default as Collapsible } from "./components/Collapsible.vue";
 export { default as TableOfContents } from "./components/TableOfContents.vue";
 export { default as Theme } from "./components/Theme.vue";
 export { useResolvedTheme } from "./composables/theme";
@@ -47,6 +48,9 @@ export {
   type ClipboardProps,
   type ClipboardTheme,
   type ClipboardUI,
+  type CollapsibleProps,
+  type CollapsibleTheme,
+  type CollapsibleUI,
   type TableOfContentsItem,
   type TableOfContentsProps,
   type TableOfContentsTheme,

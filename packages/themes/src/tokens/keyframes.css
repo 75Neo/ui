@@ -1,6 +1,16 @@
-@keyframes accordion-down {
+/*
+ * The open and close animations Accordion and Collapsible share.
+ *
+ * Both are driven by variables the component module maps off Ark's own measurements:
+ * `--ui-collapsible-height` is the content's natural size, and
+ * `--ui-collapsible-collapsed-height` is what it shrinks to. The collapsed size
+ * defaults to zero, so a component that never sets one — Accordion — closes all the way
+ * shut, while a Collapsible given a `collapsedHeight` stops at a readable sliver.
+ */
+
+@keyframes collapsible-down {
   from {
-    height: 0;
+    height: var(--ui-collapsible-collapsed-height, 0);
     overflow: hidden;
   }
   to {
@@ -9,20 +19,20 @@
   }
 }
 
-@keyframes accordion-up {
+@keyframes collapsible-up {
   from {
     height: var(--ui-collapsible-height, auto);
     overflow: hidden;
   }
   to {
-    height: 0;
+    height: var(--ui-collapsible-collapsed-height, 0);
     overflow: hidden;
   }
 }
 
-@keyframes accordion-right {
+@keyframes collapsible-right {
   from {
-    width: 0;
+    width: var(--ui-collapsible-collapsed-width, 0);
     overflow: hidden;
   }
   to {
@@ -31,13 +41,13 @@
   }
 }
 
-@keyframes accordion-left {
+@keyframes collapsible-left {
   from {
     width: var(--ui-collapsible-width, auto);
     overflow: hidden;
   }
   to {
-    width: 0;
+    width: var(--ui-collapsible-collapsed-width, 0);
     overflow: hidden;
   }
 }

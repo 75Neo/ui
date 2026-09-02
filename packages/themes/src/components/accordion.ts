@@ -32,7 +32,7 @@ export const accordion = tv({
     trailingIcon:
       "ms-auto shrink-0 text-dimmed transition-transform duration-200 data-[state=open]:rotate-180 [&>svg]:size-full",
     content:
-      "overflow-hidden [--ui-collapsible-height:var(--height)] [--ui-collapsible-width:var(--width)] group-data-[orientation=horizontal]/accordion:h-full data-[state=closed]:animate-accordion-up group-data-[orientation=horizontal]/accordion:data-[state=closed]:animate-accordion-left data-[state=open]:animate-accordion-down group-data-[orientation=horizontal]/accordion:data-[state=open]:animate-accordion-right",
+      "overflow-hidden [--ui-collapsible-height:var(--height)] [--ui-collapsible-width:var(--width)] group-data-[orientation=horizontal]/accordion:h-full data-[state=closed]:animate-collapsible-up group-data-[orientation=horizontal]/accordion:data-[state=closed]:animate-collapsible-left data-[state=open]:animate-collapsible-down group-data-[orientation=horizontal]/accordion:data-[state=open]:animate-collapsible-right",
     body: "min-w-0 text-pretty text-toned group-data-[orientation=horizontal]/accordion:w-max group-data-[orientation=horizontal]/accordion:max-w-sm",
   },
   variants: {

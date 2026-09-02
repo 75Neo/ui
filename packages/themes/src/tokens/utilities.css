@@ -161,10 +161,11 @@
   --color-neutral-900: var(--ui-color-neutral-900);
   --color-neutral-950: var(--ui-color-neutral-950);
 
-  --animate-accordion-down: accordion-down 0.2s ease-out;
-  --animate-accordion-up: accordion-up 0.2s ease-out;
-  --animate-accordion-right: accordion-right 0.2s ease-out;
-  --animate-accordion-left: accordion-left 0.2s ease-out;
+  /* Shared by Accordion and Collapsible; the keyframes are in `keyframes.css`. */
+  --animate-collapsible-down: collapsible-down 0.2s ease-out;
+  --animate-collapsible-up: collapsible-up 0.2s ease-out;
+  --animate-collapsible-right: collapsible-right 0.2s ease-out;
+  --animate-collapsible-left: collapsible-left 0.2s ease-out;
 }
 
 /*

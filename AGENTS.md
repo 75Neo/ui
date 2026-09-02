@@ -212,10 +212,13 @@ generates anything. Check `pnpm dev:play` after adding either, not just `pnpm bu
 against the CSS, so the error does not name its own cause. The lines are long; leave them
 long.
 
-**Ark spells disabled two ways.** A part Ark renders as a native `button` — the Accordion
-trigger, the Carousel arrows — carries the `disabled` attribute, so style it with
-`disabled:`. A part that is a `div` carries `data-disabled` instead. Styling the wrong one
-fails silently: `pnpm dev:play` is the check.
+**Ark spells disabled two ways, and which one is per component.** The Accordion trigger
+and the Carousel arrows carry the real `disabled` attribute, so style them with
+`disabled:`. The Collapsible trigger is a native `button` too, and still carries only
+`data-disabled` — Ark guards its click handler itself. Anything Ark renders as a `div`
+carries `data-disabled` as well. So read the part's props before choosing, rather than
+inferring from the tag. Styling the wrong one fails silently, leaving a disabled control
+looking enabled: `pnpm dev:play` is the check.
 
 **A boolean `defineModel` needs `{ default: undefined }`.** Vue casts an absent
 Boolean-typed prop to `false`, and `defineModel` declares one, so a `v-model` over a

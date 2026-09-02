@@ -51,6 +51,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "clipboard",
   },
   {
+    href: "/collapsible",
+    label: "Collapsible",
+    summary:
+      "One trigger and the panel it opens, across three variants and three sizes, with a collapsed height that turns it into a show-more.",
+    key: "collapsible",
+  },
+  {
     href: "/table-of-contents",
     label: "TableOfContents",
     summary:

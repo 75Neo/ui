@@ -5,6 +5,7 @@ export { Button, type ButtonProps } from "./components/Button";
 export { Carousel, type CarouselProps } from "./components/Carousel";
 export { Checkbox, type CheckboxProps } from "./components/Checkbox";
 export { Clipboard, type ClipboardProps } from "./components/Clipboard";
+export { Collapsible, type CollapsibleProps } from "./components/Collapsible";
 export { TableOfContents, type TableOfContentsProps } from "./components/TableOfContents";
 export { Theme, type ThemeProps } from "./components/Theme";
 export { useResolvedTheme } from "./hooks/useResolvedTheme";
@@ -40,6 +41,8 @@ export {
   type CheckboxUI,
   type ClipboardTheme,
   type ClipboardUI,
+  type CollapsibleTheme,
+  type CollapsibleUI,
   type TableOfContentsItem,
   type TableOfContentsTheme,
   type TableOfContentsUI,

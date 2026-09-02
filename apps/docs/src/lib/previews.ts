@@ -15,6 +15,7 @@ export const previewed = new Set([
   "Carousel",
   "Checkbox",
   "Clipboard",
+  "Collapsible",
   "TableOfContents",
 ]);
 
