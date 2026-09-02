@@ -1,0 +1,66 @@
+---
+import { BookOpen, Boxes } from "@lucide/astro";
+import { type Framework, docHref } from "../lib/framework";
+import type { SidebarLink } from "../lib/navigation";
+
+interface Props {
+  framework: Framework;
+  /** The components section, one row per documented component. */
+  components: SidebarLink[];
+  /** The path the reader is on, so one row can be marked current. */
+  path: string;
+}
+
+const { framework, components, path } = Astro.props;
+
+const sections = [
+  {
+    label: "Guides",
+    icon: BookOpen,
+    links: [{ href: docHref(framework, "getting-started"), label: "Getting started" }],
+  },
+  {
+    label: "Components",
+    icon: Boxes,
+    links: components,
+  },
+];
+
+const heading = "text-dimmed flex items-center gap-2 font-mono text-xs";
+---
+
+<nav aria-label="Documentation" class="flex flex-col gap-7">
+  {
+    sections.map(({ label, icon: Icon, links }) => (
+      <div>
+        <p class={heading} data-identifier>
+          <Icon size={13} aria-hidden="true" />
+          {label.toLowerCase()}
+        </p>
+
+        <ul class="mt-2.5 flex flex-col">
+          {links.map(({ href, label: link }) => {
+            const current = path === href;
+
+            return (
+              <li>
+                <a
+                  href={href}
+                  aria-current={current ? "page" : undefined}
+                  class:list={[
+                    "block truncate rounded-md py-1.5 text-sm",
+                    current
+                      ? "text-highlighted font-medium"
+                      : "text-muted hover:text-highlighted",
+                  ]}
+                >
+                  {link}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    ))
+  }
+</nav>

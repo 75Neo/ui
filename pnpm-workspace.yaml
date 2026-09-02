@@ -18,6 +18,7 @@ catalog:
   tailwind-variants: ^3.3.1
 
   # Icons
+  "@lucide/astro": ^1.39.0
   "@lucide/vue": ^1.37.0
   lucide-react: ^1.37.0
 
@@ -40,3 +41,6 @@ catalog:
 allowBuilds:
   esbuild: false
   puppeteer: false
+
+minimumReleaseAgeExclude:
+  - "@lucide/astro@1.39.0"

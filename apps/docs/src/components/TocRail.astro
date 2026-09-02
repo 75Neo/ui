@@ -1,0 +1,24 @@
+---
+import { TableOfContents } from "@75neo/react";
+import { TableOfContents as TableOfContentsVue } from "@75neo/vue";
+import type { TableOfContentsItem } from "@75neo/themes";
+import type { Framework } from "../lib/framework";
+
+/**
+ * The rail of headings, rendered by the adapter the route is for.
+ *
+ * @remarks
+ * The docs use the library for their own chrome, so this rail is the same
+ * `TableOfContents` the reference page documents. Which also means the React route is
+ * proof the React adapter works and the Vue route is proof the Vue one does.
+ */
+interface Props {
+  framework: Framework;
+  items: TableOfContentsItem[];
+}
+
+const { framework, items } = Astro.props;
+---
+
+{framework === "react" && <TableOfContents items={items} client:load />}
+{framework === "vue" && <TableOfContentsVue items={items} client:load />}

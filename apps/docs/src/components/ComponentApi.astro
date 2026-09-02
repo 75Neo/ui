@@ -1,0 +1,190 @@
+---
+import PropsTable from "./PropsTable.astro";
+import type { ComponentApi, PropDoc } from "../lib/component-api";
+import { type Framework, frameworkFacts } from "../lib/framework";
+
+interface Props {
+  api: ComponentApi;
+  framework: Framework;
+  /**
+   * Prefix for the row anchors inside the tables. The section ids are fixed, because a
+   * component has a page to itself and nothing else on it claims them.
+   */
+  id: string;
+}
+
+const { api, framework, id } = Astro.props;
+const facts = frameworkFacts[framework];
+
+/**
+ * The contract writes an icon as the type parameter `Icon`, because it is one type in
+ * React and another in Vue. The route knows which, so the reader never has to.
+ */
+const named = (props: PropDoc[]) =>
+  props.map((prop) => ({ ...prop, type: prop.type.replace(/\bIcon\b/g, facts.icon) }));
+
+const shared = named(api.shared);
+
+/** A section is worth a heading only when it has rows. */
+const hasReact = api.react.props.length > 0 || api.react.inherits.length > 0;
+const hasVue = api.vue.props.length > 0 || api.vue.slots.length > 0 || api.vue.models.length > 0;
+
+const heading = "text-highlighted text-xl font-semibold tracking-[-0.02em]";
+const aside = "text-muted mt-2 max-w-[62ch] text-sm/6 text-pretty";
+---
+
+<div class="mt-14 space-y-12">
+  <section aria-labelledby="slots">
+    <h2 id="slots" class={heading}>Slots</h2>
+    <p class={aside}>
+      The same word names the recipe slot, the <code class="text-muted" data-identifier
+        >data-slot</code
+      > attribute and the key in <code class="text-muted" data-identifier>ui</code>.
+    </p>
+    <ul class="mt-3 flex flex-wrap gap-1.5">
+      {
+        api.slots.map((slot) => (
+          <li
+            class="border-muted text-toned rounded-md border px-2 py-1 font-mono text-xs"
+            data-identifier
+          >
+            {slot}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {
+    api.variants.length > 0 && (
+      <section aria-labelledby="variants">
+        <h2 id="variants" class={heading}>
+          Variants
+        </h2>
+        <p class={aside}>
+          Read off the recipe, so these are the values that actually resolve. A{" "}
+          <code class="text-muted" data-identifier>Theme</code> layer can change which one is
+          the default; it cannot add a value.
+        </p>
+        <dl class="divide-muted border-muted mt-3 divide-y border-t">
+          {api.variants.map((variant) => (
+            <div class="flex flex-wrap items-baseline gap-x-8 gap-y-2 py-3">
+              <dt
+                class="text-highlighted w-28 shrink-0 font-mono text-[0.8125rem]"
+                data-identifier
+              >
+                {variant.name}
+              </dt>
+              <dd class="flex flex-wrap items-baseline gap-1.5">
+                {variant.values.map((value) => (
+                  <span
+                    class:list={[
+                      "rounded-md px-2 py-0.5 font-mono text-xs",
+                      value === variant.defaultValue
+                        ? "bg-primary/10 text-primary"
+                        : "bg-elevated text-toned",
+                    ]}
+                    data-identifier
+                  >
+                    {value}
+                  </span>
+                ))}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    )
+  }
+
+  <section aria-labelledby="props">
+    <h2 id="props" class={heading}>Props</h2>
+    <p class={aside}>
+      Taken by both adapters, read out of the component module. The same names and the
+      same types work in {frameworkFacts.react.label} and {frameworkFacts.vue.label}.
+    </p>
+    <div class="mt-3">
+      <PropsTable props={shared} id={`${id}-prop`} />
+    </div>
+  </section>
+
+  {
+    framework === "react" && hasReact && (
+      <section aria-labelledby="framework-props">
+        <h2 id="framework-props" class={heading}>
+          React only
+        </h2>
+        {api.react.inherits.length > 0 && (
+          <p class={aside}>
+            Also takes{" "}
+            {api.react.inherits.map((clause, index) => (
+              <>
+                {index > 0 && ", and "}
+                <code class="text-toned font-mono" data-identifier>
+                  {clause}
+                </code>
+              </>
+            ))}
+            . A <code class="text-muted" data-identifier>className</code> among them reaches
+            the <code class="text-muted" data-identifier>base</code> slot.
+          </p>
+        )}
+        {api.react.props.length > 0 && (
+          <div class="mt-3">
+            <PropsTable props={named(api.react.props)} id={`${id}-react`} />
+          </div>
+        )}
+      </section>
+    )
+  }
+
+  {
+    framework === "vue" && hasVue && (
+      <section aria-labelledby="framework-props">
+        <h2 id="framework-props" class={heading}>
+          Vue only
+        </h2>
+        {api.vue.models.length > 0 && (
+          <p class={aside}>
+            Binds{" "}
+            {api.vue.models.map((model, index) => (
+              <>
+                {index > 0 && ", "}
+                <code class="text-toned font-mono" data-identifier>
+                  {model}
+                </code>
+              </>
+            ))}
+            .
+          </p>
+        )}
+
+        {api.vue.props.length > 0 && (
+          <div class="mt-3">
+            <PropsTable props={named(api.vue.props)} id={`${id}-vue`} />
+          </div>
+        )}
+
+        {api.vue.slots.length > 0 && (
+          <dl class="divide-muted border-muted mt-6 divide-y border-t">
+            {api.vue.slots.map((slot) => (
+              <div class="grid gap-x-10 gap-y-2 py-4 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]">
+                <dt class="min-w-0">
+                  <span class="text-highlighted font-mono text-[0.8125rem]" data-identifier>
+                    #{slot.name}
+                  </span>
+                  {slot.scope && (
+                    <p class="text-toned mt-1 font-mono text-xs break-words" data-identifier>
+                      {slot.scope}
+                    </p>
+                  )}
+                </dt>
+                <dd class="text-muted min-w-0 text-sm/6 text-pretty">{slot.description}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+      </section>
+    )
+  }
+</div>

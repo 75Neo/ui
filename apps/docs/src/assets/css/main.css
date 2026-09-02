@@ -1,2 +1,242 @@
 @import "tailwindcss";
-@import "@75neo/themes";
+
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+
+@import "../../../../../packages/themes/src/tokens/index.css";
+
+/* The components resolve to source, so the class scanner reads the same files. */
+@source "../../../../../packages/themes/src";
+@source "../../../../../packages/react/src";
+@source "../../../../../packages/vue/src";
+
+/*
+ * The docs are a consumer of the design system, so they retune it the way any
+ * application would: by redefining `--ui-*` after the import. Nothing else changes.
+ */
+:root {
+  --ui-container: 84rem;
+}
+
+@theme {
+  --font-sans:
+    "Geist Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@layer base {
+  /*
+   * The page itself animates nothing. The only thing allowed to move is a component
+   * specimen, so any motion a reader sees belongs to the library rather than to the
+   * page around it. This block is motion suppression, not motion.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition-duration: 1ms !important;
+      animation-duration: 1ms !important;
+    }
+  }
+
+  /* Identifiers — slot names, variant values, prop names — are code, not prose. */
+  code,
+  kbd,
+  [data-identifier] {
+    font-variant-ligatures: none;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The same focus treatment the components use, so the page and the specimens agree. */
+  :focus-visible {
+    outline: 3px solid color-mix(in oklab, var(--ui-primary) 25%, transparent);
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--ui-primary) 20%, transparent);
+    color: var(--ui-text-highlighted);
+  }
+
+  /* Anchored headings land below the sticky header rather than under it. */
+  [id] {
+    scroll-margin-top: 6rem;
+  }
+}
+
+@layer components {
+  /*
+   * Rendered Markdown. Written out rather than pulled from a typography plugin,
+   * because the whole vocabulary is already here: the same tokens, the same hairline
+   * rules, the same measure as the rest of the page.
+   */
+  .prose {
+    color: var(--ui-text-muted);
+    font-size: 0.9375rem;
+    line-height: 1.75;
+    max-width: 68ch;
+  }
+
+  .prose > * + * {
+    margin-top: 1.25rem;
+  }
+
+  .prose h2,
+  .prose h3 {
+    color: var(--ui-text-highlighted);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .prose h2 {
+    font-size: 1.375rem;
+    margin-top: 3rem;
+  }
+
+  .prose h3 {
+    font-size: 1.0625rem;
+    margin-top: 2.5rem;
+  }
+
+  .prose strong {
+    color: var(--ui-text-highlighted);
+    font-weight: 600;
+  }
+
+  .prose a {
+    color: var(--ui-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .prose ol,
+  .prose ul {
+    padding-inline-start: 1.5rem;
+  }
+
+  .prose ol {
+    list-style: decimal;
+  }
+
+  .prose ul {
+    list-style: disc;
+  }
+
+  .prose li::marker {
+    color: var(--ui-text-dimmed);
+  }
+
+  .prose li + li {
+    margin-top: 0.5rem;
+  }
+
+  /*
+   * Inline code is a chip rather than quoted text. Prose here names an identifier every
+   * other sentence, and punctuation around each one would out-shout the sentence.
+   */
+  .prose :not(pre) > code {
+    background-color: var(--ui-bg-elevated);
+    border-radius: 0.25rem;
+    color: var(--ui-text-toned);
+    font-family: var(--font-mono);
+    font-size: 0.8125em;
+    padding: 0.15em 0.4em;
+  }
+
+  /*
+   * Shiki paints its own background, and it is dark in both themes on purpose: a code
+   * block is a quotation from an editor, and reading it as one is what keeps it from
+   * competing with the prose around it.
+   */
+  .prose pre {
+    border: 1px solid var(--ui-border-muted);
+    border-radius: 0.5rem;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    padding: 0.75rem 1.25rem 1rem;
+  }
+
+  /*
+   * The language, named on the block itself. Two snippets of the same example are
+   * React and then Vue, and a reader has to be able to tell which is which without
+   * reading the code to find out.
+   *
+   * Sticky rather than absolute: `pre` is the scroll container, so a sticky first box
+   * stays at the left edge while long lines scroll under it.
+   */
+  .prose pre::before {
+    color: color-mix(in oklab, white 45%, transparent);
+    content: attr(data-language);
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    left: 0;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.625rem;
+    position: sticky;
+  }
+
+  /*
+   * One Markdown file serves both framework routes. An example is written twice, once
+   * in each language, and the route hides the half that is not its own.
+   *
+   * Filtering here rather than in the Markdown pipeline is what keeps the content
+   * single-source: the same rendered entry is used on both routes, so there is one
+   * file to edit and no chance of the two drifting apart. Fences in any other
+   * language — shell, CSS, framework-neutral TypeScript — are shown on both.
+   */
+  [data-framework="react"] .prose pre[data-language="vue"],
+  [data-framework="vue"] .prose pre[data-language="tsx"] {
+    display: none;
+  }
+}
+
+@layer components {
+  /*
+   * A segment is active when its value matches `data-theme` on the root element. CSS
+   * cannot compare two attributes to each other, so the pairs are written out; in
+   * exchange the active segment is right on first paint, before any script runs.
+   */
+  :root[data-theme="light"] [data-theme-option="light"],
+  :root[data-theme="dark"] [data-theme-option="dark"],
+  :root[data-theme="auto"] [data-theme-option="auto"],
+  .shadow-segment {
+    background-color: var(--ui-bg);
+    color: var(--ui-text-highlighted);
+    /* Tinted to the theme's own neutral rather than a generic black. */
+    box-shadow: 0 1px 2px -1px color-mix(in oklab, var(--ui-text) 22%, transparent);
+  }
+}
+
+@layer components {
+  /*
+   * A component is shown against the page's own background, with a dot grid for a
+   * floor. Written here rather than as utilities because the grid is a paint, not a
+   * layout.
+   */
+  /*
+   * A checkerboard, so a swatch carrying an opacity modifier shows what it is actually
+   * letting through instead of reading as a flat darker color.
+   */
+  [data-checker] {
+    background-image:
+      linear-gradient(45deg, var(--ui-bg-accented) 25%, transparent 25%),
+      linear-gradient(-45deg, var(--ui-bg-accented) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, var(--ui-bg-accented) 75%),
+      linear-gradient(-45deg, transparent 75%, var(--ui-bg-accented) 75%);
+    background-position:
+      0 0,
+      0 0.25rem,
+      0.25rem -0.25rem,
+      -0.25rem 0;
+    background-size: 0.5rem 0.5rem;
+  }
+
+  [data-stage] {
+    background-color: var(--ui-bg);
+    background-image: radial-gradient(var(--ui-border-muted) 1px, transparent 1px);
+    background-position: -0.5px -0.5px;
+    background-size: 0.5rem 0.5rem;
+  }
+}

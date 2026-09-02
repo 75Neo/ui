@@ -1,0 +1,33 @@
+---
+/**
+ * A three-way theme control.
+ *
+ * @remarks
+ * The active segment is styled off `data-theme` on the root element, which an inline
+ * script sets before first paint, so the right segment is lit on the first frame rather
+ * than after hydration.
+ */
+const options = [
+  { value: "light", label: "light" },
+  { value: "dark", label: "dark" },
+  { value: "auto", label: "auto" },
+] as const;
+---
+
+<div
+  role="group"
+  aria-label="Theme"
+  class="bg-elevated flex items-center gap-0.5 rounded-md p-0.5"
+>
+  {
+    options.map(({ value, label }) => (
+      <button
+        type="button"
+        data-theme-option={value}
+        class="text-dimmed hover:text-toned rounded-[0.3rem] px-2 py-1 font-mono text-[0.6875rem] leading-none"
+      >
+        {label}
+      </button>
+    ))
+  }
+</div>

@@ -1,0 +1,54 @@
+---
+import type { Framework } from "../lib/framework";
+import { AccordionPreview } from "../previews/AccordionPreview";
+import { AngleSliderPreview } from "../previews/AngleSliderPreview";
+import { AvatarPreview } from "../previews/AvatarPreview";
+import { ButtonPreview } from "../previews/ButtonPreview";
+import { CarouselPreview } from "../previews/CarouselPreview";
+import { ClipboardPreview } from "../previews/ClipboardPreview";
+import { TableOfContentsPreview } from "../previews/TableOfContentsPreview";
+import AccordionPreviewVue from "../previews/AccordionPreview.vue";
+import AngleSliderPreviewVue from "../previews/AngleSliderPreview.vue";
+import AvatarPreviewVue from "../previews/AvatarPreview.vue";
+import ButtonPreviewVue from "../previews/ButtonPreview.vue";
+import CarouselPreviewVue from "../previews/CarouselPreview.vue";
+import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
+import TableOfContentsPreviewVue from "../previews/TableOfContentsPreview.vue";
+
+/**
+ * One component's live specimen, in the framework the route is for.
+ *
+ * @remarks
+ * Written out as a switch because a client directive has to name its component through
+ * a static import. Reaching one through a lookup table leaves Astro with nothing to
+ * hydrate, and it says so at build time.
+ *
+ * Both adapters appear here because the routes are split by framework: a reader on the
+ * Vue route sees Vue rendering, not a React specimen with Vue code printed beside it.
+ */
+interface Props {
+  /** Exported component name, as it appears in a content entry. */
+  name: string;
+  framework: Framework;
+}
+
+const { name, framework } = Astro.props;
+const react = framework === "react";
+const vue = framework === "vue";
+---
+
+{react && name === "Accordion" && <AccordionPreview client:visible />}
+{react && name === "AngleSlider" && <AngleSliderPreview client:visible />}
+{react && name === "Avatar" && <AvatarPreview client:visible />}
+{react && name === "Button" && <ButtonPreview client:visible />}
+{react && name === "Carousel" && <CarouselPreview client:visible />}
+{react && name === "Clipboard" && <ClipboardPreview client:visible />}
+{react && name === "TableOfContents" && <TableOfContentsPreview client:visible />}
+
+{vue && name === "Accordion" && <AccordionPreviewVue client:visible />}
+{vue && name === "AngleSlider" && <AngleSliderPreviewVue client:visible />}
+{vue && name === "Avatar" && <AvatarPreviewVue client:visible />}
+{vue && name === "Button" && <ButtonPreviewVue client:visible />}
+{vue && name === "Carousel" && <CarouselPreviewVue client:visible />}
+{vue && name === "Clipboard" && <ClipboardPreviewVue client:visible />}
+{vue && name === "TableOfContents" && <TableOfContentsPreviewVue client:visible />}

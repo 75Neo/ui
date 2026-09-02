@@ -1,0 +1,52 @@
+---
+import type { PropDoc } from "../lib/component-api";
+
+interface Props {
+  props: PropDoc[];
+  /** Anchor prefix, so two tables on one page do not collide on ids. */
+  id: string;
+}
+
+const { props: rows, id } = Astro.props;
+---
+
+<dl class="divide-muted border-muted divide-y border-t">
+  {
+    rows.map((row) => (
+      <div
+        id={`${id}-${row.name}`}
+        class="grid gap-x-10 gap-y-2 py-4 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]"
+      >
+        <dt class="min-w-0">
+          <span class="text-highlighted font-mono text-[0.8125rem]" data-identifier>
+            {row.name}
+          </span>
+          {row.required && (
+            <span
+              class="text-error ml-1.5 font-mono text-[0.6875rem]"
+              title="Required"
+              data-identifier
+            >
+              required
+            </span>
+          )}
+          <p class="text-toned mt-1 font-mono text-xs break-words" data-identifier>
+            {row.type}
+          </p>
+        </dt>
+
+        <dd class="min-w-0">
+          {row.description && <p class="text-muted text-sm/6 text-pretty">{row.description}</p>}
+          {row.defaultValue && (
+            <p class:list={["text-dimmed text-xs/6", row.description && "mt-1"]}>
+              Defaults to{" "}
+              <code class="text-toned font-mono" data-identifier>
+                {row.defaultValue}
+              </code>
+            </p>
+          )}
+        </dd>
+      </div>
+    ))
+  }
+</dl>

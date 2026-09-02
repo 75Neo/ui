@@ -1,0 +1,74 @@
+---
+import type { TableOfContentsItem } from "@75neo/themes";
+import Base from "./Base.astro";
+import Sidebar from "../components/Sidebar.astro";
+import TocRail from "../components/TocRail.astro";
+import { shell } from "../lib/layout";
+import { type Framework, frameworkFacts } from "../lib/framework";
+import type { SidebarLink } from "../lib/navigation";
+
+interface Props {
+  title: string;
+  /** Small mono line above the page title — the kind of page this is. */
+  eyebrow: string;
+  description: string;
+  framework: Framework;
+  /** The components section of the sidebar. */
+  components: SidebarLink[];
+  /** The headings the rail tracks. Empty on a page with nothing to track. */
+  headings: TableOfContentsItem[];
+}
+
+const { title, eyebrow, description, framework, components, headings } = Astro.props;
+const facts = frameworkFacts[framework];
+const path = Astro.url.pathname.replace(/\/$/, "");
+---
+
+<Base
+  title={`${title} · ${facts.label} · 75NeoUI`}
+  description={description}
+  framework={framework}
+>
+  {
+    /*
+     * `data-framework` is what hides the code fences belonging to the other adapter.
+     * It sits on the whole page rather than on the prose, so a specimen or a panel
+     * outside the article can key off it too.
+     */
+  }
+  <div data-framework={framework} class="flex-1">
+    <div class="border-muted border-b">
+      <div class={`${shell} py-10 lg:py-14`}>
+        <p class="text-dimmed font-mono text-xs tracking-wide" data-identifier>
+          {eyebrow} · {framework}
+        </p>
+        <h1
+          class="text-highlighted mt-3 max-w-[18ch] text-4xl font-semibold tracking-[-0.035em] text-balance sm:text-5xl"
+        >
+          {title}
+        </h1>
+        <p class="text-muted mt-5 max-w-[62ch] text-base/7 text-pretty">{description}</p>
+      </div>
+    </div>
+
+    <div
+      class={`${shell} grid items-start gap-x-12 gap-y-10 py-10 lg:grid-cols-[12rem_minmax(0,1fr)] lg:py-14 xl:grid-cols-[12rem_minmax(0,1fr)_13rem]`}
+    >
+      <aside class="lg:sticky lg:top-24 lg:self-start">
+        <Sidebar framework={framework} components={components} path={path} />
+      </aside>
+
+      <main id="content" class="min-w-0">
+        <slot />
+      </main>
+
+      {
+        headings.length > 0 && (
+          <aside class="hidden xl:sticky xl:top-24 xl:block xl:self-start">
+            <TocRail framework={framework} items={headings} />
+          </aside>
+        )
+      }
+    </div>
+  </div>
+</Base>

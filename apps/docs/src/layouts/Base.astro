@@ -1,0 +1,199 @@
+---
+import "../assets/css/main.css";
+import FrameworkSwitch from "../components/FrameworkSwitch.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
+import { shell } from "../lib/layout";
+import { type Framework, docHref } from "../lib/framework";
+
+interface Props {
+  title: string;
+  description: string;
+  /**
+   * The adapter this page documents. Absent on the landing page, which belongs to
+   * neither, and where the switcher would have nothing to switch.
+   */
+  framework?: Framework;
+}
+
+const { title, description, framework } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+
+// The header keeps the reader inside the framework they are already reading.
+const nav = framework
+  ? [
+      { href: docHref(framework, "getting-started"), label: "Getting started" },
+      { href: docHref(framework, "components"), label: "Components" },
+    ]
+  : [
+      { href: docHref("react", "getting-started"), label: "Getting started" },
+      { href: docHref("react", "components"), label: "Components" },
+    ];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light dark" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <link rel="icon" href="/logo-brand.svg" type="image/svg+xml" />
+    <link rel="icon" href="/logo-brand.png" type="image/png" sizes="512x512" />
+    <link rel="apple-touch-icon" href="/logo-brand.png" />
+    <script is:inline>
+      // Runs before first paint so the page never flashes the wrong theme.
+      (() => {
+        const root = document.documentElement;
+        let theme = "auto";
+        try {
+          theme = localStorage.getItem("neo-theme") ?? "auto";
+        } catch {
+          // Storage can throw in a locked-down browser; the default stands.
+        }
+        root.dataset.theme = theme;
+        root.classList.toggle(
+          "dark",
+          theme === "dark"
+            || (theme === "auto" && window.matchMedia("(prefers-color-scheme: dark)").matches),
+        );
+      })();
+    </script>
+  </head>
+
+  <body class="bg-default text-default flex min-h-dvh flex-col font-sans antialiased">
+    <a
+      href="#content"
+      class="bg-inverted text-inverted sr-only rounded-md px-4 py-2 text-sm font-medium focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-30"
+    >
+      Skip to content
+    </a>
+
+    <header
+      class="bg-default/80 border-muted sticky top-0 z-20 border-b backdrop-blur-md"
+    >
+      <div class={`${shell} flex min-h-14 items-center gap-x-6`}>
+        <a
+          href="/"
+          class="group hover:text-highlighted -mx-2 flex shrink-0 items-center gap-2.5 rounded-md px-2 py-1.5"
+        >
+          <img src="/logo-brand.svg" alt="" width="22" height="22" class="rounded-[0.3rem]" />
+          <span class="text-highlighted text-sm font-semibold tracking-[-0.01em]">75NeoUI</span>
+        </a>
+
+        <nav aria-label="Documentation" class="hidden gap-1 sm:flex">
+          {
+            nav.map(({ href, label }) => (
+              <a
+                href={href}
+                aria-current={path === href ? "page" : undefined}
+                class:list={[
+                  "rounded-md px-2.5 py-1.5 text-sm",
+                  path === href
+                    ? "text-highlighted font-medium"
+                    : "text-muted hover:text-highlighted",
+                ]}
+              >
+                {label}
+              </a>
+            ))
+          }
+        </nav>
+
+        <div class="ml-auto flex items-center gap-3 sm:gap-4">
+          {framework && <FrameworkSwitch framework={framework} path={path} />}
+          {/* Lucide dropped its brand icons, so this one stays a word. */}
+          <a
+            href="https://github.com/75Neo/ui"
+            class="text-muted hover:text-highlighted hidden rounded-sm font-mono text-xs sm:inline"
+            data-identifier
+          >
+            github
+          </a>
+          <ThemeToggle />
+        </div>
+      </div>
+
+      <nav aria-label="Documentation" class="border-muted border-t sm:hidden">
+        <div class={`${shell} -mb-px flex gap-1 overflow-x-auto`}>
+          {
+            nav.map(({ href, label }) => (
+              <a
+                href={href}
+                aria-current={path === href ? "page" : undefined}
+                class:list={[
+                  "border-b-2 px-2.5 py-2.5 text-sm whitespace-nowrap",
+                  path === href
+                    ? "border-primary text-highlighted font-medium"
+                    : "text-muted hover:text-highlighted border-transparent",
+                ]}
+              >
+                {label}
+              </a>
+            ))
+          }
+        </div>
+      </nav>
+    </header>
+
+    <slot />
+
+    <footer class="border-muted mt-auto border-t">
+      <div
+        class={`${shell} flex flex-wrap items-center justify-between gap-x-8 gap-y-3 py-8`}
+      >
+        <p class="text-dimmed max-w-[58ch] text-xs/6">
+          Every props table on this site is read out of <code
+            class="text-muted"
+            data-identifier>packages/*/src</code
+          > at build time, so a renamed prop changes the docs or fails the build.
+        </p>
+        <a
+          href="https://github.com/75Neo/ui"
+          class="text-muted hover:text-highlighted rounded-sm font-mono text-xs"
+          data-identifier
+        >
+          github.com/75Neo/ui
+        </a>
+      </div>
+    </footer>
+
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const media = window.matchMedia("(prefers-color-scheme: dark)");
+
+        const paint = () => {
+          root.classList.toggle(
+            "dark",
+            root.dataset.theme === "dark"
+              || (root.dataset.theme === "auto" && media.matches),
+          );
+          for (const button of document.querySelectorAll("[data-theme-option]")) {
+            button.setAttribute(
+              "aria-pressed",
+              String(root.dataset.theme === button.dataset.themeOption),
+            );
+          }
+        };
+
+        for (const button of document.querySelectorAll("[data-theme-option]")) {
+          button.addEventListener("click", () => {
+            root.dataset.theme = button.dataset.themeOption;
+            try {
+              localStorage.setItem("neo-theme", button.dataset.themeOption);
+            } catch {
+              // Nothing to persist to; the choice still applies to this page.
+            }
+            paint();
+          });
+        }
+
+        media.addEventListener("change", paint);
+        paint();
+      })();
+    </script>
+  </body>
+</html>

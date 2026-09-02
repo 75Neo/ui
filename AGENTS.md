@@ -44,8 +44,61 @@ Four packages. The dependency direction is `core` → `themes` → `react`/`vue`
 - **`@75neo/react`** / **`@75neo/vue`** — **adapters**. Each is a `Theme` component, one
   hook or composable, and one file per component. Styling stays in the component module.
 
-`apps/playground` aliases `@75neo/*` straight to `packages/*/src`, so it hot-reloads
-against source. Everything else resolves through `dist`.
+Both apps alias `@75neo/*` straight to each package's `src`, so both hot-reload against
+source with no build step in between. Copy that block from either `astro.config.mjs`
+when adding a third.
+
+### The docs site
+
+`apps/docs` is a landing page at `/` plus, under each adapter,
+`/docs/<framework>/getting-started`, a component index at `/docs/<framework>/components`
+and a page per component at `/docs/<framework>/components/<slug>`. `/docs` redirects
+into React. `src/lib/framework.ts` holds everything that differs between the two —
+package name, minimum version, icon type, fence language — and every other file asks it
+rather than branching on a string.
+
+The slug is the content file's own name, so `table-of-contents.md` answers at
+`/docs/react/components/table-of-contents`. Nothing derives it from the exported
+component name, which would have to guess where the words break.
+
+Prose is Markdown in an Astro content collection under `src/content/`. Every props
+table, variant list and slot name is read back out of each package's `src` with ts-morph
+at build time by `src/lib/component-api.ts`, so a renamed prop either changes the docs or
+fails the build and no table is written by hand.
+
+One Markdown file serves both routes. An example is written twice, in a `tsx` fence and
+a `vue` fence, and CSS on the page's `data-framework` hides the one that is not the
+route's. That is what keeps the content single-source; the alternative was two copies of
+every paragraph. Fences in any other language show on both.
+
+Documenting a component is still one file, `src/content/components/<name>.md`, whose
+frontmatter names the component, its registry key and its module file. That one file
+grows a route under both frameworks, a row in the sidebar, a card on the index, and its
+place in the previous and next links, none of which is written down a second time.
+
+A live specimen is optional and needs a preview per adapter in `src/previews/`, a line
+per adapter in `src/components/Preview.astro`, and the name in `src/lib/previews.ts`.
+Those switches are written out rather than looked up in a table because a client
+directive has to name its component through a static import.
+
+The rail on a component page is two lists joined: the Markdown subheadings `render()`
+returns, then the generated API sections, which are rendered by `ComponentApi.astro` and
+so listed by hand in `apiSections`.
+
+Astro's checker infers nothing from a Vue component reached through a package barrel
+inside an `.astro` file: the props come back as bare attributes and each one is an
+error. A local single-file component wrapping the library one is typed the way the
+checker expects — `src/previews/InstallCommand.vue` is the example. React components
+have no such problem.
+
+`astro.config.mjs` hands the repository root down as `__REPO_ROOT__`, because the
+extraction is bundled into a chunk under `dist` before it runs and cannot find
+`packages/` from its own location.
+
+The docs use the library for their own chrome. The install command is `Clipboard` and
+the rail of headings is `TableOfContents`, each rendered by the adapter its route is
+for, so the React route is proof the React adapter works and the Vue route is proof the
+Vue one does.
 
 ### The cascade
 
@@ -150,8 +203,9 @@ vocabulary.
 `eachColor` build classes like `` `bg-${color}/10` ``, which Tailwind's scanner never
 meets as a literal. `packages/themes/src/tokens/utilities.css` lists every one with
 `@source inline(...)`. A strength used in a recipe but missing there produces no CSS and
-no error — the component simply renders unstyled. Check `pnpm dev:play` after adding a
-strength, not just `pnpm build`.
+no error — the component simply renders unstyled. The same is true of a variant prefix:
+`data-active:text-${color}` needs `data-active:` in that line's brace list before it
+generates anything. Check `pnpm dev:play` after adding either, not just `pnpm build`.
 
 **Each `@source inline(...)` goes on one line.** `oxfmt` rejects the wrapped form with
 "`@source` paths must be quoted", and reports it against every Vue file rather than

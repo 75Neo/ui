@@ -205,6 +205,9 @@ settings:
 
 catalogs:
   default:
+    '@lucide/astro':
+      specifier: ^1.39.0
+      version: 1.39.0
     '@lucide/vue':
       specifier: ^1.37.0
       version: 1.37.0
@@ -291,18 +294,42 @@ importers:
 
   apps/docs:
     dependencies:
+      '@75neo/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@75neo/react':
+        specifier: workspace:*
+        version: link:../../packages/react
       '@75neo/themes':
         specifier: workspace:*
         version: link:../../packages/themes
+      '@75neo/vue':
+        specifier: workspace:*
+        version: link:../../packages/vue
       '@astrojs/react':
         specifier: ^6.0.4
         version: 6.0.4(@types/node@26.4.0)(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.2)(jiti@2.7.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@7.2.0)(yaml@2.9.0)
       '@astrojs/vue':
         specifier: ^7.0.2
         version: 7.0.2(@types/node@26.4.0)(astro@7.2.9(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.3)(@types/node@26.4.0)(jiti@2.7.0)(yaml@2.9.0))(esbuild@0.28.2)(jiti@2.7.0)(supports-color@7.2.0)(vue@3.5.42(typescript@6.0.3))(yaml@2.9.0)
+      '@fontsource-variable/geist':
+        specifier: ^5.3.0
+        version: 5.3.0
+      '@fontsource-variable/geist-mono':
+        specifier: ^5.3.0
+        version: 5.3.0
+      '@lucide/astro':
+        specifier: 'catalog:'
+        version: 1.39.0(astro@7.2.9(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.3)(@types/node@26.4.0)(jiti@2.7.0)(yaml@2.9.0))
+      '@lucide/vue':
+        specifier: 'catalog:'
+        version: 1.37.0(vue@3.5.42(typescript@6.0.3))
       astro:
         specifier: ^7.2.9
         version: 7.2.9(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.3)(@types/node@26.4.0)(jiti@2.7.0)(yaml@2.9.0)
+      lucide-react:
+        specifier: 'catalog:'
+        version: 1.37.0(react@19.2.8)
       react:
         specifier: 'catalog:'
         version: 19.2.8
@@ -328,6 +355,9 @@ importers:
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
+      ts-morph:
+        specifier: ^28.0.0
+        version: 28.0.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1338,6 +1368,11 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
+  '@lucide/astro@1.39.0':
+    resolution: {integrity: sha512-PQ5enKx20yNXACZUYgnNn7hG0D/aviYoc5ZtEeW2nguk3ixoTz4IfbSzjf+PlyQLFP0VQohSUExzcAPIaMzXPA==}
+    peerDependencies:
+      astro: ^4 || ^5 || ^6 || ^7
+
   '@lucide/vue@1.37.0':
     resolution: {integrity: sha512-outqiaDIgg8SUANr8q27cHB0V6vAOEB0CwEDe+fyVjSuCDAscVlplHH+cRld9nNNYQ5KJ6MBRmNMICpq42pXYw==}
     peerDependencies:
@@ -1983,6 +2018,9 @@ packages:
     resolution: {integrity: sha512-yYU8cogLeSh/ms2jh8Fj7jaba/EWa7Ja6GoUqYZaraEuCI5YS6ms6ObZgjjedm+jm6XZjdNRWBpPP6Z86oOxcw==}
     peerDependencies:
       vite: ^5.2.0 || ^6 || ^7 || ^8
+
+  '@ts-morph/common@0.29.0':
+    resolution: {integrity: sha512-35oUmphHbJvQ/+UTwFNme/t2p3FoKiGJ5auTjjpNTop2dyREspirjMy82PLSC1pnDJ8ah1GU98hwpVt64YXQsg==}
 
   '@tsdown/css@0.22.14':
     resolution: {integrity: sha512-0NpbgqfhfjaAoLdY3DxjrMo08vKFEtvlybCS42Gtolx8OPoKUdZZDyls0qgNEqea0c7XGjlF0NIE1tIxgU8RqA==}
@@ -2859,6 +2897,9 @@ packages:
   clsx@2.1.1:
     resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
     engines: {node: '>=6'}
+
+  code-block-writer@13.0.3:
+    resolution: {integrity: sha512-Oofo0pq3IKnsFtuHqSF7TqBfr71aeyZDVJ0HpmqB7FBM2qEigL0iPONSCZSO9pE9dZTAxANe5XHG9Uy0YMv8cg==}
 
   comma-separated-tokens@2.0.3:
     resolution: {integrity: sha512-Fu4hJdvzeylCfQPp9SGWidpzrMs7tTrlu6Vb8XGaRGck8QSNZJJp538Wrb60Lax4fPwR64ViY468OIUTbRlGZg==}
@@ -3987,6 +4028,9 @@ packages:
 
   trough@2.2.0:
     resolution: {integrity: sha512-tmMpK00BjZiUyVyvrBK7knerNgmgvcV/KLVyuma/SC+TQN167GrMRciANTz09+k3zW8L8t60jWO1GpfkZdjTaw==}
+
+  ts-morph@28.0.0:
+    resolution: {integrity: sha512-Wp3tnZ2bzwxyTZMtgWVzXDfm7lB1Drz+y9DmmYH/L702PQhPyVrp3pkou3yIz4qjS14GY9kcpmLiOOMvl8oG1g==}
 
   tsdown@0.22.14:
     resolution: {integrity: sha512-ule7Y+fsAN2iZbLDoo7C4KYljFJNJJ+fLshyn+9gozeTspVersWHxwdGB+Dm2hzA38s6muFnUTl0jK3vJm9ifQ==}
@@ -5510,6 +5554,10 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.6.0
 
+  '@lucide/astro@1.39.0(astro@7.2.9(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.3)(@types/node@26.4.0)(jiti@2.7.0)(yaml@2.9.0))':
+    dependencies:
+      astro: 7.2.9(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.3)(@types/node@26.4.0)(jiti@2.7.0)(yaml@2.9.0)
+
   '@lucide/vue@1.37.0(vue@3.5.42(typescript@6.0.3))':
     dependencies:
       vue: 3.5.42(typescript@6.0.3)
@@ -5907,6 +5955,12 @@ snapshots:
       '@tailwindcss/oxide': 4.3.3
       tailwindcss: 4.3.3
       vite: 8.2.2(@types/node@26.4.0)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0)
+
+  '@ts-morph/common@0.29.0':
+    dependencies:
+      minimatch: 10.2.6
+      path-browserify: 1.0.1
+      tinyglobby: 0.2.17
 
   '@tsdown/css@0.22.14(jiti@2.7.0)(postcss@8.5.26)(tsdown@0.22.14)(yaml@2.9.0)':
     dependencies:
@@ -7213,6 +7267,8 @@ snapshots:
 
   clsx@2.1.1: {}
 
+  code-block-writer@13.0.3: {}
+
   comma-separated-tokens@2.0.3: {}
 
   commander@11.1.0: {}
@@ -8348,6 +8404,11 @@ snapshots:
   trim-lines@3.0.1: {}
 
   trough@2.2.0: {}
+
+  ts-morph@28.0.0:
+    dependencies:
+      '@ts-morph/common': 0.29.0
+      code-block-writer: 13.0.3
 
   tsdown@0.22.14(@tsdown/css@0.22.14)(@volar/typescript@2.4.28(typescript@6.0.3))(oxc-resolver@11.24.2)(publint@0.3.24)(typescript@6.0.3)(vue-tsc@3.3.11(typescript@6.0.3)):
     dependencies:

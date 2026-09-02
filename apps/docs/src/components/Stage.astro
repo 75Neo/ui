@@ -1,0 +1,25 @@
+---
+/**
+ * The surface a live component is shown on.
+ *
+ * @remarks
+ * A real page surface rather than a tinted card, so a component's own edges, shadows
+ * and transparency read truthfully. The dot grid gives that surface a floor without
+ * spending a color on it.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div
+  data-stage
+  class:list={[
+    "border-muted overflow-hidden rounded-xl border p-6 sm:p-10",
+    className,
+  ]}
+>
+  <slot />
+</div>

@@ -1,0 +1,54 @@
+---
+import { type Framework, frameworkFacts, frameworks, isFramework } from "../lib/framework";
+
+/**
+ * React or Vue, without leaving the page.
+ *
+ * @remarks
+ * Every documentation route exists under both adapters, so the other framework's copy
+ * of the current page is the current path with one segment swapped. That is why this
+ * takes the path rather than a destination: switching mid-page lands on the same
+ * subject rather than back at the top of the section.
+ */
+interface Props {
+  framework: Framework;
+  /** The path the reader is on, of the shape `/docs/<framework>/<page>`. */
+  path: string;
+}
+
+const { framework, path } = Astro.props;
+
+/** Swap the framework segment, leaving everything around it alone. */
+const hrefFor = (next: Framework) => {
+  const segments = path.split("/");
+  const at = segments.findIndex((segment) => isFramework(segment));
+
+  if (at === -1) return `/docs/${next}/getting-started`;
+
+  segments[at] = next;
+  return segments.join("/");
+};
+---
+
+<div
+  role="group"
+  aria-label="Framework"
+  class="bg-elevated flex items-center gap-0.5 rounded-md p-0.5"
+>
+  {
+    frameworks.map((option) => (
+      <a
+        href={hrefFor(option)}
+        aria-current={option === framework ? "true" : undefined}
+        class:list={[
+          "rounded-[0.3rem] px-2 py-1 font-mono text-[0.6875rem] leading-none",
+          option === framework
+            ? "bg-default text-highlighted shadow-segment"
+            : "text-dimmed hover:text-toned",
+        ]}
+      >
+        {frameworkFacts[option].label.toLowerCase()}
+      </a>
+    ))
+  }
+</div>
