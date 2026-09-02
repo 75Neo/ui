@@ -51,6 +51,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "clipboard",
   },
   {
+    href: "/color-picker",
+    label: "ColorPicker",
+    summary:
+      "An inline color picker across three sizes and seven accents, with an alpha channel, an eyedropper and preset swatches.",
+    key: "colorPicker",
+  },
+  {
     href: "/collapsible",
     label: "Collapsible",
     summary:
