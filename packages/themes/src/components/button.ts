@@ -5,7 +5,7 @@ import type { ComponentContract, MustBeNever, ThemeOverride, TVSlot } from "@75n
  * A button is one interactive box with three optional children: a leading slot, a
  * label, and a trailing slot. `variant` and `color` are independent -- the four
  * variants each pick a different way to spend a color, and the compound table below
- * holds one entry per pair, which is what `assertRecipeIsTotal` checks.
+ * holds one entry per pair.
  *
  * `size` styles `base` directly, while the icon slots pick their size up from
  * `compoundSlots`, so the two icon boxes never drift apart or out of step with the

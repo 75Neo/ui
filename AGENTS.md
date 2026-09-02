@@ -30,8 +30,9 @@ CI runs, in order: `format:check`, `build`, `test`, `lint`, `typecheck`.
 
 `@75neo/react` and `@75neo/vue` test in a real Chromium through
 `@vitest/browser-playwright`; the first run needs
-`pnpm exec playwright install --with-deps chromium`. `@75neo/core` and `@75neo/themes`
-are node-only and fast — prefer putting a test there when the behaviour doesn't need a DOM.
+`pnpm exec playwright install --with-deps chromium`. `@75neo/core` is node-only and fast —
+prefer putting a test there when the behaviour doesn't need a DOM. `@75neo/themes` carries
+no tests: it is Tailwind classes, not logic.
 
 ## Architecture
 
@@ -79,9 +80,7 @@ runtime. Nothing built on a recipe should restate them:
 - `resolveTheme` reads `variantKeys`, so a variant added to a recipe resolves with no
   change to the resolver or to any component;
 - `variantValues(recipe, "color")` returns the declared values as a literal-typed array —
-  the playground previews and the recipe tests both read the matrix from it;
-- `assertRecipeIsTotal` walks the cross product to check every combination is covered by
-  the compound-variant table and that no two resolve identically.
+  the playground previews read the matrix from it.
 
 ### Slot-name identity
 
@@ -104,7 +103,6 @@ per-component context.
    `src/index.ts`.
 3. **`apps/playground/src/previews/`** — a `.tsx` and a `.vue` preview, plus an entry in
    `src/routes.ts` and a page under `src/pages/`.
-4. A recipe test calling `assertRecipeIsTotal`.
 
 Registry keys are plain inline strings (`"button"`). There are no exported key constants.
 
