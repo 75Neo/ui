@@ -8,6 +8,7 @@ export { Clipboard, type ClipboardProps } from "./components/Clipboard";
 export { Collapsible, type CollapsibleProps } from "./components/Collapsible";
 export { ColorPicker, type ColorPickerProps } from "./components/ColorPicker";
 export { Combobox, type ComboboxProps } from "./components/Combobox";
+export { DateInput, type DateInputProps } from "./components/DateInput";
 export { TableOfContents, type TableOfContentsProps } from "./components/TableOfContents";
 export { Theme, type ThemeProps } from "./components/Theme";
 export { useResolvedTheme } from "./hooks/useResolvedTheme";
@@ -51,6 +52,9 @@ export {
   type ComboboxItem,
   type ComboboxTheme,
   type ComboboxUI,
+  type DateInputGranularity,
+  type DateInputTheme,
+  type DateInputUI,
   type TableOfContentsItem,
   type TableOfContentsTheme,
   type TableOfContentsUI,
@@ -62,3 +66,11 @@ export {
  * adding Ark UI to an application's own dependencies.
  */
 export { type Color, parseColor } from "@ark-ui/react/color-picker";
+
+/*
+ * A date field holds a `DateValue` rather than a string, so a caller needs the parser
+ * to hand it a starting value and the calendar systems that go with it. Re-exported
+ * here so that reaching for one does not mean adding Ark UI to an application's own
+ * dependencies.
+ */
+export { type DateValue, parseDate } from "@ark-ui/react/date-picker";
