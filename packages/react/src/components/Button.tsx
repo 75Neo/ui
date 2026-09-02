@@ -1,6 +1,6 @@
 import type React from "react";
-import { Loader2 } from "lucide-react";
-import { type ButtonProps as ButtonContract, button, showButtonSlots } from "@75neo/themes";
+import { LoaderCircle } from "lucide-react";
+import { type ButtonProps as ButtonContract, button, resolveButtonIcons } from "@75neo/themes";
 import { useResolvedTheme } from "../hooks/useResolvedTheme";
 
 /**
@@ -20,6 +20,8 @@ export function Button({
   variant,
   size,
   color,
+  block,
+  square,
   disabled,
   loading,
   leading,
@@ -33,14 +35,34 @@ export function Button({
   ...rest
 }: ButtonProps) {
   const isLoading = Boolean(loading);
-  const theme = useResolvedTheme(button, "button", { ui, variant, size, color }, className);
-  const show = showButtonSlots({
+  const icons = resolveButtonIcons({
     loading: isLoading,
     leading,
     trailing,
     hasLeading: leadingIcon != null,
     hasTrailing: trailingIcon != null,
   });
+  const theme = useResolvedTheme(
+    button,
+    "button",
+    {
+      ui,
+      variant,
+      size,
+      color,
+      block,
+      // An icon with no label wants equal padding, which is worth not having to say.
+      square: square ?? children == null,
+      loading: isLoading,
+      leading: icons.leading,
+      trailing: icons.trailing,
+    },
+    className,
+  );
+
+  // The recipe puts `animate-spin` on whichever icon slot is showing, so the spinner
+  // only has to be placed in the same one.
+  const spinner = loadingIcon ?? <LoaderCircle />;
 
   return (
     <button
@@ -51,9 +73,9 @@ export function Button({
       disabled={Boolean(disabled) || isLoading}
       aria-busy={isLoading || undefined}
     >
-      {show.leading && (
-        <span data-slot="leading" className={theme.class.leading}>
-          {isLoading ? (loadingIcon ?? <Loader2 className="animate-spin" />) : leadingIcon}
+      {icons.leading && (
+        <span data-slot="leadingIcon" className={theme.class.leadingIcon}>
+          {isLoading ? spinner : leadingIcon}
         </span>
       )}
       {children != null && (
@@ -61,9 +83,9 @@ export function Button({
           {children}
         </span>
       )}
-      {show.trailing && (
-        <span data-slot="trailing" className={theme.class.trailing}>
-          {trailingIcon}
+      {icons.trailing && (
+        <span data-slot="trailingIcon" className={theme.class.trailingIcon}>
+          {isLoading && !icons.leading ? spinner : trailingIcon}
         </span>
       )}
     </button>

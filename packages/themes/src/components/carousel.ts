@@ -2,27 +2,29 @@ import { tv, type VariantProps } from "tailwind-variants";
 import type { ComponentContract, MustBeNever, ThemeOverride, TVSlot } from "@75neo/core";
 
 /**
- * Recipe for the Carousel: a paged slideshow with controls and indicators.
+ * Recipe for the Carousel: a paged slideshow with arrows and dots.
  *
  * @remarks
  * There are no variants. Layout comes from the component's own props, and orientation
  * is styled off the `data-orientation` attribute Ark sets rather than declared as a
  * variant.
+ *
+ * `prev` and `next` deliberately repeat the neutral outline Button's classes rather
+ * than composing the Button recipe. A recipe that reached into another one would make
+ * either component's `ui` prop able to reshape the other, and the cascade has no way to
+ * express that.
  */
 export const carousel = tv({
   slots: {
     base: "group/carousel flex flex-col gap-4 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-0",
-    control:
+    controls:
       "flex items-center gap-3 data-[orientation=vertical]:min-h-0 data-[orientation=vertical]:flex-1 data-[orientation=vertical]:flex-col",
-    itemGroup: "min-w-0 flex-1 overflow-hidden scroll-smooth data-[orientation=vertical]:min-h-0",
+    viewport: "min-w-0 flex-1 overflow-hidden scroll-smooth data-[orientation=vertical]:min-h-0",
     item: "min-w-0 shrink-0 basis-full snap-center overflow-hidden rounded-lg bg-muted",
-    prevTrigger:
-      "inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-default bg-default text-default shadow-xs transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&>svg]:size-4",
-    nextTrigger:
-      "inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-default bg-default text-default shadow-xs transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&>svg]:size-4",
-    indicatorGroup: "flex items-center justify-center gap-2 data-[orientation=vertical]:flex-col",
-    indicator:
-      "size-2 shrink-0 rounded-full bg-muted transition-all duration-200 hover:bg-accented data-current:w-6 data-current:bg-primary [&>svg]:size-full",
+    prev: "inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-default text-default ring ring-accented outline-inverted/25 transition-colors ring-inset hover:bg-elevated focus-visible:outline-3 disabled:cursor-not-allowed disabled:opacity-75 [&>svg]:size-4",
+    next: "inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-default text-default ring ring-accented outline-inverted/25 transition-colors ring-inset hover:bg-elevated focus-visible:outline-3 disabled:cursor-not-allowed disabled:opacity-75 [&>svg]:size-4",
+    dots: "flex items-center justify-center gap-2 data-[orientation=vertical]:flex-col",
+    dot: "size-2 shrink-0 cursor-pointer rounded-full bg-accented outline-primary/25 transition-all duration-200 hover:bg-inverted/40 focus-visible:outline-3 data-current:w-6 data-current:bg-primary [&>svg]:size-full",
   },
   variants: {},
 });

@@ -1,5 +1,6 @@
 import { tv, type VariantProps } from "tailwind-variants";
 import type { ComponentContract, MustBeNever, ThemeOverride, TVSlot } from "@75neo/core";
+import { byColor } from "../colors";
 
 /**
  * Recipe for the AngleSlider: an SVG ring with the readout inside it.
@@ -12,19 +13,22 @@ import type { ComponentContract, MustBeNever, ThemeOverride, TVSlot } from "@75n
  * overlays whose visible dot is a `::before`, so rotating the overlay orbits the dot.
  * The overlays stay click-through and only the dot takes pointer events, which is what
  * keeps both dragging the thumb and clicking the ring working.
+ *
+ * The focus ring is drawn on that dot rather than on the overlay, since the overlay
+ * spans the whole control and would outline a square around the dial.
  */
 export const angleSlider = tv({
   slots: {
-    base: "inline-flex data-disabled:pointer-events-none data-disabled:opacity-50",
+    base: "inline-flex data-disabled:pointer-events-none data-disabled:opacity-75",
     control: "relative aspect-square",
     dial: "absolute inset-0 size-full origin-center -rotate-90",
-    track: "fill-none stroke-(--ui-bg-elevated) stroke-12",
+    track: "fill-none stroke-accented stroke-12",
     range: "fill-none stroke-12 [stroke-dasharray:var(--value)_360] [stroke-linecap:round]",
     markers: "pointer-events-none absolute inset-0",
     marker:
       "absolute inset-0 before:absolute before:top-[3.5%] before:left-1/2 before:size-[5%] before:-translate-x-1/2 before:rounded-full before:bg-default before:content-['']",
     thumb:
-      "pointer-events-none absolute inset-0 outline-none before:pointer-events-auto before:absolute before:top-[-2%] before:left-1/2 before:size-[16%] before:-translate-x-1/2 before:rounded-full before:shadow-sm before:content-['']",
+      "pointer-events-none absolute inset-0 outline-none before:pointer-events-auto before:absolute before:top-[-2%] before:left-1/2 before:size-[16%] before:-translate-x-1/2 before:rounded-full before:shadow-sm before:transition-transform before:content-[''] hover:before:scale-110 focus-visible:before:outline-3",
     content: "pointer-events-none absolute inset-0 flex flex-col items-center justify-center",
     value: "font-semibold tabular-nums",
     label: "pointer-events-auto cursor-pointer text-muted select-none",
@@ -48,47 +52,15 @@ export const angleSlider = tv({
       },
     },
     color: {
-      primary: {
-        range: "stroke-primary",
-        thumb:
-          "before:bg-primary-elevated focus-visible:before:ring-[3px] focus-visible:before:ring-primary/50",
-        value: "text-primary-emphasis",
-      },
-      secondary: {
-        range: "stroke-secondary",
-        thumb:
-          "before:bg-secondary-elevated focus-visible:before:ring-[3px] focus-visible:before:ring-secondary/50",
-        value: "text-secondary-emphasis",
-      },
+      ...byColor((color) => ({
+        range: `stroke-${color}`,
+        thumb: `before:bg-${color} before:outline-${color}/25`,
+        value: `text-${color}`,
+      })),
       neutral: {
-        range: "stroke-neutral",
-        thumb:
-          "before:bg-neutral-elevated focus-visible:before:ring-[3px] focus-visible:before:ring-neutral/50",
-        value: "text-neutral-emphasis",
-      },
-      success: {
-        range: "stroke-success",
-        thumb:
-          "before:bg-success-elevated focus-visible:before:ring-[3px] focus-visible:before:ring-success/50",
-        value: "text-success-emphasis",
-      },
-      info: {
-        range: "stroke-info",
-        thumb:
-          "before:bg-info-elevated focus-visible:before:ring-[3px] focus-visible:before:ring-info/50",
-        value: "text-info-emphasis",
-      },
-      warning: {
-        range: "stroke-warning",
-        thumb:
-          "before:bg-warning-elevated focus-visible:before:ring-[3px] focus-visible:before:ring-warning/50",
-        value: "text-warning-emphasis",
-      },
-      error: {
-        range: "stroke-error",
-        thumb:
-          "before:bg-error-elevated focus-visible:before:ring-[3px] focus-visible:before:ring-error/50",
-        value: "text-error-emphasis",
+        range: "stroke-inverted",
+        thumb: "before:bg-inverted before:outline-inverted/25",
+        value: "text-highlighted",
       },
     },
   },

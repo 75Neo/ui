@@ -45,11 +45,14 @@ const theme = useResolvedTheme(
     >
       <h3 data-slot="header" :class="theme.class.header">
         <Ark.ItemTrigger data-slot="trigger" :class="theme.class.trigger">
+          <span v-if="item.icon" data-slot="leadingIcon" :class="theme.class.leadingIcon">
+            <component :is="item.icon" />
+          </span>
           <span data-slot="label" :class="theme.class.label">
             <slot name="label" :item="item">{{ item.label }}</slot>
           </span>
-          <Ark.ItemIndicator data-slot="indicator" :class="theme.class.indicator">
-            <component :is="item.icon ?? props.indicatorIcon ?? ChevronDown" />
+          <Ark.ItemIndicator data-slot="trailingIcon" :class="theme.class.trailingIcon">
+            <component :is="props.trailingIcon ?? ChevronDown" />
           </Ark.ItemIndicator>
         </Ark.ItemTrigger>
       </h3>

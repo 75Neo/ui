@@ -5,6 +5,7 @@ import { Avatar } from "@75neo/vue";
 
 const sizes = variantValues(avatar, "size");
 const shapes = variantValues(avatar, "shape");
+const colors = variantValues(avatar, "color");
 
 const row = "grid gap-2 @sm:grid-cols-[5rem_minmax(0,1fr)] @sm:items-center @sm:gap-4";
 const rowLabel = "text-dimmed font-mono text-[0.6875rem] leading-none";
@@ -33,6 +34,19 @@ const rule = "border-muted my-6";
     <hr :class="rule" />
 
     <div :class="group">
+      <div :class="row">
+        <p :class="rowLabel" data-identifier>color</p>
+        <div :class="rowItems">
+          <Avatar
+            v-for="color in colors"
+            :key="color"
+            :color="color"
+            :fallback="(color as string).slice(0, 2)"
+            size="lg"
+          />
+        </div>
+      </div>
+
       <div :class="row">
         <p :class="rowLabel" data-identifier>fallback</p>
         <div :class="rowItems">
@@ -101,23 +115,23 @@ const rule = "border-muted my-6";
         <p :class="rowLabel" data-identifier>group</p>
         <div :class="rowItems">
           <div class="flex -space-x-2">
-            <Avatar fallback="AL" size="md" class="ring-2 ring-white" />
-            <Avatar fallback="JD" size="md" class="ring-2 ring-white" />
+            <Avatar fallback="AL" size="md" class="ring-2 ring-bg" />
+            <Avatar fallback="JD" size="md" class="ring-2 ring-bg" />
             <Avatar
               src="https://github.com/nstcrystal.png"
               alt="G1"
               fallback="G1"
               size="md"
-              class="ring-2 ring-white"
+              class="ring-2 ring-bg"
             />
             <Avatar
               src="https://github.com/2giosangmitom.png"
               alt="G2"
               fallback="G2"
               size="md"
-              class="ring-2 ring-white"
+              class="ring-2 ring-bg"
             />
-            <Avatar fallback="+3" size="md" class="border-2 border-white" />
+            <Avatar fallback="+3" size="md" class="ring-2 ring-bg" />
           </div>
         </div>
       </div>

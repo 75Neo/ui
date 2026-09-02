@@ -18,7 +18,7 @@ interface Props {
 const { title, eyebrow, description, hasStage = false } = Astro.props;
 const current = Astro.url.pathname.replace(/\/$/, "") || "/";
 
-const shell = "mx-auto w-full max-w-[88rem] px-5 sm:px-8 lg:px-12";
+const shell = "mx-auto w-full max-w-page px-5 sm:px-8 lg:px-12";
 ---
 
 <html lang="en">
@@ -61,7 +61,7 @@ const shell = "mx-auto w-full max-w-[88rem] px-5 sm:px-8 lg:px-12";
   <body class="flex min-h-dvh flex-col">
     <a
       href="#content"
-      class="bg-inverted text-inverted focus:ring-primary/40 sr-only rounded-md px-4 py-2 text-sm font-medium focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-30 focus:ring-2"
+      class="bg-inverted text-inverted sr-only rounded-md px-4 py-2 text-sm font-medium focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-30"
     >
       Skip to content
     </a>
@@ -72,7 +72,7 @@ const shell = "mx-auto w-full max-w-[88rem] px-5 sm:px-8 lg:px-12";
       >
         <a
           href="/"
-          class="group hover:text-highlighted focus-visible:ring-primary/40 -mx-2 flex shrink-0 items-center gap-2.5 rounded-md px-2 py-1.5 transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none"
+          class="group hover:text-highlighted -mx-2 flex shrink-0 items-center gap-2.5 rounded-md px-2 py-1.5"
         >
           <img
             src="/logo-brand.svg"
@@ -124,12 +124,16 @@ const shell = "mx-auto w-full max-w-[88rem] px-5 sm:px-8 lg:px-12";
       <nav aria-label="Components" class="border-muted border-t">
         <div class={`${shell} -mb-px flex gap-1 overflow-x-auto`}>
           {
-            [{ href: "/", label: "Overview" }, ...previews].map(({ href, label }) => (
+            [
+              { href: "/", label: "Overview" },
+              { href: "/tokens", label: "Tokens" },
+              ...previews,
+            ].map(({ href, label }) => (
               <a
                 href={href}
                 aria-current={current === href ? "page" : undefined}
                 class:list={[
-                  "focus-visible:ring-primary/40 border-b-2 px-2.5 py-2.5 text-sm whitespace-nowrap transition-colors duration-200 focus-visible:rounded-t-sm focus-visible:ring-2 focus-visible:outline-none",
+                  "border-b-2 px-2.5 py-2.5 text-sm whitespace-nowrap focus-visible:rounded-t-sm",
                   current === href
                     ? "border-primary text-highlighted font-medium"
                     : "text-muted hover:text-highlighted border-transparent",
@@ -174,7 +178,7 @@ const shell = "mx-auto w-full max-w-[88rem] px-5 sm:px-8 lg:px-12";
         </p>
         <a
           href="https://github.com/75Neo/ui"
-          class="text-muted hover:text-highlighted focus-visible:ring-primary/40 rounded-sm font-mono text-xs transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none"
+          class="text-muted hover:text-highlighted rounded-sm font-mono text-xs"
           data-identifier
         >
           github.com/75Neo/ui

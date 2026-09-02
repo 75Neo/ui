@@ -16,8 +16,8 @@ const steps = [
     note: "A .tsx and a .vue preview, plus a route and a page.",
   },
   {
-    path: "A test calling assertRecipeIsTotal",
-    note: "Every variant combination covered, none of them duplicated.",
+    path: "packages/themes/src/tokens/utilities.css",
+    note: "Only when a recipe needs a color utility nothing else composes yet.",
   },
 ];
 ---
@@ -42,18 +42,18 @@ const steps = [
           <li>
             <a
               href={href}
-              class="group border-muted focus-visible:ring-primary/40 grid items-baseline gap-x-12 gap-y-2 border-b py-7 transition-colors duration-200 focus-visible:rounded-sm focus-visible:ring-2 focus-visible:outline-none lg:grid-cols-[11rem_minmax(0,1fr)_auto]"
+              class="group border-muted grid items-baseline gap-x-12 gap-y-2 border-b py-7 focus-visible:rounded-sm lg:grid-cols-[11rem_minmax(0,1fr)_auto]"
             >
-              <h3 class="text-highlighted group-hover:text-primary text-xl font-medium tracking-[-0.02em] transition-colors duration-200">
+              <h3 class="text-highlighted group-hover:text-primary text-xl font-medium tracking-[-0.02em]">
                 {label}
               </h3>
               <p class="text-muted max-w-[58ch] text-sm/6 text-pretty">{summary}</p>
               <span
-                class="text-dimmed group-hover:text-primary font-mono text-xs transition-colors duration-200 lg:text-right"
+                class="text-dimmed group-hover:text-primary font-mono text-xs lg:text-right"
                 data-identifier
               >
                 {key}
-                <span class="ml-1.5 inline-block transition-transform duration-200 group-hover:translate-x-0.5">
+                <span class="ml-1.5">
                   →
                 </span>
               </span>

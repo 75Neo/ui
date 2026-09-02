@@ -46,11 +46,11 @@ const theme = useResolvedTheme(
     :allow-mouse-drag="props.allowMouseDrag"
     :default-page="props.defaultPage"
   >
-    <Ark.Control data-slot="control" :class="theme.class.control">
-      <Ark.PrevTrigger data-slot="prevTrigger" :class="theme.class.prevTrigger">
+    <Ark.Control data-slot="controls" :class="theme.class.controls">
+      <Ark.PrevTrigger data-slot="prev" :class="theme.class.prev">
         <component :is="props.prevIcon ?? ChevronLeft" />
       </Ark.PrevTrigger>
-      <Ark.ItemGroup data-slot="itemGroup" :class="theme.class.itemGroup">
+      <Ark.ItemGroup data-slot="viewport" :class="theme.class.viewport">
         <Ark.Item
           v-for="(item, index) in props.items"
           :key="item.id"
@@ -61,17 +61,17 @@ const theme = useResolvedTheme(
           <slot name="item" :item="item" :index="index">{{ item.content }}</slot>
         </Ark.Item>
       </Ark.ItemGroup>
-      <Ark.NextTrigger data-slot="nextTrigger" :class="theme.class.nextTrigger">
+      <Ark.NextTrigger data-slot="next" :class="theme.class.next">
         <component :is="props.nextIcon ?? ChevronRight" />
       </Ark.NextTrigger>
     </Ark.Control>
-    <Ark.IndicatorGroup data-slot="indicatorGroup" :class="theme.class.indicatorGroup">
+    <Ark.IndicatorGroup data-slot="dots" :class="theme.class.dots">
       <Ark.Indicator
         v-for="(_, index) in props.items"
         :key="index"
         :index="index"
-        data-slot="indicator"
-        :class="theme.class.indicator"
+        data-slot="dot"
+        :class="theme.class.dot"
       />
     </Ark.IndicatorGroup>
   </Ark.Root>

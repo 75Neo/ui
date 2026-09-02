@@ -5,19 +5,18 @@ import Playground from "../layouts/Playground.astro";
 import ButtonPreview from "../previews/ButtonPreview.tsx";
 import ButtonPreviewVue from "../previews/ButtonPreview.vue";
 
-// Read off the recipe rather than restated here, so this ledger cannot drift.
+// Read off the recipe rather than restated here, so this ledger cannot drift. The
+// appearance count is the part worth watching: it is the table `eachColor` generates,
+// and it is why the recipe is a third of the size it used to be.
 const slots = Object.keys(button.slots);
 const variantKeys = [...button.variantKeys];
-const combinations = variantKeys.reduce(
-  (total, key) => total * variantValues(button, key).length,
-  1,
-);
+const appearances = variantValues(button, "variant").length * variantValues(button, "color").length;
 
 const meta = [
   { term: "key", value: "button" },
   { term: "slots", value: String(slots.length) },
   { term: "variants", value: variantKeys.join(" · ") },
-  { term: "combinations", value: String(combinations) },
+  { term: "appearances", value: `${appearances} generated` },
 ];
 ---
 
@@ -57,8 +56,8 @@ const meta = [
               value: "The Vue adapter, with props written out by hand.",
             },
             {
-              term: "packages/core/src/utils/__tests__/resolve.test.ts",
-              value: "The cascade order, asserted. That file is the specification.",
+              term: "packages/themes/src/colors.ts",
+              value: "eachColor, which builds the variant × color table above.",
             },
           ].map(({ term, value }) => (
             <div>

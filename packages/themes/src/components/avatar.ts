@@ -1,5 +1,6 @@
 import { tv, type VariantProps } from "tailwind-variants";
 import type { ComponentContract, MustBeNever, ThemeOverride, TVSlot } from "@75neo/core";
+import { byColor } from "../colors";
 
 /**
  * Recipe for the Avatar: one box holding an image, with a fallback under it.
@@ -7,53 +8,57 @@ import type { ComponentContract, MustBeNever, ThemeOverride, TVSlot } from "@75n
  * @remarks
  * Ark renders both children and hides the fallback once the image loads, so `base`
  * carries the shape and the clipping while `image` and `fallback` simply fill it.
- * Nothing here has to know which of the two is showing. `size` also scales the fallback
- * type, because initials at a fixed size stop fitting below `md`.
+ * Nothing here has to know which of the two is showing.
+ *
+ * `color` only ever shows through the fallback, since an image covers it. It is the
+ * cheapest way to tell two initials apart in a stack of them.
+ *
+ * `size` scales the fallback type alongside the box, because initials at a fixed size
+ * stop fitting below `md`. The square shape tightens its corners at the small end for
+ * the same reason: a `lg` radius on a 16px box is a circle.
  */
 export const avatar = tv({
   slots: {
-    base: "relative inline-flex shrink-0 items-center justify-center overflow-hidden bg-muted align-middle select-none",
-    fallback:
-      "flex size-full items-center justify-center font-medium tracking-tight text-muted uppercase",
+    base: "relative inline-flex shrink-0 items-center justify-center overflow-hidden align-middle select-none",
+    fallback: "flex size-full items-center justify-center font-medium tracking-tight uppercase",
     image: "size-full object-cover",
   },
   variants: {
+    color: {
+      ...byColor((color) => ({
+        base: `bg-${color}/10`,
+        fallback: `text-${color}`,
+      })),
+      neutral: {
+        base: "bg-elevated",
+        fallback: "text-toned",
+      },
+    },
     size: {
-      xs: {
-        base: "size-6",
-        fallback: "text-[10px]",
-      },
-      sm: {
-        base: "size-8",
-        fallback: "text-xs",
-      },
-      md: {
-        base: "size-10",
-        fallback: "text-sm",
-      },
-      lg: {
-        base: "size-12",
-        fallback: "text-base",
-      },
-      xl: {
-        base: "size-16",
-        fallback: "text-lg",
-      },
-      "2xl": {
-        base: "size-20",
-        fallback: "text-xl",
-      },
+      "3xs": { base: "size-4", fallback: "text-[0.5rem]" },
+      "2xs": { base: "size-5", fallback: "text-[0.625rem]" },
+      xs: { base: "size-6", fallback: "text-xs" },
+      sm: { base: "size-7", fallback: "text-xs" },
+      md: { base: "size-8", fallback: "text-sm" },
+      lg: { base: "size-10", fallback: "text-base" },
+      xl: { base: "size-12", fallback: "text-lg" },
+      "2xl": { base: "size-14", fallback: "text-xl" },
+      "3xl": { base: "size-16", fallback: "text-2xl" },
     },
     shape: {
-      circle: {
-        base: "rounded-full",
-      },
-      square: {
-        base: "rounded-lg",
-      },
+      circle: { base: "rounded-full" },
+      square: { base: "rounded-lg" },
     },
   },
+  compoundVariants: [
+    { shape: "square", size: "3xs", class: "rounded-xs" },
+    { shape: "square", size: "2xs", class: "rounded-sm" },
+    { shape: "square", size: "xs", class: "rounded-sm" },
+    { shape: "square", size: "sm", class: "rounded-md" },
+    { shape: "square", size: "md", class: "rounded-md" },
+  ],
   defaultVariants: {
+    color: "neutral",
     size: "md",
     shape: "circle",
   },
@@ -80,6 +85,7 @@ export type AvatarTheme = ThemeOverride<AvatarSlots, AvatarVariants>;
 export interface AvatarProps<F> {
   /** Per-slot class overrides. */
   ui?: AvatarUI;
+  color?: AvatarVariants["color"];
   size?: AvatarVariants["size"];
   shape?: AvatarVariants["shape"];
   /** Image to show. Without one the avatar shows its fallback. */

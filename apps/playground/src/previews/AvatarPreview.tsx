@@ -5,6 +5,7 @@ import { Avatar } from "@75neo/react";
 
 const sizes = variantValues(avatar, "size");
 const shapes = variantValues(avatar, "shape");
+const colors = variantValues(avatar, "color");
 
 const row = "grid gap-2 @sm:grid-cols-[5rem_minmax(0,1fr)] @sm:items-center @sm:gap-4";
 const rowLabel = "text-dimmed font-mono text-[0.6875rem] leading-none";
@@ -75,6 +76,12 @@ export default function AvatarPreview() {
       <hr className={rule} />
 
       <div className={group}>
+        <Row label="color">
+          {colors.map((color) => (
+            <Avatar key={color} color={color} fallback={color.slice(0, 2)} size="lg" />
+          ))}
+        </Row>
+
         <Row label="fallback">
           <Avatar fallback="PA" size="md" />
           <Avatar name="Ada Lovelace" size="md" />
@@ -125,23 +132,23 @@ export default function AvatarPreview() {
 
         <Row label="group">
           <div className="flex -space-x-2">
-            <Avatar fallback="AL" size="md" className="ring-2 ring-white" />
-            <Avatar fallback="JD" size="md" className="ring-2 ring-white" />
+            <Avatar fallback="AL" size="md" className="ring-2 ring-bg" />
+            <Avatar fallback="JD" size="md" className="ring-2 ring-bg" />
             <Avatar
               src="https://github.com/nstcrystal.png"
               alt="G1"
               fallback="G1"
               size="md"
-              className="ring-2 ring-white"
+              className="ring-2 ring-bg"
             />
             <Avatar
               src="https://github.com/2giosangmitom.png"
               alt="G2"
               fallback="G2"
               size="md"
-              className="ring-2 ring-white"
+              className="ring-2 ring-bg"
             />
-            <Avatar fallback="+3" size="md" className="border-2 border-white" />
+            <Avatar fallback="+3" size="md" className="ring-2 ring-bg" />
           </div>
         </Row>
       </div>

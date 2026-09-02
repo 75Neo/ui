@@ -51,29 +51,24 @@ export function Carousel({
       onPageChange={onPageChange}
       ids={ids}
     >
-      <Ark.Control data-slot="control" className={theme.class.control}>
-        <Ark.PrevTrigger data-slot="prevTrigger" className={theme.class.prevTrigger}>
+      <Ark.Control data-slot="controls" className={theme.class.controls}>
+        <Ark.PrevTrigger data-slot="prev" className={theme.class.prev}>
           {prevIcon ?? <ChevronLeft />}
         </Ark.PrevTrigger>
-        <Ark.ItemGroup data-slot="itemGroup" className={theme.class.itemGroup}>
+        <Ark.ItemGroup data-slot="viewport" className={theme.class.viewport}>
           {items.map((item, index) => (
             <Ark.Item key={item.id} index={index} data-slot="item" className={theme.class.item}>
               {renderItem?.(item, index) ?? item.content}
             </Ark.Item>
           ))}
         </Ark.ItemGroup>
-        <Ark.NextTrigger data-slot="nextTrigger" className={theme.class.nextTrigger}>
+        <Ark.NextTrigger data-slot="next" className={theme.class.next}>
           {nextIcon ?? <ChevronRight />}
         </Ark.NextTrigger>
       </Ark.Control>
-      <Ark.IndicatorGroup data-slot="indicatorGroup" className={theme.class.indicatorGroup}>
+      <Ark.IndicatorGroup data-slot="dots" className={theme.class.dots}>
         {items.map((_, index) => (
-          <Ark.Indicator
-            key={index}
-            index={index}
-            data-slot="indicator"
-            className={theme.class.indicator}
-          />
+          <Ark.Indicator key={index} index={index} data-slot="dot" className={theme.class.dot} />
         ))}
       </Ark.IndicatorGroup>
     </Ark.Root>

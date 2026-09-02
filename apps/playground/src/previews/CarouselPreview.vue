@@ -118,12 +118,10 @@ const page = ref(0);
               <div
                 class="flex h-32 flex-col items-center justify-center gap-1 rounded-md bg-primary p-4 text-center"
               >
-                <span class="font-mono text-xs text-primary-foreground" data-identifier
+                <span class="font-mono text-xs text-inverted" data-identifier
                   >{{ item.id }} · {{ index }}</span
                 >
-                <span class="text-sm font-semibold text-primary-foreground">{{
-                  item.content
-                }}</span>
+                <span class="text-sm font-semibold text-inverted">{{ item.content }}</span>
               </div>
             </template>
           </Carousel>
@@ -151,10 +149,7 @@ const page = ref(0);
       <div :class="row">
         <p :class="rowLabel" data-identifier>ui</p>
         <div :class="rowItems">
-          <Carousel
-            :items="baseItems.slice(0, 3)"
-            :ui="{ item: 'bg-primary text-primary-foreground' }"
-          >
+          <Carousel :items="baseItems.slice(0, 3)" :ui="{ item: 'bg-primary text-inverted' }">
             <template #item="{ item }"
               ><div class="flex h-32 items-center justify-center p-4 text-sm">
                 {{ item.content }}

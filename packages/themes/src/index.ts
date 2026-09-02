@@ -2,6 +2,15 @@
 // without depending on `@75neo/core` directly.
 export { type Recipe, variantValues } from "@75neo/core";
 
+export {
+  byColor,
+  type ComponentColor,
+  componentColors,
+  eachColor,
+  type ThemeColor,
+  themeColors,
+} from "./colors";
+
 export * from "./components/accordion";
 export * from "./components/angle-slider";
 export * from "./components/avatar";

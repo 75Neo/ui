@@ -9,6 +9,15 @@ import type { ComponentContract, MustBeNever, ThemeOverride, TVSlot } from "@75n
  * attribute Ark sets, which keeps the variant matrix at nine combinations rather than
  * twenty-seven. The `content` slot hands Ark's measured size to the open and close
  * keyframes in `src/tokens/keyframes.css`.
+ *
+ * The icon slots are named for their position rather than their job, matching Button,
+ * so `ui.trailingIcon` means the same thing on both components. `leadingIcon` is the
+ * per-row icon; `trailingIcon` is the chevron.
+ *
+ * Disabled is styled off the trigger's own `disabled` attribute rather than declared as
+ * a variant, because one row can be disabled while the accordion around it is not, and
+ * a variant resolves once for the whole component. Ark renders the trigger as a native
+ * button and sets `disabled` on it, not `data-disabled`.
  */
 export const accordion = tv({
   slots: {
@@ -17,47 +26,51 @@ export const accordion = tv({
     header:
       "flex min-w-0 group-data-[orientation=horizontal]/accordion:h-full group-data-[orientation=horizontal]/accordion:shrink-0",
     trigger:
-      "flex w-full min-w-0 cursor-pointer items-center justify-between gap-3 text-start font-medium transition-[color,background-color,border-color,box-shadow] duration-150 outline-none select-none group-data-[orientation=horizontal]/accordion:h-full group-data-[orientation=horizontal]/accordion:w-auto group-data-[orientation=horizontal]/accordion:[writing-mode:vertical-rl] focus-visible:relative focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-inset data-disabled:pointer-events-none data-disabled:opacity-50",
+      "flex w-full min-w-0 cursor-pointer items-center gap-2 text-start font-medium outline-primary/25 transition-colors select-none group-data-[orientation=horizontal]/accordion:h-full group-data-[orientation=horizontal]/accordion:w-auto group-data-[orientation=horizontal]/accordion:[writing-mode:vertical-rl] focus-visible:relative focus-visible:z-10 focus-visible:outline-3 focus-visible:-outline-offset-3 disabled:cursor-not-allowed disabled:opacity-75",
+    leadingIcon: "shrink-0 text-dimmed [&>svg]:size-full",
     label: "min-w-0 flex-1 truncate group-data-[orientation=horizontal]/accordion:min-h-0",
-    indicator:
-      "shrink-0 text-dimmed transition-transform duration-200 data-[state=open]:rotate-180 [&>svg]:size-full",
+    trailingIcon:
+      "ms-auto shrink-0 text-dimmed transition-transform duration-200 data-[state=open]:rotate-180 [&>svg]:size-full",
     content:
       "overflow-hidden [--ui-collapsible-height:var(--height)] [--ui-collapsible-width:var(--width)] group-data-[orientation=horizontal]/accordion:h-full data-[state=closed]:animate-accordion-up group-data-[orientation=horizontal]/accordion:data-[state=closed]:animate-accordion-left data-[state=open]:animate-accordion-down group-data-[orientation=horizontal]/accordion:data-[state=open]:animate-accordion-right",
-    body: "min-w-0 text-pretty text-muted group-data-[orientation=horizontal]/accordion:w-max group-data-[orientation=horizontal]/accordion:max-w-sm",
+    body: "min-w-0 text-pretty text-toned group-data-[orientation=horizontal]/accordion:w-max group-data-[orientation=horizontal]/accordion:max-w-sm",
   },
   variants: {
     variant: {
       outline: {
-        base: "divide-y divide-default overflow-hidden rounded-lg border border-default data-[orientation=horizontal]:divide-x data-[orientation=horizontal]:divide-y-0",
+        base: "divide-y divide-default overflow-hidden rounded-lg ring ring-default ring-inset data-[orientation=horizontal]:divide-x data-[orientation=horizontal]:divide-y-0",
         item: "bg-default",
         trigger: "text-highlighted hover:bg-muted",
       },
       soft: {
         base: "gap-2",
         item: "overflow-hidden rounded-lg bg-muted",
-        trigger: "text-highlighted hover:bg-accented",
+        trigger: "text-highlighted hover:bg-accented/60",
       },
       ghost: {
         base: "divide-y divide-muted data-[orientation=horizontal]:divide-x data-[orientation=horizontal]:divide-y-0",
         item: "bg-transparent",
-        trigger: "text-default hover:text-highlighted",
+        trigger: "text-toned hover:text-highlighted",
       },
     },
     size: {
       sm: {
         trigger: "min-h-9 px-3 text-sm group-data-[orientation=horizontal]/accordion:min-w-9",
-        indicator: "size-4",
-        body: "p-3 text-sm/6",
+        leadingIcon: "size-4",
+        trailingIcon: "size-4",
+        body: "px-3 pb-3 text-sm/6",
       },
       md: {
         trigger: "min-h-11 px-4 text-sm group-data-[orientation=horizontal]/accordion:min-w-11",
-        indicator: "size-4",
-        body: "p-4 text-sm/6",
+        leadingIcon: "size-5",
+        trailingIcon: "size-5",
+        body: "px-4 pb-4 text-sm/6",
       },
       lg: {
         trigger: "min-h-13 px-5 text-base group-data-[orientation=horizontal]/accordion:min-w-13",
-        indicator: "size-5",
-        body: "p-5 text-base/7",
+        leadingIcon: "size-5",
+        trailingIcon: "size-5",
+        body: "px-5 pb-5 text-base/7",
       },
     },
   },
@@ -92,7 +105,7 @@ export interface AccordionItem<F> {
   /** Body text, shown while the row is open. */
   content: string;
   disabled?: boolean;
-  /** Replaces the shared indicator icon on this row alone. */
+  /** Icon shown before this row's label. */
   icon?: F;
 }
 
@@ -122,7 +135,7 @@ export interface AccordionProps<F> {
   /** @defaultValue `"vertical"` */
   orientation?: "horizontal" | "vertical";
   /** Replaces the chevron on every row. */
-  indicatorIcon?: F;
+  trailingIcon?: F;
 }
 
 /** Compile-time guard: a recipe variant with no matching prop above is a type error. */

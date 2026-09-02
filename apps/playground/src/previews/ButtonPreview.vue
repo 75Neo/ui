@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ArrowRight, Plus } from "@lucide/vue";
+import { ArrowRight, Bookmark, Plus, Share2 } from "@lucide/vue";
 import { button, variantValues } from "@75neo/themes";
 import { Button } from "@75neo/vue";
 
@@ -42,13 +42,54 @@ const rule = "border-muted my-6";
       </div>
 
       <div :class="row">
+        <p :class="rowLabel" data-identifier>square</p>
+        <div :class="rowItems">
+          <Button
+            v-for="size in sizes"
+            :key="size"
+            :size="size"
+            variant="subtle"
+            :leading-icon="Plus"
+          />
+        </div>
+      </div>
+
+      <div :class="row">
         <p :class="rowLabel" data-identifier>state</p>
         <div :class="rowItems">
           <Button>default</Button>
           <Button disabled>disabled</Button>
           <Button loading>loading</Button>
+          <Button loading :trailing-icon="ArrowRight">loading</Button>
           <Button :leading-icon="Plus">leading</Button>
           <Button :trailing-icon="ArrowRight">trailing</Button>
+        </div>
+      </div>
+    </div>
+
+    <hr :class="rule" />
+
+    <!--
+      Buttons rarely appear alone. This is the arrangement they actually ship in:
+      one solid call to action carrying the accent, everything beside it quieter.
+    -->
+    <div :class="group">
+      <div :class="row">
+        <p :class="rowLabel" data-identifier>in use</p>
+        <div :class="rowItems">
+          <Button :trailing-icon="ArrowRight">Publish release</Button>
+          <Button variant="subtle" color="neutral" :leading-icon="Bookmark"> Save draft </Button>
+          <Button variant="ghost" color="neutral" :leading-icon="Share2" />
+          <Button variant="link" color="neutral">Discard</Button>
+        </div>
+      </div>
+
+      <div :class="row">
+        <p :class="rowLabel" data-identifier>block</p>
+        <div :class="rowItems">
+          <div class="w-full max-w-64">
+            <Button block :trailing-icon="ArrowRight">Continue</Button>
+          </div>
         </div>
       </div>
     </div>

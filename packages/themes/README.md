@@ -9,8 +9,48 @@ and the adapters carry none.
 @import "@75neo/themes";
 ```
 
-That one import ships the tokens, the `dark` variant and the base layer. Dark mode is a
-`.dark` class on a root element, and nothing else needs wiring.
+That one import ships the tokens, the `light` and `dark` variants and the base layer. Dark
+mode is a `.dark` class on a root element, and nothing else needs wiring.
+
+## One token per color
+
+Seven semantic colors — `primary` `secondary` `success` `info` `warning` `error` `neutral`
+— and each of the first six is a single custom property. There is no `-muted`, no
+`-emphasis`, no `-foreground`. A recipe spends the one token at different strengths with
+Tailwind's opacity modifier:
+
+```
+solid    bg-primary text-inverted hover:bg-primary/75
+soft     bg-primary/10 text-primary hover:bg-primary/15
+subtle   bg-primary/10 text-primary ring ring-primary/25
+outline  text-primary ring ring-primary/50 hover:bg-primary/10
+ghost    text-primary hover:bg-primary/10
+link     text-primary hover:text-primary/75
+```
+
+Six strengths cover the whole library, and they mean the same thing wherever they appear:
+
+| Strength | Role                                                  |
+| -------- | ----------------------------------------------------- |
+| `/10`    | a soft, tinted fill                                   |
+| `/15`    | that fill, hovered or pressed                         |
+| `/25`    | a hairline ring, and the focus halo                   |
+| `/50`    | a visible ring that still reads as a border           |
+| `/75`    | a solid fill or solid text, hovered or pressed        |
+| full     | a solid fill, text on the page, or a ring under focus |
+
+Each light value is the shade where the color first clears WCAG AA (4.5:1) as text on
+`--ui-bg`. That single threshold is what lets one value serve both roles: dark enough to
+read as type, and dark enough to carry `text-inverted` when it is a solid fill. Dark mode
+picks the 400 shade for the mirrored reason.
+
+`neutral` is the exception. It has no hue to spend, so it borrows the surface tokens
+instead — `bg-inverted`, `bg-elevated`, `ring-accented`. Every recipe with a `color`
+variant therefore generates six entries and writes the seventh by hand.
+
+Ramps stay available as an escape hatch: `bg-primary-50` … `bg-error-950`. `neutral-*`
+resolves to the library's own gray rather than Tailwind's, which is the one palette name
+this package takes over.
 
 ## Surfaces, text and borders
 
@@ -19,30 +59,12 @@ That one import ships the tokens, the `dark` variant and the base layer. Dark mo
 | `bg-default` `bg-muted` `bg-elevated` `bg-accented` `bg-inverted`                         | `--ui-bg*`                 |
 | `text-default` `text-dimmed` `text-muted` `text-toned` `text-highlighted` `text-inverted` | `--ui-text*`               |
 | `border-default` `border-muted` `border-accented` `border-inverted`                       | `--ui-border*`             |
-| `divide-default` `divide-muted` `divide-accented`                                         | `--ui-border*`             |
-| `ring-default` `outline-default`                                                          | `--ui-ring`                |
-| `rounded-xs` … `rounded-xl`                                                               | derived from `--ui-radius` |
-
-## Colors
-
-Seven semantic colors — `primary` `secondary` `neutral` `success` `info` `warning` `error`
-— each exposing six roles:
-
-| Utility                   | Role                                               |
-| ------------------------- | -------------------------------------------------- |
-| `bg-primary`              | solid fill                                         |
-| `bg-primary-elevated`     | solid fill, hover and active                       |
-| `text-primary-foreground` | text and icons on the solid fill                   |
-| `bg-primary-muted`        | soft, tinted fill                                  |
-| `bg-primary-accented`     | soft fill, hover and active                        |
-| `text-primary-emphasis`   | the color as text or border on the page background |
+| `ring-*` `divide-*` `outline-*` `stroke-*` `fill-*`                                       | the same border tokens     |
+| `rounded-xs` … `rounded-3xl`                                                              | derived from `--ui-radius` |
+| `max-w-page`                                                                              | `--ui-container`           |
 
 Every role carries its own light and dark value, so recipes need no `dark:` classes: the
-tokens flip, not the classes. Every fill and foreground pairing clears WCAG AA (4.5:1) in
-both themes.
-
-Ramps are the escape hatch: `bg-primary-50` … `bg-error-950`. `neutral` has no ramp, which
-leaves Tailwind's built-in `neutral-*` palette untouched.
+tokens flip, not the classes.
 
 ## Recipes
 
@@ -50,13 +72,44 @@ One module per component in `src/components/`, and the only place styling lives.
 exports the `tv()` recipe, its slot and variant types, the `ui` prop type, and the registry
 augmentation that makes the component themeable.
 
+The color half of a recipe is generated rather than written out. `src/colors.ts` holds the
+two helpers that do it:
+
+```ts
+import { byColor, eachColor } from "@75neo/themes";
+
+// One variant entry per hued color.
+color: {
+  ...byColor((color) => ({ range: `stroke-${color}` })),
+  neutral: { range: "stroke-inverted" },
+}
+
+// One compound-variant row per hued color.
+compoundVariants: [
+  ...eachColor((color) => ({
+    color,
+    variant: "solid" as const,
+    class: `bg-${color} text-inverted hover:bg-${color}/75`,
+  })),
+  { color: "neutral", variant: "solid", class: "bg-inverted text-inverted" },
+];
+```
+
+Button's six variants across seven colors is a forty-two cell table, and it costs six
+calls plus six hand-written `neutral` rows.
+
+The catch is that those classes are built by interpolation, so Tailwind's scanner never
+meets them as literals. `src/tokens/utilities.css` safelists exactly the set above with
+`@source inline(...)`. **A strength used in a recipe but missing there renders as no style
+at all**, which is the check that keeps the vocabulary closed.
+
 Import a recipe directly to read its runtime metadata:
 
 ```ts
 import { button, variantValues } from "@75neo/themes";
 
-variantValues(button, "color"); // ["primary", "secondary", "neutral", ...]
-Object.keys(button.slots); // ["base", "leading", "trailing", "label"]
+variantValues(button, "color"); // ["primary", "secondary", "success", ...]
+Object.keys(button.slots); // ["base", "label", "leadingIcon", "trailingIcon"]
 ```
 
 ## Overriding
@@ -65,12 +118,20 @@ Every value is a plain custom property. Redefine any of them after the import:
 
 ```css
 :root {
-  --ui-radius: 0.75rem;
-  --ui-primary: var(--color-teal-600);
-  --ui-primary-emphasis: var(--color-teal-700);
+  --ui-radius: 0.5rem;
+  --ui-primary: var(--color-teal-700);
+}
+
+.dark {
+  --ui-primary: var(--color-teal-400);
 }
 ```
 
-`src/tokens/colors.css` holds every property. For overrides scoped to a subtree or to one
-call site, use the `Theme` component or a component's `ui` prop, described in the
+Two lines rebrand the library, and no role has to be retuned to match — that is the point
+of collapsing the roles into one token.
+
+`src/tokens/` holds every property, split by what it answers: `palette.css` is the raw
+ramps and the only file that names a Tailwind palette, `semantic.css` is what those ramps
+mean, `utilities.css` turns them into utilities. For overrides scoped to a subtree or to
+one call site, use the `Theme` component or a component's `ui` prop, described in the
 [root README](../../README.md#theming).

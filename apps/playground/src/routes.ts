@@ -26,14 +26,14 @@ export const previews: readonly PreviewRoute[] = [
     href: "/button",
     label: "Button",
     summary:
-      "Four variants across seven colors and five sizes, with loading, disabled and icon slots.",
+      "Six variants across seven colors and five sizes, with block, square, loading and icon slots.",
     key: "button",
   },
   {
     href: "/avatar",
     label: "Avatar",
     summary:
-      "Six sizes across two shapes with image, fallback, and custom image support for NextImage and NuxtImg.",
+      "Nine sizes across two shapes and seven colors, with image, fallback, and a slot for NextImage or NuxtImg.",
     key: "avatar",
   },
   {
