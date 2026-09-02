@@ -19,4 +19,5 @@ export * from "./components/carousel";
 export * from "./components/checkbox";
 export * from "./components/clipboard";
 export * from "./components/collapsible";
+export * from "./components/color-picker";
 export * from "./components/table-of-contents";

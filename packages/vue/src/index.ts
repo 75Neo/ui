@@ -6,6 +6,7 @@ export { default as Carousel } from "./components/Carousel.vue";
 export { default as Checkbox } from "./components/Checkbox.vue";
 export { default as Clipboard } from "./components/Clipboard.vue";
 export { default as Collapsible } from "./components/Collapsible.vue";
+export { default as ColorPicker } from "./components/ColorPicker.vue";
 export { default as TableOfContents } from "./components/TableOfContents.vue";
 export { default as Theme } from "./components/Theme.vue";
 export { useResolvedTheme } from "./composables/theme";
@@ -51,8 +52,19 @@ export {
   type CollapsibleProps,
   type CollapsibleTheme,
   type CollapsibleUI,
+  type ColorPickerFormat,
+  type ColorPickerProps,
+  type ColorPickerTheme,
+  type ColorPickerUI,
   type TableOfContentsItem,
   type TableOfContentsProps,
   type TableOfContentsTheme,
   type TableOfContentsUI,
 } from "@75neo/themes";
+
+/*
+ * A ColorPicker edits a `Color` rather than a string, so a caller needs the parser to
+ * hand it a starting value. Re-exported here so that reaching for one does not mean
+ * adding Ark UI to an application's own dependencies.
+ */
+export { type Color, parseColor } from "@ark-ui/vue/color-picker";

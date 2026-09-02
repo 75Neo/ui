@@ -6,6 +6,7 @@ export { Carousel, type CarouselProps } from "./components/Carousel";
 export { Checkbox, type CheckboxProps } from "./components/Checkbox";
 export { Clipboard, type ClipboardProps } from "./components/Clipboard";
 export { Collapsible, type CollapsibleProps } from "./components/Collapsible";
+export { ColorPicker, type ColorPickerProps } from "./components/ColorPicker";
 export { TableOfContents, type TableOfContentsProps } from "./components/TableOfContents";
 export { Theme, type ThemeProps } from "./components/Theme";
 export { useResolvedTheme } from "./hooks/useResolvedTheme";
@@ -43,7 +44,17 @@ export {
   type ClipboardUI,
   type CollapsibleTheme,
   type CollapsibleUI,
+  type ColorPickerFormat,
+  type ColorPickerTheme,
+  type ColorPickerUI,
   type TableOfContentsItem,
   type TableOfContentsTheme,
   type TableOfContentsUI,
 } from "@75neo/themes";
+
+/*
+ * A ColorPicker edits a `Color` rather than a string, so a caller needs the parser to
+ * hand it a starting value. Re-exported here so that reaching for one does not mean
+ * adding Ark UI to an application's own dependencies.
+ */
+export { type Color, parseColor } from "@ark-ui/react/color-picker";

@@ -228,6 +228,12 @@ Checkbox rendered every `defaultChecked` box unticked in Vue while React was fin
 type argument has to include `undefined` too, or the option does not typecheck. Ark's
 own roots carry the same `void 0` defaults for the same reason.
 
+The same cast catches a plain boolean prop whose default is `true`. A type-based
+`defineProps` declares it as a Boolean prop, so leaving it out reaches the component as
+`false` and `props.flag ?? true` never fires — ColorPicker's `showInput` rendered no hex
+field in Vue while React was fine. Wrap the macro in `withDefaults` and name the default
+there. Booleans that default to off need nothing, since off is what the cast produces.
+
 ## MCP servers
 
 `.mcp.json` provides **ArkUI** (component docs and examples) and **Astro docs**. Reach for

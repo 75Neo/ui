@@ -16,6 +16,7 @@ export const previewed = new Set([
   "Checkbox",
   "Clipboard",
   "Collapsible",
+  "ColorPicker",
   "TableOfContents",
 ]);
 
