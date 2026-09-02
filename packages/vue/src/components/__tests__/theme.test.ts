@@ -4,11 +4,12 @@ import { userEvent } from "vitest/browser";
 import { Circle } from "@lucide/vue";
 import { render } from "vitest-browser-vue";
 import type { ThemeConfig } from "@75neo/core";
-import { accordion, angleSlider, combobox } from "@75neo/themes";
+import { accordion, angleSlider, combobox, dateInput } from "@75neo/themes";
 import Accordion from "../Accordion.vue";
 import AngleSlider from "../AngleSlider.vue";
 import Button from "../Button.vue";
 import Combobox from "../Combobox.vue";
+import DateInput from "../DateInput.vue";
 import Theme from "../Theme.vue";
 
 function slot(container: HTMLElement, name: string): HTMLElement | null {
@@ -203,5 +204,33 @@ describe("Combobox", () => {
     await userEvent.keyboard("zzz");
 
     await expect.poll(() => anywhere("empty")?.textContent?.trim()).toBe("Nothing here.");
+  });
+});
+
+/**
+ * The DateInput has no free text to parse: each part of the date is its own focusable
+ * element. So what is worth testing is that a digit lands in the segment holding the
+ * caret. The range mode and the icon are passed so the slot sweep sees the separator and
+ * the leading icon, which are drawn for nothing else.
+ */
+describe("DateInput", () => {
+  it("renders every slot the recipe declares", () => {
+    const { container } = render(DateInput, {
+      props: { label: "Stay", selectionMode: "range", leadingIcon: Circle },
+    });
+
+    for (const name of Object.keys(dateInput.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("takes a digit into the segment holding the caret", async () => {
+    const { container } = render(DateInput);
+    const month = container.querySelector<HTMLElement>("[data-slot='segment'][data-type='month']")!;
+
+    month.focus();
+    await userEvent.keyboard("7");
+
+    await expect.poll(() => month.textContent).toContain("7");
   });
 });

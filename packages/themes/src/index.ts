@@ -21,4 +21,5 @@ export * from "./components/clipboard";
 export * from "./components/collapsible";
 export * from "./components/color-picker";
 export * from "./components/combobox";
+export * from "./components/date-input";
 export * from "./components/table-of-contents";

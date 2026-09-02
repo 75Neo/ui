@@ -65,6 +65,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "combobox",
   },
   {
+    href: "/date-input",
+    label: "DateInput",
+    summary:
+      "A date typed a segment at a time, with no format to explain, across three sizes and seven accents.",
+    key: "dateInput",
+  },
+  {
     href: "/collapsible",
     label: "Collapsible",
     summary:

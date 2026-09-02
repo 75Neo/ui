@@ -1,0 +1,38 @@
+---
+import { dateInput, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import DateInputPreview from "../previews/DateInputPreview.tsx";
+import DateInputPreviewVue from "../previews/DateInputPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(dateInput.slots);
+const variantKeys = [...dateInput.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(dateInput, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "dateInput" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="DateInput"
+  description="One recipe in @75neo/themes, rendered by both adapters. Each part of the date is its own focusable element, so there is no free text to parse and no format to explain."
+  hasStage
+>
+  <Preview
+    title="Sizes, accents and what the segments answer to"
+    description="Three sizes, then every accent color, then an icon, a field asking down to the minute, a German reading, forced leading zeros and a disabled one, then a range. The last field is controlled and prints its own value."
+    meta={meta}
+  >
+    <Fragment slot="react"><DateInputPreview client:load /></Fragment>
+    <Fragment slot="vue"><DateInputPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>
