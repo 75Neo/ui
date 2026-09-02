@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type Component, computed } from "vue";
-import { Loader2 } from "@lucide/vue";
-import { type ButtonProps, button, showButtonSlots } from "@75neo/themes";
+import { LoaderCircle } from "@lucide/vue";
+import { type ButtonProps, button, resolveButtonIcons } from "@75neo/themes";
 import { useResolvedTheme } from "../composables/theme";
 
 const props = defineProps<
@@ -22,21 +22,27 @@ const slots = defineSlots<{
   loadingIcon?: () => unknown;
 }>();
 
-const theme = useResolvedTheme(
-  button,
-  "button",
-  () => props,
-  () => props.class as string | undefined,
-);
-
-const show = computed(() =>
-  showButtonSlots({
+const icons = computed(() =>
+  resolveButtonIcons({
     loading: props.loading,
     leading: props.leading,
     trailing: props.trailing,
     hasLeading: !!props.leadingIcon || !!slots.leading,
     hasTrailing: !!props.trailingIcon || !!slots.trailing,
   }),
+);
+
+const theme = useResolvedTheme(
+  button,
+  "button",
+  () => ({
+    ...props,
+    // An icon with no label wants equal padding, which is worth not having to say.
+    square: props.square ?? !slots.default,
+    leading: icons.value.leading,
+    trailing: icons.value.trailing,
+  }),
+  () => props.class as string | undefined,
 );
 </script>
 
@@ -48,10 +54,14 @@ const show = computed(() =>
     :disabled="props.disabled || props.loading"
     :aria-busy="props.loading || undefined"
   >
-    <span v-if="show.leading" data-slot="leading" :class="theme.class.leading">
+    <!--
+      The recipe puts `animate-spin` on whichever icon slot is showing, so the spinner
+      only has to be placed in the same one.
+    -->
+    <span v-if="icons.leading" data-slot="leadingIcon" :class="theme.class.leadingIcon">
       <template v-if="props.loading">
         <slot name="loadingIcon">
-          <component :is="loadingIcon ?? Loader2" class="animate-spin" />
+          <component :is="loadingIcon ?? LoaderCircle" />
         </slot>
       </template>
       <slot v-else name="leading">
@@ -61,8 +71,13 @@ const show = computed(() =>
     <span v-if="slots.default" data-slot="label" :class="theme.class.label">
       <slot />
     </span>
-    <span v-if="show.trailing" data-slot="trailing" :class="theme.class.trailing">
-      <slot name="trailing">
+    <span v-if="icons.trailing" data-slot="trailingIcon" :class="theme.class.trailingIcon">
+      <template v-if="props.loading && !icons.leading">
+        <slot name="loadingIcon">
+          <component :is="loadingIcon ?? LoaderCircle" />
+        </slot>
+      </template>
+      <slot v-else name="trailing">
         <component :is="trailingIcon" v-if="trailingIcon" />
       </slot>
     </span>

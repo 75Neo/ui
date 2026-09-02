@@ -34,7 +34,7 @@ const { name, label, options } = Astro.props;
           data-control={name}
           data-option={`${name}:${option.value}`}
           data-value={option.value}
-          class="text-muted hover:text-highlighted focus-visible:ring-primary/40 cursor-pointer rounded-[0.25rem] px-2 py-1 font-mono text-[0.6875rem] leading-none transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none"
+          class="text-muted hover:text-highlighted cursor-pointer rounded-sm px-2 py-1 font-mono text-[0.6875rem] leading-none"
         >
           {option.label}
         </button>

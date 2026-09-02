@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ArrowRight, Plus } from "lucide-react";
+import { ArrowRight, Bookmark, Plus, Share2 } from "lucide-react";
 import { button, variantValues } from "@75neo/themes";
 import { Button } from "@75neo/react";
 
@@ -55,12 +55,48 @@ export default function ButtonPreview() {
           ))}
         </Row>
 
+        <Row label="square">
+          {sizes.map((size) => (
+            <Button key={size} size={size} variant="subtle" leadingIcon={<Plus />} />
+          ))}
+        </Row>
+
         <Row label="state">
           <Button>default</Button>
           <Button disabled>disabled</Button>
           <Button loading>loading</Button>
+          <Button loading trailingIcon={<ArrowRight />}>
+            loading
+          </Button>
           <Button leadingIcon={<Plus />}>leading</Button>
           <Button trailingIcon={<ArrowRight />}>trailing</Button>
+        </Row>
+      </div>
+
+      <hr className={rule} />
+
+      {/*
+        Buttons rarely appear alone. This is the arrangement they actually ship in:
+        one solid call to action carrying the accent, everything beside it quieter.
+      */}
+      <div className={group}>
+        <Row label="in use">
+          <Button trailingIcon={<ArrowRight />}>Publish release</Button>
+          <Button variant="subtle" color="neutral" leadingIcon={<Bookmark />}>
+            Save draft
+          </Button>
+          <Button variant="ghost" color="neutral" leadingIcon={<Share2 />} />
+          <Button variant="link" color="neutral">
+            Discard
+          </Button>
+        </Row>
+
+        <Row label="block">
+          <div className="w-full max-w-64">
+            <Button block trailingIcon={<ArrowRight />}>
+              Continue
+            </Button>
+          </div>
         </Row>
       </div>
     </div>

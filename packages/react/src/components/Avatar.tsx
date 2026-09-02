@@ -29,6 +29,7 @@ export interface AvatarProps
 
 export function Avatar({
   ui,
+  color,
   size,
   shape,
   src,
@@ -39,7 +40,7 @@ export function Avatar({
   className,
   ...rest
 }: AvatarProps) {
-  const theme = useResolvedTheme(avatar, "avatar", { ui, size, shape }, className);
+  const theme = useResolvedTheme(avatar, "avatar", { ui, color, size, shape }, className);
 
   // An explicit fallback wins outright, `null` included. Otherwise a name gives its
   // initials, and an unusable name gives nothing.

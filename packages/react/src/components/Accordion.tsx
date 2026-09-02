@@ -27,7 +27,7 @@ export function Accordion({
   collapsible,
   disabled,
   orientation,
-  indicatorIcon,
+  trailingIcon,
   renderLabel,
   renderContent,
   className,
@@ -55,11 +55,16 @@ export function Accordion({
         >
           <h3 data-slot="header" className={theme.class.header}>
             <Ark.ItemTrigger data-slot="trigger" className={theme.class.trigger}>
+              {item.icon != null && (
+                <span data-slot="leadingIcon" className={theme.class.leadingIcon}>
+                  {item.icon}
+                </span>
+              )}
               <span data-slot="label" className={theme.class.label}>
                 {renderLabel?.(item) ?? item.label}
               </span>
-              <Ark.ItemIndicator data-slot="indicator" className={theme.class.indicator}>
-                {item.icon ?? indicatorIcon ?? <ChevronDown />}
+              <Ark.ItemIndicator data-slot="trailingIcon" className={theme.class.trailingIcon}>
+                {trailingIcon ?? <ChevronDown />}
               </Ark.ItemIndicator>
             </Ark.ItemTrigger>
           </h3>

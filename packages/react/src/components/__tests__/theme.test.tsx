@@ -1,6 +1,7 @@
 import type React from "react";
 import { describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
+import { Circle } from "lucide-react";
 import { render } from "vitest-browser-react";
 import type { ThemeConfig } from "@75neo/core";
 import { accordion, angleSlider } from "@75neo/themes";
@@ -35,7 +36,7 @@ describe("Theme", () => {
     const cls = base(container).className;
     expect(cls).toContain("inline-flex");
     expect(cls).toContain("bg-primary");
-    expect(cls).toContain("h-8");
+    expect(cls).toContain("px-2.5");
     expect(slot(container, "label")).not.toBeNull();
   });
 
@@ -50,7 +51,7 @@ describe("Theme", () => {
   });
 
   it("composes with a Theme nested inside it", async () => {
-    const outer: ThemeConfig = { button: { ui: { base: "p-2 rounded-sm", leading: "mr-2" } } };
+    const outer: ThemeConfig = { button: { ui: { base: "p-2 rounded-sm", leadingIcon: "mr-2" } } };
     const inner: ThemeConfig = { button: { ui: { base: "p-5" } } };
 
     const container = await mount(
@@ -65,7 +66,7 @@ describe("Theme", () => {
     expect(cls).toContain("rounded-sm");
     expect(cls).toContain("p-5");
     expect(cls).not.toContain("p-2");
-    expect(slot(container, "leading")!.className).toContain("mr-2");
+    expect(slot(container, "leadingIcon")!.className).toContain("mr-2");
   });
 
   it("lets className beat the theme", async () => {
@@ -81,9 +82,11 @@ describe("Theme", () => {
   });
 });
 
+// Every item carries an icon so the slot sweep below sees `leadingIcon`, which is
+// otherwise only rendered for rows that have one.
 const items = [
-  { value: "one", label: "First", content: "The first body." },
-  { value: "two", label: "Second", content: "The second body." },
+  { value: "one", label: "First", content: "The first body.", icon: <Circle /> },
+  { value: "two", label: "Second", content: "The second body.", icon: <Circle /> },
 ];
 
 /**

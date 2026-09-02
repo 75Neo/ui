@@ -9,6 +9,14 @@
 @source "../../../../../packages/react/src";
 @source "../../../../../packages/vue/src";
 
+/*
+ * The playground is a consumer of the design system, so it retunes it the way any
+ * application would: by redefining `--ui-*` after the import. Nothing else changes.
+ */
+:root {
+  --ui-container: 88rem;
+}
+
 @theme {
   --font-sans:
     "Geist Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
@@ -29,15 +37,16 @@
 }
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-
+  /*
+   * The playground itself animates nothing: no scroll easing, no hover transitions, no
+   * entry animation. The only thing on the page allowed to move is a specimen, so any
+   * motion you see belongs to a component rather than to the page around it.
+   *
+   * This block stays because those specimens do move. It is motion suppression, not
+   * motion — the recipes carry their own transitions and the library does not check the
+   * preference itself.
+   */
   @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-
     *,
     *::before,
     *::after {
@@ -54,14 +63,17 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /*
+   * The same focus treatment the components use: a translucent halo hugging the box,
+   * so the page and the specimens on it agree about what focus looks like.
+   */
   :focus-visible {
-    outline: 2px solid var(--ui-primary);
-    outline-offset: 2px;
+    outline: 3px solid color-mix(in oklab, var(--ui-primary) 25%, transparent);
   }
 
   ::selection {
-    background-color: var(--ui-primary-accented);
-    color: var(--ui-primary-emphasis);
+    background-color: color-mix(in oklab, var(--ui-primary) 20%, transparent);
+    color: var(--ui-text-highlighted);
   }
 }
 
@@ -87,21 +99,6 @@
   }
 
   /*
-   * Islands hydrate after paint. Without this the specimen pops in at full
-   * opacity a beat late; with it the stage settles instead of flashing.
-   */
-  astro-island:not([ssr]) > * {
-    animation: stage-settle 260ms ease-out both;
-  }
-
-  @keyframes stage-settle {
-    from {
-      opacity: 0;
-      transform: translateY(0.25rem);
-    }
-  }
-
-  /*
    * A segment is active when its value matches the matching attribute on the
    * root element. CSS cannot compare two attributes to each other, so the
    * pairs are written out; in exchange the active segment is right on first
@@ -117,5 +114,23 @@
     color: var(--ui-text-highlighted);
     /* Tinted to the theme's own neutral rather than a generic black. */
     box-shadow: 0 1px 2px -1px color-mix(in oklab, var(--ui-text) 22%, transparent);
+  }
+
+  /*
+   * A checkerboard, so a swatch carrying an opacity modifier shows what it is
+   * actually letting through instead of reading as a flat lighter color.
+   */
+  [data-checker] {
+    background-image:
+      linear-gradient(45deg, var(--ui-bg-accented) 25%, transparent 25%),
+      linear-gradient(-45deg, var(--ui-bg-accented) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, var(--ui-bg-accented) 75%),
+      linear-gradient(-45deg, transparent 75%, var(--ui-bg-accented) 75%);
+    background-position:
+      0 0,
+      0 0.25rem,
+      0.25rem -0.25rem,
+      -0.25rem 0;
+    background-size: 0.5rem 0.5rem;
   }
 }

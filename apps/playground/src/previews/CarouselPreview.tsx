@@ -127,12 +127,10 @@ export default function CarouselPreview() {
             items={baseItems.slice(0, 3)}
             renderItem={(item, index) => (
               <div className="flex h-32 flex-col items-center justify-center gap-1 rounded-md bg-primary p-4 text-center">
-                <span className="font-mono text-xs text-primary-foreground" data-identifier>
+                <span className="font-mono text-xs text-inverted" data-identifier>
                   {item.id} · {index}
                 </span>
-                <span className="text-sm font-semibold text-primary-foreground">
-                  {item.content}
-                </span>
+                <span className="text-sm font-semibold text-inverted">{item.content}</span>
               </div>
             )}
           />
@@ -149,7 +147,7 @@ export default function CarouselPreview() {
         <Row label="ui">
           <Carousel
             items={baseItems.slice(0, 3)}
-            ui={{ item: "bg-primary text-primary-foreground" }}
+            ui={{ item: "bg-primary text-inverted" }}
             renderItem={(item) => (
               <div className="flex h-32 items-center justify-center p-4 text-sm">
                 {item.content}

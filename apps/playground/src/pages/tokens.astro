@@ -1,0 +1,318 @@
+---
+import { componentColors, themeColors } from "@75neo/themes";
+import Playground from "../layouts/Playground.astro";
+
+/*
+ * Everything on this page is read off the design system rather than restated, so a
+ * color added to `themeColors` shows up here without an edit. The class strings are
+ * built by interpolation, which Tailwind's scanner cannot follow — they render because
+ * `packages/themes/src/tokens/utilities.css` safelists exactly this set. That is the
+ * point of the page: what is listed here is what a recipe is allowed to compose.
+ */
+const strengths = [
+  { label: "fill", classes: (c: string) => `bg-${c}/10`, suffix: "/10" },
+  { label: "fill, hovered", classes: (c: string) => `bg-${c}/15`, suffix: "/15" },
+  { label: "fill, solid", classes: (c: string) => `bg-${c}`, suffix: "" },
+];
+
+const surfaces = [
+  { name: "bg-default", token: "--ui-bg", note: "the page itself" },
+  { name: "bg-muted", token: "--ui-bg-muted", note: "a recessed panel" },
+  { name: "bg-elevated", token: "--ui-bg-elevated", note: "a raised control" },
+  { name: "bg-accented", token: "--ui-bg-accented", note: "that control, pressed" },
+  { name: "bg-inverted", token: "--ui-bg-inverted", note: "the opposite of the page" },
+];
+
+const texts = [
+  { name: "text-highlighted", token: "--ui-text-highlighted", note: "headings" },
+  { name: "text-default", token: "--ui-text", note: "body copy" },
+  { name: "text-toned", token: "--ui-text-toned", note: "secondary copy" },
+  { name: "text-muted", token: "--ui-text-muted", note: "captions and labels" },
+  { name: "text-dimmed", token: "--ui-text-dimmed", note: "the quietest legible step" },
+  { name: "text-inverted", token: "--ui-text-inverted", note: "type on a solid fill" },
+];
+
+const borders = [
+  { name: "border-muted", token: "--ui-border-muted" },
+  { name: "border-default", token: "--ui-border" },
+  { name: "border-accented", token: "--ui-border-accented" },
+];
+
+const radii = [
+  { name: "rounded-xs", derived: "×0.5" },
+  { name: "rounded-sm", derived: "×1" },
+  { name: "rounded-md", derived: "×1.5" },
+  { name: "rounded-lg", derived: "×2" },
+  { name: "rounded-xl", derived: "×3" },
+  { name: "rounded-2xl", derived: "×4" },
+  { name: "rounded-3xl", derived: "×6" },
+];
+
+const vocabulary = [
+  { step: "/10", role: "a soft, tinted fill" },
+  { step: "/15", role: "that fill, hovered or pressed" },
+  { step: "/25", role: "a hairline ring, and the focus halo" },
+  { step: "/50", role: "a visible ring that still reads as a border" },
+  { step: "/75", role: "a solid fill or solid text, hovered or pressed" },
+  { step: "full", role: "a solid fill, text on the page, or a ring under focus" },
+];
+
+const rail = "grid gap-6 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-12";
+const railTitle = "text-highlighted text-base font-semibold tracking-[-0.015em]";
+const railNote = "text-muted mt-2 max-w-[46ch] text-sm/6 text-pretty";
+const mono = "text-dimmed font-mono text-[0.6875rem] leading-none";
+const section = "border-muted border-t pt-10 mt-14 lg:mt-20";
+---
+
+<Playground
+  eyebrow="foundations"
+  title="One token per color"
+  description="Every hue in the system is a single custom property, spent at different strengths with Tailwind's opacity modifier. That is the whole color surface: changing a brand color is one line, and no role has to be retuned to match it."
+>
+  <section aria-labelledby="color" class={rail}>
+    <div class="lg:sticky lg:top-28 lg:self-start">
+      <h2 id="color" class={railTitle}>Color</h2>
+      <p class={railNote}>
+        Each light value is the shade where the color first clears WCAG AA as text on the
+        page. That one threshold is what lets a single value serve both roles: dark
+        enough to read as type, and dark enough to carry <code
+          class="text-toned font-mono text-xs"
+          data-identifier>text-inverted</code
+        > when it is a solid fill.
+      </p>
+    </div>
+
+    <div class="min-w-0">
+      <ul class="divide-muted border-muted divide-y border-y">
+        {
+          themeColors.map((color) => (
+            <li class="grid gap-3 py-5 @container sm:grid-cols-[8rem_minmax(0,1fr)] sm:items-center sm:gap-6">
+              <div>
+                <p class="text-highlighted font-mono text-xs" data-identifier>
+                  {color}
+                </p>
+                <p class={`${mono} mt-1.5`} data-identifier>
+                  --ui-{color}
+                </p>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2">
+                {strengths.map(({ classes, suffix }) => (
+                  <div
+                    data-checker
+                    class="ring-muted overflow-hidden rounded-md ring ring-inset"
+                  >
+                    <div
+                      class={`${classes(color)} flex h-10 w-24 items-center justify-center`}
+                    >
+                      <span
+                        class={
+                          suffix === ""
+                            ? "text-inverted font-mono text-[0.625rem]"
+                            : `text-${color} font-mono text-[0.625rem]`
+                        }
+                        data-identifier
+                      >
+                        {suffix === "" ? "solid" : suffix}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+
+                <span
+                  class={`ring-${color}/50 flex h-10 items-center rounded-md px-3 ring ring-inset`}
+                >
+                  <span class={`text-${color} font-mono text-[0.625rem]`} data-identifier>
+                    ring /50
+                  </span>
+                </span>
+
+                <span class={`text-${color} text-sm font-medium`}>Aa</span>
+                <span class={`text-${color}/75 text-sm font-medium`}>Aa</span>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="text-muted mt-4 text-sm/6 text-pretty">
+        <code class="text-toned font-mono text-xs" data-identifier>neutral</code> is the
+        seventh value a component's <code class="text-toned font-mono text-xs" data-identifier
+          >color</code
+        > prop accepts, and the one exception. It has no hue to spend, so it borrows the
+        surface tokens below instead — which is why every recipe generates {
+          themeColors.length
+        } entries and writes the seventh by hand.
+      </p>
+    </div>
+  </section>
+
+  <section aria-labelledby="vocabulary" class={`${rail} ${section}`}>
+    <div class="lg:sticky lg:top-28 lg:self-start">
+      <h2 id="vocabulary" class={railTitle}>The strengths</h2>
+      <p class={railNote}>
+        Six steps cover every component in the library, and they mean the same thing
+        wherever they appear. A recipe reaching for a seventh has to add it to the
+        safelist first, which is the check that keeps this vocabulary closed.
+      </p>
+    </div>
+
+    <dl class="divide-muted border-muted grid divide-y border-y sm:grid-cols-2 sm:gap-x-12">
+      {
+        vocabulary.map(({ step, role }) => (
+          <div class="flex items-baseline gap-5 py-3">
+            <dt class="text-toned w-10 shrink-0 font-mono text-xs" data-identifier>
+              {step}
+            </dt>
+            <dd class="text-muted text-sm/6">{role}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <section aria-labelledby="surfaces" class={`${rail} ${section}`}>
+    <div class="lg:sticky lg:top-28 lg:self-start">
+      <h2 id="surfaces" class={railTitle}>Surfaces and type</h2>
+      <p class={railNote}>
+        The neutral half of the system. These flip between light and dark on their own,
+        which is why no recipe in the library carries a single <code
+          class="text-toned font-mono text-xs"
+          data-identifier>dark:</code
+        > class.
+      </p>
+    </div>
+
+    <div class="min-w-0 space-y-10">
+      <div>
+        <p class={mono} data-identifier>background</p>
+        <ul class="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {
+            surfaces.map(({ name, token, note }) => (
+              <li class="ring-muted overflow-hidden rounded-lg ring ring-inset">
+                <div class={`${name} h-12`} />
+                <div class="bg-default px-3 py-2.5">
+                  <p class="text-toned font-mono text-xs" data-identifier>
+                    {name}
+                  </p>
+                  <p class="text-dimmed mt-1 text-xs/5">{note}</p>
+                  <p class={`${mono} mt-1.5`} data-identifier>
+                    {token}
+                  </p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <p class={mono} data-identifier>text</p>
+        <ul class="divide-muted border-muted mt-3 divide-y border-y">
+          {
+            texts.map(({ name, token, note }) => (
+              <li class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-3">
+                <span
+                  class:list={[
+                    "text-base",
+                    name,
+                    name === "text-inverted" && "bg-inverted rounded-sm px-2 py-0.5",
+                  ]}
+                >
+                  {note}
+                </span>
+                <span class="flex items-baseline gap-4">
+                  <code class="text-toned font-mono text-xs" data-identifier>
+                    {name}
+                  </code>
+                  <code class={mono} data-identifier>
+                    {token}
+                  </code>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <p class={mono} data-identifier>border</p>
+        <ul class="mt-3 flex flex-wrap gap-3">
+          {
+            borders.map(({ name, token }) => (
+              <li class={`${name} rounded-lg border px-4 py-3`}>
+                <p class="text-toned font-mono text-xs" data-identifier>
+                  {name}
+                </p>
+                <p class={`${mono} mt-1.5`} data-identifier>
+                  {token}
+                </p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="radius" class={`${rail} ${section}`}>
+    <div class="lg:sticky lg:top-28 lg:self-start">
+      <h2 id="radius" class={railTitle}>Radius</h2>
+      <p class={railNote}>
+        Seven steps, all derived from <code class="text-toned font-mono text-xs" data-identifier
+          >--ui-radius</code
+        >. Softening the whole library is one declaration, and the ratios between a
+        container and the controls inside it hold.
+      </p>
+    </div>
+
+    <ul class="flex flex-wrap items-end gap-3">
+      {
+        radii.map(({ name, derived }) => (
+          <li class="text-center">
+            <div class={`bg-elevated ring-accented size-16 ring ring-inset ${name}`} />
+            <p class="text-toned mt-2 font-mono text-[0.625rem]" data-identifier>
+              {name.replace("rounded-", "")}
+            </p>
+            <p class={`${mono} mt-1`} data-identifier>
+              {derived}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section aria-labelledby="where" class={`${rail} ${section}`}>
+    <h2 id="where" class={railTitle}>Where this comes from</h2>
+    <dl class="grid gap-x-12 gap-y-4 text-sm sm:grid-cols-2">
+      {
+        [
+          {
+            term: "packages/themes/src/tokens/palette.css",
+            value: "The raw ramps, and the only file that names a Tailwind palette.",
+          },
+          {
+            term: "packages/themes/src/tokens/semantic.css",
+            value: `What the ramps mean, in light and dark. ${componentColors.length} colors, one token each.`,
+          },
+          {
+            term: "packages/themes/src/tokens/utilities.css",
+            value: "Tokens become utilities here, and the generated classes are safelisted.",
+          },
+          {
+            term: "packages/themes/src/colors.ts",
+            value: "The helpers that build a recipe's color table instead of writing it out.",
+          },
+        ].map(({ term, value }) => (
+          <div>
+            <dt class="text-toned font-mono text-xs break-all" data-identifier>
+              {term}
+            </dt>
+            <dd class="text-muted mt-1.5 text-sm/6">{value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+</Playground>

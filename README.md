@@ -29,8 +29,8 @@ Then import Tailwind CSS and the theme in your stylesheet:
 @import "@75neo/themes";
 ```
 
-That one import ships the tokens, the `dark` variant and the base layer. Dark mode is a
-`.dark` class on a root element, and nothing else needs wiring.
+That one import ships the tokens, the `light` and `dark` variants and the base layer.
+Dark mode is a `.dark` class on a root element, and nothing else needs wiring.
 
 ## Usage
 
@@ -71,10 +71,18 @@ property, and both themes flip with it:
 
 ```css
 :root {
-  --ui-radius: 0.75rem;
-  --ui-primary: var(--color-teal-600);
+  --ui-radius: 0.5rem;
+  --ui-primary: var(--color-teal-700);
+}
+
+.dark {
+  --ui-primary: var(--color-teal-400);
 }
 ```
+
+Each color is a single token. Recipes spend it at different strengths with Tailwind's
+opacity modifier rather than reaching for a second one, so two lines rebrand the library
+and no role has to be retuned to match.
 
 **Wrap a subtree in `Theme`** to restyle every component below it. Nesting composes:
 
