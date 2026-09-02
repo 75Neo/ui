@@ -12,9 +12,13 @@ const props = defineProps<
 >();
 
 const slots = defineSlots<{
+  /** The label. */
   default?: () => unknown;
+  /** Content before the label. Falls back to `leadingIcon`. */
   leading?: () => unknown;
+  /** Content after the label. Falls back to `trailingIcon`. */
   trailing?: () => unknown;
+  /** Replaces the spinner shown while loading. */
   loadingIcon?: () => unknown;
 }>();
 

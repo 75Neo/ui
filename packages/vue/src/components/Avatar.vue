@@ -13,7 +13,14 @@ const props = defineProps<
 >();
 
 defineSlots<{
+  /** Replace the fallback. Falls back to the initials in `content`. */
   fallback?: (props: { content: string | undefined }) => unknown;
+  /**
+   * Render a custom image element in place of the default one, for `NuxtImg` or
+   * anything else that has to merge Ark's own image props. Bind `props`, `class` and
+   * `data-slot="image"`, and honour `hidden` with `visibility` if your element drops
+   * the attribute.
+   */
   image?: (props: {
     src: string;
     alt: string;
@@ -30,14 +37,14 @@ const theme = useResolvedTheme(
   () => props.class as string | undefined,
 );
 
-/** A non-string fallback is a component, and is rendered instead of any text. */
+/** A non-string fallback is a component, and renders instead of any text. */
 const fallbackIsComponent = computed(
   () => props.fallback != null && typeof props.fallback !== "string",
 );
 
 /**
- * Text for the fallback: an explicit string wins outright, a name falls back to its
- * initials, and anything else leaves the fallback empty.
+ * Text for the fallback. An explicit string wins outright, a name gives its initials,
+ * and anything else leaves the fallback empty.
  */
 const fallbackText = computed(() => {
   if (typeof props.fallback === "string") return props.fallback;
@@ -48,7 +55,7 @@ const fallbackText = computed(() => {
 /**
  * Ark's own image props, split the way the `image` slot takes them. `hidden` comes out
  * on its own because Ark hides the image until it loads and some components drop the
- * attribute -- Nuxt's `NuxtImg` does, so a custom image honours it with `visibility`.
+ * attribute, so a custom image honours it with `visibility` instead.
  */
 function imageDetails(api: { getImageProps: () => object }) {
   const { hidden, ...rest } = api.getImageProps() as Record<string, unknown>;

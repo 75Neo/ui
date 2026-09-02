@@ -3,7 +3,10 @@ import { type ThemeConfig, layerTheme } from "@75neo/core";
 import { ThemeContext } from "../context/ThemeContext";
 
 export interface ThemeProps {
-  /** Overrides for any subset of the installed components. */
+  /**
+   * Overrides for any subset of the installed components. Keep the object stable: a
+   * fresh literal on every render re-folds the theme chain.
+   */
   theme: ThemeConfig;
   children?: ReactNode;
 }
@@ -11,10 +14,16 @@ export interface ThemeProps {
 /**
  * Restyle every component below this point.
  *
- * Nesting composes: an inner `Theme` is folded onto the one it sits inside when it
- * mounts, so a component reads one flat config rather than walking a chain. Layering
- * happens here rather than per component, which is why `theme` should be a stable
- * object -- a fresh literal on every render re-folds the chain.
+ * @remarks
+ * Nesting composes. An inner `Theme` is folded onto the one it sits inside, so a
+ * component reads one flat config rather than walking a chain.
+ *
+ * @example
+ * ```tsx
+ * <Theme theme={{ button: { ui: { base: "rounded-full" } } }}>
+ *   <Button>Rounded</Button>
+ * </Theme>
+ * ```
  */
 export function Theme({ theme, children }: ThemeProps) {
   const parent = useContext(ThemeContext);

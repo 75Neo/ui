@@ -2,16 +2,13 @@ import { tv, type VariantProps } from "tailwind-variants";
 import type { ComponentContract, MustBeNever, ThemeOverride, TVSlot } from "@75neo/core";
 
 /**
- * Orientation is styled through `data-orientation` rather than declared as a variant.
- * Ark stamps that attribute on the root and on every item part, so `base` reads its own
- * attribute and the remaining slots read the root's through the `accordion` group. That
- * keeps the variant matrix at nine combinations instead of twenty-seven, and it means
- * the slots we render ourselves -- `header` and `body`, which Ark knows nothing about --
- * respond to orientation the same way Ark's own parts do.
+ * Recipe for the Accordion: a stack of collapsible rows.
  *
- * `content` bridges Ark's measured `--height` / `--width` onto the repo's
- * `--ui-collapsible-height` / `--ui-collapsible-width`, which is what the keyframes in
- * `src/tokens/keyframes.css` animate against.
+ * @remarks
+ * Orientation is not a variant. Every slot styles itself off the `data-orientation`
+ * attribute Ark sets, which keeps the variant matrix at nine combinations rather than
+ * twenty-seven. The `content` slot hands Ark's measured size to the open and close
+ * keyframes in `src/tokens/keyframes.css`.
  */
 export const accordion = tv({
   slots: {
@@ -78,46 +75,57 @@ export type AccordionUI = TVSlot<AccordionSlots>;
 export type AccordionTheme = ThemeOverride<AccordionSlots, AccordionVariants>;
 
 /**
- * One row of the accordion. `F` is however the framework spells an icon: a `ReactNode`
- * in React, a `Component` in Vue.
+ * One row of the accordion.
  *
- * `label` and `content` are plain strings because that is what the great majority of
- * accordions hold. Anything richer goes through the adapters' escape hatches -- render
- * props in React, scoped slots in Vue -- which keeps this type serializable.
+ * @typeParam F - However the framework spells an icon: `ReactNode` in React,
+ * `Component` in Vue.
+ *
+ * @remarks
+ * The text is plain strings, which keeps an item serializable. For richer markup use
+ * the adapter's escape hatch: render props in React, scoped slots in Vue.
  */
 export interface AccordionItem<F> {
+  /** Identifies the row. Pass it to `defaultValue` to open the row up front. */
   value: string;
+  /** Heading text. */
   label: string;
+  /** Body text, shown while the row is open. */
   content: string;
   disabled?: boolean;
+  /** Replaces the shared indicator icon on this row alone. */
   icon?: F;
 }
 
 /**
- * Everything an Accordion accepts that is not framework-specific.
+ * Everything an Accordion accepts in both frameworks. Each adapter adds its own
+ * framework props on top.
  *
- * The variant props are written out rather than derived from the recipe because
- * `@vue/compiler-sfc` resolves `defineProps` types from source alone: it cannot
- * evaluate the recipe's inferred type, so neither `VariantProps<typeof accordion>`
- * nor a mapped type over `accordion.variants` reaches Vue as finite keys.
- * `AccordionVariantsAreExposed` below closes the gap that leaves.
+ * @typeParam F - However the framework spells an icon.
+ *
+ * @remarks
+ * The variant props are written out by hand because `defineProps` in Vue cannot read
+ * them off the recipe. The guard below keeps them in step.
  */
 export interface AccordionProps<F> {
+  /** Per-slot class overrides. */
   ui?: AccordionUI;
   variant?: AccordionVariants["variant"];
   size?: AccordionVariants["size"];
+  /** The rows to render, in order. */
   items: AccordionItem<F>[];
+  /** Allow more than one row open at a time. */
   multiple?: boolean;
+  /** Allow closing the open row, leaving none open. */
   collapsible?: boolean;
+  /** Disable every row. */
   disabled?: boolean;
+  /** @defaultValue `"vertical"` */
   orientation?: "horizontal" | "vertical";
+  /** Replaces the chevron on every row. */
   indicatorIcon?: F;
 }
 
-/**
- * Compile-time guard: adding a variant to the recipe without adding the matching
- * prop above is a type error here rather than a prop that silently does nothing.
- */
+/** Compile-time guard: a recipe variant with no matching prop above is a type error. */
 export type AccordionVariantsAreExposed = MustBeNever<
   Exclude<keyof AccordionVariants, keyof AccordionProps<unknown>>
 >;

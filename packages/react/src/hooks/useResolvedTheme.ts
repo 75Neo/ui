@@ -5,9 +5,15 @@ import { ThemeContext } from "../context/ThemeContext";
 /**
  * Resolve a component's classes and variant props against the ambient theme.
  *
- * The whole cascade lives in `resolveTheme`; this reads the theme a `Theme` put in
- * context and hands it over. It is deliberately not memoized -- `resolveTheme` is
- * cheap and stateless, and the props bag is a fresh object on every render anyway.
+ * @param recipe - The component's recipe.
+ * @param key - The component's registry name, such as `"button"`.
+ * @param props - The props the caller passed, including its `ui`.
+ * @param className - A call-site class string. It reaches the `base` slot only.
+ * @returns One finished class string per slot, plus the variant props actually used.
+ *
+ * @remarks
+ * The cascade itself lives in `resolveTheme`. Not memoized on purpose: resolving is
+ * cheap, and the props bag is a fresh object on every render anyway.
  */
 export function useResolvedTheme<R extends Recipe, K extends ComponentKey>(
   recipe: R,

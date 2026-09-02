@@ -2,12 +2,12 @@ import type { TVSlot } from "./tv";
 
 declare global {
   /**
-   * The registry of every themeable component, keyed by its registry name.
+   * The registry of every themeable component, keyed by registry name.
    *
-   * Empty here on purpose: each component module in `@75neo/themes` augments this
-   * interface with one entry, so `ThemeConfig` and everything derived from it grow a
-   * key as soon as a component exists. That is what lets a `Theme` be checked against
-   * the components actually installed, without `@75neo/core` knowing any of them.
+   * @remarks
+   * Empty here on purpose. Each component module in `@75neo/themes` augments this
+   * interface with one entry, so a `Theme` is type-checked against the components you
+   * actually installed.
    */
   interface Neo75ComponentThemes {}
 }
@@ -15,15 +15,14 @@ declare global {
 /** Every themeable component, keyed by registry name. */
 export type ComponentThemes = Neo75ComponentThemes;
 
-/** The registry name of a themeable component, e.g. `"button"`. */
+/** The registry name of a themeable component, such as `"button"`. */
 export type ComponentKey = keyof ComponentThemes;
 
-/**
- * What a component tells the theme layer about itself: the slots it renders and the
- * variant props it accepts. One of these is registered per component.
- */
+/** What a component tells the theme layer about itself. One is registered per component. */
 export interface ComponentContract<U extends string = string, P extends object = object> {
+  /** The slot names the component renders. */
   slots: U;
+  /** The variant props the component accepts. */
   props: P;
 }
 
@@ -36,25 +35,32 @@ export type PropsOf<K extends ComponentKey> =
   ComponentThemes[K] extends ComponentContract<string, infer P> ? P : object;
 
 /**
- * What one `Theme` layer says about one component: extra classes per slot, and new
- * defaults for its variant props.
- *
- * Both are partial. A layer states only what it changes; `resolveTheme` folds it into
- * whatever the layers above and below it said.
+ * What one theme layer says about one component. Both fields are partial: state only
+ * what you want to change.
  */
 export type ThemeOverride<U extends string = string, P extends object = object> = {
+  /** Extra classes, per slot. */
   ui?: TVSlot<U>;
+  /** New defaults for the component's variant props. */
   props?: Partial<P>;
 };
 
-/** `ThemeOverride` with the slots and props of a particular registered component. */
+/** {@link ThemeOverride} for one particular registered component. */
 export type ThemeOverrideOf<K extends ComponentKey> = ThemeOverride<SlotsOf<K>, PropsOf<K>>;
 
 /**
- * A whole `Theme`: an override for any subset of the registered components.
+ * A whole theme: an override for any subset of the registered components.
  *
+ * @remarks
  * Plain data with no functions or class instances, so a theme stays serializable and
  * safe to reuse across trees.
+ *
+ * @example
+ * ```ts
+ * const theme: ThemeConfig = {
+ *   button: { ui: { base: "rounded-full" }, props: { color: "neutral" } },
+ * };
+ * ```
  */
 export type ThemeConfig = {
   [K in ComponentKey]?: ThemeOverrideOf<K>;
@@ -63,9 +69,8 @@ export type ThemeConfig = {
 /**
  * Compile-time assertion that `T` is empty.
  *
+ * @remarks
  * Component modules use it to turn "the recipe gained a variant, the props interface
- * did not" into a type error naming the variant that went missing. That check earns
- * its keep because `@vue/compiler-sfc` cannot derive props from a recipe, so every
- * component restates its variant props by hand and can drift from the recipe.
+ * did not" into a type error naming the missing variant.
  */
 export type MustBeNever<T extends never> = T;

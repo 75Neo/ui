@@ -2,17 +2,12 @@ import { tv, type VariantProps } from "tailwind-variants";
 import type { ComponentContract, MustBeNever, ThemeOverride, TVSlot } from "@75neo/core";
 
 /**
- * Carousel wraps Ark UI's embla-backed slideshow.
+ * Recipe for the Carousel: a paged slideshow with controls and indicators.
  *
- * `orientation` is styled through `data-orientation` rather than declared as a
- * variant — Ark stamps it on the root and on every part, so `itemGroup` and
- * `control` read it without inflating the variant matrix. The item and
- * indicator slots read the root's orientation through the `carousel` group
- * (`group/carousel`) the same way `accordion` uses `group/accordion`.
- *
- * No variants: layout is driven by Ark's own `slidesPerPage` / `spacing` /
- * `autoplay` props rather than a tailwind-variants matrix, so there is no
- * compound table to keep total.
+ * @remarks
+ * There are no variants. Layout comes from the component's own props, and orientation
+ * is styled off the `data-orientation` attribute Ark sets rather than declared as a
+ * variant.
  */
 export const carousel = tv({
   slots: {
@@ -42,51 +37,50 @@ export type CarouselTheme = ThemeOverride<CarouselSlots, CarouselVariants>;
 /**
  * One slide of the carousel.
  *
- * `content` is a plain string for the common case. Anything richer goes
- * through the adapters' escape hatches — render props in React, scoped slots
- * in Vue — which keeps this type serializable and the two adapters in sync.
+ * @remarks
+ * The text is a plain string, which keeps a slide serializable. For richer markup use
+ * the adapter's escape hatch: render props in React, scoped slots in Vue.
  */
 export interface CarouselItem {
+  /** Identifies the slide. */
   id: string;
+  /** Slide text. */
   content?: string;
 }
 
 /**
- * Everything a Carousel accepts that is not framework-specific. `F` is
- * however the framework spells an icon: a `ReactNode` in React, a `Component`
- * in Vue.
+ * Everything a Carousel accepts in both frameworks. Each adapter adds its own framework
+ * props on top.
  *
- * The value that drives the current page is missing on purpose. It is the one
- * thing the two frameworks genuinely spell differently — `page` /
- * `defaultPage` / `onPageChange` in React against `v-model:page` / `defaultPage`
- * in Vue — so each adapter picks it up from Ark's own root props rather than
- * restating a shared shape neither of them would use as written.
+ * @typeParam F - However the framework spells an icon: `ReactNode` in React,
+ * `Component` in Vue.
  *
- * The variant props are written out rather than derived from the recipe
- * because `@vue/compiler-sfc` resolves `defineProps` types from source alone:
- * it cannot evaluate the recipe's inferred type, so neither
- * `VariantProps<typeof carousel>` nor a mapped type over `carousel.variants`
- * reaches Vue as finite keys. `CarouselVariantsAreExposed` below closes the gap
- * that leaves.
+ * @remarks
+ * The current page is not here: React spells it `page` and `onPageChange`, Vue spells
+ * it `v-model:page`, so each adapter takes it from Ark's root instead.
  */
 export interface CarouselProps<F> {
+  /** Per-slot class overrides. */
   ui?: CarouselUI;
+  /** The slides to render, in order. */
   items: CarouselItem[];
+  /** @defaultValue `"horizontal"` */
   orientation?: "horizontal" | "vertical";
+  /** Wrap around instead of stopping at the last slide. */
   loop?: boolean;
+  /** Advance on a timer. Pass a delay in milliseconds to set the pace. */
   autoplay?: boolean | { delay: number };
+  /** Slides visible per page. */
   slidesPerPage?: number;
+  /** Gap between slides, as a CSS length. */
   spacing?: string;
+  /** Let the pointer drag the track. */
   allowMouseDrag?: boolean;
   prevIcon?: F;
   nextIcon?: F;
 }
 
-/**
- * Compile-time guard: adding a variant to the recipe without adding the
- * matching prop above is a type error here rather than a prop that silently
- * does nothing.
- */
+/** Compile-time guard: a recipe variant with no matching prop above is a type error. */
 export type CarouselVariantsAreExposed = MustBeNever<
   Exclude<keyof CarouselVariants, keyof CarouselProps<unknown>>
 >;

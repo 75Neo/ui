@@ -6,10 +6,9 @@ import { type CarouselItem, type CarouselProps, carousel } from "@75neo/themes";
 import { useResolvedTheme } from "../composables/theme";
 
 /**
- * The page lives outside the shared contract: Vue spells a controlled page
- * `v-model:page` (or `page` + `update:page`), React spells it `page` /
- * `onPageChange`. `defaultPage` is the uncontrolled counterpart Ark's root
- * already takes.
+ * The current page lives outside the shared contract, because React and Vue spell a
+ * controlled value too differently to share one type. Here it is `v-model:page`, with
+ * `defaultPage` as the uncontrolled counterpart Ark's root already takes.
  */
 const props = defineProps<
   CarouselProps<Component> & {

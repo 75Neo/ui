@@ -6,137 +6,117 @@
 
 # 75NeoUI
 
-75NeoUI harnesses the combined strengths of [Ark UI](https://ark-ui.com), [Tailwind CSS](https://tailwindcss.com) and [Tailwind Variants](https://www.tailwind-variants.org) to offer a refined set of tools for building sophisticated, accessible and highly performant interfaces — one design system, two frameworks.
+75NeoUI builds on [Ark UI](https://ark-ui.com), [Tailwind CSS](https://tailwindcss.com) and
+[Tailwind Variants](https://www.tailwind-variants.org) to ship sophisticated, accessible,
+performant interfaces — one design system, two frameworks.
 
-Thoughtfully crafted for products people live in. Every token, variant and interaction is tuned for clarity, rhythm and comfort — so interfaces feel modern, consistent and quietly confident at any scale.
-
-## Documentation
-
-Visit the documentation to explore components, theming and design tokens.
-
-- **Docs site:** `apps/docs` (Astro) — run `pnpm dev:docs` locally
-- **Playground:** `apps/playground` (Astro) — run `pnpm dev:play` locally, every component rendered in React and Vue side by side
+Every token, variant and interaction is tuned for clarity, rhythm and comfort, so
+interfaces stay consistent and quietly confident at any scale.
 
 ## Installation
 
-```bash [pnpm]
-pnpm add @75neo/react @75neo/themes
-# or for Vue
-pnpm add @75neo/vue @75neo/themes
+```sh
+pnpm add @75neo/react   # or @75neo/vue
 ```
 
-```bash [yarn]
-yarn add @75neo/react @75neo/themes
-# or for Vue
-yarn add @75neo/vue @75neo/themes
-```
+Both adapters pull `@75neo/themes` in with them. Swap `pnpm add` for `npm install`,
+`yarn add` or `bun add` as you prefer. React needs 18 or newer, Vue 3.5 or newer.
 
-```bash [npm]
-npm install @75neo/react @75neo/themes
-# or for Vue
-npm install @75neo/vue @75neo/themes
-```
+Then import Tailwind CSS and the theme in your stylesheet:
 
-```bash [bun]
-bun add @75neo/react @75neo/themes
-# or for Vue
-bun add @75neo/vue @75neo/themes
-```
-
-### React
-
-1. Import Tailwind CSS and the 75NeoUI theme in your CSS:
-
-```css [app/assets/css/main.css]
+```css
 @import "tailwindcss";
 @import "@75neo/themes";
 ```
 
-That single import ships the tokens, the `dark` variant, and the base layer. Dark mode is a `.dark` class on a root element; nothing else needs wiring. See `packages/themes/README.md` for the token vocabulary and `packages/themes/src/tokens/colors.css:1-387` for every custom property.
+That one import ships the tokens, the `dark` variant and the base layer. Dark mode is a
+`.dark` class on a root element, and nothing else needs wiring.
 
-2. Use components:
+## Usage
 
-```tsx [app.tsx]
-import { Button, Theme } from "@75neo/react";
+```tsx
+import { Button } from "@75neo/react";
 
 export function App() {
   return (
-    <Theme>
+    <>
       <Button variant="solid" color="primary">
         Get started
       </Button>
       <Button variant="soft" color="neutral" loading>
         Saving
       </Button>
-    </Theme>
+    </>
   );
 }
 ```
 
-### Vue
-
-1. Import Tailwind CSS and the theme — same CSS as above:
-
-```css [app/assets/css/main.css]
-@import "tailwindcss";
-@import "@75neo/themes";
-```
-
-2. Use components:
-
-```vue [App.vue]
+```vue
 <script setup lang="ts">
-import { Button, Theme } from "@75neo/vue";
+import { Button } from "@75neo/vue";
 </script>
 
 <template>
-  <Theme>
-    <Button variant="solid" color="primary">Get started</Button>
-    <Button variant="soft" color="neutral" :loading="true">Saving</Button>
-  </Theme>
+  <Button variant="solid" color="primary">Get started</Button>
+  <Button variant="soft" color="neutral" loading>Saving</Button>
 </template>
 ```
 
-Learn more about theming via CSS variables (`--ui-radius`, `--ui-primary`, …) and `ui` slot overrides in `packages/themes/README.md` and `packages/core/src/types/theme.ts:1-32`. The cascade order (recipe → `Theme` layers → `ui` prop → `class` on the base slot) is asserted in `packages/core/src/utils/__tests__/resolve.test.ts`.
+## Theming
 
-## Contribution
+Three ways to restyle, from broadest to narrowest.
 
-Thank you for considering contributing to 75NeoUI.
+**Redefine the tokens** in your own CSS, after the import. Every value is a plain custom
+property, and both themes flip with it:
 
-- **Reporting bugs:** open an issue with a minimal reproduction.
-- **Suggestions:** open an issue or discussion — we love thoughtful proposals.
-
-> [!TIP]
-> We provide contributing guidelines through [`AGENTS.md`](https://github.com/75Neo/ui/blob/main/AGENTS.md) for AI assistants to help you contribute to 75NeoUI. It is automatically picked up by all AI coding agents and guides through project commands, quality checks and workflow.
-
-## Local Development
-
-```sh
-# install
-pnpm install
-
-# build all packages (core → themes → react/vue → apps)
-pnpm build
-
-# playground and docs
-pnpm dev:play   # Astro playground on http://localhost:4321
-pnpm dev:docs   # Astro docs
-
-# quality checks (see AGENTS.md)
-pnpm typecheck
-pnpm lint
-pnpm format:check
+```css
+:root {
+  --ui-radius: 0.75rem;
+  --ui-primary: var(--color-teal-600);
+}
 ```
 
-Follow the setup in `mise.toml:1-3` (`mise install` gives Node 24 + pnpm 11) and `package.json:31-33` (`node >=24`, `pnpm ^11.20.0`).
+**Wrap a subtree in `Theme`** to restyle every component below it. Nesting composes:
 
-## Credits
+```tsx
+<Theme theme={{ button: { ui: { base: "rounded-full" }, props: { color: "neutral" } } }}>
+  <Button>Rounded and neutral by default</Button>
+</Theme>
+```
 
-- [ark-ui/ark](https://github.com/chakra-ui/ark)
-- [tailwindlabs/tailwindcss](https://github.com/tailwindlabs/tailwindcss)
-- [heroui-inc/tailwind-variants](https://github.com/heroui-inc/tailwind-variants)
-- [vercel/turborepo](https://github.com/vercel/turborepo)
+**Pass `ui` to one component** to restyle that call alone. The keys are the component's
+slots:
 
-## License
+```tsx
+<Button ui={{ base: "rounded-full", label: "tracking-wide" }}>One-off</Button>
+```
 
-MIT
+All three settle through one cascade: the recipe, then `Theme` layers, then the `ui` prop,
+then `class` on the base slot. Tailwind-merge resolves conflicts, so a later layer replaces
+a conflicting utility and everything else survives.
+[`packages/themes/README.md`](packages/themes/README.md) has the token vocabulary.
+
+## Documentation
+
+- **Docs site:** `pnpm dev:docs` runs `apps/docs`
+- **Playground:** `pnpm dev:play` renders every component in React and Vue side by side
+
+## Local development
+
+```sh
+mise install   # Node 24 and pnpm 11
+pnpm install
+pnpm build     # core → themes → react/vue → apps
+```
+
+Before opening a pull request, run what CI runs: `pnpm format:check`, `pnpm build`,
+`pnpm test`, `pnpm lint`, `pnpm typecheck`.
+
+## Contributing
+
+Thank you for considering contributing to 75NeoUI. Open an issue with a minimal
+reproduction for a bug, or an issue or discussion for a proposal.
+
+> [!TIP]
+> [`AGENTS.md`](AGENTS.md) carries the contributing guidelines in the form AI coding agents
+> pick up automatically: project commands, architecture, quality checks and workflow.

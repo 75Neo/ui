@@ -9,9 +9,9 @@ import {
 import { useResolvedTheme } from "../composables/theme";
 
 /**
- * The value lives outside the shared contract: Vue spells a controlled angle `v-model`,
- * React spells it `value` / `onValueChange`, and neither reads well written as one type.
- * `defaultValue` is the uncontrolled counterpart Ark's root already takes.
+ * The angle lives outside the shared contract, because React and Vue spell a controlled
+ * value too differently to share one type. Here it is `v-model`, with `defaultValue` as
+ * the uncontrolled counterpart Ark's root already takes.
  */
 const props = defineProps<
   AngleSliderProps & {
@@ -43,10 +43,7 @@ const theme = useResolvedTheme(
     :name="props.name"
   >
     <Ark.Control data-slot="control" :class="theme.class.control">
-      <!--
-        The ring is decoration: the thumb below carries the slider role and the value,
-        so nothing here needs to reach the accessibility tree.
-      -->
+      <!-- Decoration only. The thumb below carries the slider role and the value. -->
       <svg data-slot="dial" :class="theme.class.dial" viewBox="0 0 100 100" aria-hidden="true">
         <circle
           data-slot="track"
@@ -80,10 +77,7 @@ const theme = useResolvedTheme(
       </Ark.MarkerGroup>
 
       <div data-slot="content" :class="theme.class.content">
-        <!--
-          Ark fills an empty ValueText with `valueAsDegree`, which reads "45deg". The
-          readout is the centrepiece of this design, so it spells the degree sign.
-        -->
+        <!-- Ark's own text reads "45deg"; this readout spells the degree sign. -->
         <Ark.Context v-if="props.showValue" v-slot="api">
           <Ark.ValueText data-slot="value" :class="theme.class.value">
             {{ api.value }}°

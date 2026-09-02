@@ -1,13 +1,16 @@
 /**
- * A `tailwind-variants` recipe, seen only through the parts every recipe exposes.
+ * A `tailwind-variants` recipe, seen through the parts every recipe exposes.
  *
- * Recipes are self-describing at runtime: `variants` carries every variant key and
- * its values, `slots` carries every slot name, `variantKeys` carries the keys in
- * declaration order. Nothing built on top of a recipe needs to restate any of it.
+ * @remarks
+ * Recipes describe themselves at runtime, so nothing built on one needs to restate its
+ * slots or variants.
  */
 export interface Recipe {
+  /** Every variant key, with the values it accepts. */
   variants: Record<string, Record<string, unknown>>;
+  /** Every slot the recipe renders classes for. */
   slots: Record<string, unknown>;
+  /** The variant keys, in declaration order. */
   variantKeys: readonly (string | number)[];
 }
 
@@ -20,10 +23,17 @@ export type RecipeVariants<R extends Recipe> = {
 };
 
 /**
- * The values a recipe accepts for one variant, in declaration order.
+ * List the values a recipe accepts for one variant, in declaration order.
  *
- * Typed as the literal union rather than `string[]`, so callers can feed the result
- * straight back into the component's props.
+ * @param recipe - The recipe to read.
+ * @param key - The variant to list, such as `"color"`.
+ * @returns The declared values, typed as literals so they can be passed straight back
+ * to the component as props.
+ *
+ * @example
+ * ```ts
+ * variantValues(button, "size"); // ["xs", "sm", "md", "lg", "xl"]
+ * ```
  */
 export function variantValues<R extends Recipe, K extends keyof R["variants"]>(
   recipe: R,

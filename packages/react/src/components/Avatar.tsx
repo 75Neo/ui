@@ -9,15 +9,14 @@ export interface AvatarProps
     Pick<React.ComponentProps<typeof Ark.Root>, "ids" | "onStatusChange">,
     AvatarContract<React.ReactNode> {
   /**
-   * Render a custom image element in place of the default `<img>`, for `next/image`
-   * or anything else that has to merge Ark's own image props.
+   * Render a custom image element in place of the default one, for `next/image` or
+   * anything else that has to merge Ark's own image props. Return `null` for no image.
    *
-   * Everything Ark would have put on the element arrives in `props`, minus `hidden`,
-   * which is handed over separately because Ark hides the image until it loads and
-   * some components drop the attribute -- Next's `Image` does, so honour it with
-   * `visibility` instead. The caller also applies `className` and `data-slot="image"`,
-   * without which `ui.image` and theme overrides miss the element. Return `null` to
-   * render no image at all.
+   * @remarks
+   * Spread `props` onto the element, and apply `className` and `data-slot="image"` too,
+   * or theme overrides will miss it. Honour `hidden` yourself: Ark hides the image
+   * until it loads, and some components drop the attribute, so apply `visibility`
+   * instead when your element is one of them.
    */
   renderImage?: (details: {
     src: string;
@@ -42,8 +41,8 @@ export function Avatar({
 }: AvatarProps) {
   const theme = useResolvedTheme(avatar, "avatar", { ui, size, shape }, className);
 
-  // An explicit fallback wins outright, including `null` to render nothing at all;
-  // a name falls back to its initials, and an unusable name to nothing.
+  // An explicit fallback wins outright, `null` included. Otherwise a name gives its
+  // initials, and an unusable name gives nothing.
   const initials = name ? getAvatarInitials(name) : "";
   const fallbackContent = fallback !== undefined ? fallback : initials || undefined;
 

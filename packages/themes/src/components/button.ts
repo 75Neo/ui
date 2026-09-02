@@ -2,14 +2,13 @@ import { tv, type VariantProps } from "tailwind-variants";
 import type { ComponentContract, MustBeNever, ThemeOverride, TVSlot } from "@75neo/core";
 
 /**
- * A button is one interactive box with three optional children: a leading slot, a
- * label, and a trailing slot. `variant` and `color` are independent -- the four
- * variants each pick a different way to spend a color, and the compound table below
- * holds one entry per pair.
+ * Recipe for the Button: one interactive box holding an optional leading slot, a label,
+ * and an optional trailing slot.
  *
- * `size` styles `base` directly, while the icon slots pick their size up from
- * `compoundSlots`, so the two icon boxes never drift apart or out of step with the
- * text.
+ * @remarks
+ * `variant` and `color` are independent. Each variant spends the color differently, so
+ * the compound table below carries one entry per pair. `size` styles `base` while
+ * `compoundSlots` sizes both icon boxes, which keeps the icons in step with the text.
  */
 export const button = tv({
   slots: {
@@ -272,33 +271,36 @@ export type ButtonUI = TVSlot<ButtonSlots>;
 export type ButtonTheme = ThemeOverride<ButtonSlots, ButtonVariants>;
 
 /**
- * Everything a Button accepts that is not framework-specific. `F` is however the
- * framework spells an icon: a `ReactNode` in React, a `Component` in Vue.
+ * Everything a Button accepts in both frameworks. Each adapter adds its own framework
+ * props on top.
  *
- * The variant props are written out rather than derived from the recipe because
- * `@vue/compiler-sfc` resolves `defineProps` types from source alone: it cannot
- * evaluate the recipe's inferred type, so neither `VariantProps<typeof button>`
- * nor a mapped type over `button.variants` reaches Vue as finite keys.
- * `ButtonVariantsAreExposed` below closes the gap that leaves.
+ * @typeParam F - However the framework spells an icon: `ReactNode` in React,
+ * `Component` in Vue.
+ *
+ * @remarks
+ * The variant props are written out by hand because `defineProps` in Vue cannot read
+ * them off the recipe. The guard below keeps them in step.
  */
 export interface ButtonProps<F> {
+  /** Per-slot class overrides. */
   ui?: ButtonUI;
   variant?: ButtonVariants["variant"];
   size?: ButtonVariants["size"];
   color?: ButtonVariants["color"];
   disabled?: boolean;
+  /** Shows a spinner in the leading slot and disables the button. */
   loading?: boolean;
+  /** Replaces the default spinner. */
   loadingIcon?: F;
+  /** Reserve the leading slot even when it holds nothing, to keep labels aligned. */
   leading?: boolean;
+  /** Reserve the trailing slot even when it holds nothing. */
   trailing?: boolean;
   leadingIcon?: F;
   trailingIcon?: F;
 }
 
-/**
- * Compile-time guard: adding a variant to the recipe without adding the matching
- * prop above is a type error here rather than a prop that silently does nothing.
- */
+/** Compile-time guard: a recipe variant with no matching prop above is a type error. */
 export type ButtonVariantsAreExposed = MustBeNever<
   Exclude<keyof ButtonVariants, keyof ButtonProps<unknown>>
 >;
@@ -310,22 +312,18 @@ declare global {
 }
 
 /**
- * Decide whether Button's optional `leading` and `trailing` slots render.
+ * Decide whether Button's optional leading and trailing slots render.
  *
- * Both are wrappers with nothing of their own to show, and both are sized by the
- * recipe -- `size-4` at `md`, plus the `gap` `base` sets between children. Rendering
- * one that stays empty therefore costs real width, so a slot renders only when
- * something will fill it, or when the caller asked for the space on purpose.
+ * @param props - `hasLeading` and `hasTrailing` are the adapter's answer to "is there
+ * content for this slot": a non-null icon prop in React, an icon prop or a filled slot
+ * in Vue.
+ * @returns Whether to render each slot.
  *
- * Three things fill the leading slot: the caller reserved it with `leading`, the
- * caller supplied leading content, or the button is loading -- the spinner is drawn
- * in the leading slot, so `loading` implies it. Trailing has no such third case,
- * which is the whole of the asymmetry below.
- *
- * `hasLeading` and `hasTrailing` are each framework's answer to "is there content for
- * this slot": a non-null icon prop in React, an icon prop or a filled `<slot>` in Vue.
- * The frameworks answer that question differently but apply the same rule to the
- * answer, so the rule lives here instead of twice in the adapters.
+ * @remarks
+ * An empty slot still costs width, since the recipe sizes it and `base` puts a gap
+ * between children. So a slot renders only when something fills it or the caller
+ * reserved it on purpose. Loading counts as leading content, because the spinner is
+ * drawn there. That is the whole of the asymmetry between the two.
  */
 export function showButtonSlots(props: {
   loading?: boolean;

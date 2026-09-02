@@ -2,14 +2,14 @@ import type { Recipe, RecipeSlots, RecipeVariants } from "../types/recipe";
 import type { ThemeOverride } from "../types/theme";
 import type { TVSlot } from "../types/tv";
 
-/** A recipe, called. Recipes with slots return one class function per slot. */
+/** A recipe, called: recipes with slots return one class function per slot. */
 type InvokableRecipe = (
   props: Record<string, unknown>,
 ) => Record<string, (args?: { class?: unknown }) => string>;
 
 /**
- * What a component renders with: no merging is left to do, so each slot's string goes
- * straight onto the element carrying that slot's `data-slot`.
+ * What a component renders with. Nothing is left to merge: each string goes straight
+ * onto the element carrying that slot's `data-slot`.
  */
 export interface ResolvedTheme<R extends Recipe> {
   /** The variant props the recipe was resolved with, after theme defaults. */
@@ -21,23 +21,21 @@ export interface ResolvedTheme<R extends Recipe> {
 /**
  * Resolve a component's classes and variant props from every layer that can set them.
  *
- * The cascade, weakest first:
+ * The cascade runs weakest to strongest: the recipe's own classes, then `override.ui`,
+ * then `props.ui`, then `className`. Tailwind-merge settles conflicts, so a later layer
+ * replaces a conflicting utility and everything non-conflicting survives. Variant props
+ * resolve the same way, with the recipe's `defaultVariants` as the last fallback.
  *
- * 1. the recipe's own classes;
- * 2. `override.ui`, the theme layers already folded together by `layerTheme`;
- * 3. `props.ui`, the component's own per-slot override;
- * 4. `className`, written at the call site, which applies to `base` only.
+ * @param recipe - The component's recipe.
+ * @param override - The theme layers, already folded together by `layerTheme`.
+ * @param props - The props the caller passed, including its `ui`.
+ * @param className - A call-site class string. It reaches the `base` slot only.
+ * @returns One finished class string per slot, plus the variant props actually used.
  *
- * Conflicting utilities are settled by tailwind-merge, so a later layer replaces an
- * earlier one rather than appending to it; non-conflicting utilities from every layer
- * survive.
- *
- * Variant props resolve the same way: whatever the caller passed wins, falling back to
- * the theme's `props` defaults, falling back to the recipe's own `defaultVariants`.
- * Which props those are comes from `recipe.variantKeys`, so a variant added to a recipe
- * flows through without editing this function or its callers.
- *
- * Cheap and free of state: safe to call on every render rather than memoize.
+ * @remarks
+ * Cheap and stateless, so call it on every render rather than memoize it. Which props
+ * count as variants comes from `recipe.variantKeys`, so a new variant flows through
+ * with no change here or in any component.
  */
 export function resolveTheme<R extends Recipe>(
   recipe: R,

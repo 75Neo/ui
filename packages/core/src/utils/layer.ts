@@ -4,11 +4,8 @@ import { cn } from "tailwind-variants";
 import { defu } from "defu";
 
 /**
- * Layer one component's override onto another.
- *
- * Classes merge per slot with tailwind-merge settling conflicts, so the inner layer
- * replaces a conflicting utility and leaves the rest of the outer layer standing.
- * Props are a plain override, inner winning.
+ * Layer one component's override onto another. Classes merge per slot, props are a
+ * plain override. The inner layer wins either way.
  */
 function layerOverride(outer: ThemeOverride, inner: ThemeOverride): ThemeOverride {
   const result: ThemeOverride = {};
@@ -30,11 +27,17 @@ function layerOverride(outer: ThemeOverride, inner: ThemeOverride): ThemeOverrid
 }
 
 /**
- * Fold a nested theme onto the one it sits inside, producing a single flat config.
+ * Fold a nested theme onto the one it sits inside, producing one flat config.
  *
- * `Theme` calls this once when it mounts, so a component reads one config rather than
- * walking a chain. The result shares no object with either input: both configs stay
- * safe to reuse and to serialize.
+ * @param outer - The theme already in effect.
+ * @param inner - The theme nested inside it, which wins on conflicts.
+ * @returns A new config that shares no object with either input, so both stay safe to
+ * reuse and to serialize.
+ *
+ * @remarks
+ * Classes merge per slot and tailwind-merge settles conflicts, so the inner layer
+ * replaces a conflicting utility and leaves the rest of the outer layer standing. The
+ * `Theme` component calls this for you when it mounts.
  */
 export function layerTheme(outer: ThemeConfig, inner: ThemeConfig): ThemeConfig {
   const base = outer as Record<string, ThemeOverride | undefined>;

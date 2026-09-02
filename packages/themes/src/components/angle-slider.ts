@@ -2,27 +2,16 @@ import { tv, type VariantProps } from "tailwind-variants";
 import type { ComponentContract, MustBeNever, ThemeOverride, TVSlot } from "@75neo/core";
 
 /**
- * The dial is an SVG ring with the readout sitting inside it.
+ * Recipe for the AngleSlider: an SVG ring with the readout inside it.
  *
- * `range` is a second circle over `track`, drawn with `pathLength="360"` so one user unit
- * is one degree. That is what lets `stroke-dasharray: var(--value) 360` read Ark's raw
- * `--value` straight off the root with no arithmetic, and it is why the arc needs no
- * per-size tuning: the stroke lives in viewBox units, so every size gets the same ring
- * proportions for free. A round `stroke-linecap` gives the arc the capsule ends.
- *
- * Ark sets `rotate: var(--angle)` inline on the thumb and
- * `rotate: calc(var(--marker-display-value) * 1deg)` on each marker, and `rotate` spins an
- * element about its own origin -- so a dot parked on the rim would only spin in place. The
- * usual fix is a per-size `transform-origin` computed from the radius. Instead `thumb` and
- * `marker` are full-size overlays already centred on the control, with the visible dot
- * drawn as a `::before` sized and offset in percentages. Rotating the overlay orbits the
- * dot, and because every offset is a percentage of the dial, a size variant changes only
- * the width of the control.
- *
- * The overlays would otherwise swallow every click, and Zag reads
- * `composedPath().includes(thumbEl)` to choose grab-and-drag over jump-to-this-angle.
- * `pointer-events-none` on the overlay with `before:pointer-events-auto` on the dot keeps
- * both gestures: the dot is grabbable, the rest of the dial is not.
+ * @remarks
+ * The geometry is written in percentages and viewBox units, so a size variant only
+ * changes the width of the control and everything else follows. Two consequences worth
+ * knowing before editing: `range` is drawn with a path length of 360 so its dash array
+ * can read Ark's raw angle with no arithmetic, and the thumb and markers are full-size
+ * overlays whose visible dot is a `::before`, so rotating the overlay orbits the dot.
+ * The overlays stay click-through and only the dot takes pointer events, which is what
+ * keeps both dragging the thumb and clicking the ring working.
  */
 export const angleSlider = tv({
   slots: {
@@ -109,15 +98,10 @@ export const angleSlider = tv({
   },
 });
 
-/**
- * The radius and the normalized path length the adapters draw both circles with.
- *
- * They belong here rather than in either adapter because they are half of the geometry the
- * recipe above encodes: `ANGLE_SLIDER_PATH_LENGTH` is what makes one user unit one degree,
- * so `range`'s dash array can be Ark's `--value` unchanged, and `ANGLE_SLIDER_RADIUS` is
- * picked so a 12-unit stroke sits flush inside the 100-unit viewBox.
- */
+/** Ring radius, chosen so a 12-unit stroke sits flush inside the 100-unit viewBox. */
 export const ANGLE_SLIDER_RADIUS = 44;
+
+/** Path length both circles are normalized to, which makes one user unit one degree. */
 export const ANGLE_SLIDER_PATH_LENGTH = 360;
 
 export type AngleSliderVariants = VariantProps<typeof angleSlider>;
@@ -128,23 +112,18 @@ export type AngleSliderUI = TVSlot<AngleSliderSlots>;
 export type AngleSliderTheme = ThemeOverride<AngleSliderSlots, AngleSliderVariants>;
 
 /**
- * Everything an AngleSlider accepts that is not framework-specific.
+ * Everything an AngleSlider accepts in both frameworks. Each adapter adds its own
+ * framework props on top.
  *
- * Unlike `AccordionProps<F>` and `ButtonProps<F>` this takes no icon parameter: the dial
- * renders no icons, so there would be nothing for `F` to be.
- *
- * The value is missing on purpose. It is the one thing the two frameworks genuinely spell
- * differently -- `value` / `defaultValue` / `onValueChange` in React against `v-model` in
- * Vue -- so each adapter picks it up from Ark's own root props rather than restating a
- * shared shape neither of them would use as written.
- *
- * The variant props are written out rather than derived from the recipe because
- * `@vue/compiler-sfc` resolves `defineProps` types from source alone: it cannot evaluate
- * the recipe's inferred type, so neither `VariantProps<typeof angleSlider>` nor a mapped
- * type over `angleSlider.variants` reaches Vue as finite keys.
- * `AngleSliderVariantsAreExposed` below closes the gap that leaves.
+ * @remarks
+ * The angle itself is not here: React spells it `value` and `onValueChange`, Vue spells
+ * it `v-model`, so each adapter takes it from Ark's root instead. There is no icon type
+ * parameter either, because the dial renders no icons. The variant props are written
+ * out by hand because `defineProps` in Vue cannot read them off the recipe, and the
+ * guard below keeps them in step.
  */
 export interface AngleSliderProps {
+  /** Per-slot class overrides. */
   ui?: AngleSliderUI;
   size?: AngleSliderVariants["size"];
   color?: AngleSliderVariants["color"];
@@ -163,10 +142,7 @@ export interface AngleSliderProps {
   name?: string;
 }
 
-/**
- * Compile-time guard: adding a variant to the recipe without adding the matching
- * prop above is a type error here rather than a prop that silently does nothing.
- */
+/** Compile-time guard: a recipe variant with no matching prop above is a type error. */
 export type AngleSliderVariantsAreExposed = MustBeNever<
   Exclude<keyof AngleSliderVariants, keyof AngleSliderProps>
 >;

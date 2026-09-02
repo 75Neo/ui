@@ -4,8 +4,11 @@ import { type ButtonProps as ButtonContract, button, showButtonSlots } from "@75
 import { useResolvedTheme } from "../hooks/useResolvedTheme";
 
 /**
- * `color` has to come off `ButtonHTMLAttributes` -- it is a legacy presentational
- * attribute that would otherwise collide with the variant of the same name.
+ * Props for the Button.
+ *
+ * @remarks
+ * `color` is dropped from the HTML attributes: the legacy presentational attribute
+ * would collide with the variant of the same name.
  */
 export interface ButtonProps
   extends

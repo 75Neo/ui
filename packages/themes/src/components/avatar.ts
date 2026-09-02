@@ -2,13 +2,13 @@ import { tv, type VariantProps } from "tailwind-variants";
 import type { ComponentContract, MustBeNever, ThemeOverride, TVSlot } from "@75neo/core";
 
 /**
- * The fallback sits under the image rather than beside it: Ark renders both and hides
- * the fallback once the image loads, so `base` carries the shape, the background and
- * the clipping, and `image` and `fallback` each fill it. Nothing here needs to know
- * which of the two is currently visible.
+ * Recipe for the Avatar: one box holding an image, with a fallback under it.
  *
- * `size` sets one box on `base` and the matching type scale on `fallback`, because
- * initials in a fixed type size stop fitting well below `md`.
+ * @remarks
+ * Ark renders both children and hides the fallback once the image loads, so `base`
+ * carries the shape and the clipping while `image` and `fallback` simply fill it.
+ * Nothing here has to know which of the two is showing. `size` also scales the fallback
+ * type, because initials at a fixed size stop fitting below `md`.
  */
 export const avatar = tv({
   slots: {
@@ -67,29 +67,31 @@ export type AvatarUI = TVSlot<AvatarSlots>;
 export type AvatarTheme = ThemeOverride<AvatarSlots, AvatarVariants>;
 
 /**
- * Everything an Avatar accepts that is not framework-specific. `F` is however the
- * framework spells a fallback node: a `ReactNode` in React, a `Component` in Vue.
+ * Everything an Avatar accepts in both frameworks. Each adapter adds its own framework
+ * props on top.
  *
- * The variant props are written out rather than derived from the recipe because
- * `@vue/compiler-sfc` resolves `defineProps` types from source alone: it cannot
- * evaluate the recipe's inferred type, so neither `VariantProps<typeof avatar>`
- * nor a mapped type over `avatar.variants` reaches Vue as finite keys.
- * `AvatarVariantsAreExposed` below closes the gap that leaves.
+ * @typeParam F - However the framework spells a renderable node: `ReactNode` in React,
+ * `Component` in Vue.
+ *
+ * @remarks
+ * The variant props are written out by hand because `defineProps` in Vue cannot read
+ * them off the recipe. The guard below keeps them in step.
  */
 export interface AvatarProps<F> {
+  /** Per-slot class overrides. */
   ui?: AvatarUI;
   size?: AvatarVariants["size"];
   shape?: AvatarVariants["shape"];
+  /** Image to show. Without one the avatar shows its fallback. */
   src?: string;
   alt?: string;
+  /** Display name. Its initials are the default fallback. */
   name?: string;
+  /** Shown until the image loads, and instead of it if there is none. */
   fallback?: F | string;
 }
 
-/**
- * Compile-time guard: adding a variant to the recipe without adding the matching
- * prop above is a type error here rather than a prop that silently does nothing.
- */
+/** Compile-time guard: a recipe variant with no matching prop above is a type error. */
 export type AvatarVariantsAreExposed = MustBeNever<
   Exclude<keyof AvatarVariants, keyof AvatarProps<unknown>>
 >;
@@ -103,9 +105,15 @@ declare global {
 /**
  * Derive initials from a display name.
  *
- * One word → first two letters, two+ words → first + last initial.
- * Empty or whitespace-only names return "" so the caller can fall back to a
- * different rendering (e.g. an icon) rather than showing nothing.
+ * @param name - The display name, such as `"Ada Lovelace"`.
+ * @returns One word gives its first two letters, several words give the first and last
+ * initial, and a blank name gives `""` so the caller can render something else instead.
+ *
+ * @example
+ * ```ts
+ * getAvatarInitials("Ada Lovelace"); // "AL"
+ * getAvatarInitials("Ada"); // "AD"
+ * ```
  */
 export function getAvatarInitials(name: string): string {
   const parts = name.trim().split(/\s+/).filter(Boolean);

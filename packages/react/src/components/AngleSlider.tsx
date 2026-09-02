@@ -9,12 +9,12 @@ import {
 import { useResolvedTheme } from "../hooks/useResolvedTheme";
 
 /**
- * `color` has to come off `HTMLAttributes` -- it is a legacy presentational attribute that
- * would otherwise collide with the variant, the same clash `Button` resolves.
+ * Props for the AngleSlider.
  *
- * The value props come from Ark rather than from the shared contract: React spells a
- * controlled angle `value` / `onValueChange`, Vue spells it `v-model`, and neither reads
- * well written as one type.
+ * @remarks
+ * `color` is dropped from the HTML attributes: the legacy presentational attribute
+ * would collide with the variant of the same name. The value props come from Ark
+ * because React and Vue spell a controlled angle too differently to share one type.
  */
 export interface AngleSliderProps
   extends
@@ -59,10 +59,7 @@ export function AngleSlider({
       name={name}
     >
       <Ark.Control data-slot="control" className={theme.class.control}>
-        {/*
-         * The ring is decoration: the thumb below carries the slider role and the value,
-         * so nothing here needs to reach the accessibility tree.
-         */}
+        {/* Decoration only. The thumb below carries the slider role and the value. */}
         <svg data-slot="dial" className={theme.class.dial} viewBox="0 0 100 100" aria-hidden>
           <circle
             data-slot="track"
@@ -95,10 +92,7 @@ export function AngleSlider({
         )}
 
         <div data-slot="content" className={theme.class.content}>
-          {/*
-           * Ark fills an empty ValueText with `valueAsDegree`, which reads "45deg". The
-           * readout is the centrepiece of this design, so it spells the degree sign.
-           */}
+          {/* Ark's own text reads "45deg"; this readout spells the degree sign. */}
           {(showValue ?? false) && (
             <Ark.Context>
               {(api) => (
