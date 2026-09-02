@@ -58,6 +58,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "colorPicker",
   },
   {
+    href: "/combobox",
+    label: "Combobox",
+    summary:
+      "A field that filters a list as it is typed into, across three sizes and seven accents, single or multiple.",
+    key: "combobox",
+  },
+  {
     href: "/collapsible",
     label: "Collapsible",
     summary:

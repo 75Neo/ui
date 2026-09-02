@@ -7,6 +7,7 @@ export { default as Checkbox } from "./components/Checkbox.vue";
 export { default as Clipboard } from "./components/Clipboard.vue";
 export { default as Collapsible } from "./components/Collapsible.vue";
 export { default as ColorPicker } from "./components/ColorPicker.vue";
+export { default as Combobox } from "./components/Combobox.vue";
 export { default as TableOfContents } from "./components/TableOfContents.vue";
 export { default as Theme } from "./components/Theme.vue";
 export { useResolvedTheme } from "./composables/theme";
@@ -56,6 +57,10 @@ export {
   type ColorPickerProps,
   type ColorPickerTheme,
   type ColorPickerUI,
+  type ComboboxItem,
+  type ComboboxProps,
+  type ComboboxTheme,
+  type ComboboxUI,
   type TableOfContentsItem,
   type TableOfContentsProps,
   type TableOfContentsTheme,

@@ -7,6 +7,7 @@ export { Checkbox, type CheckboxProps } from "./components/Checkbox";
 export { Clipboard, type ClipboardProps } from "./components/Clipboard";
 export { Collapsible, type CollapsibleProps } from "./components/Collapsible";
 export { ColorPicker, type ColorPickerProps } from "./components/ColorPicker";
+export { Combobox, type ComboboxProps } from "./components/Combobox";
 export { TableOfContents, type TableOfContentsProps } from "./components/TableOfContents";
 export { Theme, type ThemeProps } from "./components/Theme";
 export { useResolvedTheme } from "./hooks/useResolvedTheme";
@@ -47,6 +48,9 @@ export {
   type ColorPickerFormat,
   type ColorPickerTheme,
   type ColorPickerUI,
+  type ComboboxItem,
+  type ComboboxTheme,
+  type ComboboxUI,
   type TableOfContentsItem,
   type TableOfContentsTheme,
   type TableOfContentsUI,
