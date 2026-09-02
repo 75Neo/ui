@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Component } from "vue";
+import { type Component, computed } from "vue";
 import { Avatar as Ark } from "@ark-ui/vue/avatar";
 import { type AvatarProps, avatar, getAvatarInitials } from "@75neo/themes";
 import { useResolvedTheme } from "../composables/theme";
@@ -30,20 +30,29 @@ const theme = useResolvedTheme(
   () => props.class as string | undefined,
 );
 
-const fallbackIsComponent = () => props.fallback != null && typeof props.fallback !== "string";
+/** A non-string fallback is a component, and is rendered instead of any text. */
+const fallbackIsComponent = computed(
+  () => props.fallback != null && typeof props.fallback !== "string",
+);
 
-function fallbackContent(): string | undefined {
-  if (props.fallback !== undefined && typeof props.fallback === "string") return props.fallback;
-  if (typeof props.fallback !== "string" && props.fallback != null) return undefined;
-  if (props.name) {
-    const initials = getAvatarInitials(props.name);
-    if (initials) return initials;
-  }
-  return undefined;
-}
+/**
+ * Text for the fallback: an explicit string wins outright, a name falls back to its
+ * initials, and anything else leaves the fallback empty.
+ */
+const fallbackText = computed(() => {
+  if (typeof props.fallback === "string") return props.fallback;
+  if (props.fallback != null) return undefined;
+  return (props.name ? getAvatarInitials(props.name) : "") || undefined;
+});
 
-function handleStatusChange(details: { status: "loading" | "loaded" | "error" }) {
-  props.onStatusChange?.(details);
+/**
+ * Ark's own image props, split the way the `image` slot takes them. `hidden` comes out
+ * on its own because Ark hides the image until it loads and some components drop the
+ * attribute -- Nuxt's `NuxtImg` does, so a custom image honours it with `visibility`.
+ */
+function imageDetails(api: { getImageProps: () => object }) {
+  const { hidden, ...rest } = api.getImageProps() as Record<string, unknown>;
+  return { hidden: Boolean(hidden), props: rest };
 }
 </script>
 
@@ -52,12 +61,12 @@ function handleStatusChange(details: { status: "loading" | "loaded" | "error" })
     data-slot="base"
     :class="theme.class.base"
     :ids="props.ids"
-    @status-change="handleStatusChange"
+    @status-change="props.onStatusChange"
   >
     <Ark.Fallback data-slot="fallback" :class="theme.class.fallback">
-      <slot name="fallback" :content="fallbackContent()">
-        <component :is="props.fallback" v-if="fallbackIsComponent()" />
-        <template v-else>{{ fallbackContent() }}</template>
+      <slot name="fallback" :content="fallbackText">
+        <component :is="props.fallback" v-if="fallbackIsComponent" />
+        <template v-else>{{ fallbackText }}</template>
       </slot>
     </Ark.Fallback>
 
@@ -68,12 +77,7 @@ function handleStatusChange(details: { status: "loading" | "loaded" | "error" })
           :src="props.src"
           :alt="props.alt ?? ''"
           :class="theme.class.image"
-          :hidden="Boolean((api.getImageProps() as unknown as Record<string, unknown>).hidden)"
-          :props="
-            (({ hidden: _hidden, ...rest }) => rest)(
-              api.getImageProps() as unknown as Record<string, unknown>,
-            )
-          "
+          v-bind="imageDetails(api)"
         >
           <Ark.Image
             data-slot="image"

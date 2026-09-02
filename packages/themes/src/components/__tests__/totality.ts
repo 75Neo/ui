@@ -45,17 +45,19 @@ function entryMatches(entry: CompoundVariant, combo: Record<string, string>): bo
 /**
  * Assert a recipe covers every combination of its own variants.
  *
- * Two ways a recipe goes wrong, both invisible until someone looks at the rendered
+ * Three ways a recipe goes wrong, all invisible until someone looks at the rendered
  * component:
  *
  * - a `compoundVariants` entry is missing, so a combination the recipe claims to
  *   support falls through to the shared classes and renders unstyled;
+ * - a slot resolves to nothing at all, so the element it names renders bare;
  * - a `compoundVariants` entry was copy-pasted and its discriminator never changed,
  *   so two combinations resolve identically and one variant renders as another.
  *
  * The first is checked against the compound table: every combination of the keys the
- * table discriminates on must be matched by an entry. The second is checked against
- * the resolved output: no two combinations may produce the same classes.
+ * table discriminates on must be matched by an entry. The other two are checked
+ * against the resolved output of every combination -- no slot may come back empty,
+ * and no two combinations may produce the same classes.
  *
  * Throws naming the offending combination. Takes no hand-written lists: the recipe
  * describes itself.

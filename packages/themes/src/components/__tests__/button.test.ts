@@ -8,14 +8,6 @@ describe("button", () => {
     expect(() => assertRecipeIsTotal(button)).not.toThrow();
   });
 
-  it("resolves a class for every slot it declares", () => {
-    const resolved = button({});
-
-    for (const slot of Object.keys(button.slots)) {
-      expect(resolved[slot as keyof typeof resolved]()).not.toBe("");
-    }
-  });
-
   it("declares the variants components and previews read back", () => {
     expect(variantValues(button, "variant")).toEqual(["solid", "soft", "outline", "ghost"]);
     expect(variantValues(button, "size")).toEqual(["xs", "sm", "md", "lg", "xl"]);

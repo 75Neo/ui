@@ -9,12 +9,15 @@ export interface AvatarProps
     Pick<React.ComponentProps<typeof Ark.Root>, "ids" | "onStatusChange">,
     AvatarContract<React.ReactNode> {
   /**
-   * Render a custom image element instead of the default `<img>`.
-   * Use this to plug in `next/image` or any other component that needs to merge
-   * Ark's `getImageProps()` (which carries `hidden`, `data-state`, `onLoad`/`onError`).
-   * The caller is responsible for applying `className` and handling `hidden`
-   * (Next's Image ignores `hidden`, so use `visibility` as in Ark docs).
-   * Return `null` to suppress the image entirely.
+   * Render a custom image element in place of the default `<img>`, for `next/image`
+   * or anything else that has to merge Ark's own image props.
+   *
+   * Everything Ark would have put on the element arrives in `props`, minus `hidden`,
+   * which is handed over separately because Ark hides the image until it loads and
+   * some components drop the attribute -- Next's `Image` does, so honour it with
+   * `visibility` instead. The caller also applies `className` and `data-slot="image"`,
+   * without which `ui.image` and theme overrides miss the element. Return `null` to
+   * render no image at all.
    */
   renderImage?: (details: {
     src: string;
@@ -39,14 +42,10 @@ export function Avatar({
 }: AvatarProps) {
   const theme = useResolvedTheme(avatar, "avatar", { ui, size, shape }, className);
 
-  const fallbackContent = (() => {
-    if (fallback !== undefined) return fallback;
-    if (name) {
-      const initials = getAvatarInitials(name);
-      if (initials) return initials;
-    }
-    return undefined;
-  })();
+  // An explicit fallback wins outright, including `null` to render nothing at all;
+  // a name falls back to its initials, and an unusable name to nothing.
+  const initials = name ? getAvatarInitials(name) : "";
+  const fallbackContent = fallback !== undefined ? fallback : initials || undefined;
 
   return (
     <Ark.Root {...rest} data-slot="base" className={theme.class.base}>
@@ -58,22 +57,17 @@ export function Avatar({
         renderImage ? (
           <Ark.Context>
             {(api) => {
-              const { hidden, ...arkProps } = api.getImageProps() as Record<string, unknown> & {
+              const { hidden, ...imageProps } = api.getImageProps() as Record<string, unknown> & {
                 hidden?: boolean;
               };
-              const rendered = renderImage({
+
+              return renderImage({
                 src,
                 alt: alt ?? "",
                 className: theme.class.image,
                 hidden: Boolean(hidden),
-                props: arkProps as Record<string, unknown>,
+                props: imageProps,
               });
-              // Ark.Fallback relies on data-state/hidden from getImageProps internally;
-              // custom image must still expose data-slot="image" so theme selectors work.
-              // If the custom element doesn't already carry it, wrap with a span that does.
-              // Most renderImage implementations will spread `props` which already contains
-              // data-state; we still require the caller to honour `hidden`.
-              return rendered as React.ReactNode;
             }}
           </Ark.Context>
         ) : (

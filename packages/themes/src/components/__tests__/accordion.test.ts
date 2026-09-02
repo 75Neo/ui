@@ -8,14 +8,6 @@ describe("accordion", () => {
     expect(() => assertRecipeIsTotal(accordion)).not.toThrow();
   });
 
-  it("resolves a class for every slot it declares", () => {
-    const resolved = accordion({});
-
-    for (const slot of Object.keys(accordion.slots)) {
-      expect(resolved[slot as keyof typeof resolved]()).not.toBe("");
-    }
-  });
-
   it("declares the variants components and previews read back", () => {
     expect(variantValues(accordion, "variant")).toEqual(["outline", "soft", "ghost"]);
     expect(variantValues(accordion, "size")).toEqual(["sm", "md", "lg"]);

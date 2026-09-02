@@ -3,6 +3,10 @@ import { Loader2 } from "lucide-react";
 import { type ButtonProps as ButtonContract, button, showButtonSlots } from "@75neo/themes";
 import { useResolvedTheme } from "../hooks/useResolvedTheme";
 
+/**
+ * `color` has to come off `ButtonHTMLAttributes` -- it is a legacy presentational
+ * attribute that would otherwise collide with the variant of the same name.
+ */
 export interface ButtonProps
   extends
     Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color">,
@@ -25,7 +29,7 @@ export function Button({
   type = "button",
   ...rest
 }: ButtonProps) {
-  const isLoading = loading ?? false;
+  const isLoading = Boolean(loading);
   const theme = useResolvedTheme(button, "button", { ui, variant, size, color }, className);
   const show = showButtonSlots({
     loading: isLoading,
@@ -41,7 +45,7 @@ export function Button({
       type={type}
       data-slot="base"
       className={theme.class.base}
-      disabled={(disabled ?? false) || isLoading}
+      disabled={Boolean(disabled) || isLoading}
       aria-busy={isLoading || undefined}
     >
       {show.leading && (

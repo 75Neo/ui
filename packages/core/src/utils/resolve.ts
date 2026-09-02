@@ -7,6 +7,10 @@ type InvokableRecipe = (
   props: Record<string, unknown>,
 ) => Record<string, (args?: { class?: unknown }) => string>;
 
+/**
+ * What a component renders with: no merging is left to do, so each slot's string goes
+ * straight onto the element carrying that slot's `data-slot`.
+ */
 export interface ResolvedTheme<R extends Recipe> {
   /** The variant props the recipe was resolved with, after theme defaults. */
   props: RecipeVariants<R>;

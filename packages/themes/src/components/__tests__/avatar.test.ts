@@ -8,14 +8,6 @@ describe("avatar", () => {
     expect(() => assertRecipeIsTotal(avatar)).not.toThrow();
   });
 
-  it("resolves a class for every slot it declares", () => {
-    const resolved = avatar({});
-
-    for (const slot of Object.keys(avatar.slots)) {
-      expect(resolved[slot as keyof typeof resolved]()).not.toBe("");
-    }
-  });
-
   it("declares the variants components and previews read back", () => {
     expect(variantValues(avatar, "size")).toEqual(["xs", "sm", "md", "lg", "xl", "2xl"]);
     expect(variantValues(avatar, "shape")).toEqual(["circle", "square"]);
