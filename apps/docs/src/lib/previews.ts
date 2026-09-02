@@ -19,6 +19,7 @@ export const previewed = new Set([
   "ColorPicker",
   "Combobox",
   "DateInput",
+  "DatePicker",
   "TableOfContents",
 ]);
 

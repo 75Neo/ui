@@ -72,6 +72,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "dateInput",
   },
   {
+    href: "/date-picker",
+    label: "DatePicker",
+    summary:
+      "A field with a calendar behind it, taking one date, several, or a range, across three sizes and seven accents.",
+    key: "datePicker",
+  },
+  {
     href: "/collapsible",
     label: "Collapsible",
     summary:

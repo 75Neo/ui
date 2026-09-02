@@ -9,6 +9,7 @@ export { Collapsible, type CollapsibleProps } from "./components/Collapsible";
 export { ColorPicker, type ColorPickerProps } from "./components/ColorPicker";
 export { Combobox, type ComboboxProps } from "./components/Combobox";
 export { DateInput, type DateInputProps } from "./components/DateInput";
+export { DatePicker, type DatePickerProps } from "./components/DatePicker";
 export { TableOfContents, type TableOfContentsProps } from "./components/TableOfContents";
 export { Theme, type ThemeProps } from "./components/Theme";
 export { useResolvedTheme } from "./hooks/useResolvedTheme";
@@ -55,6 +56,9 @@ export {
   type DateInputGranularity,
   type DateInputTheme,
   type DateInputUI,
+  type DatePickerSelectionMode,
+  type DatePickerTheme,
+  type DatePickerUI,
   type TableOfContentsItem,
   type TableOfContentsTheme,
   type TableOfContentsUI,
