@@ -13,6 +13,7 @@ export const previewed = new Set([
   "Avatar",
   "Button",
   "Carousel",
+  "Checkbox",
   "Clipboard",
   "TableOfContents",
 ]);

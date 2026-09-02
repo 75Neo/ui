@@ -178,3 +178,5 @@
 @source inline("{focus-visible:,}ring-{primary,secondary,success,info,warning,error}{,/25,/50}");
 @source inline("{before:,}outline-{primary,secondary,success,info,warning,error}/25");
 @source inline("{stroke,fill}-{primary,secondary,success,info,warning,error}");
+@source inline("data-[state={checked,indeterminate}]:{bg,ring}-{primary,secondary,success,info,warning,error}");
+@source inline("hover:data-[state={checked,indeterminate}]:bg-{primary,secondary,success,info,warning,error}/75");

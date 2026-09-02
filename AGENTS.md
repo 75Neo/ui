@@ -217,6 +217,14 @@ trigger, the Carousel arrows — carries the `disabled` attribute, so style it w
 `disabled:`. A part that is a `div` carries `data-disabled` instead. Styling the wrong one
 fails silently: `pnpm dev:play` is the check.
 
+**A boolean `defineModel` needs `{ default: undefined }`.** Vue casts an absent
+Boolean-typed prop to `false`, and `defineModel` declares one, so a `v-model` over a
+boolean reaches Ark as an explicit `false` rather than as nothing. That pins the
+component to a controlled `false` and silently kills the matching `default*` prop:
+Checkbox rendered every `defaultChecked` box unticked in Vue while React was fine. The
+type argument has to include `undefined` too, or the option does not typecheck. Ark's
+own roots carry the same `void 0` defaults for the same reason.
+
 ## MCP servers
 
 `.mcp.json` provides **ArkUI** (component docs and examples) and **Astro docs**. Reach for

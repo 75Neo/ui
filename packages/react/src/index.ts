@@ -3,6 +3,7 @@ export { AngleSlider, type AngleSliderProps } from "./components/AngleSlider";
 export { Avatar, type AvatarProps } from "./components/Avatar";
 export { Button, type ButtonProps } from "./components/Button";
 export { Carousel, type CarouselProps } from "./components/Carousel";
+export { Checkbox, type CheckboxProps } from "./components/Checkbox";
 export { Clipboard, type ClipboardProps } from "./components/Clipboard";
 export { TableOfContents, type TableOfContentsProps } from "./components/TableOfContents";
 export { Theme, type ThemeProps } from "./components/Theme";
@@ -35,6 +36,8 @@ export {
   type CarouselItem,
   type CarouselTheme,
   type CarouselUI,
+  type CheckboxTheme,
+  type CheckboxUI,
   type ClipboardTheme,
   type ClipboardUI,
   type TableOfContentsItem,

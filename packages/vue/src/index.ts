@@ -3,6 +3,7 @@ export { default as AngleSlider } from "./components/AngleSlider.vue";
 export { default as Avatar } from "./components/Avatar.vue";
 export { default as Button } from "./components/Button.vue";
 export { default as Carousel } from "./components/Carousel.vue";
+export { default as Checkbox } from "./components/Checkbox.vue";
 export { default as Clipboard } from "./components/Clipboard.vue";
 export { default as TableOfContents } from "./components/TableOfContents.vue";
 export { default as Theme } from "./components/Theme.vue";
@@ -40,6 +41,9 @@ export {
   type CarouselProps,
   type CarouselTheme,
   type CarouselUI,
+  type CheckboxProps,
+  type CheckboxTheme,
+  type CheckboxUI,
   type ClipboardProps,
   type ClipboardTheme,
   type ClipboardUI,

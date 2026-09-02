@@ -37,6 +37,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "avatar",
   },
   {
+    href: "/checkbox",
+    label: "Checkbox",
+    summary:
+      "A box, a label and an optional description, across five sizes and seven colors, with a real indeterminate state.",
+    key: "checkbox",
+  },
+  {
     href: "/clipboard",
     label: "Clipboard",
     summary:
