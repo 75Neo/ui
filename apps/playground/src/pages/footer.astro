@@ -1,0 +1,33 @@
+---
+import { footer as recipe } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import FooterPreview from "../previews/FooterPreview.tsx";
+import FooterPreviewVue from "../previews/FooterPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(recipe.slots);
+
+// The recipe declares no variant, so there is no matrix to count and no row for one.
+const meta = [
+  { term: "key", value: "footer" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: "none" },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="Footer"
+  description="The strip along the bottom of a page: three regions in a row, and two full-bleed bands above and below it that appear only when something is put in them."
+  hasStage
+>
+  <Preview
+    title="Three regions, then both bands"
+    description="The row is written into the DOM as right, centre, left and put back in reading order at lg, so narrowing the pane stacks the links above the copyright rather than under it."
+    meta={meta}
+  >
+    <Fragment slot="react"><FooterPreview client:load /></Fragment>
+    <Fragment slot="vue"><FooterPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

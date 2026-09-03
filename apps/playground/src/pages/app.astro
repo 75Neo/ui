@@ -1,0 +1,33 @@
+---
+import { app as recipe } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import AppPreview from "../previews/AppPreview.tsx";
+import AppPreviewVue from "../previews/AppPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(recipe.slots);
+
+// The recipe declares no variant, so there is no matrix to count and no row for one.
+const meta = [
+  { term: "key", value: "app" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: "none" },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="App"
+  description="The element an application is wrapped in. It publishes a theme, names the locale Ark formats dates and numbers in, and writes the reading direction every rtl: utility in the library depends on."
+  hasStage
+>
+  <Preview
+    title="Two locales and a published theme"
+    description="The same markup under an English and an Arabic locale, then an App whose own theme prop restyles the button below it and the App itself."
+    meta={meta}
+  >
+    <Fragment slot="react"><AppPreview client:load /></Fragment>
+    <Fragment slot="vue"><AppPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

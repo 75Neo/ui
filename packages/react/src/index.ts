@@ -1,5 +1,6 @@
 export { Accordion, type AccordionProps } from "./components/Accordion";
 export { AngleSlider, type AngleSliderProps } from "./components/AngleSlider";
+export { App, type AppProps } from "./components/App";
 export { Avatar, type AvatarProps } from "./components/Avatar";
 export { Button, type ButtonProps } from "./components/Button";
 export { Carousel, type CarouselProps } from "./components/Carousel";
@@ -8,12 +9,18 @@ export { Clipboard, type ClipboardProps } from "./components/Clipboard";
 export { Collapsible, type CollapsibleProps } from "./components/Collapsible";
 export { ColorPicker, type ColorPickerProps } from "./components/ColorPicker";
 export { Combobox, type ComboboxProps } from "./components/Combobox";
+export { Container, type ContainerProps } from "./components/Container";
 export { DateInput, type DateInputProps } from "./components/DateInput";
 export { DatePicker, type DatePickerProps } from "./components/DatePicker";
 export { Dialog, type DialogProps } from "./components/Dialog";
+export { Error, type ErrorProps } from "./components/Error";
+export { Footer, type FooterProps } from "./components/Footer";
+export { Header, type HeaderProps } from "./components/Header";
+export { Main, type MainProps } from "./components/Main";
 export { Popover, type PopoverProps } from "./components/Popover";
 export { Progress, type ProgressProps } from "./components/Progress";
 export { RadioGroup, type RadioGroupProps } from "./components/RadioGroup";
+export { Sidebar, type SidebarProps } from "./components/Sidebar";
 export { Slider, type SliderProps } from "./components/Slider";
 export { Switch, type SwitchProps } from "./components/Switch";
 export { TableOfContents, type TableOfContentsProps } from "./components/TableOfContents";
@@ -42,6 +49,8 @@ export {
   type AccordionUI,
   type AngleSliderTheme,
   type AngleSliderUI,
+  type AppTheme,
+  type AppUI,
   type AvatarTheme,
   type AvatarUI,
   type ButtonTheme,
@@ -61,6 +70,8 @@ export {
   type ComboboxItem,
   type ComboboxTheme,
   type ComboboxUI,
+  type ContainerTheme,
+  type ContainerUI,
   type DateInputGranularity,
   type DateInputTheme,
   type DateInputUI,
@@ -69,6 +80,14 @@ export {
   type DatePickerUI,
   type DialogTheme,
   type DialogUI,
+  type ErrorTheme,
+  type ErrorUI,
+  type FooterTheme,
+  type FooterUI,
+  type HeaderTheme,
+  type HeaderUI,
+  type MainTheme,
+  type MainUI,
   type Placement,
   type PopoverTheme,
   type PopoverUI,
@@ -77,6 +96,9 @@ export {
   type RadioGroupItem,
   type RadioGroupTheme,
   type RadioGroupUI,
+  type SidebarState,
+  type SidebarTheme,
+  type SidebarUI,
   type SliderMark,
   type SliderTheme,
   type SliderUI,

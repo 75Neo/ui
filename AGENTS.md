@@ -186,6 +186,29 @@ Two names are fixed across every component. The root slot is always `base`, beca
 for their position, `leadingIcon` and `trailingIcon`, so `ui.trailingIcon` means the same
 thing on Button and on Accordion.
 
+### The layout family
+
+`App`, `Container`, `Main`, `Header`, `Footer`, `Error` and `Sidebar` are the page's own
+furniture and follow Nuxt UI's set. Three rules hold across them.
+
+The measure is one token. `--ui-container` reaches recipes as `max-w-page`, and the
+Header and the Footer restate the Container's measure and gutters rather than rendering
+one, because composing the component would put `data-slot="base"` on the row instead of
+`data-slot="container"` and break slot-name identity. The height is one token too:
+`--ui-header-height` reaches recipes as `h-header`, and the Main and the Error subtract
+it from the viewport, so a taller bar moves them with it.
+
+`App` is not `Theme`, and both exist. `Theme` restyles a subtree and nests; the App is
+the one at the top and adds the locale and the `dir` attribute that every `rtl:` utility
+in the library reads. It resolves its own classes against the theme it publishes rather
+than the one above it, which is the only component that does.
+
+The Sidebar and the Header keep one DOM tree across both viewports. The Sidebar's narrow
+panel is the wide column moved, and the Header's menu is Ark UI's Dialog styled entirely
+from the `header` key. Neither composes this library's Dialog, because that would put
+half of their appearance behind a key a caller theming a header would not think to look
+in.
+
 ## Adding a component
 
 One file per component per package: the component module, the two adapters, the two

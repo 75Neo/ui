@@ -17,6 +17,9 @@
 
   --container-page: var(--ui-container);
 
+  /* So a Header can say `h-header` and a page can subtract the same number. */
+  --spacing-header: var(--ui-header-height);
+
   --text-color-default: var(--ui-text);
   --text-color-dimmed: var(--ui-text-dimmed);
   --text-color-muted: var(--ui-text-muted);

@@ -1,12 +1,18 @@
-import { describe, expect, it } from "vitest";
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { h } from "vue";
-import { userEvent } from "vitest/browser";
+import { page, userEvent } from "vitest/browser";
 import { Circle } from "@lucide/vue";
 import { render } from "vitest-browser-vue";
 import type { ThemeConfig } from "@75neo/core";
 import {
   accordion,
   angleSlider,
+  container as containerRecipe,
+  error as errorRecipe,
+  footer as footerRecipe,
+  header as headerRecipe,
+  main as mainRecipe,
+  sidebar,
   combobox,
   dateInput,
   datePicker,
@@ -21,7 +27,13 @@ import {
 } from "@75neo/themes";
 import Accordion from "../Accordion.vue";
 import AngleSlider from "../AngleSlider.vue";
+import App from "../App.vue";
 import Button from "../Button.vue";
+import Container from "../Container.vue";
+import ErrorPage from "../Error.vue";
+import Footer from "../Footer.vue";
+import Header from "../Header.vue";
+import Main from "../Main.vue";
 import Combobox from "../Combobox.vue";
 import DateInput from "../DateInput.vue";
 import DatePicker from "../DatePicker.vue";
@@ -29,6 +41,7 @@ import Dialog from "../Dialog.vue";
 import Popover from "../Popover.vue";
 import Progress from "../Progress.vue";
 import RadioGroup from "../RadioGroup.vue";
+import Sidebar from "../Sidebar.vue";
 import Slider from "../Slider.vue";
 import Switch from "../Switch.vue";
 import Tabs from "../Tabs.vue";
@@ -779,5 +792,294 @@ describe("Slider", () => {
     });
 
     expect(slot(container, "valueText")!.textContent).toBe("-20");
+  });
+});
+
+describe("App", () => {
+  it("publishes its theme to everything below it", () => {
+    const { container } = render(App, {
+      props: { theme: { button: { ui: { base: "rounded-full" } } } },
+      slots: { default: () => h(Button, null, () => "Send") },
+    });
+
+    expect(container.querySelector("button")!.className).toContain("rounded-full");
+  });
+
+  it("restyles itself through the theme it publishes", () => {
+    const { container } = render(App, { props: { theme: { app: { ui: { base: "contents" } } } } });
+
+    expect(slot(container, "base")!.className).toContain("contents");
+  });
+
+  it("writes the reading direction the locale implies", () => {
+    const ltr = render(App, { props: { locale: "en-US" } });
+    expect(slot(ltr.container, "base")!.dir).toBe("ltr");
+
+    const rtl = render(App, { props: { locale: "ar-EG" } });
+    expect(slot(rtl.container, "base")!.dir).toBe("rtl");
+  });
+
+  it("lets an explicit direction beat the locale", () => {
+    const { container } = render(App, { props: { locale: "ar-EG", dir: "ltr" } });
+
+    expect(slot(container, "base")!.dir).toBe("ltr");
+  });
+});
+
+describe("Container", () => {
+  it("renders the recipe's own measure", () => {
+    const { container } = render(Container, { slots: { default: () => "Body" } });
+
+    expect(slot(container, "base")!.className).toContain(containerRecipe().base());
+  });
+
+  it("lets a call-site class beat the recipe", () => {
+    const { container } = render(Container, {
+      props: { class: "px-0" },
+      slots: { default: () => "Body" },
+    });
+
+    expect(slot(container, "base")!.className).toContain("px-0");
+    expect(slot(container, "base")!.className).not.toContain("px-5");
+  });
+});
+
+describe("Main", () => {
+  it("renders a main landmark carrying the recipe's height", () => {
+    const { container } = render(Main, { slots: { default: () => "Body" } });
+    const root = slot(container, "base")!;
+
+    expect(root.tagName).toBe("MAIN");
+    expect(root.className).toContain(mainRecipe().base());
+  });
+});
+
+describe("Footer", () => {
+  it("renders every slot the recipe declares", () => {
+    const { container } = render(Footer, {
+      slots: {
+        default: () => "Navigation",
+        top: () => "Newsletter",
+        left: () => "© 2026",
+        right: () => "Links",
+        bottom: () => "Legal",
+      },
+    });
+
+    for (const name of Object.keys(footerRecipe.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("leaves the two bands out when nothing is put in them", () => {
+    const { container } = render(Footer, { slots: { left: () => "© 2026" } });
+
+    expect(slot(container, "top")).toBeNull();
+    expect(slot(container, "bottom")).toBeNull();
+    expect(slot(container, "container")).not.toBeNull();
+  });
+
+  it("writes the row in reverse so a phone stacks the links first", () => {
+    const { container } = render(Footer, {
+      slots: { left: () => "© 2026", right: () => "Links" },
+    });
+    const order = [...slot(container, "container")!.children].map((el) =>
+      el.getAttribute("data-slot"),
+    );
+
+    expect(order).toEqual(["right", "center", "left"]);
+  });
+});
+
+describe("Header", () => {
+  it("renders every slot the recipe declares", () => {
+    render(Header, {
+      props: { title: "75NeoUI", to: "/", open: true },
+      slots: { default: () => "Navigation", body: () => "Menu contents" },
+    });
+
+    for (const name of Object.keys(headerRecipe.slots)) {
+      expect(anywhere(name), name).not.toBeNull();
+    }
+  });
+
+  it("draws no toggle when there is nothing to open", () => {
+    const { container } = render(Header, {
+      props: { title: "75NeoUI" },
+      slots: { default: () => "Navigation" },
+    });
+
+    expect(slot(container, "toggle")).toBeNull();
+    expect(anywhere("menu")).toBeNull();
+  });
+
+  it("opens the menu from the toggle", async () => {
+    const { container } = render(Header, {
+      props: { title: "75NeoUI" },
+      slots: { body: () => "Menu contents" },
+    });
+
+    expect(anywhere("menu")).toBeNull();
+    await userEvent.click(slot(container, "toggle")!);
+
+    expect(anywhere("menu")).not.toBeNull();
+    expect(anywhere("menuBody")!.textContent).toBe("Menu contents");
+  });
+
+  it("makes the wordmark a link only when there is somewhere to go", () => {
+    const plain = render(Header, { props: { title: "75NeoUI" } });
+    expect(slot(plain.container, "title")!.tagName).toBe("SPAN");
+
+    const linked = render(Header, { props: { title: "75NeoUI", to: "/" } });
+    expect(slot(linked.container, "title")!.tagName).toBe("A");
+  });
+});
+
+describe("Error", () => {
+  it("renders every slot the recipe declares", () => {
+    const { container } = render(ErrorPage, {
+      props: {
+        icon: Circle,
+        statusCode: 404,
+        statusMessage: "Page not found",
+        message: "Nothing answers at that address.",
+      },
+      slots: { default: () => h(Button, null, () => "Go home") },
+    });
+
+    for (const name of Object.keys(errorRecipe.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("prints a message that merely repeats the status once", () => {
+    const { container } = render(ErrorPage, {
+      props: { statusMessage: "Page not found", message: "Page not found" },
+    });
+
+    expect(slot(container, "message")).toBeNull();
+    expect(slot(container, "statusMessage")!.textContent).toBe("Page not found");
+  });
+
+  it("leaves out every row it was given nothing for", () => {
+    const { container } = render(ErrorPage, { props: { statusCode: 500 } });
+
+    expect(slot(container, "statusCode")!.textContent).toBe("500");
+    expect(slot(container, "leading")).toBeNull();
+    expect(slot(container, "statusMessage")).toBeNull();
+    expect(slot(container, "links")).toBeNull();
+  });
+});
+
+describe("Sidebar", () => {
+  /*
+   * The suite runs in a 414px frame, which is the narrow viewport as far as the
+   * Sidebar is concerned, so every test about collapsing has to widen it first. The
+   * frame is put back afterwards, because the Tooltip's placement tests read it too.
+   */
+  let frame = { width: 0, height: 0 };
+
+  beforeAll(() => {
+    frame = { width: window.innerWidth, height: window.innerHeight };
+  });
+
+  afterAll(async () => {
+    await page.viewport(frame.width, frame.height);
+  });
+
+  beforeEach(async () => {
+    await page.viewport(1280, 800);
+  });
+
+  it("renders every slot the recipe declares", async () => {
+    /*
+     * The scrim is drawn only while the panel is over the page, so the one test that
+     * has to see every slot is the one held open on a narrow viewport.
+     */
+    await page.viewport(414, 896);
+
+    render(Sidebar, {
+      props: {
+        /*
+         * Bound with a listener, so `defineModel` treats it as controlled and the
+         * viewport watcher's own close is discarded rather than kept locally.
+         */
+        open: true,
+        "onUpdate:open": () => {},
+        title: "Workspace",
+        description: "Acme",
+        close: true,
+        rail: true,
+      },
+      slots: { default: () => "Navigation", footer: () => "Account" },
+    });
+
+    /*
+     * The narrow viewport reaches the component through a ref set on mount, so the
+     * scrim appears one tick after the first render rather than in it.
+     */
+    await expect.poll(() => anywhere("overlay")).not.toBeNull();
+
+    for (const name of Object.keys(sidebar.slots)) {
+      expect(anywhere(name), name).not.toBeNull();
+    }
+  });
+
+  it("says which state it is in on every element that moves", () => {
+    const { container } = render(Sidebar, {
+      props: { open: false },
+      slots: { default: () => "Navigation" },
+    });
+
+    for (const name of ["base", "gap", "container"]) {
+      expect(slot(container, name)!.dataset.state, name).toBe("collapsed");
+    }
+  });
+
+  it("collapses from the close button", async () => {
+    const { container } = render(Sidebar, {
+      props: { title: "Workspace", close: true },
+      slots: { default: () => "Navigation" },
+    });
+
+    expect(slot(container, "base")!.dataset.state).toBe("expanded");
+    await userEvent.click(slot(container, "close")!);
+
+    expect(slot(container, "base")!.dataset.state).toBe("collapsed");
+  });
+
+  it("draws neither rail nor close button when it cannot collapse", () => {
+    const { container } = render(Sidebar, {
+      props: { collapsible: "none", title: "Workspace", close: true, rail: true },
+      slots: { default: () => "Navigation" },
+    });
+
+    expect(slot(container, "rail")).toBeNull();
+    expect(slot(container, "close")).toBeNull();
+    expect(slot(container, "base")!.dataset.state).toBe("expanded");
+  });
+
+  it("toggles from the rail", async () => {
+    const { container } = render(Sidebar, {
+      props: { rail: true },
+      slots: { default: () => "Navigation" },
+    });
+
+    await userEvent.click(slot(container, "rail")!);
+    expect(slot(container, "base")!.dataset.state).toBe("collapsed");
+
+    await userEvent.click(slot(container, "rail")!);
+    expect(slot(container, "base")!.dataset.state).toBe("expanded");
+  });
+
+  it("closes itself when the viewport can no longer hold it beside the page", async () => {
+    const { container } = render(Sidebar, { slots: { default: () => "Navigation" } });
+    expect(slot(container, "base")!.dataset.state).toBe("expanded");
+
+    await page.viewport(414, 896);
+    await expect.poll(() => slot(container, "base")!.dataset.state).toBe("collapsed");
+
+    await page.viewport(1280, 800);
+    await expect.poll(() => slot(container, "base")!.dataset.state).toBe("expanded");
   });
 });

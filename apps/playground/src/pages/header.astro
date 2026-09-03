@@ -1,0 +1,38 @@
+---
+import { header as recipe, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import HeaderPreview from "../previews/HeaderPreview.tsx";
+import HeaderPreviewVue from "../previews/HeaderPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(recipe.slots);
+const variantKeys = [...recipe.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(recipe, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "header" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") || "none" },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="Header"
+  description="The bar across the top of a page, and the menu it opens where there is no room for a navigation. The wordmark and the actions are rendered in both, so the menu never looks like a different page."
+  hasStage
+>
+  <Preview
+    title="Both toggle sides, and the menu behind them"
+    description="The bar with the button at each end. Narrow the pane past lg to hide the centre and reveal the toggle, then open it: the menu is the same wordmark and actions over a scrolling body."
+    meta={meta}
+  >
+    <Fragment slot="react"><HeaderPreview client:load /></Fragment>
+    <Fragment slot="vue"><HeaderPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

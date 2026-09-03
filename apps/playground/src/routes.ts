@@ -23,6 +23,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "angleSlider",
   },
   {
+    href: "/app",
+    label: "App",
+    summary:
+      "The provider an application is wrapped in: a theme, a locale, and the reading direction every rtl: utility depends on.",
+    key: "app",
+  },
+  {
     href: "/button",
     label: "Button",
     summary:
@@ -65,6 +72,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "combobox",
   },
   {
+    href: "/container",
+    label: "Container",
+    summary:
+      "The measure a page's content is held to, and the gutter that keeps it off the edge. One slot, no variants.",
+    key: "container",
+  },
+  {
     href: "/date-input",
     label: "DateInput",
     summary:
@@ -91,6 +105,41 @@ export const previews: readonly PreviewRoute[] = [
     summary:
       "One trigger and the panel it opens, across three variants and three sizes, with a collapsed height that turns it into a show-more.",
     key: "collapsible",
+  },
+  {
+    href: "/error",
+    label: "Error",
+    summary:
+      "The page shown when there is nothing else to show, across seven colours, centred in what the Header leaves.",
+    key: "error",
+  },
+  {
+    href: "/footer",
+    label: "Footer",
+    summary:
+      "Three regions in a row plus two full-bleed bands, reordered so a phone stacks the links above the copyright.",
+    key: "footer",
+  },
+  {
+    href: "/header",
+    label: "Header",
+    summary:
+      "The bar across the top of a page, and the fullscreen menu it opens where there is no room for a navigation.",
+    key: "header",
+  },
+  {
+    href: "/main",
+    label: "Main",
+    summary:
+      "The content region that claims the viewport less the Header, so a short page still puts its Footer at the bottom.",
+    key: "main",
+  },
+  {
+    href: "/sidebar",
+    label: "Sidebar",
+    summary:
+      "A collapsing column beside the page across three looks and three collapse modes, sliding in over the page on a phone.",
+    key: "sidebar",
   },
   {
     href: "/table-of-contents",

@@ -74,4 +74,12 @@
 :root {
   --ui-radius: 0.25rem;
   --ui-container: 80rem;
+
+  /*
+   * The Header's own height, and the number the Main and the Error subtract from the
+   * viewport to fill what is left of it. It is a token rather than a class on each of
+   * the three because they have to agree: a Header styled taller from a theme override
+   * would otherwise push the page down without the Main knowing.
+   */
+  --ui-header-height: 4rem;
 }

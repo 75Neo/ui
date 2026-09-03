@@ -41,11 +41,25 @@ past the current value, so a mark the slider has passed reads differently from o
 has not.
 
 ```tsx
-<Slider label="Quality" step={25} marks={[{ value: 0, label: "0" }, { value: 100, label: "100" }]} />
+<Slider
+  label="Quality"
+  step={25}
+  marks={[
+    { value: 0, label: "0" },
+    { value: 100, label: "100" },
+  ]}
+/>
 ```
 
 ```vue
-<Slider label="Quality" :step="25" :marks="[{ value: 0, label: '0' }, { value: 100, label: '100' }]" />
+<Slider
+  label="Quality"
+  :step="25"
+  :marks="[
+    { value: 0, label: '0' },
+    { value: 100, label: '100' },
+  ]"
+/>
 ```
 
 ### What the recipe may not style
