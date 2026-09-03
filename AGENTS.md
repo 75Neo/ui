@@ -44,23 +44,24 @@ Four packages. The dependency direction is `core` → `themes` → `react`/`vue`
 - **`@75neo/react`** / **`@75neo/vue`** — **adapters**. Each is a `Theme` component, one
   hook or composable, and one file per component. Styling stays in the component module.
 
-Both apps reach `@75neo/*` straight into each package's `src`, and **neither declares a
-workspace dependency on them**. Nothing about an app goes through `dist`, so both
-hot-reload against source with no build step in between and a prop renamed in a package
-is wrong in the app immediately rather than after a rebuild.
+Both apps reach `@75neo/*` straight into each package's `src`. Nothing about an app goes
+through `dist`, so both hot-reload against source with no build step in between and a
+prop renamed in a package is wrong in the app immediately rather than after a rebuild.
 
-That takes three files per app, and adding a third app means copying all three:
+Each app still declares a `workspace:*` dependency on all four packages, and needs to,
+even though it resolves none of them through one. The dependency is the edge turbo reads
+to know that a package change invalidates the app: drop it and a package edit leaves a
+stale app build cached and green. Resolving to source is a development convenience;
+the dependency is the build graph. Both hold at once.
+
+That takes two files per app, and adding a third app means copying both:
 
 - `astro.config.mjs` — a Vite `resolve.alias` entry per package, pointing at
   `packages/<name>/src/index.ts`. This is what the browser sees.
-- `tsconfig.json` — a matching `paths` entry per package. Without it TypeScript has no
-  workspace symlink left to follow and cannot resolve the import at all; with it,
-  `astro check` reads the same source Vite does.
-- `turbo.json` — a Package Configuration extending `//`, adding
-  `"$TURBO_ROOT$/packages/*/src/**"` to the `inputs` of `build` and `typecheck`. Dropping
-  the dependency also dropped the edge turbo used to invalidate the app's cache, so
-  without this a package source change leaves a stale app build cached. Reaching out of a
-  package with `../` is not allowed here; `$TURBO_ROOT$` is.
+- `tsconfig.json` — a matching `paths` entry per package, so `astro check` reads the
+  same source Vite does. Without it TypeScript follows the workspace symlink instead and
+  typechecks the app against each package's built `dist` types, which the alias means the
+  app never actually loads.
 
 The app stylesheet imports the token layer by relative path for the same reason, so
 Tailwind scans the same files.

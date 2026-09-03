@@ -3,11 +3,9 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/*/src/**"],
       "outputs": ["$TURBO_EXTENDS$", ".astro/**"]
     },
     "typecheck": {
-      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/*/src/**"],
       "outputs": [".astro/**"]
     }
   }
