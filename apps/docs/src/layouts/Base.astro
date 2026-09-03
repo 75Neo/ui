@@ -4,7 +4,6 @@ import FrameworkSwitch from "../components/FrameworkSwitch.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import { shell } from "../lib/layout";
 import { type Framework, docHref } from "../lib/framework";
-import { withBase } from "../lib/href";
 
 interface Props {
   title: string;
@@ -41,9 +40,9 @@ const nav = framework
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <link rel="icon" href={withBase("/logo-brand.svg")} type="image/svg+xml" />
-    <link rel="icon" href={withBase("/logo-brand.png")} type="image/png" sizes="512x512" />
-    <link rel="apple-touch-icon" href={withBase("/logo-brand.png")} />
+    <link rel="icon" href="/logo-brand.svg" type="image/svg+xml" />
+    <link rel="icon" href="/logo-brand.png" type="image/png" sizes="512x512" />
+    <link rel="apple-touch-icon" href="/logo-brand.png" />
     <script is:inline>
       // Runs before first paint so the page never flashes the wrong theme.
       (() => {
@@ -77,10 +76,10 @@ const nav = framework
     >
       <div class={`${shell} flex min-h-14 items-center gap-x-6`}>
         <a
-          href={withBase("/")}
+          href="/"
           class="group hover:text-highlighted -mx-2 flex shrink-0 items-center gap-2.5 rounded-md px-2 py-1.5"
         >
-          <img src={withBase("/logo-brand.svg")} alt="" width="22" height="22" class="rounded-[0.3rem]" />
+          <img src="/logo-brand.svg" alt="" width="22" height="22" class="rounded-[0.3rem]" />
           <span class="text-highlighted text-sm font-semibold tracking-[-0.01em]">75NeoUI</span>
         </a>
 

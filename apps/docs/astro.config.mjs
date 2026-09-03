@@ -16,9 +16,6 @@ import vue from "@astrojs/vue";
  */
 const repoRoot = fileURLToPath(new URL("../../", import.meta.url));
 
-/** The path the site answers on, which for a GitHub Pages project site is the repo. */
-const base = "/ui";
-
 /** @param {string} name */
 const src = (name) =>
   fileURLToPath(new URL(`../../packages/${name}/src/index.ts`, import.meta.url));
@@ -44,23 +41,17 @@ const disableJsxRefresh = () => ({
 
 export default defineConfig({
   /*
-   * GitHub Pages serves a project site from the repository's own path, so the site root
-   * is `/ui/` and not `/` — in `astro dev` too, which keeps the two honest. Astro
-   * prefixes the routes and the assets it generates itself; `withBase` in
-   * `src/lib/href.ts` covers the handful of URLs written by hand.
+   * Cloudflare Pages serves the project at the root of its own hostname, so there is no
+   * base path to carry and every URL on the page is the one written.
    */
-  site: "https://75neo.github.io",
-  base,
+  site: "https://75neo-ui.pages.dev",
   /*
    * `/docs` belongs to no framework, so it hands the reader to one. React first because
    * it is the larger audience, not because it is the better supported: the switcher in
    * the header is one click away and lands on the same page.
    *
-   * The destination spells the base out. Astro prefixes the route it matches on but
-   * hands the destination through as written, so this is one of the URLs the base has
-   * to be added to by hand.
    */
-  redirects: { "/docs": `${base}/docs/react/getting-started` },
+  redirects: { "/docs": "/docs/react/getting-started" },
   markdown: {
     shikiConfig: { theme: "github-dark", wrap: false },
   },

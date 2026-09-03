@@ -1,13 +1,14 @@
 name: Docs
 
-# The documentation site, published to GitHub Pages at https://75neo.github.io/ui/.
+# The documentation site, published to Cloudflare Pages at https://75neo-ui.pages.dev.
 #
 # It builds on its own rather than waiting for CI, because the build is the check that
 # matters here: the docs read every props table out of the packages' sources with
 # ts-morph, so a renamed prop fails this build rather than shipping a wrong table.
 #
-# This needs the repository's Pages source set to GitHub Actions, under
-# Settings > Pages. Nothing in the workflow can turn that on for itself.
+# `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are repository secrets. A push to
+# master is a production deployment; a manual run from any other branch is a preview,
+# which is wrangler reading the branch it was run on rather than anything set here.
 
 on:
   push:
@@ -24,20 +25,21 @@ on:
   workflow_dispatch:
 
 # One deployment at a time, and never cancel one halfway: an interrupted publish leaves
-# the live site on a half-uploaded artifact.
+# the live site on a half-uploaded build.
 concurrency:
-  group: pages
+  group: docs-deploy
   cancel-in-progress: false
 
 permissions:
   contents: read
+  deployments: write
 
 env:
   TURBO_TELEMETRY_DISABLED: "1"
 
 jobs:
-  build:
-    name: Build
+  deploy:
+    name: Deploy
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -49,29 +51,12 @@ jobs:
         with:
           turbo-cache-key: docs
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v6
-
       - name: Build
         run: pnpm exec turbo run build --filter docs
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v5
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v4
         with:
-          path: apps/docs/dist
-
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deploy
-        uses: actions/deploy-pages@v5
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy apps/docs/dist --project-name=75neo-ui

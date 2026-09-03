@@ -79,14 +79,12 @@ into React. `src/lib/framework.ts` holds everything that differs between the two
 package name, minimum version, icon type, fence language — and every other file asks it
 rather than branching on a string.
 
-The site is published to GitHub Pages by `.github/workflows/docs.yml`, and a project
-site answers under the repository's own path, so `base` is `/ui` and every URL on the
-page carries that prefix. Astro adds it to the routes and assets it generates itself and
-to nothing else, so a link or an icon written by hand goes through `withBase` in
-`src/lib/href.ts`. `astro dev` applies the base too, which is what keeps the two honest.
-The `/docs` redirect is the one exception worth remembering: Astro prefixes the route it
-matches and hands the destination through as written, so that destination spells the
-base out.
+The site is published to Cloudflare Pages by `.github/workflows/docs.yml`, which builds
+it and hands `apps/docs/dist` to `wrangler pages deploy` under the project name
+`75neo-ui`. The account id and API token are repository secrets. Cloudflare serves the
+project at the root of its own hostname, so there is no base path and every URL on the
+page is the one written; `site` in `astro.config.mjs` is the only place the public
+address appears.
 
 The slug is the content file's own name, so `table-of-contents.md` answers at
 `/docs/react/components/table-of-contents`. Nothing derives it from the exported
