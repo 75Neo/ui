@@ -134,4 +134,11 @@ export const previews: readonly PreviewRoute[] = [
       "A row of triggers and the panel the selected one shows, in two variants across three sizes and seven colors.",
     key: "tabs",
   },
+  {
+    href: "/radio-group",
+    label: "RadioGroup",
+    summary:
+      "A legend and the options under it, across five sizes and seven colors, with a description per option.",
+    key: "radioGroup",
+  },
 ];

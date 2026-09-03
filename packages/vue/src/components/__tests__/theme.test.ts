@@ -12,6 +12,7 @@ import {
   datePicker,
   dialog,
   popover,
+  radioGroup,
   switch as switchRecipe,
   tabs,
   tooltip,
@@ -24,6 +25,7 @@ import DateInput from "../DateInput.vue";
 import DatePicker from "../DatePicker.vue";
 import Dialog from "../Dialog.vue";
 import Popover from "../Popover.vue";
+import RadioGroup from "../RadioGroup.vue";
 import Switch from "../Switch.vue";
 import Tabs from "../Tabs.vue";
 import Theme from "../Theme.vue";
@@ -632,5 +634,64 @@ describe("Tabs", () => {
     const triggers = container.querySelectorAll<HTMLButtonElement>("[data-slot='trigger']");
     expect(triggers[1]!.disabled).toBe(false);
     expect(triggers[2]!.disabled).toBe(true);
+  });
+});
+
+/**
+ * The RadioGroup repeats the Checkbox's anatomy per option, so what is asserted here is
+ * the part that is its own: that the dot is a real element reading the control's state,
+ * and that a horizontal group keeps its legend for a screen reader rather than dropping
+ * it.
+ */
+const radioItems = [
+  { value: "free", label: "Free", description: "No card needed." },
+  { value: "pro", label: "Pro" },
+  { value: "team", label: "Team", disabled: true },
+];
+
+describe("RadioGroup", () => {
+  it("renders every slot the recipe declares", () => {
+    const { container } = render(RadioGroup, {
+      props: { legend: "Plan", items: radioItems, defaultValue: "free" },
+    });
+
+    for (const name of Object.keys(radioGroup.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("picks the option that is clicked", async () => {
+    const { container } = render(RadioGroup, {
+      props: { legend: "Plan", items: radioItems, defaultValue: "free" },
+    });
+    const checked = () =>
+      [...container.querySelectorAll<HTMLElement>("[data-slot='control']")].findIndex(
+        (control) => control.dataset.state === "checked",
+      );
+
+    expect(checked()).toBe(0);
+
+    await userEvent.click(container.querySelectorAll("[data-slot='item']")[1]!);
+
+    await expect.poll(checked).toBe(1);
+  });
+
+  it("marks the option that asked to be disabled", () => {
+    const { container } = render(RadioGroup, {
+      props: { legend: "Plan", items: radioItems, defaultValue: "free" },
+    });
+
+    const options = container.querySelectorAll<HTMLElement>("[data-slot='item']");
+    expect(options[1]!.hasAttribute("data-disabled")).toBe(false);
+    expect(options[2]!.hasAttribute("data-disabled")).toBe(true);
+  });
+
+  it("keeps a horizontal group's legend for a screen reader only", () => {
+    const { container } = render(RadioGroup, {
+      props: { legend: "Plan", items: radioItems, orientation: "horizontal" },
+    });
+
+    expect(slot(container, "legend")!.textContent).toBe("Plan");
+    expect(slot(container, "legend")!.className).toContain("sr-only");
   });
 });

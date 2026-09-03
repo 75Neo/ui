@@ -27,6 +27,7 @@ export * from "./components/date-input";
 export * from "./components/date-picker";
 export * from "./components/dialog";
 export * from "./components/popover";
+export * from "./components/radio-group";
 export * from "./components/switch";
 export * from "./components/table-of-contents";
 export * from "./components/tabs";

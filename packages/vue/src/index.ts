@@ -12,6 +12,7 @@ export { default as DateInput } from "./components/DateInput.vue";
 export { default as DatePicker } from "./components/DatePicker.vue";
 export { default as Dialog } from "./components/Dialog.vue";
 export { default as Popover } from "./components/Popover.vue";
+export { default as RadioGroup } from "./components/RadioGroup.vue";
 export { default as Switch } from "./components/Switch.vue";
 export { default as TableOfContents } from "./components/TableOfContents.vue";
 export { default as Tabs } from "./components/Tabs.vue";
@@ -83,6 +84,10 @@ export {
   type PopoverProps,
   type PopoverTheme,
   type PopoverUI,
+  type RadioGroupItem,
+  type RadioGroupProps,
+  type RadioGroupTheme,
+  type RadioGroupUI,
   type SwitchProps,
   type SwitchTheme,
   type SwitchUI,
