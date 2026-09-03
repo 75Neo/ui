@@ -59,6 +59,22 @@ jobs:
       # this workspace's manifests are written in. `pnpm dlx` fetches wrangler into the
       # store instead, touching nothing in the repo. Wrangler reads the token and the
       # account from the environment.
+      # `pages deploy` will not create the project it deploys into, and Cloudflare has
+      # no create-if-missing. So this creates it and shrugs when it is already there,
+      # which is every run after the first. A token that cannot create one cannot deploy
+      # either, so a real failure here still fails loudly in the step below.
+      - name: Ensure the Pages project exists
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if pnpm dlx wrangler@4 pages project create 75neo-ui \
+            --production-branch=master; then
+            echo "Created the Pages project."
+          else
+            echo "The Pages project is already there, which is the usual case."
+          fi
+
       - name: Deploy to Cloudflare Pages
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
