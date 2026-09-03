@@ -1,0 +1,38 @@
+---
+import { tooltip, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import TooltipPreview from "../previews/TooltipPreview.tsx";
+import TooltipPreviewVue from "../previews/TooltipPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(tooltip.slots);
+const variantKeys = [...tooltip.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(tooltip, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "tooltip" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="Tooltip"
+  description="One recipe in @75neo/themes, rendered by both adapters. The bubble is the base slot, because Ark's tooltip root renders no element of its own, and it grows from the edge nearest its trigger by reading the positioner's own transform origin."
+  hasStage
+>
+  <Preview
+    title="Sizes, placements and the arrow"
+    description="Three sizes, then the four sides with an arrow pointing back at the trigger, then an interactive bubble, a disabled one and one holding markup rather than a string. Every bubble here opens with no delay so it can be seen without waiting."
+    meta={meta}
+  >
+    <Fragment slot="react"><TooltipPreview client:load /></Fragment>
+    <Fragment slot="vue"><TooltipPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

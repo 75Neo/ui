@@ -12,6 +12,7 @@ import {
   datePicker,
   dialog,
   switch as switchRecipe,
+  tooltip,
 } from "@75neo/themes";
 import { Accordion } from "../Accordion";
 import { AngleSlider } from "../AngleSlider";
@@ -22,6 +23,7 @@ import { DatePicker } from "../DatePicker";
 import { Dialog } from "../Dialog";
 import { Switch } from "../Switch";
 import { Theme } from "../Theme";
+import { Tooltip } from "../Tooltip";
 
 async function mount(ui: React.ReactElement): Promise<HTMLElement> {
   const { container } = await render(ui);
@@ -411,5 +413,87 @@ describe("Switch", () => {
     await userEvent.click(container.querySelector<HTMLElement>("[data-slot='label']")!);
 
     await expect.poll(() => slot(container, "control")!.dataset.state).toBe("checked");
+  });
+});
+
+/**
+ * The Tooltip is the first popper this library wraps, so what is asserted here is the
+ * arrangement the rest of the family will copy: the caller's own element is the
+ * trigger, the bubble is `base`, and `placement` reaches the positioner rather than
+ * being styled in.
+ *
+ * Every assertion opens the tooltip with `defaultOpen` rather than by hovering. A
+ * synthetic pointer has to move onto an element from somewhere, and the first move
+ * after a page loads has no somewhere to come from, so hover is the one thing a test
+ * cannot ask of a fresh document.
+ */
+const bubble = () =>
+  document.querySelector<HTMLElement>(
+    '[data-scope="tooltip"][data-part="content"][data-state="open"]',
+  );
+
+describe("Tooltip", () => {
+  it("renders every slot the recipe declares once it is open", async () => {
+    await mount(
+      <Tooltip text="Text" arrow defaultOpen>
+        <button type="button">Trigger</button>
+      </Tooltip>,
+    );
+
+    for (const name of Object.keys(tooltip.slots)) {
+      await expect.poll(() => anywhere(name), { timeout: 2000 }).not.toBeNull();
+    }
+  });
+
+  it("makes the caller's own element the trigger", async () => {
+    const container = await mount(
+      <Tooltip text="Text">
+        <button type="button" className="underline">
+          Trigger
+        </button>
+      </Tooltip>,
+    );
+
+    // asChild, so the trigger *is* the caller's button rather than one wrapping it.
+    const trigger = container.querySelector<HTMLElement>(
+      '[data-scope="tooltip"][data-part="trigger"]',
+    )!;
+    expect(trigger.tagName).toBe("BUTTON");
+    expect(trigger.className).toContain("underline");
+  });
+
+  it("lets content beat text", async () => {
+    await mount(
+      <Tooltip text="Plain" content={<em>Markup</em>} defaultOpen>
+        <button type="button">Trigger</button>
+      </Tooltip>,
+    );
+
+    await expect.poll(() => bubble()?.textContent).toBe("Markup");
+  });
+
+  it("hands placement to the positioner", async () => {
+    await mount(
+      <Tooltip text="Text" placement="right" defaultOpen>
+        <button type="button">Trigger</button>
+      </Tooltip>,
+    );
+
+    /*
+     * A side with room, because a placement is a preference: Ark moves the bubble when
+     * the side it was asked for would put it off screen, so asserting a corner here
+     * would be asserting the size of the test's own viewport.
+     */
+    await expect.poll(() => bubble()?.dataset.placement).toBe("right");
+  });
+
+  it("sends a call-site className to the bubble", async () => {
+    await mount(
+      <Tooltip text="Text" className="max-w-md" defaultOpen>
+        <button type="button">Trigger</button>
+      </Tooltip>,
+    );
+
+    await expect.poll(() => bubble()?.className).toContain("max-w-md");
   });
 });

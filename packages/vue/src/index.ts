@@ -13,6 +13,7 @@ export { default as DatePicker } from "./components/DatePicker.vue";
 export { default as Dialog } from "./components/Dialog.vue";
 export { default as Switch } from "./components/Switch.vue";
 export { default as TableOfContents } from "./components/TableOfContents.vue";
+export { default as Tooltip } from "./components/Tooltip.vue";
 export { default as Theme } from "./components/Theme.vue";
 export { useResolvedTheme } from "./composables/theme";
 
@@ -76,6 +77,7 @@ export {
   type DialogProps,
   type DialogTheme,
   type DialogUI,
+  type Placement,
   type SwitchProps,
   type SwitchTheme,
   type SwitchUI,
@@ -83,6 +85,9 @@ export {
   type TableOfContentsProps,
   type TableOfContentsTheme,
   type TableOfContentsUI,
+  type TooltipProps,
+  type TooltipTheme,
+  type TooltipUI,
 } from "@75neo/themes";
 
 /*

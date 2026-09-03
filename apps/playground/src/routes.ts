@@ -113,4 +113,11 @@ export const previews: readonly PreviewRoute[] = [
       "A track the thumb slides along, across five sizes and seven colors, with a label, a description and an icon per state.",
     key: "switch",
   },
+  {
+    href: "/tooltip",
+    label: "Tooltip",
+    summary:
+      "A bubble that appears beside whatever it explains, across three sizes and twelve placements, with an optional arrow.",
+    key: "tooltip",
+  },
 ];

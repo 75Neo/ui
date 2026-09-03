@@ -26,3 +26,4 @@ export * from "./components/date-picker";
 export * from "./components/dialog";
 export * from "./components/switch";
 export * from "./components/table-of-contents";
+export * from "./components/tooltip";

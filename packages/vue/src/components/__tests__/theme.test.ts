@@ -12,6 +12,7 @@ import {
   datePicker,
   dialog,
   switch as switchRecipe,
+  tooltip,
 } from "@75neo/themes";
 import Accordion from "../Accordion.vue";
 import AngleSlider from "../AngleSlider.vue";
@@ -22,6 +23,7 @@ import DatePicker from "../DatePicker.vue";
 import Dialog from "../Dialog.vue";
 import Switch from "../Switch.vue";
 import Theme from "../Theme.vue";
+import Tooltip from "../Tooltip.vue";
 
 function slot(container: HTMLElement, name: string): HTMLElement | null {
   return container.querySelector<HTMLElement>(`[data-slot='${name}']`);
@@ -413,5 +415,86 @@ describe("Switch", () => {
     await userEvent.click(container.querySelector<HTMLElement>("[data-slot='label']")!);
 
     await expect.poll(() => slot(container, "control")!.dataset.state).toBe("checked");
+  });
+});
+
+/**
+ * The Tooltip is the first popper this library wraps, so what is asserted here is the
+ * arrangement the rest of the family will copy: the default slot is the trigger, the
+ * bubble is `base`, and `placement` reaches the positioner rather than being styled in.
+ *
+ * Every assertion opens the tooltip with `defaultOpen` rather than by hovering. A
+ * synthetic pointer has to move onto an element from somewhere, and the first move
+ * after a page loads has no somewhere to come from, so hover is the one thing a test
+ * cannot ask of a fresh document.
+ *
+ * The last one guards Vue's Boolean cast: `portal` defaults on, so an absent one cast
+ * to `false` would leave the bubble inside whatever overflow the trigger sits in.
+ */
+const bubble = () =>
+  document.querySelector<HTMLElement>(
+    '[data-scope="tooltip"][data-part="content"][data-state="open"]',
+  );
+
+describe("Tooltip", () => {
+  it("renders every slot the recipe declares once it is open", async () => {
+    render(Tooltip, {
+      props: { text: "Text", arrow: true, defaultOpen: true },
+      slots: { default: () => h("button", { type: "button" }, "Trigger") },
+    });
+
+    for (const name of Object.keys(tooltip.slots)) {
+      await expect.poll(() => anywhere(name), { timeout: 2000 }).not.toBeNull();
+    }
+  });
+
+  it("makes the caller's own element the trigger", () => {
+    const { container } = render(Tooltip, {
+      props: { text: "Text" },
+      slots: { default: () => h("button", { type: "button", class: "underline" }, "Trigger") },
+    });
+
+    // asChild, so the trigger *is* the caller's button rather than one wrapping it.
+    const trigger = container.querySelector<HTMLElement>(
+      '[data-scope="tooltip"][data-part="trigger"]',
+    )!;
+    expect(trigger.tagName).toBe("BUTTON");
+    expect(trigger.className).toContain("underline");
+  });
+
+  it("lets the content slot beat text", async () => {
+    render(Tooltip, {
+      props: { text: "Plain", defaultOpen: true },
+      slots: {
+        default: () => h("button", { type: "button" }, "Trigger"),
+        content: () => h("em", "Markup"),
+      },
+    });
+
+    await expect.poll(() => bubble()?.textContent).toBe("Markup");
+  });
+
+  it("hands placement to the positioner", async () => {
+    render(Tooltip, {
+      props: { text: "Text", placement: "right", defaultOpen: true },
+      slots: { default: () => h("button", { type: "button" }, "Trigger") },
+    });
+
+    /*
+     * A side with room, because a placement is a preference: Ark moves the bubble when
+     * the side it was asked for would put it off screen, so asserting a corner here
+     * would be asserting the size of the test's own viewport.
+     */
+    await expect.poll(() => bubble()?.dataset.placement).toBe("right");
+  });
+
+  it("teleports the bubble when portal is left out", async () => {
+    const { container } = render(Tooltip, {
+      props: { text: "Text", defaultOpen: true },
+      slots: { default: () => h("button", { type: "button" }, "Trigger") },
+    });
+
+    await expect.poll(() => bubble()).not.toBeNull();
+    expect(container.contains(bubble())).toBe(false);
   });
 });

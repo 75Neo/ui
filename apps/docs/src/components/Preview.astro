@@ -15,6 +15,7 @@ import { DatePickerPreview } from "../previews/DatePickerPreview";
 import { DialogPreview } from "../previews/DialogPreview";
 import { SwitchPreview } from "../previews/SwitchPreview";
 import { TableOfContentsPreview } from "../previews/TableOfContentsPreview";
+import { TooltipPreview } from "../previews/TooltipPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import AngleSliderPreviewVue from "../previews/AngleSliderPreview.vue";
 import AvatarPreviewVue from "../previews/AvatarPreview.vue";
@@ -30,6 +31,7 @@ import DatePickerPreviewVue from "../previews/DatePickerPreview.vue";
 import DialogPreviewVue from "../previews/DialogPreview.vue";
 import SwitchPreviewVue from "../previews/SwitchPreview.vue";
 import TableOfContentsPreviewVue from "../previews/TableOfContentsPreview.vue";
+import TooltipPreviewVue from "../previews/TooltipPreview.vue";
 
 /**
  * One component's live specimen, in the framework the route is for.
@@ -68,6 +70,7 @@ const vue = framework === "vue";
 {react && name === "Dialog" && <DialogPreview client:visible />}
 {react && name === "Switch" && <SwitchPreview client:visible />}
 {react && name === "TableOfContents" && <TableOfContentsPreview client:visible />}
+{react && name === "Tooltip" && <TooltipPreview client:visible />}
 
 {vue && name === "Accordion" && <AccordionPreviewVue client:visible />}
 {vue && name === "AngleSlider" && <AngleSliderPreviewVue client:visible />}
@@ -84,3 +87,4 @@ const vue = framework === "vue";
 {vue && name === "Dialog" && <DialogPreviewVue client:visible />}
 {vue && name === "Switch" && <SwitchPreviewVue client:visible />}
 {vue && name === "TableOfContents" && <TableOfContentsPreviewVue client:visible />}
+{vue && name === "Tooltip" && <TooltipPreviewVue client:visible />}

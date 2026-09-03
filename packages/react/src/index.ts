@@ -13,6 +13,7 @@ export { DatePicker, type DatePickerProps } from "./components/DatePicker";
 export { Dialog, type DialogProps } from "./components/Dialog";
 export { Switch, type SwitchProps } from "./components/Switch";
 export { TableOfContents, type TableOfContentsProps } from "./components/TableOfContents";
+export { Tooltip, type TooltipProps } from "./components/Tooltip";
 export { Theme, type ThemeProps } from "./components/Theme";
 export { useResolvedTheme } from "./hooks/useResolvedTheme";
 
@@ -63,11 +64,14 @@ export {
   type DatePickerUI,
   type DialogTheme,
   type DialogUI,
+  type Placement,
   type SwitchTheme,
   type SwitchUI,
   type TableOfContentsItem,
   type TableOfContentsTheme,
   type TableOfContentsUI,
+  type TooltipTheme,
+  type TooltipUI,
 } from "@75neo/themes";
 
 /*

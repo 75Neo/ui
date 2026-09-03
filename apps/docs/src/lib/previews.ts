@@ -23,6 +23,7 @@ export const previewed = new Set([
   "Dialog",
   "Switch",
   "TableOfContents",
+  "Tooltip",
 ]);
 
 /** Whether a component has a live specimen on the reference page. */
