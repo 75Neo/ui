@@ -1,0 +1,77 @@
+name: Docs
+
+# The documentation site, published to GitHub Pages at https://75neo.github.io/ui/.
+#
+# It builds on its own rather than waiting for CI, because the build is the check that
+# matters here: the docs read every props table out of the packages' sources with
+# ts-morph, so a renamed prop fails this build rather than shipping a wrong table.
+#
+# This needs the repository's Pages source set to GitHub Actions, under
+# Settings > Pages. Nothing in the workflow can turn that on for itself.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - ".github/actions/setup/**"
+      - ".github/workflows/docs.yml"
+      - "apps/docs/**"
+      - "mise.toml"
+      - "packages/**"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "turbo.json"
+  workflow_dispatch:
+
+# One deployment at a time, and never cancel one halfway: an interrupted publish leaves
+# the live site on a half-uploaded artifact.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  TURBO_TELEMETRY_DISABLED: "1"
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup
+        uses: ./.github/actions/setup
+        with:
+          turbo-cache-key: docs
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v6
+
+      - name: Build
+        run: pnpm exec turbo run build --filter docs
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: apps/docs/dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v5

@@ -1,5 +1,11 @@
 ---
-import { type Framework, frameworkFacts, frameworks, isFramework } from "../lib/framework";
+import {
+  type Framework,
+  docHref,
+  frameworkFacts,
+  frameworks,
+  isFramework,
+} from "../lib/framework";
 
 /**
  * React or Vue, without leaving the page.
@@ -23,7 +29,7 @@ const hrefFor = (next: Framework) => {
   const segments = path.split("/");
   const at = segments.findIndex((segment) => isFramework(segment));
 
-  if (at === -1) return `/docs/${next}/getting-started`;
+  if (at === -1) return docHref(next, "getting-started");
 
   segments[at] = next;
   return segments.join("/");

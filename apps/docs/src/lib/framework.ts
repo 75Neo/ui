@@ -9,6 +9,8 @@
  * routes.
  */
 
+import { withBase } from "./href";
+
 export const frameworks = ["react", "vue"] as const;
 
 /** One of the two adapters. */
@@ -51,7 +53,7 @@ export function isFramework(value: string | undefined): value is Framework {
 
 /** The URL of one documentation page for one framework. */
 export function docHref(framework: Framework, page: "getting-started" | "components"): string {
-  return `/docs/${framework}/${page}`;
+  return withBase(`/docs/${framework}/${page}`);
 }
 
 /**

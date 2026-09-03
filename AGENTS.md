@@ -79,6 +79,15 @@ into React. `src/lib/framework.ts` holds everything that differs between the two
 package name, minimum version, icon type, fence language — and every other file asks it
 rather than branching on a string.
 
+The site is published to GitHub Pages by `.github/workflows/docs.yml`, and a project
+site answers under the repository's own path, so `base` is `/ui` and every URL on the
+page carries that prefix. Astro adds it to the routes and assets it generates itself and
+to nothing else, so a link or an icon written by hand goes through `withBase` in
+`src/lib/href.ts`. `astro dev` applies the base too, which is what keeps the two honest.
+The `/docs` redirect is the one exception worth remembering: Astro prefixes the route it
+matches and hands the destination through as written, so that destination spells the
+base out.
+
 The slug is the content file's own name, so `table-of-contents.md` answers at
 `/docs/react/components/table-of-contents`. Nothing derives it from the exported
 component name, which would have to guess where the words break.
