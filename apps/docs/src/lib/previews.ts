@@ -24,6 +24,7 @@ export const previewed = new Set([
   "Popover",
   "Switch",
   "TableOfContents",
+  "Tabs",
   "Tooltip",
 ]);
 

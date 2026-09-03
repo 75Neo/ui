@@ -14,6 +14,7 @@ export { Dialog, type DialogProps } from "./components/Dialog";
 export { Popover, type PopoverProps } from "./components/Popover";
 export { Switch, type SwitchProps } from "./components/Switch";
 export { TableOfContents, type TableOfContentsProps } from "./components/TableOfContents";
+export { Tabs, type TabsProps } from "./components/Tabs";
 export { Tooltip, type TooltipProps } from "./components/Tooltip";
 export { Theme, type ThemeProps } from "./components/Theme";
 export { useResolvedTheme } from "./hooks/useResolvedTheme";
@@ -73,6 +74,9 @@ export {
   type TableOfContentsItem,
   type TableOfContentsTheme,
   type TableOfContentsUI,
+  type TabsItem,
+  type TabsTheme,
+  type TabsUI,
   type TooltipTheme,
   type TooltipUI,
 } from "@75neo/themes";

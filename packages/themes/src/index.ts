@@ -29,4 +29,5 @@ export * from "./components/dialog";
 export * from "./components/popover";
 export * from "./components/switch";
 export * from "./components/table-of-contents";
+export * from "./components/tabs";
 export * from "./components/tooltip";

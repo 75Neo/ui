@@ -13,6 +13,7 @@ import {
   dialog,
   popover,
   switch as switchRecipe,
+  tabs,
   tooltip,
 } from "@75neo/themes";
 import { Accordion } from "../Accordion";
@@ -24,6 +25,7 @@ import { DatePicker } from "../DatePicker";
 import { Dialog } from "../Dialog";
 import { Popover } from "../Popover";
 import { Switch } from "../Switch";
+import { Tabs } from "../Tabs";
 import { Theme } from "../Theme";
 import { Tooltip } from "../Tooltip";
 
@@ -576,5 +578,56 @@ describe("Popover", () => {
     await userEvent.keyboard("{Escape}");
 
     await expect.poll(() => anchoredPanel(), { timeout: 2000 }).toBeNull();
+  });
+});
+
+/**
+ * The Tabs takes its content as items and renders a trigger and a panel for each, so
+ * what is asserted here is that the two halves stay in step and that the call site's
+ * own escape hatch beats the item.
+ */
+const tabItems = [
+  { value: "one", label: "One", content: "First", icon: <Circle /> },
+  { value: "two", label: "Two", content: "Second" },
+  { value: "three", label: "Three", content: "Third", disabled: true },
+];
+
+describe("Tabs", () => {
+  it("renders every slot the recipe declares", async () => {
+    const container = await mount(<Tabs items={tabItems} defaultValue="one" />);
+
+    for (const name of Object.keys(tabs.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("swaps the panel when another trigger is picked", async () => {
+    const container = await mount(<Tabs items={tabItems} defaultValue="one" />);
+    const shown = () =>
+      [...container.querySelectorAll<HTMLElement>("[data-slot='content']")].find(
+        (panel) => !panel.hidden,
+      );
+
+    expect(shown()?.textContent).toBe("First");
+
+    await userEvent.click(container.querySelectorAll("[data-slot='trigger']")[1]!);
+
+    await expect.poll(() => shown()?.textContent).toBe("Second");
+  });
+
+  it("lets renderContent beat the item's own string", async () => {
+    const container = await mount(
+      <Tabs items={tabItems} defaultValue="one" renderContent={(item) => <em>{item.value}</em>} />,
+    );
+
+    expect(slot(container, "content")!.textContent).toBe("one");
+  });
+
+  it("disables the item that asked to be", async () => {
+    const container = await mount(<Tabs items={tabItems} defaultValue="one" />);
+
+    const triggers = container.querySelectorAll<HTMLButtonElement>("[data-slot='trigger']");
+    expect(triggers[1]!.disabled).toBe(false);
+    expect(triggers[2]!.disabled).toBe(true);
   });
 });

@@ -16,6 +16,7 @@ import { DialogPreview } from "../previews/DialogPreview";
 import { PopoverPreview } from "../previews/PopoverPreview";
 import { SwitchPreview } from "../previews/SwitchPreview";
 import { TableOfContentsPreview } from "../previews/TableOfContentsPreview";
+import { TabsPreview } from "../previews/TabsPreview";
 import { TooltipPreview } from "../previews/TooltipPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import AngleSliderPreviewVue from "../previews/AngleSliderPreview.vue";
@@ -33,6 +34,7 @@ import DialogPreviewVue from "../previews/DialogPreview.vue";
 import PopoverPreviewVue from "../previews/PopoverPreview.vue";
 import SwitchPreviewVue from "../previews/SwitchPreview.vue";
 import TableOfContentsPreviewVue from "../previews/TableOfContentsPreview.vue";
+import TabsPreviewVue from "../previews/TabsPreview.vue";
 import TooltipPreviewVue from "../previews/TooltipPreview.vue";
 
 /**
@@ -73,6 +75,7 @@ const vue = framework === "vue";
 {react && name === "Popover" && <PopoverPreview client:visible />}
 {react && name === "Switch" && <SwitchPreview client:visible />}
 {react && name === "TableOfContents" && <TableOfContentsPreview client:visible />}
+{react && name === "Tabs" && <TabsPreview client:visible />}
 {react && name === "Tooltip" && <TooltipPreview client:visible />}
 
 {vue && name === "Accordion" && <AccordionPreviewVue client:visible />}
@@ -91,4 +94,5 @@ const vue = framework === "vue";
 {vue && name === "Popover" && <PopoverPreviewVue client:visible />}
 {vue && name === "Switch" && <SwitchPreviewVue client:visible />}
 {vue && name === "TableOfContents" && <TableOfContentsPreviewVue client:visible />}
+{vue && name === "Tabs" && <TabsPreviewVue client:visible />}
 {vue && name === "Tooltip" && <TooltipPreviewVue client:visible />}

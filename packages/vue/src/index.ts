@@ -14,6 +14,7 @@ export { default as Dialog } from "./components/Dialog.vue";
 export { default as Popover } from "./components/Popover.vue";
 export { default as Switch } from "./components/Switch.vue";
 export { default as TableOfContents } from "./components/TableOfContents.vue";
+export { default as Tabs } from "./components/Tabs.vue";
 export { default as Tooltip } from "./components/Tooltip.vue";
 export { default as Theme } from "./components/Theme.vue";
 export { useResolvedTheme } from "./composables/theme";
@@ -89,6 +90,10 @@ export {
   type TableOfContentsProps,
   type TableOfContentsTheme,
   type TableOfContentsUI,
+  type TabsItem,
+  type TabsProps,
+  type TabsTheme,
+  type TabsUI,
   type TooltipProps,
   type TooltipTheme,
   type TooltipUI,

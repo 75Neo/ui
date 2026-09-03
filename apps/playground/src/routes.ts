@@ -127,4 +127,11 @@ export const previews: readonly PreviewRoute[] = [
       "A titled panel anchored to whatever opened it, across three sizes and twelve placements, with an arrow and a modal mode.",
     key: "popover",
   },
+  {
+    href: "/tabs",
+    label: "Tabs",
+    summary:
+      "A row of triggers and the panel the selected one shows, in two variants across three sizes and seven colors.",
+    key: "tabs",
+  },
 ];
