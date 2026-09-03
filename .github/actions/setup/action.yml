@@ -1,0 +1,45 @@
+name: Setup
+description: Node, pnpm, the workspace's dependencies, and the caches a job reads.
+
+inputs:
+  turbo-cache-key:
+    description: >-
+      Names this job's slice of the Turborepo cache, and leaving it out skips that cache
+      entirely — which is what a job running only oxlint or oxfmt wants. Jobs run in
+      parallel and a cache entry is written once, so two jobs sharing a key would race
+      and one of them would throw its work away. Each job keeps its own lineage instead,
+      and still starts from the last run of the same job.
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - name: Setup mise
+      uses: jdx/mise-action@v4
+
+    - name: pnpm store path
+      id: pnpm-store
+      shell: bash
+      run: echo "path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+
+    - name: pnpm store cache
+      uses: actions/cache@v6
+      with:
+        path: ${{ steps.pnpm-store.outputs.path }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    - name: Turborepo cache
+      if: inputs.turbo-cache-key != ''
+      uses: actions/cache@v6
+      with:
+        path: .turbo/cache
+        key: ${{ runner.os }}-turbo-${{ inputs.turbo-cache-key }}-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-turbo-${{ inputs.turbo-cache-key }}-
+
+    - name: Install
+      shell: bash
+      run: pnpm install --frozen-lockfile

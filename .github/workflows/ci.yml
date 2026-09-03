@@ -16,47 +16,156 @@ env:
   TURBO_TELEMETRY_DISABLED: "1"
 
 jobs:
-  qa:
-    name: QA
+  # What the rest of the workflow asks before it runs. A filter names the paths a job
+  # would read, expanded along the dependency graph by hand: `@75neo/react` is built
+  # from `core` and `themes` as well as its own source, so all three belong to its
+  # filter. The comparison is against the merge base on a pull request and against the
+  # commit the branch moved from on a push.
+  changes:
+    name: Changes
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 5
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+      tested: ${{ steps.tested.outputs.packages }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Setup mise
-        uses: jdx/mise-action@v4
-
-      - name: pnpm store path
-        id: pnpm-store
-        run: echo "path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
-
-      - name: pnpm store cache
-        uses: actions/cache@v6
+      - name: Filter
+        id: filter
+        uses: dorny/paths-filter@v4
         with:
-          path: ${{ steps.pnpm-store.outputs.path }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          filters: |
+            shared: &shared
+              - '.github/actions/setup/**'
+              - '.github/workflows/ci.yml'
+              - 'mise.toml'
+              - 'oxfmt.config.ts'
+              - 'oxlint.config.ts'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+              - 'pnpm-workspace.yaml'
+              - 'tsconfig.base.json'
+              - 'turbo.json'
+              - 'vitest.config.ts'
+            code:
+              - *shared
+              - 'apps/**'
+              - 'packages/**'
+            core:
+              - *shared
+              - 'packages/core/**'
+            react:
+              - *shared
+              - 'packages/core/**'
+              - 'packages/themes/**'
+              - 'packages/react/**'
+            vue:
+              - *shared
+              - 'packages/core/**'
+              - 'packages/themes/**'
+              - 'packages/vue/**'
 
-      - name: Turborepo cache
-        uses: actions/cache@v6
-        with:
-          path: .turbo/cache
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-turbo-
+      - name: Packages to test
+        id: tested
+        env:
+          MATCHED: ${{ steps.filter.outputs.changes }}
+        run: |
+          # `changes` lists every filter that matched, and an anchor is a filter like
+          # any other. `shared` and `code` name no package, and `themes` carries no
+          # tests, so what is left is the matrix.
+          packages=$(jq -cn --argjson matched "$MATCHED" '$matched - ["code", "shared"]')
+          echo "packages=$packages" >> "$GITHUB_OUTPUT"
 
-      - name: Install
-        run: pnpm install --frozen-lockfile
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
 
-      - name: Format
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Check formatting
         run: pnpm format:check
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Lint
+        run: pnpm lint
+
+  build:
+    name: Build
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup
+        uses: ./.github/actions/setup
+        with:
+          turbo-cache-key: build
 
       - name: Build
         run: pnpm build
 
+  typecheck:
+    name: Type check
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup
+        uses: ./.github/actions/setup
+        with:
+          turbo-cache-key: typecheck
+
+      # `typecheck` depends on `build`, so this covers both. It stays a separate job
+      # from `Build` so a broken build is named as one rather than as a type error.
+      - name: Type check
+        run: pnpm typecheck
+
+  test:
+    name: Test ${{ matrix.package }}
+    needs: changes
+    if: needs.changes.outputs.tested != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(needs.changes.outputs.tested) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup
+        uses: ./.github/actions/setup
+        with:
+          turbo-cache-key: test-${{ matrix.package }}
+
+      # `@75neo/core` is node-only. The two adapters drive a real browser.
       - name: Playwright browsers cache
+        if: matrix.package != 'core'
         uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
@@ -65,17 +174,34 @@ jobs:
             ${{ runner.os }}-playwright-
 
       - name: Install Playwright browsers
+        if: matrix.package != 'core'
         run: pnpm exec playwright install --with-deps chromium
 
       - name: Test
-        run: pnpm test
+        env:
+          PACKAGE: ${{ matrix.package }}
+        run: pnpm exec turbo run test --filter "@75neo/$PACKAGE"
 
-      - name: Lint
-        run: pnpm lint
-
-      - name: Type check
-        run: pnpm typecheck
-
-      - name: Prune pnpm store
-        continue-on-error: true
-        run: pnpm store prune
+  # One name for branch protection to require. The jobs above are skipped rather than
+  # failed when nothing they cover changed, and a matrix job's name moves with the
+  # matrix, so neither can be required directly.
+  ci:
+    name: CI
+    if: always()
+    needs: [changes, format, lint, build, typecheck, test]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check the jobs above
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          for result in $RESULTS; do
+            case "$result" in
+              success | skipped) ;;
+              *)
+                echo "A job in this workflow reported: $result"
+                exit 1
+                ;;
+            esac
+          done

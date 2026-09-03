@@ -24,8 +24,12 @@ pnpm --filter @75neo/core test
 pnpm --filter @75neo/core exec vitest run -t "lets class beat the ui prop"
 ```
 
-CI runs `format:check`, `build`, `test`, `lint`, `typecheck`, in that order. Work is done
-when all five pass locally.
+CI runs those five as parallel jobs, and work is done when all five pass locally. Which
+of them run is decided by the `changes` job from the paths a commit touched: the `Test`
+job is a matrix over the packages whose sources or dependencies changed, so a commit in
+`packages/core` tests all three adapters and one in `packages/vue` tests only Vue. `CI`
+is the job to require in branch protection, because it is the only name that does not
+move with the matrix.
 
 `@75neo/core` is node-only and fast, so put a test there whenever the behaviour needs no
 DOM. `@75neo/themes` carries no tests: it is Tailwind classes, not logic.
