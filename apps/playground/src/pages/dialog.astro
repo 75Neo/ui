@@ -1,0 +1,38 @@
+---
+import { dialog, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import DialogPreview from "../previews/DialogPreview.tsx";
+import DialogPreviewVue from "../previews/DialogPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(dialog.slots);
+const variantKeys = [...dialog.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(dialog, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "dialog" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="Dialog"
+  description="A panel over the page and the overlay behind it. The first component here whose root slot is not a root element, because Ark's dialog root renders nothing at all, and the first whose default slot is spent on the trigger rather than the content."
+  hasStage
+>
+  <Preview
+    title="Sizes, dismissal, motion and the whole viewport"
+    description="Four sizes, then a dialog nothing but its own buttons will close, one with the motion and the overlay turned off, and one filling the screen with a body that scrolls under a pinned header. The last is driven from a link outside the component and has no trigger of its own."
+    meta={meta}
+  >
+    <Fragment slot="react"><DialogPreview client:load /></Fragment>
+    <Fragment slot="vue"><DialogPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

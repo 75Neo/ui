@@ -4,13 +4,14 @@ import { userEvent } from "vitest/browser";
 import { Circle } from "@lucide/vue";
 import { render } from "vitest-browser-vue";
 import type { ThemeConfig } from "@75neo/core";
-import { accordion, angleSlider, combobox, dateInput, datePicker } from "@75neo/themes";
+import { accordion, angleSlider, combobox, dateInput, datePicker, dialog } from "@75neo/themes";
 import Accordion from "../Accordion.vue";
 import AngleSlider from "../AngleSlider.vue";
 import Button from "../Button.vue";
 import Combobox from "../Combobox.vue";
 import DateInput from "../DateInput.vue";
 import DatePicker from "../DatePicker.vue";
+import Dialog from "../Dialog.vue";
 import Theme from "../Theme.vue";
 
 function slot(container: HTMLElement, name: string): HTMLElement | null {
@@ -261,5 +262,85 @@ describe("DatePicker", () => {
     await userEvent.click(fifteenth);
 
     await expect.poll(() => (slot(container, "input") as HTMLInputElement).value).toContain("15");
+  });
+});
+
+/**
+ * The Dialog is the first component whose `base` slot is a panel rather than a root
+ * element, and whose default slot is the trigger rather than the content.
+ *
+ * The panel is selected through Ark's own part attributes rather than `data-slot`,
+ * because `data-slot="base"` is on every component's root and the Button inside the
+ * footer carries one too.
+ *
+ * Three of these guard the Boolean prop cast rather than the feature. `overlay`,
+ * `close` and `dismissible` all default on, and Vue turns an absent Boolean prop into
+ * `false` unless a default is named -- which would drop the overlay, drop the close
+ * button, and hand Ark an explicit `false` that kills Escape, all of it only in Vue and
+ * none of it visible to the type checker.
+ */
+const panel = () =>
+  document.querySelector<HTMLElement>(
+    '[data-scope="dialog"][data-part="content"][data-state="open"]',
+  );
+
+describe("Dialog", () => {
+  it("renders every slot the recipe declares once it is open", async () => {
+    render(Dialog, {
+      props: { title: "Title", description: "Description", defaultOpen: true },
+      slots: { body: () => "Body", footer: () => "Footer" },
+    });
+
+    for (const name of Object.keys(dialog.slots)) {
+      await expect.poll(() => anywhere(name), { timeout: 2000 }).not.toBeNull();
+    }
+  });
+
+  it("makes the caller's own element the trigger", () => {
+    const { container } = render(Dialog, {
+      props: { title: "Title" },
+      slots: { default: () => h("button", { type: "button", class: "underline" }, "Open") },
+    });
+
+    // asChild, so the trigger *is* the caller's button rather than one wrapping it.
+    const trigger = container.querySelector<HTMLElement>(
+      '[data-scope="dialog"][data-part="trigger"]',
+    )!;
+    expect(trigger.tagName).toBe("BUTTON");
+    expect(trigger.className).toContain("underline");
+    expect(trigger.getAttribute("aria-haspopup")).toBe("dialog");
+  });
+
+  it("sends a call-site class to the panel", async () => {
+    render(Dialog, { props: { title: "Title", class: "w-[33rem]", defaultOpen: true } });
+
+    await expect.poll(() => panel()?.className).toContain("w-[33rem]");
+  });
+
+  it("draws the overlay and the close button without being asked", async () => {
+    render(Dialog, { props: { title: "Title", defaultOpen: true } });
+
+    await expect.poll(() => anywhere("overlay")).not.toBeNull();
+    expect(anywhere("closeTrigger")).not.toBeNull();
+  });
+
+  it("closes on Escape by default", async () => {
+    render(Dialog, { props: { title: "Title", defaultOpen: true } });
+
+    await expect.poll(() => panel()).not.toBeNull();
+    await userEvent.keyboard("{Escape}");
+
+    await expect.poll(() => panel(), { timeout: 2000 }).toBeNull();
+  });
+
+  it("leaves Escape alone when it is not dismissible", async () => {
+    render(Dialog, { props: { title: "Title", dismissible: false, defaultOpen: true } });
+
+    await expect.poll(() => panel()).not.toBeNull();
+    await userEvent.keyboard("{Escape}");
+
+    // Still there a beat later, where a dismissible one would have gone.
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    expect(panel()).not.toBeNull();
   });
 });

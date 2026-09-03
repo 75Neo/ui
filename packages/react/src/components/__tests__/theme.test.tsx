@@ -4,13 +4,14 @@ import { userEvent } from "vitest/browser";
 import { Circle } from "lucide-react";
 import { render } from "vitest-browser-react";
 import type { ThemeConfig } from "@75neo/core";
-import { accordion, angleSlider, combobox, dateInput, datePicker } from "@75neo/themes";
+import { accordion, angleSlider, combobox, dateInput, datePicker, dialog } from "@75neo/themes";
 import { Accordion } from "../Accordion";
 import { AngleSlider } from "../AngleSlider";
 import { Button } from "../Button";
 import { Combobox } from "../Combobox";
 import { DateInput } from "../DateInput";
 import { DatePicker } from "../DatePicker";
+import { Dialog } from "../Dialog";
 import { Theme } from "../Theme";
 
 async function mount(ui: React.ReactElement): Promise<HTMLElement> {
@@ -261,5 +262,92 @@ describe("DatePicker", () => {
     await userEvent.click(fifteenth);
 
     await expect.poll(() => (slot(container, "input") as HTMLInputElement).value).toContain("15");
+  });
+});
+
+/**
+ * The Dialog is the first component whose `base` slot is a panel rather than a root
+ * element, and whose default children are the trigger rather than the content. Both of
+ * those are wiring only this adapter can get wrong, so both are asserted here.
+ *
+ * The panel is selected through Ark's own part attributes rather than `data-slot`,
+ * because `data-slot="base"` is on every component's root and the Button inside the
+ * footer carries one too.
+ */
+const panel = () =>
+  document.querySelector<HTMLElement>(
+    '[data-scope="dialog"][data-part="content"][data-state="open"]',
+  );
+
+describe("Dialog", () => {
+  it("renders every slot the recipe declares once it is open", async () => {
+    const container = await mount(
+      <Dialog title="Title" description="Description" body="Body" footer="Footer">
+        <button type="button">Open</button>
+      </Dialog>,
+    );
+
+    await userEvent.click(container.querySelector("button")!);
+
+    for (const name of Object.keys(dialog.slots)) {
+      await expect.poll(() => anywhere(name), { timeout: 2000 }).not.toBeNull();
+    }
+  });
+
+  it("makes the caller's own element the trigger", async () => {
+    const container = await mount(
+      <Dialog title="Title">
+        <button type="button" className="underline">
+          Open
+        </button>
+      </Dialog>,
+    );
+
+    // asChild, so the trigger *is* the caller's button rather than one wrapping it.
+    const trigger = container.querySelector<HTMLElement>(
+      '[data-scope="dialog"][data-part="trigger"]',
+    )!;
+    expect(trigger.tagName).toBe("BUTTON");
+    expect(trigger.className).toContain("underline");
+    expect(trigger.getAttribute("aria-haspopup")).toBe("dialog");
+  });
+
+  it("sends a call-site className to the panel", async () => {
+    const container = await mount(
+      <Dialog title="Title" className="w-[33rem]" defaultOpen>
+        <button type="button">Open</button>
+      </Dialog>,
+    );
+
+    expect(container).not.toBeNull();
+    await expect.poll(() => panel()?.className).toContain("w-[33rem]");
+  });
+
+  it("leaves Escape alone when it is not dismissible", async () => {
+    await mount(
+      <Dialog title="Title" dismissible={false} defaultOpen>
+        <button type="button">Open</button>
+      </Dialog>,
+    );
+
+    await expect.poll(() => panel()).not.toBeNull();
+    await userEvent.keyboard("{Escape}");
+
+    // Still there a beat later, where a dismissible one would have gone.
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    expect(panel()).not.toBeNull();
+  });
+
+  it("closes on Escape by default", async () => {
+    await mount(
+      <Dialog title="Title" defaultOpen>
+        <button type="button">Open</button>
+      </Dialog>,
+    );
+
+    await expect.poll(() => panel()).not.toBeNull();
+    await userEvent.keyboard("{Escape}");
+
+    await expect.poll(() => panel(), { timeout: 2000 }).toBeNull();
   });
 });

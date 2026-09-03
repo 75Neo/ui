@@ -72,6 +72,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "dateInput",
   },
   {
+    href: "/dialog",
+    label: "Dialog",
+    summary:
+      "A panel over the page in four sizes, with the overlay, the motion and every way out under the caller's control.",
+    key: "dialog",
+  },
+  {
     href: "/date-picker",
     label: "DatePicker",
     summary:

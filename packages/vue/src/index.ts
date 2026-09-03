@@ -10,6 +10,7 @@ export { default as ColorPicker } from "./components/ColorPicker.vue";
 export { default as Combobox } from "./components/Combobox.vue";
 export { default as DateInput } from "./components/DateInput.vue";
 export { default as DatePicker } from "./components/DatePicker.vue";
+export { default as Dialog } from "./components/Dialog.vue";
 export { default as TableOfContents } from "./components/TableOfContents.vue";
 export { default as Theme } from "./components/Theme.vue";
 export { useResolvedTheme } from "./composables/theme";
@@ -71,6 +72,9 @@ export {
   type DatePickerSelectionMode,
   type DatePickerTheme,
   type DatePickerUI,
+  type DialogProps,
+  type DialogTheme,
+  type DialogUI,
   type TableOfContentsItem,
   type TableOfContentsProps,
   type TableOfContentsTheme,

@@ -51,3 +51,53 @@
     overflow: hidden;
   }
 }
+
+/*
+ * Enter and exit for anything that appears over the page: the Dialog's panel and its
+ * overlay today, and the rest of the portalled family as it lands.
+ *
+ * Open and closed name *different* keyframes on purpose. Ark samples the animation name
+ * on the closed state to decide how long to hold the element mounted, and unmounts
+ * immediately if that name matches the open one — so reusing a single keyframe skips
+ * the exit animation with no error and no warning.
+ */
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes panel-out {
+  from {
+    opacity: 1;
+    scale: 1;
+  }
+  to {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
