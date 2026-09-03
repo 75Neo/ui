@@ -13,6 +13,7 @@ import { ComboboxPreview } from "../previews/ComboboxPreview";
 import { DateInputPreview } from "../previews/DateInputPreview";
 import { DatePickerPreview } from "../previews/DatePickerPreview";
 import { DialogPreview } from "../previews/DialogPreview";
+import { PopoverPreview } from "../previews/PopoverPreview";
 import { SwitchPreview } from "../previews/SwitchPreview";
 import { TableOfContentsPreview } from "../previews/TableOfContentsPreview";
 import { TooltipPreview } from "../previews/TooltipPreview";
@@ -29,6 +30,7 @@ import ComboboxPreviewVue from "../previews/ComboboxPreview.vue";
 import DateInputPreviewVue from "../previews/DateInputPreview.vue";
 import DatePickerPreviewVue from "../previews/DatePickerPreview.vue";
 import DialogPreviewVue from "../previews/DialogPreview.vue";
+import PopoverPreviewVue from "../previews/PopoverPreview.vue";
 import SwitchPreviewVue from "../previews/SwitchPreview.vue";
 import TableOfContentsPreviewVue from "../previews/TableOfContentsPreview.vue";
 import TooltipPreviewVue from "../previews/TooltipPreview.vue";
@@ -68,6 +70,7 @@ const vue = framework === "vue";
 {react && name === "DateInput" && <DateInputPreview client:visible />}
 {react && name === "DatePicker" && <DatePickerPreview client:visible />}
 {react && name === "Dialog" && <DialogPreview client:visible />}
+{react && name === "Popover" && <PopoverPreview client:visible />}
 {react && name === "Switch" && <SwitchPreview client:visible />}
 {react && name === "TableOfContents" && <TableOfContentsPreview client:visible />}
 {react && name === "Tooltip" && <TooltipPreview client:visible />}
@@ -85,6 +88,7 @@ const vue = framework === "vue";
 {vue && name === "DateInput" && <DateInputPreviewVue client:visible />}
 {vue && name === "DatePicker" && <DatePickerPreviewVue client:visible />}
 {vue && name === "Dialog" && <DialogPreviewVue client:visible />}
+{vue && name === "Popover" && <PopoverPreviewVue client:visible />}
 {vue && name === "Switch" && <SwitchPreviewVue client:visible />}
 {vue && name === "TableOfContents" && <TableOfContentsPreviewVue client:visible />}
 {vue && name === "Tooltip" && <TooltipPreviewVue client:visible />}

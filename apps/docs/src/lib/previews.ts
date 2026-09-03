@@ -21,6 +21,7 @@ export const previewed = new Set([
   "DateInput",
   "DatePicker",
   "Dialog",
+  "Popover",
   "Switch",
   "TableOfContents",
   "Tooltip",

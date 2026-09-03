@@ -11,6 +11,7 @@ import {
   dateInput,
   datePicker,
   dialog,
+  popover,
   switch as switchRecipe,
   tooltip,
 } from "@75neo/themes";
@@ -21,6 +22,7 @@ import Combobox from "../Combobox.vue";
 import DateInput from "../DateInput.vue";
 import DatePicker from "../DatePicker.vue";
 import Dialog from "../Dialog.vue";
+import Popover from "../Popover.vue";
 import Switch from "../Switch.vue";
 import Theme from "../Theme.vue";
 import Tooltip from "../Tooltip.vue";
@@ -496,5 +498,85 @@ describe("Tooltip", () => {
 
     await expect.poll(() => bubble()).not.toBeNull();
     expect(container.contains(bubble())).toBe(false);
+  });
+});
+
+/**
+ * The Popover is the Dialog's anatomy on the Tooltip's geometry, so what is asserted
+ * here is the seam between them: the panel's parts are addressed by name, the trigger
+ * is the caller's own element, and dismissal is one prop over Ark's two.
+ *
+ * The last two guard Vue's Boolean cast. `dismissible` and `portal` both default on, so
+ * an absent one cast to `false` would kill Escape and leave the panel un-teleported.
+ */
+const anchoredPanel = () =>
+  document.querySelector<HTMLElement>(
+    '[data-scope="popover"][data-part="content"][data-state="open"]',
+  );
+
+describe("Popover", () => {
+  it("renders every slot the recipe declares once it is open", async () => {
+    render(Popover, {
+      props: {
+        title: "Title",
+        description: "Description",
+        arrow: true,
+        close: true,
+        defaultOpen: true,
+      },
+      slots: {
+        default: () => h("button", { type: "button" }, "Open"),
+        body: () => "Body",
+      },
+    });
+
+    for (const name of Object.keys(popover.slots)) {
+      await expect.poll(() => anywhere(name), { timeout: 2000 }).not.toBeNull();
+    }
+  });
+
+  it("makes the caller's own element the trigger", () => {
+    const { container } = render(Popover, {
+      props: { title: "Title" },
+      slots: { default: () => h("button", { type: "button", class: "underline" }, "Open") },
+    });
+
+    // asChild, so the trigger *is* the caller's button rather than one wrapping it.
+    const trigger = container.querySelector<HTMLElement>(
+      '[data-scope="popover"][data-part="trigger"]',
+    )!;
+    expect(trigger.tagName).toBe("BUTTON");
+    expect(trigger.className).toContain("underline");
+  });
+
+  it("keeps room for the close button only when there is one", async () => {
+    render(Popover, {
+      props: { title: "Title", close: true, defaultOpen: true },
+      slots: { default: () => h("button", { type: "button" }, "Open") },
+    });
+
+    await expect.poll(() => anywhere("title")?.className).toContain("pe-6");
+  });
+
+  it("closes on Escape by default", async () => {
+    render(Popover, {
+      props: { title: "Title", defaultOpen: true },
+      slots: { default: () => h("button", { type: "button" }, "Open") },
+    });
+
+    await expect.poll(() => anchoredPanel()).not.toBeNull();
+    await userEvent.keyboard("{Escape}");
+
+    await expect.poll(() => anchoredPanel(), { timeout: 2000 }).toBeNull();
+  });
+
+  it("teleports the panel when portal is left out", async () => {
+    const { container } = render(Popover, {
+      props: { title: "Title", defaultOpen: true },
+      slots: { default: () => h("button", { type: "button" }, "Open") },
+    });
+
+    await expect.poll(() => anchoredPanel()).not.toBeNull();
+    expect(container.contains(anchoredPanel())).toBe(false);
   });
 });

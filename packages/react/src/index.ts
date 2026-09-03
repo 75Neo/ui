@@ -11,6 +11,7 @@ export { Combobox, type ComboboxProps } from "./components/Combobox";
 export { DateInput, type DateInputProps } from "./components/DateInput";
 export { DatePicker, type DatePickerProps } from "./components/DatePicker";
 export { Dialog, type DialogProps } from "./components/Dialog";
+export { Popover, type PopoverProps } from "./components/Popover";
 export { Switch, type SwitchProps } from "./components/Switch";
 export { TableOfContents, type TableOfContentsProps } from "./components/TableOfContents";
 export { Tooltip, type TooltipProps } from "./components/Tooltip";
@@ -65,6 +66,8 @@ export {
   type DialogTheme,
   type DialogUI,
   type Placement,
+  type PopoverTheme,
+  type PopoverUI,
   type SwitchTheme,
   type SwitchUI,
   type TableOfContentsItem,

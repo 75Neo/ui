@@ -11,6 +11,7 @@ import {
   dateInput,
   datePicker,
   dialog,
+  popover,
   switch as switchRecipe,
   tooltip,
 } from "@75neo/themes";
@@ -21,6 +22,7 @@ import { Combobox } from "../Combobox";
 import { DateInput } from "../DateInput";
 import { DatePicker } from "../DatePicker";
 import { Dialog } from "../Dialog";
+import { Popover } from "../Popover";
 import { Switch } from "../Switch";
 import { Theme } from "../Theme";
 import { Tooltip } from "../Tooltip";
@@ -495,5 +497,84 @@ describe("Tooltip", () => {
     );
 
     await expect.poll(() => bubble()?.className).toContain("max-w-md");
+  });
+});
+
+/**
+ * The Popover is the Dialog's anatomy on the Tooltip's geometry, so what is asserted
+ * here is the seam between them: the panel's parts are addressed by name, the trigger
+ * is the caller's own element, and dismissal is one prop over Ark's two.
+ */
+const anchoredPanel = () =>
+  document.querySelector<HTMLElement>(
+    '[data-scope="popover"][data-part="content"][data-state="open"]',
+  );
+
+describe("Popover", () => {
+  it("renders every slot the recipe declares once it is open", async () => {
+    await mount(
+      <Popover title="Title" description="Description" body="Body" arrow close defaultOpen>
+        <button type="button">Open</button>
+      </Popover>,
+    );
+
+    for (const name of Object.keys(popover.slots)) {
+      await expect.poll(() => anywhere(name), { timeout: 2000 }).not.toBeNull();
+    }
+  });
+
+  it("makes the caller's own element the trigger", async () => {
+    const container = await mount(
+      <Popover title="Title">
+        <button type="button" className="underline">
+          Open
+        </button>
+      </Popover>,
+    );
+
+    // asChild, so the trigger *is* the caller's button rather than one wrapping it.
+    const trigger = container.querySelector<HTMLElement>(
+      '[data-scope="popover"][data-part="trigger"]',
+    )!;
+    expect(trigger.tagName).toBe("BUTTON");
+    expect(trigger.className).toContain("underline");
+  });
+
+  it("keeps room for the close button only when there is one", async () => {
+    await mount(
+      <Popover title="Title" close defaultOpen>
+        <button type="button">Open</button>
+      </Popover>,
+    );
+
+    await expect.poll(() => anywhere("title")?.className).toContain("pe-6");
+  });
+
+  it("leaves Escape alone when it is not dismissible", async () => {
+    await mount(
+      <Popover title="Title" dismissible={false} defaultOpen>
+        <button type="button">Open</button>
+      </Popover>,
+    );
+
+    await expect.poll(() => anchoredPanel()).not.toBeNull();
+    await userEvent.keyboard("{Escape}");
+
+    // Still there a beat later, where a dismissible one would have gone.
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    expect(anchoredPanel()).not.toBeNull();
+  });
+
+  it("closes on Escape by default", async () => {
+    await mount(
+      <Popover title="Title" defaultOpen>
+        <button type="button">Open</button>
+      </Popover>,
+    );
+
+    await expect.poll(() => anchoredPanel()).not.toBeNull();
+    await userEvent.keyboard("{Escape}");
+
+    await expect.poll(() => anchoredPanel(), { timeout: 2000 }).toBeNull();
   });
 });

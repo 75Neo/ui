@@ -11,6 +11,7 @@ export { default as Combobox } from "./components/Combobox.vue";
 export { default as DateInput } from "./components/DateInput.vue";
 export { default as DatePicker } from "./components/DatePicker.vue";
 export { default as Dialog } from "./components/Dialog.vue";
+export { default as Popover } from "./components/Popover.vue";
 export { default as Switch } from "./components/Switch.vue";
 export { default as TableOfContents } from "./components/TableOfContents.vue";
 export { default as Tooltip } from "./components/Tooltip.vue";
@@ -78,6 +79,9 @@ export {
   type DialogTheme,
   type DialogUI,
   type Placement,
+  type PopoverProps,
+  type PopoverTheme,
+  type PopoverUI,
   type SwitchProps,
   type SwitchTheme,
   type SwitchUI,

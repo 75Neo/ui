@@ -11,6 +11,8 @@ export {
   themeColors,
 } from "./colors";
 
+export type { Placement } from "./placement";
+
 export * from "./components/accordion";
 export * from "./components/angle-slider";
 export * from "./components/avatar";
@@ -24,6 +26,7 @@ export * from "./components/combobox";
 export * from "./components/date-input";
 export * from "./components/date-picker";
 export * from "./components/dialog";
+export * from "./components/popover";
 export * from "./components/switch";
 export * from "./components/table-of-contents";
 export * from "./components/tooltip";

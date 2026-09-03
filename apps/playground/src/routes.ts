@@ -120,4 +120,11 @@ export const previews: readonly PreviewRoute[] = [
       "A bubble that appears beside whatever it explains, across three sizes and twelve placements, with an optional arrow.",
     key: "tooltip",
   },
+  {
+    href: "/popover",
+    label: "Popover",
+    summary:
+      "A titled panel anchored to whatever opened it, across three sizes and twelve placements, with an arrow and a modal mode.",
+    key: "popover",
+  },
 ];

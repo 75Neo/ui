@@ -1,27 +1,6 @@
 import { tv, type VariantProps } from "tailwind-variants";
 import type { ComponentContract, MustBeNever, ThemeOverride, TVSlot } from "@75neo/core";
-
-/**
- * Where a popup sits relative to the element it belongs to.
- *
- * @remarks
- * The twelve Ark understands, written out rather than imported, because Vue's
- * `defineProps` resolves types from source and cannot follow one into a dependency's
- * declaration files.
- */
-export type Placement =
-  | "top"
-  | "top-start"
-  | "top-end"
-  | "right"
-  | "right-start"
-  | "right-end"
-  | "bottom"
-  | "bottom-start"
-  | "bottom-end"
-  | "left"
-  | "left-start"
-  | "left-end";
+import type { Placement } from "../placement";
 
 /**
  * Recipe for the Tooltip: a bubble that appears beside whatever it explains.
