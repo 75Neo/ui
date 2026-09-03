@@ -4,7 +4,15 @@ import { userEvent } from "vitest/browser";
 import { Circle } from "lucide-react";
 import { render } from "vitest-browser-react";
 import type { ThemeConfig } from "@75neo/core";
-import { accordion, angleSlider, combobox, dateInput, datePicker, dialog } from "@75neo/themes";
+import {
+  accordion,
+  angleSlider,
+  combobox,
+  dateInput,
+  datePicker,
+  dialog,
+  switch as switchRecipe,
+} from "@75neo/themes";
 import { Accordion } from "../Accordion";
 import { AngleSlider } from "../AngleSlider";
 import { Button } from "../Button";
@@ -12,6 +20,7 @@ import { Combobox } from "../Combobox";
 import { DateInput } from "../DateInput";
 import { DatePicker } from "../DatePicker";
 import { Dialog } from "../Dialog";
+import { Switch } from "../Switch";
 import { Theme } from "../Theme";
 
 async function mount(ui: React.ReactElement): Promise<HTMLElement> {
@@ -349,5 +358,58 @@ describe("Dialog", () => {
     await userEvent.keyboard("{Escape}");
 
     await expect.poll(() => panel(), { timeout: 2000 }).toBeNull();
+  });
+});
+
+/**
+ * The Switch keeps both thumb icons mounted and lets the recipe decide which one is
+ * seen, because an uncontrolled switch does not tell the adapter its state. That, and
+ * what `loading` does to the control, is the wiring only this adapter can get wrong.
+ */
+describe("Switch", () => {
+  it("renders every slot the recipe declares", async () => {
+    const container = await mount(
+      <Switch
+        label="Label"
+        description="Description"
+        checkedIcon={<Circle />}
+        uncheckedIcon={<Circle />}
+      />,
+    );
+
+    for (const name of Object.keys(switchRecipe.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("keeps both thumb icons mounted and leaves the choice to CSS", async () => {
+    const container = await mount(
+      <Switch checkedIcon={<Circle />} uncheckedIcon={<Circle />} defaultChecked />,
+    );
+
+    expect(slot(container, "checkedIcon")!.className).toContain(
+      "group-data-[state=checked]/thumb:block",
+    );
+    expect(slot(container, "uncheckedIcon")!.className).toContain(
+      "group-data-[state=checked]/thumb:hidden",
+    );
+  });
+
+  it("spins both icon slots and stops responding while loading", async () => {
+    const container = await mount(<Switch label="Label" loading />);
+
+    expect(slot(container, "checkedIcon")!.className).toContain("animate-spin");
+    expect(slot(container, "uncheckedIcon")!.className).toContain("animate-spin");
+    expect(container.querySelector<HTMLInputElement>("input")!.disabled).toBe(true);
+  });
+
+  it("flips when its label is clicked", async () => {
+    const container = await mount(<Switch label="Wi-Fi" />);
+    const control = slot(container, "control")!;
+    expect(control.dataset.state).toBe("unchecked");
+
+    await userEvent.click(container.querySelector<HTMLElement>("[data-slot='label']")!);
+
+    await expect.poll(() => slot(container, "control")!.dataset.state).toBe("checked");
   });
 });

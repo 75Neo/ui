@@ -1,0 +1,38 @@
+---
+import { switch as switchRecipe, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import SwitchPreview from "../previews/SwitchPreview.tsx";
+import SwitchPreviewVue from "../previews/SwitchPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(switchRecipe.slots);
+const variantKeys = [...switchRecipe.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(switchRecipe, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "switch" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="Switch"
+  description="One recipe in @75neo/themes, rendered by both adapters. On and off are read off Ark's data-state rather than declared as a variant, which is also what lets the two thumb icons be chosen in CSS instead of by the adapter."
+  hasStage
+>
+  <Preview
+    title="Sizes, colors and the thumb's two icons"
+    description="Five sizes, then every color on, off and loading, then a description, a disabled switch, an invalid one and a pair of icons. The last one is controlled, so its label can answer for the state."
+    meta={meta}
+  >
+    <Fragment slot="react"><SwitchPreview client:load /></Fragment>
+    <Fragment slot="vue"><SwitchPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

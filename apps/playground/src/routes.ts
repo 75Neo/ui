@@ -106,4 +106,11 @@ export const previews: readonly PreviewRoute[] = [
       "A looping, autoplaying slideshow with keyboard, drag and indicator navigation, wrapping Ark UI.",
     key: "carousel",
   },
+  {
+    href: "/switch",
+    label: "Switch",
+    summary:
+      "A track the thumb slides along, across five sizes and seven colors, with a label, a description and an icon per state.",
+    key: "switch",
+  },
 ];

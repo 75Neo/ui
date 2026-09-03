@@ -4,7 +4,15 @@ import { userEvent } from "vitest/browser";
 import { Circle } from "@lucide/vue";
 import { render } from "vitest-browser-vue";
 import type { ThemeConfig } from "@75neo/core";
-import { accordion, angleSlider, combobox, dateInput, datePicker, dialog } from "@75neo/themes";
+import {
+  accordion,
+  angleSlider,
+  combobox,
+  dateInput,
+  datePicker,
+  dialog,
+  switch as switchRecipe,
+} from "@75neo/themes";
 import Accordion from "../Accordion.vue";
 import AngleSlider from "../AngleSlider.vue";
 import Button from "../Button.vue";
@@ -12,6 +20,7 @@ import Combobox from "../Combobox.vue";
 import DateInput from "../DateInput.vue";
 import DatePicker from "../DatePicker.vue";
 import Dialog from "../Dialog.vue";
+import Switch from "../Switch.vue";
 import Theme from "../Theme.vue";
 
 function slot(container: HTMLElement, name: string): HTMLElement | null {
@@ -342,5 +351,67 @@ describe("Dialog", () => {
     // Still there a beat later, where a dismissible one would have gone.
     await new Promise((resolve) => setTimeout(resolve, 300));
     expect(panel()).not.toBeNull();
+  });
+});
+
+/**
+ * The Switch keeps both thumb icons mounted and lets the recipe decide which one is
+ * seen, because an uncontrolled switch does not tell the adapter its state.
+ *
+ * The last two tests guard Vue's Boolean cast. An absent Boolean prop arrives as
+ * `false`, so a `v-model` that did not default to `undefined` would pin every switch
+ * to a controlled off and leave `defaultChecked` with nothing to do, and an absent
+ * `loading` would still have to leave the control alone.
+ */
+describe("Switch", () => {
+  it("renders every slot the recipe declares", () => {
+    const { container } = render(Switch, {
+      props: {
+        label: "Label",
+        description: "Description",
+        checkedIcon: Circle,
+        uncheckedIcon: Circle,
+      },
+    });
+
+    for (const name of Object.keys(switchRecipe.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("keeps both thumb icons mounted and leaves the choice to CSS", () => {
+    const { container } = render(Switch, {
+      props: { checkedIcon: Circle, uncheckedIcon: Circle, defaultChecked: true },
+    });
+
+    expect(slot(container, "checkedIcon")!.className).toContain(
+      "group-data-[state=checked]/thumb:block",
+    );
+    expect(slot(container, "uncheckedIcon")!.className).toContain(
+      "group-data-[state=checked]/thumb:hidden",
+    );
+  });
+
+  it("spins both icon slots and stops responding while loading", () => {
+    const { container } = render(Switch, { props: { label: "Label", loading: true } });
+
+    expect(slot(container, "checkedIcon")!.className).toContain("animate-spin");
+    expect(slot(container, "uncheckedIcon")!.className).toContain("animate-spin");
+    expect(container.querySelector<HTMLInputElement>("input")!.disabled).toBe(true);
+  });
+
+  it("starts on when defaultChecked says so", () => {
+    const { container } = render(Switch, { props: { label: "Label", defaultChecked: true } });
+
+    expect(slot(container, "control")!.dataset.state).toBe("checked");
+  });
+
+  it("still responds when loading is left out", async () => {
+    const { container } = render(Switch, { props: { label: "Wi-Fi" } });
+    expect(container.querySelector<HTMLInputElement>("input")!.disabled).toBe(false);
+
+    await userEvent.click(container.querySelector<HTMLElement>("[data-slot='label']")!);
+
+    await expect.poll(() => slot(container, "control")!.dataset.state).toBe("checked");
   });
 });
