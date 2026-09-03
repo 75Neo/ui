@@ -60,3 +60,8 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy apps/docs/dist --project-name=75neo-ui
+          # The action installs wrangler itself, and left to guess it picks pnpm from
+          # the lockfile and runs `pnpm add` at the root of a workspace, which pnpm
+          # refuses without `-w`. npm has no such objection, and wrangler is a tool this
+          # deploy reaches for rather than a dependency of anything here.
+          packageManager: npm
