@@ -101,3 +101,33 @@
     scale: 0.96;
   }
 }
+
+/*
+ * The indeterminate progress bar, which is the only pair here that loops. It sweeps a
+ * short range across the track rather than growing it, because there is nothing to
+ * measure: the point is to say that work is happening, not how much is left.
+ *
+ * There is one per axis because a keyframe cannot ask which way its element is pointing,
+ * and a bar standing on end has to sweep down rather than across.
+ */
+@keyframes progress-sweep {
+  from {
+    inset-inline-start: -40%;
+    inline-size: 40%;
+  }
+  to {
+    inset-inline-start: 100%;
+    inline-size: 40%;
+  }
+}
+
+@keyframes progress-sweep-block {
+  from {
+    inset-block-start: -40%;
+    block-size: 40%;
+  }
+  to {
+    inset-block-start: 100%;
+    block-size: 40%;
+  }
+}

@@ -12,6 +12,7 @@ export { DateInput, type DateInputProps } from "./components/DateInput";
 export { DatePicker, type DatePickerProps } from "./components/DatePicker";
 export { Dialog, type DialogProps } from "./components/Dialog";
 export { Popover, type PopoverProps } from "./components/Popover";
+export { Progress, type ProgressProps } from "./components/Progress";
 export { RadioGroup, type RadioGroupProps } from "./components/RadioGroup";
 export { Switch, type SwitchProps } from "./components/Switch";
 export { TableOfContents, type TableOfContentsProps } from "./components/TableOfContents";
@@ -70,6 +71,8 @@ export {
   type Placement,
   type PopoverTheme,
   type PopoverUI,
+  type ProgressTheme,
+  type ProgressUI,
   type RadioGroupItem,
   type RadioGroupTheme,
   type RadioGroupUI,

@@ -12,6 +12,7 @@ import {
   datePicker,
   dialog,
   popover,
+  progress,
   radioGroup,
   switch as switchRecipe,
   tabs,
@@ -25,6 +26,7 @@ import { DateInput } from "../DateInput";
 import { DatePicker } from "../DatePicker";
 import { Dialog } from "../Dialog";
 import { Popover } from "../Popover";
+import { Progress } from "../Progress";
 import { RadioGroup } from "../RadioGroup";
 import { Switch } from "../Switch";
 import { Tabs } from "../Tabs";
@@ -690,5 +692,39 @@ describe("RadioGroup", () => {
 
     expect(slot(container, "legend")!.textContent).toBe("Plan");
     expect(slot(container, "legend")!.className).toContain("sr-only");
+  });
+});
+
+/**
+ * A Progress is a track and the part of it that is done, so the two things worth
+ * asserting are that the header appears only when there is something to put in it, and
+ * that a null value reaches Ark as the indeterminate state rather than as zero.
+ */
+describe("Progress", () => {
+  it("renders every slot the recipe declares", async () => {
+    const container = await mount(<Progress label="Uploading" showValue defaultValue={45} />);
+
+    for (const name of Object.keys(progress.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("leaves the header out when there is nothing to head", async () => {
+    const container = await mount(<Progress defaultValue={45} />);
+
+    expect(slot(container, "header")).toBeNull();
+    expect(slot(container, "track")).not.toBeNull();
+  });
+
+  it("reads a null value as indeterminate rather than as zero", async () => {
+    const container = await mount(<Progress value={null} />);
+
+    expect(slot(container, "range")!.dataset.state).toBe("indeterminate");
+  });
+
+  it("measures against max rather than against a hundred", async () => {
+    const container = await mount(<Progress showValue value={7} max={12} />);
+
+    expect(slot(container, "valueText")!.textContent).toBe("58%");
   });
 });

@@ -141,4 +141,11 @@ export const previews: readonly PreviewRoute[] = [
       "A legend and the options under it, across five sizes and seven colors, with a description per option.",
     key: "radioGroup",
   },
+  {
+    href: "/progress",
+    label: "Progress",
+    summary:
+      "A track and the part of it that is done, across five thicknesses and seven colors, with an indeterminate state.",
+    key: "progress",
+  },
 ];

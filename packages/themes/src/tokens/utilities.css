@@ -172,6 +172,10 @@
   --animate-overlay-out: overlay-out 0.1s ease-in;
   --animate-panel-in: panel-in 0.15s ease-out;
   --animate-panel-out: panel-out 0.1s ease-in;
+
+  /* The indeterminate Progress bar, which loops; keyframes in `keyframes.css`. */
+  --animate-progress-sweep: progress-sweep 1.2s ease-in-out infinite;
+  --animate-progress-sweep-block: progress-sweep-block 1.2s ease-in-out infinite;
 }
 
 /*

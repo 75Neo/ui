@@ -12,6 +12,7 @@ import {
   datePicker,
   dialog,
   popover,
+  progress,
   radioGroup,
   switch as switchRecipe,
   tabs,
@@ -25,6 +26,7 @@ import DateInput from "../DateInput.vue";
 import DatePicker from "../DatePicker.vue";
 import Dialog from "../Dialog.vue";
 import Popover from "../Popover.vue";
+import Progress from "../Progress.vue";
 import RadioGroup from "../RadioGroup.vue";
 import Switch from "../Switch.vue";
 import Tabs from "../Tabs.vue";
@@ -693,5 +695,42 @@ describe("RadioGroup", () => {
 
     expect(slot(container, "legend")!.textContent).toBe("Plan");
     expect(slot(container, "legend")!.className).toContain("sr-only");
+  });
+});
+
+/**
+ * A Progress is a track and the part of it that is done, so the two things worth
+ * asserting are that the header appears only when there is something to put in it, and
+ * that a null value survives Vue's model as the indeterminate state rather than being
+ * read as an absent one.
+ */
+describe("Progress", () => {
+  it("renders every slot the recipe declares", () => {
+    const { container } = render(Progress, {
+      props: { label: "Uploading", showValue: true, defaultValue: 45 },
+    });
+
+    for (const name of Object.keys(progress.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("leaves the header out when there is nothing to head", () => {
+    const { container } = render(Progress, { props: { defaultValue: 45 } });
+
+    expect(slot(container, "header")).toBeNull();
+    expect(slot(container, "track")).not.toBeNull();
+  });
+
+  it("reads a null model as indeterminate rather than as zero", () => {
+    const { container } = render(Progress, { props: { modelValue: null } });
+
+    expect(slot(container, "range")!.dataset.state).toBe("indeterminate");
+  });
+
+  it("measures against max rather than against a hundred", () => {
+    const { container } = render(Progress, { props: { showValue: true, modelValue: 7, max: 12 } });
+
+    expect(slot(container, "valueText")!.textContent).toBe("58%");
   });
 });
