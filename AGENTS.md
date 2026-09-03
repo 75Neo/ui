@@ -10,12 +10,12 @@ gets the Node 24 and pnpm 11 the repo expects.
 `package.json` lists every script. These are the ones carrying something the scripts do
 not say:
 
-| Command          | What to know                                                                                                  |
-| ---------------- | ------------------------------------------------------------------------------------------------------------- |
-| `pnpm build`     | Run it after changing a package another one imports: stale `dist` output fails `typecheck` in the wrong place |
-| `pnpm typecheck` | Depends on `build`                                                                                            |
-| `pnpm test`      | React and Vue test in real Chromium; the first run needs `pnpm exec playwright install --with-deps chromium`  |
-| `pnpm dev:play`  | Playground: every component, React and Vue side by side                                                       |
+| Command          | What to know                                                                                                                                                                                      |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm build`     | Run it after changing a package **another package** imports: they resolve each other through `dist`, so stale output fails `typecheck` in the wrong place. The two apps do not, and need no build |
+| `pnpm typecheck` | Depends on `build`                                                                                                                                                                                |
+| `pnpm test`      | React and Vue test in real Chromium; the first run needs `pnpm exec playwright install --with-deps chromium`                                                                                      |
+| `pnpm dev:play`  | Playground: every component, React and Vue side by side                                                                                                                                           |
 
 Scoped to one package:
 
@@ -44,9 +44,26 @@ Four packages. The dependency direction is `core` → `themes` → `react`/`vue`
 - **`@75neo/react`** / **`@75neo/vue`** — **adapters**. Each is a `Theme` component, one
   hook or composable, and one file per component. Styling stays in the component module.
 
-Both apps alias `@75neo/*` straight to each package's `src`, so both hot-reload against
-source with no build step in between. Copy that block from either `astro.config.mjs`
-when adding a third.
+Both apps reach `@75neo/*` straight into each package's `src`, and **neither declares a
+workspace dependency on them**. Nothing about an app goes through `dist`, so both
+hot-reload against source with no build step in between and a prop renamed in a package
+is wrong in the app immediately rather than after a rebuild.
+
+That takes three files per app, and adding a third app means copying all three:
+
+- `astro.config.mjs` — a Vite `resolve.alias` entry per package, pointing at
+  `packages/<name>/src/index.ts`. This is what the browser sees.
+- `tsconfig.json` — a matching `paths` entry per package. Without it TypeScript has no
+  workspace symlink left to follow and cannot resolve the import at all; with it,
+  `astro check` reads the same source Vite does.
+- `turbo.json` — a Package Configuration extending `//`, adding
+  `"$TURBO_ROOT$/packages/*/src/**"` to the `inputs` of `build` and `typecheck`. Dropping
+  the dependency also dropped the edge turbo used to invalidate the app's cache, so
+  without this a package source change leaves a stale app build cached. Reaching out of a
+  package with `../` is not allowed here; `$TURBO_ROOT$` is.
+
+The app stylesheet imports the token layer by relative path for the same reason, so
+Tailwind scans the same files.
 
 ### The docs site
 

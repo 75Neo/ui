@@ -4,6 +4,12 @@
   "exclude": ["dist"],
   "compilerOptions": {
     "jsx": "preserve",
-    "jsxImportSource": "react"
+    "jsxImportSource": "react",
+    "paths": {
+      "@75neo/core": ["../../packages/core/src/index.ts"],
+      "@75neo/react": ["../../packages/react/src/index.ts"],
+      "@75neo/themes": ["../../packages/themes/src/index.ts"],
+      "@75neo/vue": ["../../packages/vue/src/index.ts"]
+    }
   }
 }

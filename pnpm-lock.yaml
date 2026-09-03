@@ -294,18 +294,6 @@ importers:
 
   apps/docs:
     dependencies:
-      '@75neo/core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      '@75neo/react':
-        specifier: workspace:*
-        version: link:../../packages/react
-      '@75neo/themes':
-        specifier: workspace:*
-        version: link:../../packages/themes
-      '@75neo/vue':
-        specifier: workspace:*
-        version: link:../../packages/vue
       '@astrojs/react':
         specifier: ^6.0.4
         version: 6.0.4(@types/node@26.4.0)(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.2)(jiti@2.7.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@7.2.0)(yaml@2.9.0)
@@ -364,18 +352,6 @@ importers:
 
   apps/playground:
     dependencies:
-      '@75neo/core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      '@75neo/react':
-        specifier: workspace:*
-        version: link:../../packages/react
-      '@75neo/themes':
-        specifier: workspace:*
-        version: link:../../packages/themes
-      '@75neo/vue':
-        specifier: workspace:*
-        version: link:../../packages/vue
       '@astrojs/react':
         specifier: ^6.0.4
         version: 6.0.4(@types/node@26.4.0)(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.2)(jiti@2.7.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@7.2.0)(yaml@2.9.0)
