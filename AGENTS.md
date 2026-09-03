@@ -80,7 +80,7 @@ package name, minimum version, icon type, fence language — and every other fil
 rather than branching on a string.
 
 The site is published to Cloudflare Pages by `.github/workflows/docs.yml`, which builds
-it and hands `apps/docs/dist` to `wrangler pages deploy` under the project name
+it and hands `apps/docs/dist` to `pnpm dlx wrangler pages deploy` under the project name
 `75neo-ui`. The account id and API token are repository secrets. Cloudflare serves the
 project at the root of its own hostname, so there is no base path and every URL on the
 page is the one written; `site` in `astro.config.mjs` is the only place the public

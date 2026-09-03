@@ -32,7 +32,6 @@ concurrency:
 
 permissions:
   contents: read
-  deployments: write
 
 env:
   TURBO_TELEMETRY_DISABLED: "1"
@@ -54,14 +53,14 @@ jobs:
       - name: Build
         run: pnpm exec turbo run build --filter docs
 
+      # `cloudflare/wrangler-action` installs wrangler into the checkout before running
+      # it, and neither package manager can do that here: pnpm refuses to add to the
+      # root of a workspace without `-w`, and npm cannot read the `catalog:` protocol
+      # this workspace's manifests are written in. `pnpm dlx` fetches wrangler into the
+      # store instead, touching nothing in the repo. Wrangler reads the token and the
+      # account from the environment.
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v4
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy apps/docs/dist --project-name=75neo-ui
-          # The action installs wrangler itself, and left to guess it picks pnpm from
-          # the lockfile and runs `pnpm add` at the root of a workspace, which pnpm
-          # refuses without `-w`. npm has no such objection, and wrangler is a tool this
-          # deploy reaches for rather than a dependency of anything here.
-          packageManager: npm
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: pnpm dlx wrangler@4 pages deploy apps/docs/dist --project-name=75neo-ui
