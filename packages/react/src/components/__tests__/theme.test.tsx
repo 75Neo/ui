@@ -14,6 +14,7 @@ import {
   popover,
   progress,
   radioGroup,
+  slider,
   switch as switchRecipe,
   tabs,
   tooltip,
@@ -28,6 +29,7 @@ import { Dialog } from "../Dialog";
 import { Popover } from "../Popover";
 import { Progress } from "../Progress";
 import { RadioGroup } from "../RadioGroup";
+import { Slider } from "../Slider";
 import { Switch } from "../Switch";
 import { Tabs } from "../Tabs";
 import { Theme } from "../Theme";
@@ -726,5 +728,48 @@ describe("Progress", () => {
     const container = await mount(<Progress showValue value={7} max={12} />);
 
     expect(slot(container, "valueText")!.textContent).toBe("58%");
+  });
+});
+
+/**
+ * A range slider is the same component with two values, so the assertion that matters is
+ * that the adapter renders a thumb per entry rather than a fixed one or two.
+ */
+const sliderMarks = [
+  { value: 0, label: "0" },
+  { value: 50, label: "50" },
+  { value: 100, label: "100" },
+];
+
+describe("Slider", () => {
+  it("renders every slot the recipe declares", async () => {
+    const container = await mount(
+      <Slider label="Volume" showValue marks={sliderMarks} defaultValue={[40]} />,
+    );
+
+    for (const name of Object.keys(slider.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("renders a thumb per value", async () => {
+    const one = await mount(<Slider defaultValue={[40]} />);
+    expect(one.querySelectorAll("[data-slot='thumb']")).toHaveLength(1);
+
+    const two = await mount(<Slider defaultValue={[20, 80]} />);
+    expect(two.querySelectorAll("[data-slot='thumb']")).toHaveLength(2);
+  });
+
+  it("leaves the marker group out when there are no marks", async () => {
+    const container = await mount(<Slider defaultValue={[40]} />);
+
+    expect(slot(container, "markerGroup")).toBeNull();
+    expect(slot(container, "track")).not.toBeNull();
+  });
+
+  it("measures the value against min and max", async () => {
+    const container = await mount(<Slider showValue min={-50} max={50} defaultValue={[-20]} />);
+
+    expect(slot(container, "valueText")!.textContent).toBe("-20");
   });
 });

@@ -29,6 +29,7 @@ export * from "./components/dialog";
 export * from "./components/popover";
 export * from "./components/progress";
 export * from "./components/radio-group";
+export * from "./components/slider";
 export * from "./components/switch";
 export * from "./components/table-of-contents";
 export * from "./components/tabs";

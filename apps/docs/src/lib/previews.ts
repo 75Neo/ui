@@ -24,6 +24,7 @@ export const previewed = new Set([
   "Popover",
   "Progress",
   "RadioGroup",
+  "Slider",
   "Switch",
   "TableOfContents",
   "Tabs",

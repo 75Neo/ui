@@ -14,6 +14,7 @@ export { default as Dialog } from "./components/Dialog.vue";
 export { default as Popover } from "./components/Popover.vue";
 export { default as Progress } from "./components/Progress.vue";
 export { default as RadioGroup } from "./components/RadioGroup.vue";
+export { default as Slider } from "./components/Slider.vue";
 export { default as Switch } from "./components/Switch.vue";
 export { default as TableOfContents } from "./components/TableOfContents.vue";
 export { default as Tabs } from "./components/Tabs.vue";
@@ -92,6 +93,10 @@ export {
   type RadioGroupProps,
   type RadioGroupTheme,
   type RadioGroupUI,
+  type SliderMark,
+  type SliderProps,
+  type SliderTheme,
+  type SliderUI,
   type SwitchProps,
   type SwitchTheme,
   type SwitchUI,

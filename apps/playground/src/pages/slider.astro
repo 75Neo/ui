@@ -1,0 +1,38 @@
+---
+import { slider, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import SliderPreview from "../previews/SliderPreview.tsx";
+import SliderPreviewVue from "../previews/SliderPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(slider.slots);
+const variantKeys = [...slider.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(slider, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "slider" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="Slider"
+  description="One recipe in @75neo/themes, rendered by both adapters. A range slider is the same component with two values, because Ark renders one thumb per entry and the range between the outermost two."
+  hasStage
+>
+  <Preview
+    title="Sizes, colors and two thumbs"
+    description="Five thicknesses, then every color, then a labelled slider, a two-thumb range, marks under the track, a centred origin and a disabled one. The vertical set at the end is the same recipe reading Ark's orientation attribute."
+    meta={meta}
+  >
+    <Fragment slot="react"><SliderPreview client:load /></Fragment>
+    <Fragment slot="vue"><SliderPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

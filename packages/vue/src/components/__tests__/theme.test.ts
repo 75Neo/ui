@@ -14,6 +14,7 @@ import {
   popover,
   progress,
   radioGroup,
+  slider,
   switch as switchRecipe,
   tabs,
   tooltip,
@@ -28,6 +29,7 @@ import Dialog from "../Dialog.vue";
 import Popover from "../Popover.vue";
 import Progress from "../Progress.vue";
 import RadioGroup from "../RadioGroup.vue";
+import Slider from "../Slider.vue";
 import Switch from "../Switch.vue";
 import Tabs from "../Tabs.vue";
 import Theme from "../Theme.vue";
@@ -732,5 +734,50 @@ describe("Progress", () => {
     const { container } = render(Progress, { props: { showValue: true, modelValue: 7, max: 12 } });
 
     expect(slot(container, "valueText")!.textContent).toBe("58%");
+  });
+});
+
+/**
+ * A range slider is the same component with two values, so the assertion that matters is
+ * that the adapter renders a thumb per entry rather than a fixed one or two.
+ */
+const sliderMarks = [
+  { value: 0, label: "0" },
+  { value: 50, label: "50" },
+  { value: 100, label: "100" },
+];
+
+describe("Slider", () => {
+  it("renders every slot the recipe declares", () => {
+    const { container } = render(Slider, {
+      props: { label: "Volume", showValue: true, marks: sliderMarks, defaultValue: [40] },
+    });
+
+    for (const name of Object.keys(slider.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("renders a thumb per value", () => {
+    const one = render(Slider, { props: { defaultValue: [40] } });
+    expect(one.container.querySelectorAll("[data-slot='thumb']")).toHaveLength(1);
+
+    const two = render(Slider, { props: { defaultValue: [20, 80] } });
+    expect(two.container.querySelectorAll("[data-slot='thumb']")).toHaveLength(2);
+  });
+
+  it("leaves the marker group out when there are no marks", () => {
+    const { container } = render(Slider, { props: { defaultValue: [40] } });
+
+    expect(slot(container, "markerGroup")).toBeNull();
+    expect(slot(container, "track")).not.toBeNull();
+  });
+
+  it("measures the value against min and max", () => {
+    const { container } = render(Slider, {
+      props: { showValue: true, min: -50, max: 50, defaultValue: [-20] },
+    });
+
+    expect(slot(container, "valueText")!.textContent).toBe("-20");
   });
 });

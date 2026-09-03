@@ -148,4 +148,11 @@ export const previews: readonly PreviewRoute[] = [
       "A track and the part of it that is done, across five thicknesses and seven colors, with an indeterminate state.",
     key: "progress",
   },
+  {
+    href: "/slider",
+    label: "Slider",
+    summary:
+      "A track and a thumb per value, across five thicknesses and seven colors, with marks and a two-thumb range.",
+    key: "slider",
+  },
 ];

@@ -16,6 +16,7 @@ import { DialogPreview } from "../previews/DialogPreview";
 import { PopoverPreview } from "../previews/PopoverPreview";
 import { ProgressPreview } from "../previews/ProgressPreview";
 import { RadioGroupPreview } from "../previews/RadioGroupPreview";
+import { SliderPreview } from "../previews/SliderPreview";
 import { SwitchPreview } from "../previews/SwitchPreview";
 import { TableOfContentsPreview } from "../previews/TableOfContentsPreview";
 import { TabsPreview } from "../previews/TabsPreview";
@@ -36,6 +37,7 @@ import DialogPreviewVue from "../previews/DialogPreview.vue";
 import PopoverPreviewVue from "../previews/PopoverPreview.vue";
 import ProgressPreviewVue from "../previews/ProgressPreview.vue";
 import RadioGroupPreviewVue from "../previews/RadioGroupPreview.vue";
+import SliderPreviewVue from "../previews/SliderPreview.vue";
 import SwitchPreviewVue from "../previews/SwitchPreview.vue";
 import TableOfContentsPreviewVue from "../previews/TableOfContentsPreview.vue";
 import TabsPreviewVue from "../previews/TabsPreview.vue";
@@ -79,6 +81,7 @@ const vue = framework === "vue";
 {react && name === "Popover" && <PopoverPreview client:visible />}
 {react && name === "Progress" && <ProgressPreview client:visible />}
 {react && name === "RadioGroup" && <RadioGroupPreview client:visible />}
+{react && name === "Slider" && <SliderPreview client:visible />}
 {react && name === "Switch" && <SwitchPreview client:visible />}
 {react && name === "TableOfContents" && <TableOfContentsPreview client:visible />}
 {react && name === "Tabs" && <TabsPreview client:visible />}
@@ -100,6 +103,7 @@ const vue = framework === "vue";
 {vue && name === "Popover" && <PopoverPreviewVue client:visible />}
 {vue && name === "Progress" && <ProgressPreviewVue client:visible />}
 {vue && name === "RadioGroup" && <RadioGroupPreviewVue client:visible />}
+{vue && name === "Slider" && <SliderPreviewVue client:visible />}
 {vue && name === "Switch" && <SwitchPreviewVue client:visible />}
 {vue && name === "TableOfContents" && <TableOfContentsPreviewVue client:visible />}
 {vue && name === "Tabs" && <TabsPreviewVue client:visible />}

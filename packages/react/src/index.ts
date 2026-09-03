@@ -14,6 +14,7 @@ export { Dialog, type DialogProps } from "./components/Dialog";
 export { Popover, type PopoverProps } from "./components/Popover";
 export { Progress, type ProgressProps } from "./components/Progress";
 export { RadioGroup, type RadioGroupProps } from "./components/RadioGroup";
+export { Slider, type SliderProps } from "./components/Slider";
 export { Switch, type SwitchProps } from "./components/Switch";
 export { TableOfContents, type TableOfContentsProps } from "./components/TableOfContents";
 export { Tabs, type TabsProps } from "./components/Tabs";
@@ -76,6 +77,9 @@ export {
   type RadioGroupItem,
   type RadioGroupTheme,
   type RadioGroupUI,
+  type SliderMark,
+  type SliderTheme,
+  type SliderUI,
   type SwitchTheme,
   type SwitchUI,
   type TableOfContentsItem,
