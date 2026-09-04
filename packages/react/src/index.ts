@@ -53,6 +53,7 @@ export { Toast, type ToastProps } from "./components/Toast";
 export { Tooltip, type TooltipProps } from "./components/Tooltip";
 export { Toggle, type ToggleProps } from "./components/Toggle";
 export { ToggleGroup, type ToggleGroupProps } from "./components/ToggleGroup";
+export { Tour, type TourProps } from "./components/Tour";
 export { Theme, type ThemeProps } from "./components/Theme";
 export { useResolvedTheme } from "./hooks/useResolvedTheme";
 
@@ -222,6 +223,8 @@ export {
   type ToggleGroupUI,
   type ToggleTheme,
   type ToggleUI,
+  type TourTheme,
+  type TourUI,
 } from "@75neo/themes";
 
 /*
@@ -238,6 +241,18 @@ export { type Color, parseColor } from "@ark-ui/react/color-picker";
  * dependencies.
  */
 export { type DateValue, parseDate } from "@ark-ui/react/date-picker";
+
+/*
+ * A Tour is driven by a tour object built with Ark's `useTour`, so a caller needs the
+ * hook and the step type to hand it one. Re-exported here so that reaching for them
+ * does not mean adding Ark UI to an application's own dependencies.
+ */
+export {
+  useTour,
+  type TourStepDetails,
+  type UseTourProps,
+  type UseTourReturn,
+} from "@ark-ui/react/tour";
 
 /*
  * A Toast region is driven by a toaster store created with `createToaster`, so a caller
