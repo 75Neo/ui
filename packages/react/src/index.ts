@@ -15,6 +15,7 @@ export { DatePicker, type DatePickerProps } from "./components/DatePicker";
 export { Dialog, type DialogProps } from "./components/Dialog";
 export { Drawer, type DrawerProps } from "./components/Drawer";
 export { DownloadTrigger, type DownloadTriggerProps } from "./components/DownloadTrigger";
+export { Editable, type EditableProps } from "./components/Editable";
 export { Error, type ErrorProps } from "./components/Error";
 export { FileUpload, type FileUploadProps } from "./components/FileUpload";
 export { Footer, type FooterProps } from "./components/Footer";
@@ -97,6 +98,10 @@ export {
   type DownloadDataInput,
   type DownloadTriggerTheme,
   type DownloadTriggerUI,
+  type EditableActivationMode,
+  type EditableSubmitMode,
+  type EditableTheme,
+  type EditableUI,
   type ErrorTheme,
   type ErrorUI,
   type FileLike,
