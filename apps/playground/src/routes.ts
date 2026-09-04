@@ -323,6 +323,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "downloadTrigger",
   },
   {
+    href: "/toggle",
+    label: "Toggle",
+    summary:
+      "One button that stays down once pressed, in five variants across seven colors and three sizes.",
+    key: "toggle",
+  },
+  {
     href: "/steps",
     label: "Steps",
     summary:

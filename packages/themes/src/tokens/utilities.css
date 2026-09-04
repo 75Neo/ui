@@ -194,5 +194,7 @@
 @source inline("{stroke,fill}-{primary,secondary,success,info,warning,error}");
 @source inline("data-[state={checked,indeterminate}]:{bg,ring,text}-{primary,secondary,success,info,warning,error}");
 @source inline("hover:data-[state={checked,indeterminate}]:bg-{primary,secondary,success,info,warning,error}/75");
+@source inline("data-pressed:bg-{primary,secondary,success,info,warning,error}{,/10,/15,/75}");
+@source inline("data-pressed:text-{primary,secondary,success,info,warning,error}");
 @source inline("data-complete:bg-{primary,secondary,success,info,warning,error}");
 @source inline("data-current:ring-{primary,secondary,success,info,warning,error}");

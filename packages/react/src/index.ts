@@ -51,6 +51,7 @@ export { TagsInput, type TagsInputProps } from "./components/TagsInput";
 export { Timer, type TimerProps } from "./components/Timer";
 export { Toast, type ToastProps } from "./components/Toast";
 export { Tooltip, type TooltipProps } from "./components/Tooltip";
+export { Toggle, type ToggleProps } from "./components/Toggle";
 export { Theme, type ThemeProps } from "./components/Theme";
 export { useResolvedTheme } from "./hooks/useResolvedTheme";
 
@@ -215,6 +216,8 @@ export {
   type ToastUI,
   type TooltipTheme,
   type TooltipUI,
+  type ToggleTheme,
+  type ToggleUI,
 } from "@75neo/themes";
 
 /*
