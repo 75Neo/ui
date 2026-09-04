@@ -24,6 +24,7 @@ export { Header, type HeaderProps } from "./components/Header";
 export { HoverCard, type HoverCardProps } from "./components/HoverCard";
 export { Listbox, type ListboxProps } from "./components/Listbox";
 export { Main, type MainProps } from "./components/Main";
+export { Marquee, type MarqueeProps } from "./components/Marquee";
 export { Menu, type MenuProps } from "./components/Menu";
 export { NumberInput, type NumberInputProps } from "./components/NumberInput";
 export { Pagination, type PaginationProps } from "./components/Pagination";
@@ -127,6 +128,9 @@ export {
   type ListboxUI,
   type MainTheme,
   type MainUI,
+  type MarqueeItem,
+  type MarqueeTheme,
+  type MarqueeUI,
   type MenuItem,
   type MenuItemType,
   type MenuSection,

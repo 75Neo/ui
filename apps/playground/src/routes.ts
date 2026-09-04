@@ -282,6 +282,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "slider",
   },
   {
+    href: "/marquee",
+    label: "Marquee",
+    summary:
+      "A row of items scrolling in a seamless loop, across three sizes, four sides and three speeds, with edge fades.",
+    key: "marquee",
+  },
+  {
     href: "/download-trigger",
     label: "DownloadTrigger",
     summary:
