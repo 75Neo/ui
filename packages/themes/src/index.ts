@@ -58,6 +58,7 @@ export * from "./components/sidebar";
 export * from "./components/slider";
 export * from "./components/splitter";
 export * from "./components/steps";
+export * from "./components/swap";
 export * from "./components/switch";
 export * from "./components/table-of-contents";
 export * from "./components/tabs";

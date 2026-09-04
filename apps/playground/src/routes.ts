@@ -303,6 +303,12 @@ export const previews: readonly PreviewRoute[] = [
     key: "marquee",
   },
   {
+    href: "/swap",
+    label: "Swap",
+    summary: "One icon while on and another while off, across three sizes, flipped by a prop.",
+    key: "swap",
+  },
+  {
     href: "/download-trigger",
     label: "DownloadTrigger",
     summary:
