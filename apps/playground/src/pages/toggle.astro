@@ -1,0 +1,38 @@
+---
+import { toggle, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import TogglePreview from "../previews/TogglePreview.tsx";
+import TogglePreviewVue from "../previews/TogglePreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(toggle.slots);
+const variantKeys = [...toggle.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(toggle, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "toggle" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="Toggle"
+  description="One button that stays down once pressed. Pressed is paint, not a variant: Ark writes data-pressed on the root and the recipe repaints the caller's own content in place."
+  hasStage
+>
+  <Preview
+    title="Variants, sizes, and both states at once"
+    description="Five variants across seven colors, every other cell starting pressed so both states show everywhere. Then three sizes, a controlled toggle flipped from outside, and a disabled one."
+    meta={meta}
+  >
+    <Fragment slot="react"><TogglePreview client:load /></Fragment>
+    <Fragment slot="vue"><TogglePreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

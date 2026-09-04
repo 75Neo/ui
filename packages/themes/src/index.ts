@@ -65,4 +65,5 @@ export * from "./components/tabs";
 export * from "./components/tags-input";
 export * from "./components/timer";
 export * from "./components/toast";
+export * from "./components/toggle";
 export * from "./components/tooltip";

@@ -51,6 +51,7 @@ export { default as TagsInput } from "./components/TagsInput.vue";
 export { default as Timer } from "./components/Timer.vue";
 export { default as Toast } from "./components/Toast.vue";
 export { default as Tooltip } from "./components/Tooltip.vue";
+export { default as Toggle } from "./components/Toggle.vue";
 export { default as Theme } from "./components/Theme.vue";
 export { useResolvedTheme } from "./composables/theme";
 
@@ -268,6 +269,9 @@ export {
   type TooltipProps,
   type TooltipTheme,
   type TooltipUI,
+  type ToggleProps,
+  type ToggleTheme,
+  type ToggleUI,
 } from "@75neo/themes";
 
 /*
