@@ -310,6 +310,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "downloadTrigger",
   },
   {
+    href: "/steps",
+    label: "Steps",
+    summary:
+      "A row of numbered triggers and the panel the current one shows, with back and next buttons underneath.",
+    key: "steps",
+  },
+  {
     href: "/drawer",
     label: "Drawer",
     summary:

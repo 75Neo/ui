@@ -42,6 +42,7 @@ export { default as RatingGroup } from "./components/RatingGroup.vue";
 export { default as Sidebar } from "./components/Sidebar.vue";
 export { default as Slider } from "./components/Slider.vue";
 export { default as Splitter } from "./components/Splitter.vue";
+export { default as Steps } from "./components/Steps.vue";
 export { default as Switch } from "./components/Switch.vue";
 export { default as TableOfContents } from "./components/TableOfContents.vue";
 export { default as Tabs } from "./components/Tabs.vue";
@@ -229,6 +230,10 @@ export {
   type SplitterProps,
   type SplitterTheme,
   type SplitterUI,
+  type StepsItem,
+  type StepsProps,
+  type StepsTheme,
+  type StepsUI,
   type SwitchProps,
   type SwitchTheme,
   type SwitchUI,

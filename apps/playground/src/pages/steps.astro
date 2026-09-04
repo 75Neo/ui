@@ -1,0 +1,38 @@
+---
+import { steps, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import StepsPreview from "../previews/StepsPreview.tsx";
+import StepsPreviewVue from "../previews/StepsPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(steps.slots);
+const variantKeys = [...steps.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(steps, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "steps" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="Steps"
+  description="A row of numbered triggers and the panel the current one shows, with back and next buttons underneath. Complete and current arrive as data attributes, so moving between steps never re-resolves the classes."
+  hasStage
+>
+  <Preview
+    title="Sizes, directions, and who owns the state"
+    description="Three sizes of the same three steps, a vertical run, a linear one that must be completed in order, and a controlled run jumped from buttons outside the component."
+    meta={meta}
+  >
+    <Fragment slot="react"><StepsPreview client:load /></Fragment>
+    <Fragment slot="vue"><StepsPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>
