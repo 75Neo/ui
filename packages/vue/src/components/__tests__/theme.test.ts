@@ -26,6 +26,7 @@ import {
   popover,
   progress,
   radioGroup,
+  ratingGroup as ratingGroupRecipe,
   slider,
   switch as switchRecipe,
   tabs,
@@ -54,6 +55,7 @@ import Popover from "../Popover.vue";
 import Progress from "../Progress.vue";
 import RadioGroup from "../RadioGroup.vue";
 import Select from "../Select.vue";
+import RatingGroup from "../RatingGroup.vue";
 import Sidebar from "../Sidebar.vue";
 import Slider from "../Slider.vue";
 import Switch from "../Switch.vue";
@@ -526,6 +528,50 @@ describe("PinInput", () => {
     // The characters after the deleted one move back rather than leaving a hole, which
     // is what makes the row read as one code rather than four independent fields.
     await expect.poll(() => boxes.map((box) => box.value).join("")).toBe("134");
+  });
+});
+
+/**
+ * A star is two icons stacked and the clip decides how much shows, so what is worth
+ * testing is that the state on the clip follows the value — including the half star,
+ * which is the case a single icon could not express.
+ */
+describe("RatingGroup", () => {
+  it("renders every slot the recipe declares", () => {
+    const { container } = render(RatingGroup, { props: { label: "Score", defaultValue: 3 } });
+
+    for (const name of Object.keys(ratingGroupRecipe.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("draws a star per count, each with an outline and a fill", () => {
+    const { container } = render(RatingGroup, { props: { count: 7, defaultValue: 3 } });
+
+    expect(container.querySelectorAll("[data-slot='item']")).toHaveLength(7);
+    expect(container.querySelectorAll("[data-slot='fill']")).toHaveLength(7);
+    // Two icons per star: the outline underneath and the filled one on top.
+    expect(container.querySelectorAll("[data-slot='icon']")).toHaveLength(14);
+  });
+
+  it("fills the stars the value reaches and no others", () => {
+    const { container } = render(RatingGroup, { props: { count: 5, defaultValue: 3 } });
+    const states = [...container.querySelectorAll<HTMLElement>("[data-slot='fill']")].map(
+      (fill) => fill.dataset.state,
+    );
+
+    expect(states).toEqual(["full", "full", "full", "empty", "empty"]);
+  });
+
+  it("cuts the star the half value lands on", () => {
+    const { container } = render(RatingGroup, {
+      props: { count: 5, allowHalf: true, defaultValue: 3.5 },
+    });
+    const states = [...container.querySelectorAll<HTMLElement>("[data-slot='fill']")].map(
+      (fill) => fill.dataset.state,
+    );
+
+    expect(states).toEqual(["full", "full", "full", "half", "empty"]);
   });
 });
 

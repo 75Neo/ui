@@ -170,6 +170,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "pinInput",
   },
   {
+    href: "/rating-group",
+    label: "RatingGroup",
+    summary:
+      "A row of stars across three sizes and seven accents, with half stars cut from the same shape rather than a second icon.",
+    key: "ratingGroup",
+  },
+  {
     href: "/select",
     label: "Select",
     summary:

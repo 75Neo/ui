@@ -1,0 +1,38 @@
+---
+import { ratingGroup as recipe, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import RatingGroupPreview from "../previews/RatingGroupPreview.tsx";
+import RatingGroupPreviewVue from "../previews/RatingGroupPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(recipe.slots);
+const variantKeys = [...recipe.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(recipe, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "ratingGroup" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="RatingGroup"
+  description="One recipe in @75neo/themes, rendered by both adapters. Every star is two icons stacked, so a half star is the same shape cut down the middle rather than a different icon."
+  hasStage
+>
+  <Preview
+    title="Sizes, accents and how much of a star is filled"
+    description="Three sizes, then every accent color, then half stars, ten of them, hearts, read only and disabled. The last one is controlled and prints its own score."
+    meta={meta}
+  >
+    <Fragment slot="react"><RatingGroupPreview client:load /></Fragment>
+    <Fragment slot="vue"><RatingGroupPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

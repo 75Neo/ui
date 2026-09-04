@@ -40,6 +40,7 @@ export * from "./components/pin-input";
 export * from "./components/popover";
 export * from "./components/progress";
 export * from "./components/radio-group";
+export * from "./components/rating-group";
 export * from "./components/select";
 export * from "./components/sidebar";
 export * from "./components/slider";

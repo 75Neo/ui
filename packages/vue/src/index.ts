@@ -26,6 +26,7 @@ export { default as Popover } from "./components/Popover.vue";
 export { default as Progress } from "./components/Progress.vue";
 export { default as RadioGroup } from "./components/RadioGroup.vue";
 export { default as Select } from "./components/Select.vue";
+export { default as RatingGroup } from "./components/RatingGroup.vue";
 export { default as Sidebar } from "./components/Sidebar.vue";
 export { default as Slider } from "./components/Slider.vue";
 export { default as Switch } from "./components/Switch.vue";
@@ -145,6 +146,10 @@ export {
   type RadioGroupProps,
   type RadioGroupTheme,
   type RadioGroupUI,
+  type RatingFill,
+  type RatingGroupProps,
+  type RatingGroupTheme,
+  type RatingGroupUI,
   type SelectItem,
   type SelectProps,
   type SelectTheme,

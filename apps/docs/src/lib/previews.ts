@@ -36,6 +36,7 @@ export const previewed = new Set([
   "Progress",
   "RadioGroup",
   "Select",
+  "RatingGroup",
   "Sidebar",
   "Slider",
   "Switch",
