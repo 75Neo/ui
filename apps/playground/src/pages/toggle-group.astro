@@ -1,0 +1,38 @@
+---
+import { toggleGroup, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import ToggleGroupPreview from "../previews/ToggleGroupPreview.tsx";
+import ToggleGroupPreviewVue from "../previews/ToggleGroupPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(toggleGroup.slots);
+const variantKeys = [...toggleGroup.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(toggleGroup, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "toggleGroup" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="ToggleGroup"
+  description="A row of toggles with coordinated selection: one choice like a radio, or several at once. Each item wears the Toggle's spend, while the root is a plain row rather than a track with a sliding pill."
+  hasStage
+>
+  <Preview
+    title="Single, multiple, and every variant"
+    description="An icon-only single group and a multiple one, then the alignment set in all five variants. A vertical group, a controlled one reporting its value, and a disabled one."
+    meta={meta}
+  >
+    <Fragment slot="react"><ToggleGroupPreview client:load /></Fragment>
+    <Fragment slot="vue"><ToggleGroupPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

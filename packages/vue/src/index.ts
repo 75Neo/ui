@@ -52,6 +52,7 @@ export { default as Timer } from "./components/Timer.vue";
 export { default as Toast } from "./components/Toast.vue";
 export { default as Tooltip } from "./components/Tooltip.vue";
 export { default as Toggle } from "./components/Toggle.vue";
+export { default as ToggleGroup } from "./components/ToggleGroup.vue";
 export { default as Theme } from "./components/Theme.vue";
 export { useResolvedTheme } from "./composables/theme";
 
@@ -269,6 +270,10 @@ export {
   type TooltipProps,
   type TooltipTheme,
   type TooltipUI,
+  type ToggleGroupItem,
+  type ToggleGroupProps,
+  type ToggleGroupTheme,
+  type ToggleGroupUI,
   type ToggleProps,
   type ToggleTheme,
   type ToggleUI,

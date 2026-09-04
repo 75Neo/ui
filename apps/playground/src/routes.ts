@@ -330,6 +330,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "toggle",
   },
   {
+    href: "/toggle-group",
+    label: "ToggleGroup",
+    summary:
+      "A row of toggles with coordinated selection, single or multiple, across five variants and both directions.",
+    key: "toggleGroup",
+  },
+  {
     href: "/steps",
     label: "Steps",
     summary:
