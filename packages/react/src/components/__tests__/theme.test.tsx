@@ -12,6 +12,7 @@ import {
   footer as footerRecipe,
   header as headerRecipe,
   main as mainRecipe,
+  menu as menuRecipe,
   sidebar,
   combobox,
   numberInput,
@@ -38,6 +39,7 @@ import { Error as ErrorPage } from "../Error";
 import { Footer } from "../Footer";
 import { Header } from "../Header";
 import { Main } from "../Main";
+import { Menu } from "../Menu";
 import { Combobox } from "../Combobox";
 import { DateInput } from "../DateInput";
 import { DatePicker } from "../DatePicker";
@@ -261,6 +263,72 @@ describe("Combobox", () => {
  * The popup is portalled, so its parts are found on the document rather than in the
  * container.
  */
+/**
+ * The rows are worked out from one flat array, so what is worth testing is the grouping
+ * rule — a heading starts a group and is not a row — and that a submenu's panel carries
+ * the same `base` slot the top one does. The panel is portalled, so its parts are found
+ * on the document rather than in the container.
+ */
+describe("Menu", () => {
+  const rows = [
+    { type: "label" as const, label: "File" },
+    { label: "New", icon: <Circle />, shortcut: "⌘N" },
+    { type: "checkbox" as const, label: "Wrap", checked: true },
+    { type: "separator" as const },
+    { label: "Docs", href: "https://example.com" },
+    { label: "More", children: [{ label: "Deeper" }] },
+  ];
+
+  it("renders every slot the recipe declares", async () => {
+    await mount(
+      <Menu items={rows} arrow defaultOpen>
+        <button type="button">Open</button>
+      </Menu>,
+    );
+
+    for (const name of Object.keys(menuRecipe.slots)) {
+      expect(anywhere(name), name).not.toBeNull();
+    }
+  });
+
+  it("turns a heading into a group rather than a row", async () => {
+    await mount(
+      <Menu items={rows} defaultOpen>
+        <button type="button">Open</button>
+      </Menu>,
+    );
+
+    // The heading labels its group and is not one of the rows under it.
+    expect(anywhere("groupLabel")!.textContent).toBe("File");
+    expect(everywhere("item").map((row) => row.textContent)).not.toContain("File");
+  });
+
+  it("makes a link row the anchor itself", async () => {
+    await mount(
+      <Menu items={rows} defaultOpen>
+        <button type="button">Open</button>
+      </Menu>,
+    );
+
+    const link = everywhere("item").find((row) => row.tagName === "A");
+    expect(link).toBeDefined();
+    expect(link!.getAttribute("href")).toBe("https://example.com");
+  });
+
+  it("gives a submenu's panel the same base slot as the one above it", async () => {
+    await mount(
+      <Menu items={rows} defaultOpen>
+        <button type="button">Open</button>
+      </Menu>,
+    );
+
+    // The nested Menu mounts its own panel, so there are two, styled by one recipe.
+    await expect.poll(() => everywhere("base").length).toBe(2);
+    const [outer, inner] = everywhere("base");
+    expect(inner!.className).toBe(outer!.className);
+  });
+});
+
 /**
  * Both arrangements come from the same three elements, so what is worth testing is that
  * the recipe moves them rather than the adapter swapping markup, and that the range

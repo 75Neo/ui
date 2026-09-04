@@ -286,6 +286,22 @@ The same cast catches a plain boolean prop whose default is `true`. A type-based
 field in Vue while React was fine. Wrap the macro in `withDefaults` and name the default
 there. Booleans that default to off need nothing, since off is what the cast produces.
 
+A third case: a prop whose default Ark derives from another one. Naming it in
+`withDefaults` with the value `undefined` is what stops the cast, because Vue skips the
+cast whenever a default is declared at all, whatever it is. Forwarding the prop as
+`undefined` is not enough on its own — a machine spreads its caller's props over its own
+defaults, so an explicit `undefined` overwrites the default with nothing and turns the
+behaviour off. NumberInput's `allowOverflow` reached Ark that way and no button ever
+disabled at the end of its range. Resolve such a prop in the adapter and pass a real
+value, in both frameworks, so neither depends on how a machine treats an absent key.
+
+**Vue needs a file to recurse; React does not.** A `<script setup>` component is the only
+thing in Vue that can render itself, which is what a submenu of arbitrary depth needs. So
+`packages/vue/src/components/MenuRows.vue` exists, is exported from nothing, and is the
+one file in either adapter that is not a component a caller can reach. React has no such
+constraint and its half is a local function inside `Menu.tsx`, so there is deliberately no
+matching file there. Keep the asymmetry rather than adding a React file to match.
+
 ## MCP servers
 
 `.mcp.json` provides **ArkUI** (component docs and examples) and **Astro docs**. Reach for

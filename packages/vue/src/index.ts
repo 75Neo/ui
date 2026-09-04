@@ -17,6 +17,7 @@ export { default as Error } from "./components/Error.vue";
 export { default as Footer } from "./components/Footer.vue";
 export { default as Header } from "./components/Header.vue";
 export { default as Main } from "./components/Main.vue";
+export { default as Menu } from "./components/Menu.vue";
 export { default as NumberInput } from "./components/NumberInput.vue";
 export { default as PinInput } from "./components/PinInput.vue";
 export { default as Popover } from "./components/Popover.vue";
@@ -111,6 +112,12 @@ export {
   type MainProps,
   type MainTheme,
   type MainUI,
+  type MenuItem,
+  type MenuItemType,
+  type MenuProps,
+  type MenuSection,
+  type MenuTheme,
+  type MenuUI,
   type NumberInputProps,
   type NumberInputTheme,
   type NumberInputUI,

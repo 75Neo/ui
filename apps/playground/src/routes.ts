@@ -135,6 +135,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "main",
   },
   {
+    href: "/menu",
+    label: "Menu",
+    summary:
+      "The panel a trigger drops, from one flat array of rows: headings, separators, ticks, links and submenus to any depth.",
+    key: "menu",
+  },
+  {
     href: "/number-input",
     label: "NumberInput",
     summary:

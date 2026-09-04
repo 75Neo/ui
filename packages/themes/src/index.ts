@@ -32,6 +32,7 @@ export * from "./components/error";
 export * from "./components/footer";
 export * from "./components/header";
 export * from "./components/main";
+export * from "./components/menu";
 export * from "./components/number-input";
 export * from "./components/pin-input";
 export * from "./components/popover";

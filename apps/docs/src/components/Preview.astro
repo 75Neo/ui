@@ -19,6 +19,7 @@ import { ErrorPreview } from "../previews/ErrorPreview";
 import { FooterPreview } from "../previews/FooterPreview";
 import { HeaderPreview } from "../previews/HeaderPreview";
 import { MainPreview } from "../previews/MainPreview";
+import { MenuPreview } from "../previews/MenuPreview";
 import { NumberInputPreview } from "../previews/NumberInputPreview";
 import { PinInputPreview } from "../previews/PinInputPreview";
 import { PopoverPreview } from "../previews/PopoverPreview";
@@ -51,6 +52,7 @@ import ErrorPreviewVue from "../previews/ErrorPreview.vue";
 import FooterPreviewVue from "../previews/FooterPreview.vue";
 import HeaderPreviewVue from "../previews/HeaderPreview.vue";
 import MainPreviewVue from "../previews/MainPreview.vue";
+import MenuPreviewVue from "../previews/MenuPreview.vue";
 import NumberInputPreviewVue from "../previews/NumberInputPreview.vue";
 import PinInputPreviewVue from "../previews/PinInputPreview.vue";
 import PopoverPreviewVue from "../previews/PopoverPreview.vue";
@@ -106,6 +108,7 @@ const vue = framework === "vue";
 {react && name === "Footer" && <FooterPreview client:visible />}
 {react && name === "Header" && <HeaderPreview client:visible />}
 {react && name === "Main" && <MainPreview client:visible />}
+{react && name === "Menu" && <MenuPreview client:visible />}
 {react && name === "NumberInput" && <NumberInputPreview client:visible />}
 {react && name === "PinInput" && <PinInputPreview client:visible />}
 {react && name === "Popover" && <PopoverPreview client:visible />}
@@ -139,6 +142,7 @@ const vue = framework === "vue";
 {vue && name === "Footer" && <FooterPreviewVue client:visible />}
 {vue && name === "Header" && <HeaderPreviewVue client:visible />}
 {vue && name === "Main" && <MainPreviewVue client:visible />}
+{vue && name === "Menu" && <MenuPreviewVue client:visible />}
 {vue && name === "NumberInput" && <NumberInputPreviewVue client:visible />}
 {vue && name === "PinInput" && <PinInputPreviewVue client:visible />}
 {vue && name === "Popover" && <PopoverPreviewVue client:visible />}

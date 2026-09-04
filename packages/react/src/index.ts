@@ -17,6 +17,7 @@ export { Error, type ErrorProps } from "./components/Error";
 export { Footer, type FooterProps } from "./components/Footer";
 export { Header, type HeaderProps } from "./components/Header";
 export { Main, type MainProps } from "./components/Main";
+export { Menu, type MenuProps } from "./components/Menu";
 export { NumberInput, type NumberInputProps } from "./components/NumberInput";
 export { PinInput, type PinInputProps } from "./components/PinInput";
 export { Popover, type PopoverProps } from "./components/Popover";
@@ -92,6 +93,11 @@ export {
   type HeaderUI,
   type MainTheme,
   type MainUI,
+  type MenuItem,
+  type MenuItemType,
+  type MenuSection,
+  type MenuTheme,
+  type MenuUI,
   type NumberInputTheme,
   type NumberInputUI,
   type PinInputTheme,

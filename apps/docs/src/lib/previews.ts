@@ -27,6 +27,7 @@ export const previewed = new Set([
   "Footer",
   "Header",
   "Main",
+  "Menu",
   "NumberInput",
   "PinInput",
   "Popover",
