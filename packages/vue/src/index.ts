@@ -54,6 +54,7 @@ export { default as Tooltip } from "./components/Tooltip.vue";
 export { default as Toggle } from "./components/Toggle.vue";
 export { default as ToggleGroup } from "./components/ToggleGroup.vue";
 export { default as Tour } from "./components/Tour.vue";
+export { default as TreeView } from "./components/TreeView.vue";
 export { default as Theme } from "./components/Theme.vue";
 export { useResolvedTheme } from "./composables/theme";
 
@@ -281,6 +282,10 @@ export {
   type TourProps,
   type TourTheme,
   type TourUI,
+  type TreeViewItem,
+  type TreeViewProps,
+  type TreeViewTheme,
+  type TreeViewUI,
 } from "@75neo/themes";
 
 /*
