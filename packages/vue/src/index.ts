@@ -35,6 +35,7 @@ export { default as Popover } from "./components/Popover.vue";
 export { default as Progress } from "./components/Progress.vue";
 export { default as QrCode } from "./components/QrCode.vue";
 export { default as RadioGroup } from "./components/RadioGroup.vue";
+export { default as ScrollArea } from "./components/ScrollArea.vue";
 export { default as SegmentGroup } from "./components/SegmentGroup.vue";
 export { default as Select } from "./components/Select.vue";
 export { default as RatingGroup } from "./components/RatingGroup.vue";
@@ -200,6 +201,9 @@ export {
   type RadioGroupProps,
   type RadioGroupTheme,
   type RadioGroupUI,
+  type ScrollAreaProps,
+  type ScrollAreaTheme,
+  type ScrollAreaUI,
   type RatingFill,
   type RatingGroupProps,
   type RatingGroupTheme,

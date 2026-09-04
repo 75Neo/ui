@@ -337,4 +337,11 @@ export const previews: readonly PreviewRoute[] = [
       "A code to scan on a card carrying its quiet zone, across three sizes, with an overlay.",
     key: "qrCode",
   },
+  {
+    href: "/scroll-area",
+    label: "ScrollArea",
+    summary:
+      "A scrollable box whose scrollbars are the theme's rather than the browser's, across three thicknesses and both axes.",
+    key: "scrollArea",
+  },
 ];

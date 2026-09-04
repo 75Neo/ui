@@ -35,6 +35,7 @@ export { Popover, type PopoverProps } from "./components/Popover";
 export { Progress, type ProgressProps } from "./components/Progress";
 export { QrCode, type QrCodeProps } from "./components/QrCode";
 export { RadioGroup, type RadioGroupProps } from "./components/RadioGroup";
+export { ScrollArea, type ScrollAreaProps } from "./components/ScrollArea";
 export { SegmentGroup, type SegmentGroupProps } from "./components/SegmentGroup";
 export { Select, type SelectProps } from "./components/Select";
 export { RatingGroup, type RatingGroupProps } from "./components/RatingGroup";
@@ -163,6 +164,8 @@ export {
   type RadioGroupItem,
   type RadioGroupTheme,
   type RadioGroupUI,
+  type ScrollAreaTheme,
+  type ScrollAreaUI,
   type RatingFill,
   type RatingGroupTheme,
   type RatingGroupUI,
