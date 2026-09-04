@@ -19,6 +19,7 @@ export { default as Header } from "./components/Header.vue";
 export { default as Main } from "./components/Main.vue";
 export { default as Menu } from "./components/Menu.vue";
 export { default as NumberInput } from "./components/NumberInput.vue";
+export { default as Pagination } from "./components/Pagination.vue";
 export { default as PinInput } from "./components/PinInput.vue";
 export { default as Popover } from "./components/Popover.vue";
 export { default as Progress } from "./components/Progress.vue";
@@ -121,6 +122,9 @@ export {
   type NumberInputProps,
   type NumberInputTheme,
   type NumberInputUI,
+  type PaginationProps,
+  type PaginationTheme,
+  type PaginationUI,
   type PinInputProps,
   type PinInputTheme,
   type PinInputType,

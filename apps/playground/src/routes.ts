@@ -149,6 +149,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "numberInput",
   },
   {
+    href: "/pagination",
+    label: "Pagination",
+    summary:
+      "The row of page numbers and the arrows either side, across three sizes and seven accents, as buttons or as links.",
+    key: "pagination",
+  },
+  {
     href: "/pin-input",
     label: "PinInput",
     summary:

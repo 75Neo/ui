@@ -21,6 +21,7 @@ import { HeaderPreview } from "../previews/HeaderPreview";
 import { MainPreview } from "../previews/MainPreview";
 import { MenuPreview } from "../previews/MenuPreview";
 import { NumberInputPreview } from "../previews/NumberInputPreview";
+import { PaginationPreview } from "../previews/PaginationPreview";
 import { PinInputPreview } from "../previews/PinInputPreview";
 import { PopoverPreview } from "../previews/PopoverPreview";
 import { ProgressPreview } from "../previews/ProgressPreview";
@@ -54,6 +55,7 @@ import HeaderPreviewVue from "../previews/HeaderPreview.vue";
 import MainPreviewVue from "../previews/MainPreview.vue";
 import MenuPreviewVue from "../previews/MenuPreview.vue";
 import NumberInputPreviewVue from "../previews/NumberInputPreview.vue";
+import PaginationPreviewVue from "../previews/PaginationPreview.vue";
 import PinInputPreviewVue from "../previews/PinInputPreview.vue";
 import PopoverPreviewVue from "../previews/PopoverPreview.vue";
 import ProgressPreviewVue from "../previews/ProgressPreview.vue";
@@ -110,6 +112,7 @@ const vue = framework === "vue";
 {react && name === "Main" && <MainPreview client:visible />}
 {react && name === "Menu" && <MenuPreview client:visible />}
 {react && name === "NumberInput" && <NumberInputPreview client:visible />}
+{react && name === "Pagination" && <PaginationPreview client:visible />}
 {react && name === "PinInput" && <PinInputPreview client:visible />}
 {react && name === "Popover" && <PopoverPreview client:visible />}
 {react && name === "Progress" && <ProgressPreview client:visible />}
@@ -144,6 +147,7 @@ const vue = framework === "vue";
 {vue && name === "Main" && <MainPreviewVue client:visible />}
 {vue && name === "Menu" && <MenuPreviewVue client:visible />}
 {vue && name === "NumberInput" && <NumberInputPreviewVue client:visible />}
+{vue && name === "Pagination" && <PaginationPreviewVue client:visible />}
 {vue && name === "PinInput" && <PinInputPreviewVue client:visible />}
 {vue && name === "Popover" && <PopoverPreviewVue client:visible />}
 {vue && name === "Progress" && <ProgressPreviewVue client:visible />}

@@ -34,6 +34,7 @@ export * from "./components/header";
 export * from "./components/main";
 export * from "./components/menu";
 export * from "./components/number-input";
+export * from "./components/pagination";
 export * from "./components/pin-input";
 export * from "./components/popover";
 export * from "./components/progress";

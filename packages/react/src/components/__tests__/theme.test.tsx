@@ -16,6 +16,7 @@ import {
   sidebar,
   combobox,
   numberInput,
+  pagination as paginationRecipe,
   pinInput,
   select,
   dateInput,
@@ -45,6 +46,7 @@ import { DateInput } from "../DateInput";
 import { DatePicker } from "../DatePicker";
 import { Dialog } from "../Dialog";
 import { NumberInput } from "../NumberInput";
+import { Pagination } from "../Pagination";
 import { PinInput } from "../PinInput";
 import { Popover } from "../Popover";
 import { Progress } from "../Progress";
@@ -375,6 +377,60 @@ describe("NumberInput", () => {
  * `length` decides how many boxes there are and that typing walks the caret along them
  * — the behaviour a single input would not have.
  */
+/**
+ * Ark works the row out from the count and the page size, so what is worth testing is
+ * that this adapter reads pages rather than items, that a gap becomes an ellipsis and
+ * not a page, and that `href` is the one prop deciding buttons or anchors.
+ */
+describe("Pagination", () => {
+  it("renders every slot the recipe declares", async () => {
+    const container = await mount(<Pagination count={200} defaultPage={10} edges />);
+
+    for (const name of Object.keys(paginationRecipe.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("counts items rather than pages", async () => {
+    // Ninety-five items at ten a page is ten pages, so the last number in the row is 10.
+    const container = await mount(<Pagination count={95} pageSize={10} defaultPage={10} />);
+    const numbers = [...container.querySelectorAll("[data-slot='item']")].map(
+      (item) => item.textContent,
+    );
+
+    expect(numbers.at(-1)).toBe("10");
+  });
+
+  it("marks the current page and no other", async () => {
+    const container = await mount(<Pagination count={200} defaultPage={4} />);
+    const selected = [...container.querySelectorAll<HTMLElement>("[data-slot='item']")].filter(
+      (item) => item.dataset.selected !== undefined,
+    );
+
+    expect(selected).toHaveLength(1);
+    expect(selected[0]!.textContent).toBe("4");
+  });
+
+  it("leaves the gaps out of the pages", async () => {
+    const container = await mount(<Pagination count={500} defaultPage={25} />);
+
+    // A window in the middle of fifty pages has a gap on each side of it.
+    expect(container.querySelectorAll("[data-slot='ellipsis']")).toHaveLength(2);
+    expect(slot(container, "ellipsis")!.tagName).not.toBe("BUTTON");
+  });
+
+  it("makes every page an anchor once it is given addresses", async () => {
+    const buttons = await mount(<Pagination count={200} defaultPage={4} />);
+    expect(slot(buttons, "item")!.tagName).toBe("BUTTON");
+
+    const links = await mount(
+      <Pagination count={200} defaultPage={4} href={(page) => `/posts?page=${page}`} />,
+    );
+    expect(slot(links, "item")!.tagName).toBe("A");
+    expect(slot(links, "item")!.getAttribute("href")).toBe("/posts?page=1");
+  });
+});
+
 describe("PinInput", () => {
   it("renders every slot the recipe declares", async () => {
     const container = await mount(<PinInput label="Code" length={4} />);

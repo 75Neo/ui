@@ -19,6 +19,7 @@ export { Header, type HeaderProps } from "./components/Header";
 export { Main, type MainProps } from "./components/Main";
 export { Menu, type MenuProps } from "./components/Menu";
 export { NumberInput, type NumberInputProps } from "./components/NumberInput";
+export { Pagination, type PaginationProps } from "./components/Pagination";
 export { PinInput, type PinInputProps } from "./components/PinInput";
 export { Popover, type PopoverProps } from "./components/Popover";
 export { Progress, type ProgressProps } from "./components/Progress";
@@ -100,6 +101,8 @@ export {
   type MenuUI,
   type NumberInputTheme,
   type NumberInputUI,
+  type PaginationTheme,
+  type PaginationUI,
   type PinInputTheme,
   type PinInputType,
   type PinInputUI,
