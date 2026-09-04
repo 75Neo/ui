@@ -18,6 +18,7 @@ export { DownloadTrigger, type DownloadTriggerProps } from "./components/Downloa
 export { Editable, type EditableProps } from "./components/Editable";
 export { Error, type ErrorProps } from "./components/Error";
 export { FileUpload, type FileUploadProps } from "./components/FileUpload";
+export { FloatingPanel, type FloatingPanelProps } from "./components/FloatingPanel";
 export { Footer, type FooterProps } from "./components/Footer";
 export { Header, type HeaderProps } from "./components/Header";
 export { Main, type MainProps } from "./components/Main";
@@ -107,6 +108,11 @@ export {
   type FileLike,
   type FileUploadTheme,
   type FileUploadUI,
+  type FloatingPanelPosition,
+  type FloatingPanelSize,
+  type FloatingPanelStage,
+  type FloatingPanelTheme,
+  type FloatingPanelUI,
   type FooterTheme,
   type FooterUI,
   type HeaderTheme,

@@ -288,4 +288,11 @@ export const previews: readonly PreviewRoute[] = [
       "A panel sliding in from an edge of the viewport, across four placements and three sizes, with a header, a body and a footer.",
     key: "drawer",
   },
+  {
+    href: "/floating-panel",
+    label: "FloatingPanel",
+    summary:
+      "A window the caller drags and resizes over the page, with minimize, maximize and close controls, across three sizes.",
+    key: "floatingPanel",
+  },
 ];

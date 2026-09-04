@@ -33,6 +33,7 @@ export * from "./components/download-trigger";
 export * from "./components/editable";
 export * from "./components/error";
 export * from "./components/file-upload";
+export * from "./components/floating-panel";
 export * from "./components/footer";
 export * from "./components/header";
 export * from "./components/main";

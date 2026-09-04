@@ -18,6 +18,7 @@ export { default as DownloadTrigger } from "./components/DownloadTrigger.vue";
 export { default as Editable } from "./components/Editable.vue";
 export { default as Error } from "./components/Error.vue";
 export { default as FileUpload } from "./components/FileUpload.vue";
+export { default as FloatingPanel } from "./components/FloatingPanel.vue";
 export { default as Footer } from "./components/Footer.vue";
 export { default as Header } from "./components/Header.vue";
 export { default as Main } from "./components/Main.vue";
@@ -127,6 +128,12 @@ export {
   type FileUploadProps,
   type FileUploadTheme,
   type FileUploadUI,
+  type FloatingPanelPosition,
+  type FloatingPanelProps,
+  type FloatingPanelSize,
+  type FloatingPanelStage,
+  type FloatingPanelTheme,
+  type FloatingPanelUI,
   type FooterProps,
   type FooterTheme,
   type FooterUI,
