@@ -49,6 +49,7 @@ export { default as TableOfContents } from "./components/TableOfContents.vue";
 export { default as Tabs } from "./components/Tabs.vue";
 export { default as TagsInput } from "./components/TagsInput.vue";
 export { default as Timer } from "./components/Timer.vue";
+export { default as Toast } from "./components/Toast.vue";
 export { default as Tooltip } from "./components/Tooltip.vue";
 export { default as Theme } from "./components/Theme.vue";
 export { useResolvedTheme } from "./composables/theme";
@@ -259,6 +260,11 @@ export {
   type TimerTheme,
   type TimerUI,
   type TimerUnit,
+  type ToastPlacement,
+  type ToastProps,
+  type ToastTheme,
+  type ToastType,
+  type ToastUI,
   type TooltipProps,
   type TooltipTheme,
   type TooltipUI,
@@ -277,3 +283,14 @@ export { type Color, parseColor } from "@ark-ui/vue/color-picker";
  * adding Ark UI to an application's own dependencies.
  */
 export { type DateValue, parseDate } from "@ark-ui/vue/date-picker";
+
+/*
+ * A Toast region is driven by a toaster store created with `createToaster`, so a caller
+ * needs that function to build one and hand it in. Re-exported here so that reaching
+ * for it does not mean adding Ark UI to an application's own dependencies.
+ */
+export {
+  createToaster,
+  type CreateToasterProps,
+  type CreateToasterReturn,
+} from "@ark-ui/vue/toast";

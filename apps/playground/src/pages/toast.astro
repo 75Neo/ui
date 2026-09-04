@@ -1,0 +1,38 @@
+---
+import { toast, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import ToastPreview from "../previews/ToastPreview.tsx";
+import ToastPreviewVue from "../previews/ToastPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(toast.slots);
+const variantKeys = [...toast.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(toast, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "toast" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="Toast"
+  description="A message over the page and the group holding every live one, across five statuses and six placements, wrapping Ark UI."
+  hasStage
+>
+  <Preview
+    title="Toast statuses and actions"
+    description="Trigger toasts of various types to see stacked notifications in action."
+    meta={meta}
+  >
+    <Fragment slot="react"><ToastPreview client:load /></Fragment>
+    <Fragment slot="vue"><ToastPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

@@ -371,4 +371,11 @@ export const previews: readonly PreviewRoute[] = [
       "Panels divided by handles the caller drags, running across the page or down it, with sizes held between bounds.",
     key: "splitter",
   },
+  {
+    href: "/toast",
+    label: "Toast",
+    summary:
+      "A message over the page and the group holding every live one, across five statuses, six placements and three sizes.",
+    key: "toast",
+  },
 ];
