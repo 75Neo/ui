@@ -54,6 +54,7 @@ export { Tooltip, type TooltipProps } from "./components/Tooltip";
 export { Toggle, type ToggleProps } from "./components/Toggle";
 export { ToggleGroup, type ToggleGroupProps } from "./components/ToggleGroup";
 export { Tour, type TourProps } from "./components/Tour";
+export { TreeView, type TreeViewProps } from "./components/TreeView";
 export { Theme, type ThemeProps } from "./components/Theme";
 export { useResolvedTheme } from "./hooks/useResolvedTheme";
 
@@ -225,6 +226,9 @@ export {
   type ToggleUI,
   type TourTheme,
   type TourUI,
+  type TreeViewItem,
+  type TreeViewTheme,
+  type TreeViewUI,
 } from "@75neo/themes";
 
 /*

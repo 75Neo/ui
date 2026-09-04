@@ -351,6 +351,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "tour",
   },
   {
+    href: "/tree-view",
+    label: "TreeView",
+    summary:
+      "A file tree of branches and leaves from one array of items, single or multiple, with an indent guide.",
+    key: "treeView",
+  },
+  {
     href: "/drawer",
     label: "Drawer",
     summary:
