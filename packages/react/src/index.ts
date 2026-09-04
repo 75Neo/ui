@@ -41,6 +41,7 @@ export { Select, type SelectProps } from "./components/Select";
 export { RatingGroup, type RatingGroupProps } from "./components/RatingGroup";
 export { Sidebar, type SidebarProps } from "./components/Sidebar";
 export { Slider, type SliderProps } from "./components/Slider";
+export { Splitter, type SplitterProps } from "./components/Splitter";
 export { Switch, type SwitchProps } from "./components/Switch";
 export { TableOfContents, type TableOfContentsProps } from "./components/TableOfContents";
 export { Tabs, type TabsProps } from "./components/Tabs";
@@ -181,6 +182,9 @@ export {
   type SliderMark,
   type SliderTheme,
   type SliderUI,
+  type SplitterPanel,
+  type SplitterTheme,
+  type SplitterUI,
   type SwitchTheme,
   type SwitchUI,
   type TableOfContentsItem,
