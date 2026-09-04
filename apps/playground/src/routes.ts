@@ -344,6 +344,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "steps",
   },
   {
+    href: "/tour",
+    label: "Tour",
+    summary:
+      "A spotlight onboarding flow over the page, with a backdrop, an arrow and an actions row in three sizes.",
+    key: "tour",
+  },
+  {
     href: "/drawer",
     label: "Drawer",
     summary:
