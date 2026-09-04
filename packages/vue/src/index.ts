@@ -33,6 +33,7 @@ export { default as PasswordInput } from "./components/PasswordInput.vue";
 export { default as PinInput } from "./components/PinInput.vue";
 export { default as Popover } from "./components/Popover.vue";
 export { default as Progress } from "./components/Progress.vue";
+export { default as QrCode } from "./components/QrCode.vue";
 export { default as RadioGroup } from "./components/RadioGroup.vue";
 export { default as SegmentGroup } from "./components/SegmentGroup.vue";
 export { default as Select } from "./components/Select.vue";
@@ -192,6 +193,9 @@ export {
   type ProgressProps,
   type ProgressTheme,
   type ProgressUI,
+  type QrCodeProps,
+  type QrCodeTheme,
+  type QrCodeUI,
   type RadioGroupItem,
   type RadioGroupProps,
   type RadioGroupTheme,

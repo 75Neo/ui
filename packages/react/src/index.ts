@@ -33,6 +33,7 @@ export { PasswordInput, type PasswordInputProps } from "./components/PasswordInp
 export { PinInput, type PinInputProps } from "./components/PinInput";
 export { Popover, type PopoverProps } from "./components/Popover";
 export { Progress, type ProgressProps } from "./components/Progress";
+export { QrCode, type QrCodeProps } from "./components/QrCode";
 export { RadioGroup, type RadioGroupProps } from "./components/RadioGroup";
 export { SegmentGroup, type SegmentGroupProps } from "./components/SegmentGroup";
 export { Select, type SelectProps } from "./components/Select";
@@ -157,6 +158,8 @@ export {
   type PopoverUI,
   type ProgressTheme,
   type ProgressUI,
+  type QrCodeTheme,
+  type QrCodeUI,
   type RadioGroupItem,
   type RadioGroupTheme,
   type RadioGroupUI,
