@@ -26,6 +26,7 @@ export { Listbox, type ListboxProps } from "./components/Listbox";
 export { Main, type MainProps } from "./components/Main";
 export { Marquee, type MarqueeProps } from "./components/Marquee";
 export { Menu, type MenuProps } from "./components/Menu";
+export { NavigationMenu, type NavigationMenuProps } from "./components/NavigationMenu";
 export { NumberInput, type NumberInputProps } from "./components/NumberInput";
 export { Pagination, type PaginationProps } from "./components/Pagination";
 export { PinInput, type PinInputProps } from "./components/PinInput";
@@ -136,6 +137,10 @@ export {
   type MenuSection,
   type MenuTheme,
   type MenuUI,
+  type NavigationMenuItem,
+  type NavigationMenuLink,
+  type NavigationMenuTheme,
+  type NavigationMenuUI,
   type NumberInputTheme,
   type NumberInputUI,
   type PaginationTheme,
