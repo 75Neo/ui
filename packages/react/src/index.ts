@@ -42,6 +42,7 @@ export { RatingGroup, type RatingGroupProps } from "./components/RatingGroup";
 export { Sidebar, type SidebarProps } from "./components/Sidebar";
 export { Slider, type SliderProps } from "./components/Slider";
 export { Splitter, type SplitterProps } from "./components/Splitter";
+export { Steps, type StepsProps } from "./components/Steps";
 export { Switch, type SwitchProps } from "./components/Switch";
 export { TableOfContents, type TableOfContentsProps } from "./components/TableOfContents";
 export { Tabs, type TabsProps } from "./components/Tabs";
@@ -185,6 +186,9 @@ export {
   type SplitterPanel,
   type SplitterTheme,
   type SplitterUI,
+  type StepsItem,
+  type StepsTheme,
+  type StepsUI,
   type SwitchTheme,
   type SwitchUI,
   type TableOfContentsItem,
