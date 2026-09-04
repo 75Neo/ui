@@ -330,4 +330,11 @@ export const previews: readonly PreviewRoute[] = [
       "A preview panel a trigger opens on hover or focus, across three sizes and twelve placements, with an optional arrow.",
     key: "hoverCard",
   },
+  {
+    href: "/qr-code",
+    label: "QrCode",
+    summary:
+      "A code to scan on a card carrying its quiet zone, across three sizes, with an overlay.",
+    key: "qrCode",
+  },
 ];

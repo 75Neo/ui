@@ -48,6 +48,7 @@ export * from "./components/password-input";
 export * from "./components/pin-input";
 export * from "./components/popover";
 export * from "./components/progress";
+export * from "./components/qr-code";
 export * from "./components/radio-group";
 export * from "./components/rating-group";
 export * from "./components/segment-group";
