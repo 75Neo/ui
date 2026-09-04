@@ -131,3 +131,29 @@
     block-size: 40%;
   }
 }
+
+/*
+ * The marquee's loop, one per axis because a keyframe cannot ask which way its
+ * element is pointing. Ark owns the distance: it writes `--marquee-translate` on the
+ * root from its own measurements, and the recipe only names the keyframe, so the same
+ * pair serves every side, speed and content width. Ark has no keyframes of its own —
+ * its docs ask each application to define these — so they live here instead.
+ */
+
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(var(--marquee-translate));
+  }
+}
+
+@keyframes marquee-y {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(var(--marquee-translate));
+  }
+}

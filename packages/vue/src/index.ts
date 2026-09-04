@@ -24,6 +24,7 @@ export { default as Header } from "./components/Header.vue";
 export { default as HoverCard } from "./components/HoverCard.vue";
 export { default as Listbox } from "./components/Listbox.vue";
 export { default as Main } from "./components/Main.vue";
+export { default as Marquee } from "./components/Marquee.vue";
 export { default as Menu } from "./components/Menu.vue";
 export { default as NumberInput } from "./components/NumberInput.vue";
 export { default as Pagination } from "./components/Pagination.vue";
@@ -153,6 +154,10 @@ export {
   type MainProps,
   type MainTheme,
   type MainUI,
+  type MarqueeItem,
+  type MarqueeProps,
+  type MarqueeTheme,
+  type MarqueeUI,
   type MenuItem,
   type MenuItemType,
   type MenuProps,
