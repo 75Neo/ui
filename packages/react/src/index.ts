@@ -48,6 +48,7 @@ export { Switch, type SwitchProps } from "./components/Switch";
 export { TableOfContents, type TableOfContentsProps } from "./components/TableOfContents";
 export { Tabs, type TabsProps } from "./components/Tabs";
 export { TagsInput, type TagsInputProps } from "./components/TagsInput";
+export { Timer, type TimerProps } from "./components/Timer";
 export { Tooltip, type TooltipProps } from "./components/Tooltip";
 export { Theme, type ThemeProps } from "./components/Theme";
 export { useResolvedTheme } from "./hooks/useResolvedTheme";
@@ -204,6 +205,9 @@ export {
   type TagsInputCandidate,
   type TagsInputTheme,
   type TagsInputUI,
+  type TimerTheme,
+  type TimerUI,
+  type TimerUnit,
   type TooltipTheme,
   type TooltipUI,
 } from "@75neo/themes";
