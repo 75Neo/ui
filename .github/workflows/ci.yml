@@ -9,8 +9,14 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
+# `pull-requests: read` is for the `changes` job below. On a pull request
+# `dorny/paths-filter` asks the API which files the PR touches rather than comparing
+# refs itself, and without the scope that call fails and takes the whole workflow with
+# it. A push needs only `contents`, which is why this went unnoticed until the first
+# pull request after the workflow was split.
 permissions:
   contents: read
+  pull-requests: read
 
 env:
   TURBO_TELEMETRY_DISABLED: "1"
