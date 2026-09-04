@@ -27,6 +27,7 @@ import {
   progress,
   radioGroup,
   ratingGroup as ratingGroupRecipe,
+  segmentGroup as segmentGroupRecipe,
   slider,
   switch as switchRecipe,
   tabs,
@@ -54,6 +55,7 @@ import PinInput from "../PinInput.vue";
 import Popover from "../Popover.vue";
 import Progress from "../Progress.vue";
 import RadioGroup from "../RadioGroup.vue";
+import SegmentGroup from "../SegmentGroup.vue";
 import Select from "../Select.vue";
 import RatingGroup from "../RatingGroup.vue";
 import Sidebar from "../Sidebar.vue";
@@ -572,6 +574,51 @@ describe("RatingGroup", () => {
     );
 
     expect(states).toEqual(["full", "full", "full", "half", "empty"]);
+  });
+});
+
+/**
+ * The pill is placed from what Ark measures, which a test cannot exercise without
+ * layout, so what is worth testing is the part this adapter owns: one option per item,
+ * the chosen one marked, and a disabled option that stays out of the running.
+ */
+describe("SegmentGroup", () => {
+  const views = [
+    { value: "day", label: "Day" },
+    { value: "week", label: "Week" },
+    { value: "month", label: "Month", disabled: true },
+  ];
+
+  it("renders every slot the recipe declares", () => {
+    const { container } = render(SegmentGroup, {
+      props: { items: views, defaultValue: "week" },
+    });
+
+    for (const name of Object.keys(segmentGroupRecipe.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("draws an option per item and marks the chosen one", () => {
+    const { container } = render(SegmentGroup, {
+      props: { items: views, defaultValue: "week" },
+    });
+    const options = [...container.querySelectorAll<HTMLElement>("[data-slot='item']")];
+
+    expect(options).toHaveLength(3);
+    const checked = options.filter((option) => option.dataset.state === "checked");
+    expect(checked).toHaveLength(1);
+    expect(checked[0]!.textContent?.trim()).toBe("Week");
+  });
+
+  it("keeps a disabled option out of the running", () => {
+    const { container } = render(SegmentGroup, {
+      props: { items: views, defaultValue: "day" },
+    });
+    const options = [...container.querySelectorAll<HTMLElement>("[data-slot='item']")];
+
+    expect(options[2]!.dataset.disabled).toBeDefined();
+    expect(options[0]!.dataset.disabled).toBeUndefined();
   });
 });
 

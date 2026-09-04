@@ -25,6 +25,7 @@ export { default as PinInput } from "./components/PinInput.vue";
 export { default as Popover } from "./components/Popover.vue";
 export { default as Progress } from "./components/Progress.vue";
 export { default as RadioGroup } from "./components/RadioGroup.vue";
+export { default as SegmentGroup } from "./components/SegmentGroup.vue";
 export { default as Select } from "./components/Select.vue";
 export { default as RatingGroup } from "./components/RatingGroup.vue";
 export { default as Sidebar } from "./components/Sidebar.vue";
@@ -150,6 +151,10 @@ export {
   type RatingGroupProps,
   type RatingGroupTheme,
   type RatingGroupUI,
+  type SegmentGroupItem,
+  type SegmentGroupProps,
+  type SegmentGroupTheme,
+  type SegmentGroupUI,
   type SelectItem,
   type SelectProps,
   type SelectTheme,

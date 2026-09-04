@@ -25,6 +25,7 @@ export { PinInput, type PinInputProps } from "./components/PinInput";
 export { Popover, type PopoverProps } from "./components/Popover";
 export { Progress, type ProgressProps } from "./components/Progress";
 export { RadioGroup, type RadioGroupProps } from "./components/RadioGroup";
+export { SegmentGroup, type SegmentGroupProps } from "./components/SegmentGroup";
 export { Select, type SelectProps } from "./components/Select";
 export { RatingGroup, type RatingGroupProps } from "./components/RatingGroup";
 export { Sidebar, type SidebarProps } from "./components/Sidebar";
@@ -122,6 +123,9 @@ export {
   type RatingFill,
   type RatingGroupTheme,
   type RatingGroupUI,
+  type SegmentGroupItem,
+  type SegmentGroupTheme,
+  type SegmentGroupUI,
   type SelectItem,
   type SelectTheme,
   type SelectUI,

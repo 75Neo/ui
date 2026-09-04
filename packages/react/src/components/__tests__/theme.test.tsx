@@ -27,6 +27,7 @@ import {
   progress,
   radioGroup,
   ratingGroup as ratingGroupRecipe,
+  segmentGroup as segmentGroupRecipe,
   slider,
   switch as switchRecipe,
   tabs,
@@ -54,6 +55,7 @@ import { PinInput } from "../PinInput";
 import { Popover } from "../Popover";
 import { Progress } from "../Progress";
 import { RadioGroup } from "../RadioGroup";
+import { SegmentGroup } from "../SegmentGroup";
 import { Select } from "../Select";
 import { RatingGroup } from "../RatingGroup";
 import { Sidebar } from "../Sidebar";
@@ -557,6 +559,45 @@ describe("RatingGroup", () => {
     );
 
     expect(states).toEqual(["full", "full", "full", "half", "empty"]);
+  });
+});
+
+/**
+ * The pill is placed from what Ark measures, which a test cannot exercise without
+ * layout, so what is worth testing is the part this adapter owns: one option per item,
+ * the chosen one marked, and a disabled option that stays out of the running.
+ */
+describe("SegmentGroup", () => {
+  const views = [
+    { value: "day", label: "Day" },
+    { value: "week", label: "Week" },
+    { value: "month", label: "Month", disabled: true },
+  ];
+
+  it("renders every slot the recipe declares", async () => {
+    const container = await mount(<SegmentGroup items={views} defaultValue="week" />);
+
+    for (const name of Object.keys(segmentGroupRecipe.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("draws an option per item and marks the chosen one", async () => {
+    const container = await mount(<SegmentGroup items={views} defaultValue="week" />);
+    const options = [...container.querySelectorAll<HTMLElement>("[data-slot='item']")];
+
+    expect(options).toHaveLength(3);
+    const checked = options.filter((option) => option.dataset.state === "checked");
+    expect(checked).toHaveLength(1);
+    expect(checked[0]!.textContent).toBe("Week");
+  });
+
+  it("keeps a disabled option out of the running", async () => {
+    const container = await mount(<SegmentGroup items={views} defaultValue="day" />);
+    const options = [...container.querySelectorAll<HTMLElement>("[data-slot='item']")];
+
+    expect(options[2]!.dataset.disabled).toBeDefined();
+    expect(options[0]!.dataset.disabled).toBeUndefined();
   });
 });
 

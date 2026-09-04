@@ -35,6 +35,7 @@ export const previewed = new Set([
   "Popover",
   "Progress",
   "RadioGroup",
+  "SegmentGroup",
   "Select",
   "RatingGroup",
   "Sidebar",

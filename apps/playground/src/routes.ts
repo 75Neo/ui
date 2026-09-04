@@ -177,6 +177,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "ratingGroup",
   },
   {
+    href: "/segment-group",
+    label: "SegmentGroup",
+    summary:
+      "A track of options with a pill that slides to the chosen one, across three sizes, seven accents and both directions.",
+    key: "segmentGroup",
+  },
+  {
     href: "/select",
     label: "Select",
     summary:

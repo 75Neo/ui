@@ -1,0 +1,38 @@
+---
+import { segmentGroup as recipe, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import SegmentGroupPreview from "../previews/SegmentGroupPreview.tsx";
+import SegmentGroupPreviewVue from "../previews/SegmentGroupPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(recipe.slots);
+const variantKeys = [...recipe.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(recipe, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "segmentGroup" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="SegmentGroup"
+  description="One recipe in @75neo/themes, rendered by both adapters. The root is the track itself, which is what lets the pill be measured against it and slide to whichever option was chosen."
+  hasStage
+>
+  <Preview
+    title="Sizes, accents and both directions"
+    description="Three sizes, then every accent color, then both orientations, an option that cannot be chosen, and a whole track disabled. The last one is controlled and prints its own choice."
+    meta={meta}
+  >
+    <Fragment slot="react"><SegmentGroupPreview client:load /></Fragment>
+    <Fragment slot="vue"><SegmentGroupPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

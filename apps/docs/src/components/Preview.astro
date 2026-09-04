@@ -27,6 +27,7 @@ import { PinInputPreview } from "../previews/PinInputPreview";
 import { PopoverPreview } from "../previews/PopoverPreview";
 import { ProgressPreview } from "../previews/ProgressPreview";
 import { RadioGroupPreview } from "../previews/RadioGroupPreview";
+import { SegmentGroupPreview } from "../previews/SegmentGroupPreview";
 import { SelectPreview } from "../previews/SelectPreview";
 import { RatingGroupPreview } from "../previews/RatingGroupPreview";
 import { SidebarPreview } from "../previews/SidebarPreview";
@@ -63,6 +64,7 @@ import PinInputPreviewVue from "../previews/PinInputPreview.vue";
 import PopoverPreviewVue from "../previews/PopoverPreview.vue";
 import ProgressPreviewVue from "../previews/ProgressPreview.vue";
 import RadioGroupPreviewVue from "../previews/RadioGroupPreview.vue";
+import SegmentGroupPreviewVue from "../previews/SegmentGroupPreview.vue";
 import SelectPreviewVue from "../previews/SelectPreview.vue";
 import RatingGroupPreviewVue from "../previews/RatingGroupPreview.vue";
 import SidebarPreviewVue from "../previews/SidebarPreview.vue";
@@ -122,6 +124,7 @@ const vue = framework === "vue";
 {react && name === "Popover" && <PopoverPreview client:visible />}
 {react && name === "Progress" && <ProgressPreview client:visible />}
 {react && name === "RadioGroup" && <RadioGroupPreview client:visible />}
+{react && name === "SegmentGroup" && <SegmentGroupPreview client:visible />}
 {react && name === "Select" && <SelectPreview client:visible />}
 {react && name === "RatingGroup" && <RatingGroupPreview client:visible />}
 {react && name === "Sidebar" && <SidebarPreview client:visible />}
@@ -159,6 +162,7 @@ const vue = framework === "vue";
 {vue && name === "Popover" && <PopoverPreviewVue client:visible />}
 {vue && name === "Progress" && <ProgressPreviewVue client:visible />}
 {vue && name === "RadioGroup" && <RadioGroupPreviewVue client:visible />}
+{vue && name === "SegmentGroup" && <SegmentGroupPreviewVue client:visible />}
 {vue && name === "Select" && <SelectPreviewVue client:visible />}
 {vue && name === "RatingGroup" && <RatingGroupPreviewVue client:visible />}
 {vue && name === "Sidebar" && <SidebarPreviewVue client:visible />}
