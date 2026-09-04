@@ -37,6 +37,7 @@ export * from "./components/floating-panel";
 export * from "./components/footer";
 export * from "./components/header";
 export * from "./components/hover-card";
+export * from "./components/listbox";
 export * from "./components/main";
 export * from "./components/menu";
 export * from "./components/number-input";

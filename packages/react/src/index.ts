@@ -22,6 +22,7 @@ export { FloatingPanel, type FloatingPanelProps } from "./components/FloatingPan
 export { Footer, type FooterProps } from "./components/Footer";
 export { Header, type HeaderProps } from "./components/Header";
 export { HoverCard, type HoverCardProps } from "./components/HoverCard";
+export { Listbox, type ListboxProps } from "./components/Listbox";
 export { Main, type MainProps } from "./components/Main";
 export { Menu, type MenuProps } from "./components/Menu";
 export { NumberInput, type NumberInputProps } from "./components/NumberInput";
@@ -120,6 +121,10 @@ export {
   type HeaderUI,
   type HoverCardTheme,
   type HoverCardUI,
+  type ListboxItem,
+  type ListboxSelectionMode,
+  type ListboxTheme,
+  type ListboxUI,
   type MainTheme,
   type MainUI,
   type MenuItem,
