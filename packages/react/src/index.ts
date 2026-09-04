@@ -13,6 +13,7 @@ export { Container, type ContainerProps } from "./components/Container";
 export { DateInput, type DateInputProps } from "./components/DateInput";
 export { DatePicker, type DatePickerProps } from "./components/DatePicker";
 export { Dialog, type DialogProps } from "./components/Dialog";
+export { Drawer, type DrawerProps } from "./components/Drawer";
 export { DownloadTrigger, type DownloadTriggerProps } from "./components/DownloadTrigger";
 export { Error, type ErrorProps } from "./components/Error";
 export { FileUpload, type FileUploadProps } from "./components/FileUpload";
@@ -90,6 +91,8 @@ export {
   type DatePickerUI,
   type DialogTheme,
   type DialogUI,
+  type DrawerTheme,
+  type DrawerUI,
   type DownloadData,
   type DownloadDataInput,
   type DownloadTriggerTheme,
