@@ -274,4 +274,11 @@ export const previews: readonly PreviewRoute[] = [
       "A button that saves data to a file, in four variants across seven colors and three sizes.",
     key: "downloadTrigger",
   },
+  {
+    href: "/drawer",
+    label: "Drawer",
+    summary:
+      "A panel sliding in from an edge of the viewport, across four placements and three sizes, with a header, a body and a footer.",
+    key: "drawer",
+  },
 ];

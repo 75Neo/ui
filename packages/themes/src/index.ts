@@ -28,6 +28,7 @@ export * from "./components/container";
 export * from "./components/date-input";
 export * from "./components/date-picker";
 export * from "./components/dialog";
+export * from "./components/drawer";
 export * from "./components/download-trigger";
 export * from "./components/error";
 export * from "./components/file-upload";
