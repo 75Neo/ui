@@ -30,6 +30,7 @@ export * from "./components/date-picker";
 export * from "./components/dialog";
 export * from "./components/drawer";
 export * from "./components/download-trigger";
+export * from "./components/editable";
 export * from "./components/error";
 export * from "./components/file-upload";
 export * from "./components/footer";

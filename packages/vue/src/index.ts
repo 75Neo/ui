@@ -15,6 +15,7 @@ export { default as DatePicker } from "./components/DatePicker.vue";
 export { default as Dialog } from "./components/Dialog.vue";
 export { default as Drawer } from "./components/Drawer.vue";
 export { default as DownloadTrigger } from "./components/DownloadTrigger.vue";
+export { default as Editable } from "./components/Editable.vue";
 export { default as Error } from "./components/Error.vue";
 export { default as FileUpload } from "./components/FileUpload.vue";
 export { default as Footer } from "./components/Footer.vue";
@@ -114,6 +115,11 @@ export {
   type DownloadTriggerProps,
   type DownloadTriggerTheme,
   type DownloadTriggerUI,
+  type EditableActivationMode,
+  type EditableProps,
+  type EditableSubmitMode,
+  type EditableTheme,
+  type EditableUI,
   type ErrorProps,
   type ErrorTheme,
   type ErrorUI,

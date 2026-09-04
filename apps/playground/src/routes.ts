@@ -100,6 +100,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "datePicker",
   },
   {
+    href: "/editable",
+    label: "Editable",
+    summary:
+      "A sentence that becomes a field when it is touched, across three sizes and seven accents, with commit and revert buttons.",
+    key: "editable",
+  },
+  {
     href: "/collapsible",
     label: "Collapsible",
     summary:
