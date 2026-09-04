@@ -17,6 +17,7 @@ export { Error, type ErrorProps } from "./components/Error";
 export { Footer, type FooterProps } from "./components/Footer";
 export { Header, type HeaderProps } from "./components/Header";
 export { Main, type MainProps } from "./components/Main";
+export { NumberInput, type NumberInputProps } from "./components/NumberInput";
 export { Popover, type PopoverProps } from "./components/Popover";
 export { Progress, type ProgressProps } from "./components/Progress";
 export { RadioGroup, type RadioGroupProps } from "./components/RadioGroup";
@@ -89,6 +90,8 @@ export {
   type HeaderUI,
   type MainTheme,
   type MainUI,
+  type NumberInputTheme,
+  type NumberInputUI,
   type Placement,
   type PopoverTheme,
   type PopoverUI,

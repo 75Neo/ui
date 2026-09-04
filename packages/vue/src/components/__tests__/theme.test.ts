@@ -14,6 +14,7 @@ import {
   main as mainRecipe,
   sidebar,
   combobox,
+  numberInput,
   select,
   dateInput,
   datePicker,
@@ -39,6 +40,7 @@ import Combobox from "../Combobox.vue";
 import DateInput from "../DateInput.vue";
 import DatePicker from "../DatePicker.vue";
 import Dialog from "../Dialog.vue";
+import NumberInput from "../NumberInput.vue";
 import Popover from "../Popover.vue";
 import Progress from "../Progress.vue";
 import RadioGroup from "../RadioGroup.vue";
@@ -253,6 +255,53 @@ describe("Combobox", () => {
  * The popup is teleported, so its parts are found on the document rather than in the
  * container.
  */
+/**
+ * Both arrangements come from the same three elements, so what is worth testing is that
+ * the recipe moves them rather than the adapter swapping markup, and that the range
+ * disables the button that would leave it.
+ */
+describe("NumberInput", () => {
+  it("renders every slot the recipe declares", () => {
+    const { container } = render(NumberInput, {
+      props: { label: "Guests", defaultValue: "2" },
+    });
+
+    for (const name of Object.keys(numberInput.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("renders the same elements in both arrangements", () => {
+    const rowwise = render(NumberInput, { props: { defaultValue: "2" } });
+    const columnwise = render(NumberInput, {
+      props: { orientation: "vertical", defaultValue: "2" },
+    });
+
+    expect(slot(rowwise.container, "incrementTrigger")!.className).toContain("order-3");
+    expect(slot(columnwise.container, "incrementTrigger")!.className).toContain("row-start-1");
+    expect(slot(columnwise.container, "incrementTrigger")!.className).not.toContain("order-3");
+  });
+
+  it("disables the button that would leave the range", () => {
+    const { container } = render(NumberInput, {
+      props: { min: 1, max: 3, defaultValue: "3" },
+    });
+
+    expect((slot(container, "incrementTrigger") as HTMLButtonElement).disabled).toBe(true);
+    expect((slot(container, "decrementTrigger") as HTMLButtonElement).disabled).toBe(false);
+  });
+
+  it("steps the value by the step it is given", async () => {
+    const { container } = render(NumberInput, { props: { step: 5, defaultValue: "10" } });
+
+    // A press, not a click: Ark steps on pointer down so that holding the button can
+    // keep spinning, and a synthesized click never gets there.
+    await userEvent.click(slot(container, "incrementTrigger")!);
+
+    await expect.poll(() => (slot(container, "input") as HTMLInputElement).value).toBe("15");
+  });
+});
+
 describe("Select", () => {
   it("renders every slot the recipe declares", () => {
     render(Select, { props: { items: options, label: "Framework", placeholder: "Pick one" } });

@@ -19,6 +19,7 @@ import { ErrorPreview } from "../previews/ErrorPreview";
 import { FooterPreview } from "../previews/FooterPreview";
 import { HeaderPreview } from "../previews/HeaderPreview";
 import { MainPreview } from "../previews/MainPreview";
+import { NumberInputPreview } from "../previews/NumberInputPreview";
 import { PopoverPreview } from "../previews/PopoverPreview";
 import { ProgressPreview } from "../previews/ProgressPreview";
 import { RadioGroupPreview } from "../previews/RadioGroupPreview";
@@ -48,6 +49,7 @@ import ErrorPreviewVue from "../previews/ErrorPreview.vue";
 import FooterPreviewVue from "../previews/FooterPreview.vue";
 import HeaderPreviewVue from "../previews/HeaderPreview.vue";
 import MainPreviewVue from "../previews/MainPreview.vue";
+import NumberInputPreviewVue from "../previews/NumberInputPreview.vue";
 import PopoverPreviewVue from "../previews/PopoverPreview.vue";
 import ProgressPreviewVue from "../previews/ProgressPreview.vue";
 import RadioGroupPreviewVue from "../previews/RadioGroupPreview.vue";
@@ -100,6 +102,7 @@ const vue = framework === "vue";
 {react && name === "Footer" && <FooterPreview client:visible />}
 {react && name === "Header" && <HeaderPreview client:visible />}
 {react && name === "Main" && <MainPreview client:visible />}
+{react && name === "NumberInput" && <NumberInputPreview client:visible />}
 {react && name === "Popover" && <PopoverPreview client:visible />}
 {react && name === "Progress" && <ProgressPreview client:visible />}
 {react && name === "RadioGroup" && <RadioGroupPreview client:visible />}
@@ -130,6 +133,7 @@ const vue = framework === "vue";
 {vue && name === "Footer" && <FooterPreviewVue client:visible />}
 {vue && name === "Header" && <HeaderPreviewVue client:visible />}
 {vue && name === "Main" && <MainPreviewVue client:visible />}
+{vue && name === "NumberInput" && <NumberInputPreviewVue client:visible />}
 {vue && name === "Popover" && <PopoverPreviewVue client:visible />}
 {vue && name === "Progress" && <ProgressPreviewVue client:visible />}
 {vue && name === "RadioGroup" && <RadioGroupPreviewVue client:visible />}

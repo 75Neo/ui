@@ -135,6 +135,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "main",
   },
   {
+    href: "/number-input",
+    label: "NumberInput",
+    summary:
+      "A field holding one number and the two buttons that step it, in a row or a column, across three sizes and seven accents.",
+    key: "numberInput",
+  },
+  {
     href: "/select",
     label: "Select",
     summary:

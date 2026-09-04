@@ -27,6 +27,7 @@ export const previewed = new Set([
   "Footer",
   "Header",
   "Main",
+  "NumberInput",
   "Popover",
   "Progress",
   "RadioGroup",
