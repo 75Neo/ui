@@ -309,6 +309,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "swap",
   },
   {
+    href: "/timer",
+    label: "Timer",
+    summary:
+      "Digits per unit of time with labels, separators and the buttons driving the clock, across three sizes.",
+    key: "timer",
+  },
+  {
     href: "/download-trigger",
     label: "DownloadTrigger",
     summary:

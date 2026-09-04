@@ -63,4 +63,5 @@ export * from "./components/switch";
 export * from "./components/table-of-contents";
 export * from "./components/tabs";
 export * from "./components/tags-input";
+export * from "./components/timer";
 export * from "./components/tooltip";

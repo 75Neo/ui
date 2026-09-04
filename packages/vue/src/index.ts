@@ -48,6 +48,7 @@ export { default as Switch } from "./components/Switch.vue";
 export { default as TableOfContents } from "./components/TableOfContents.vue";
 export { default as Tabs } from "./components/Tabs.vue";
 export { default as TagsInput } from "./components/TagsInput.vue";
+export { default as Timer } from "./components/Timer.vue";
 export { default as Tooltip } from "./components/Tooltip.vue";
 export { default as Theme } from "./components/Theme.vue";
 export { useResolvedTheme } from "./composables/theme";
@@ -254,6 +255,10 @@ export {
   type TagsInputProps,
   type TagsInputTheme,
   type TagsInputUI,
+  type TimerProps,
+  type TimerTheme,
+  type TimerUI,
+  type TimerUnit,
   type TooltipProps,
   type TooltipTheme,
   type TooltipUI,
