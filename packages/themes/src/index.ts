@@ -51,6 +51,7 @@ export * from "./components/progress";
 export * from "./components/qr-code";
 export * from "./components/radio-group";
 export * from "./components/rating-group";
+export * from "./components/scroll-area";
 export * from "./components/segment-group";
 export * from "./components/select";
 export * from "./components/sidebar";
