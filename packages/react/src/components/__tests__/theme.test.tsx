@@ -15,6 +15,7 @@ import {
   sidebar,
   combobox,
   numberInput,
+  pinInput,
   select,
   dateInput,
   datePicker,
@@ -41,6 +42,7 @@ import { DateInput } from "../DateInput";
 import { DatePicker } from "../DatePicker";
 import { Dialog } from "../Dialog";
 import { NumberInput } from "../NumberInput";
+import { PinInput } from "../PinInput";
 import { Popover } from "../Popover";
 import { Progress } from "../Progress";
 import { RadioGroup } from "../RadioGroup";
@@ -295,6 +297,53 @@ describe("NumberInput", () => {
     await userEvent.click(slot(container, "incrementTrigger")!);
 
     await expect.poll(() => (slot(container, "input") as HTMLInputElement).value).toBe("15");
+  });
+});
+
+/**
+ * The row is drawn by the adapter rather than by Ark, so what is worth testing is that
+ * `length` decides how many boxes there are and that typing walks the caret along them
+ * — the behaviour a single input would not have.
+ */
+describe("PinInput", () => {
+  it("renders every slot the recipe declares", async () => {
+    const container = await mount(<PinInput label="Code" length={4} />);
+
+    for (const name of Object.keys(pinInput.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("draws a box per character asked for", async () => {
+    const four = await mount(<PinInput length={4} />);
+    expect(four.querySelectorAll("[data-slot='input']")).toHaveLength(4);
+
+    const fallback = await mount(<PinInput />);
+    expect(fallback.querySelectorAll("[data-slot='input']")).toHaveLength(6);
+  });
+
+  it("moves the caret to the next box as characters are typed", async () => {
+    const container = await mount(<PinInput length={4} />);
+    const boxes = [...container.querySelectorAll<HTMLInputElement>("[data-slot='input']")];
+
+    boxes[0].focus();
+    await userEvent.keyboard("12");
+
+    expect(boxes[0].value).toBe("1");
+    expect(boxes[1].value).toBe("2");
+    await expect.poll(() => document.activeElement).toBe(boxes[2]);
+  });
+
+  it("keeps the code contiguous when a character is removed", async () => {
+    const container = await mount(<PinInput length={4} defaultValue={["1", "2", "3", "4"]} />);
+    const boxes = [...container.querySelectorAll<HTMLInputElement>("[data-slot='input']")];
+
+    boxes[1].focus();
+    await userEvent.keyboard("{Backspace}");
+
+    // The characters after the deleted one move back rather than leaving a hole, which
+    // is what makes the row read as one code rather than four independent fields.
+    await expect.poll(() => boxes.map((box) => box.value).join("")).toBe("134");
   });
 });
 

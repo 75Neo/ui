@@ -18,6 +18,7 @@ export { default as Footer } from "./components/Footer.vue";
 export { default as Header } from "./components/Header.vue";
 export { default as Main } from "./components/Main.vue";
 export { default as NumberInput } from "./components/NumberInput.vue";
+export { default as PinInput } from "./components/PinInput.vue";
 export { default as Popover } from "./components/Popover.vue";
 export { default as Progress } from "./components/Progress.vue";
 export { default as RadioGroup } from "./components/RadioGroup.vue";
@@ -112,6 +113,10 @@ export {
   type NumberInputProps,
   type NumberInputTheme,
   type NumberInputUI,
+  type PinInputProps,
+  type PinInputTheme,
+  type PinInputType,
+  type PinInputUI,
   type Placement,
   type PopoverProps,
   type PopoverTheme,

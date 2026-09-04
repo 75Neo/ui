@@ -1,0 +1,38 @@
+---
+import { pinInput as recipe, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import PinInputPreview from "../previews/PinInputPreview.tsx";
+import PinInputPreviewVue from "../previews/PinInputPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(recipe.slots);
+const variantKeys = [...recipe.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(recipe, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "pinInput" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="PinInput"
+  description="One recipe in @75neo/themes, rendered by both adapters. Each box is its own input, so the ring is drawn on the box that has the caret rather than around the row."
+  hasStage
+>
+  <Preview
+    title="Sizes, accents and what a box will take"
+    description="Three sizes, then every accent color, then six digits, letters, a masked code, blank boxes, invalid and disabled. The last one is controlled and prints one entry per box."
+    meta={meta}
+  >
+    <Fragment slot="react"><PinInputPreview client:load /></Fragment>
+    <Fragment slot="vue"><PinInputPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

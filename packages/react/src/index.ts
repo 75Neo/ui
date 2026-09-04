@@ -18,6 +18,7 @@ export { Footer, type FooterProps } from "./components/Footer";
 export { Header, type HeaderProps } from "./components/Header";
 export { Main, type MainProps } from "./components/Main";
 export { NumberInput, type NumberInputProps } from "./components/NumberInput";
+export { PinInput, type PinInputProps } from "./components/PinInput";
 export { Popover, type PopoverProps } from "./components/Popover";
 export { Progress, type ProgressProps } from "./components/Progress";
 export { RadioGroup, type RadioGroupProps } from "./components/RadioGroup";
@@ -92,6 +93,9 @@ export {
   type MainUI,
   type NumberInputTheme,
   type NumberInputUI,
+  type PinInputTheme,
+  type PinInputType,
+  type PinInputUI,
   type Placement,
   type PopoverTheme,
   type PopoverUI,

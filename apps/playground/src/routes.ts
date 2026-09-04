@@ -142,6 +142,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "numberInput",
   },
   {
+    href: "/pin-input",
+    label: "PinInput",
+    summary:
+      "A row of one-character boxes holding a short code, across three sizes and seven accents, in digits or letters.",
+    key: "pinInput",
+  },
+  {
     href: "/select",
     label: "Select",
     summary:

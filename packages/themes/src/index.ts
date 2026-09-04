@@ -33,6 +33,7 @@ export * from "./components/footer";
 export * from "./components/header";
 export * from "./components/main";
 export * from "./components/number-input";
+export * from "./components/pin-input";
 export * from "./components/popover";
 export * from "./components/progress";
 export * from "./components/radio-group";
