@@ -41,6 +41,7 @@ export * from "./components/listbox";
 export * from "./components/main";
 export * from "./components/marquee";
 export * from "./components/menu";
+export * from "./components/navigation-menu";
 export * from "./components/number-input";
 export * from "./components/pagination";
 export * from "./components/pin-input";

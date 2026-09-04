@@ -163,6 +163,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "menu",
   },
   {
+    href: "/navigation-menu",
+    label: "NavigationMenu",
+    summary:
+      "A row of triggers each opening a panel of links, across three sizes and seven accents, running across the page or down it.",
+    key: "navigationMenu",
+  },
+  {
     href: "/number-input",
     label: "NumberInput",
     summary:

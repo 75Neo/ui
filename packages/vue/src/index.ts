@@ -26,6 +26,7 @@ export { default as Listbox } from "./components/Listbox.vue";
 export { default as Main } from "./components/Main.vue";
 export { default as Marquee } from "./components/Marquee.vue";
 export { default as Menu } from "./components/Menu.vue";
+export { default as NavigationMenu } from "./components/NavigationMenu.vue";
 export { default as NumberInput } from "./components/NumberInput.vue";
 export { default as Pagination } from "./components/Pagination.vue";
 export { default as PinInput } from "./components/PinInput.vue";
@@ -164,6 +165,11 @@ export {
   type MenuSection,
   type MenuTheme,
   type MenuUI,
+  type NavigationMenuItem,
+  type NavigationMenuLink,
+  type NavigationMenuProps,
+  type NavigationMenuTheme,
+  type NavigationMenuUI,
   type NumberInputProps,
   type NumberInputTheme,
   type NumberInputUI,
