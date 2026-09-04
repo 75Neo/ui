@@ -142,6 +142,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "header",
   },
   {
+    href: "/listbox",
+    label: "Listbox",
+    summary:
+      "A list that stays on the page holding a selection, across three sizes and seven accents, single, multiple or extended.",
+    key: "listbox",
+  },
+  {
     href: "/main",
     label: "Main",
     summary:
