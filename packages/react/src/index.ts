@@ -14,6 +14,7 @@ export { DateInput, type DateInputProps } from "./components/DateInput";
 export { DatePicker, type DatePickerProps } from "./components/DatePicker";
 export { Dialog, type DialogProps } from "./components/Dialog";
 export { Error, type ErrorProps } from "./components/Error";
+export { FileUpload, type FileUploadProps } from "./components/FileUpload";
 export { Footer, type FooterProps } from "./components/Footer";
 export { Header, type HeaderProps } from "./components/Header";
 export { Main, type MainProps } from "./components/Main";
@@ -88,6 +89,9 @@ export {
   type DialogUI,
   type ErrorTheme,
   type ErrorUI,
+  type FileLike,
+  type FileUploadTheme,
+  type FileUploadUI,
   type FooterTheme,
   type FooterUI,
   type HeaderTheme,

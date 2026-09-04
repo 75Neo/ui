@@ -29,6 +29,7 @@ export * from "./components/date-input";
 export * from "./components/date-picker";
 export * from "./components/dialog";
 export * from "./components/error";
+export * from "./components/file-upload";
 export * from "./components/footer";
 export * from "./components/header";
 export * from "./components/main";

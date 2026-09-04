@@ -114,6 +114,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "error",
   },
   {
+    href: "/file-upload",
+    label: "FileUpload",
+    summary:
+      "The area files are dropped on and the list of what landed, across three sizes and seven accents, with thumbnails.",
+    key: "fileUpload",
+  },
+  {
     href: "/footer",
     label: "Footer",
     summary:

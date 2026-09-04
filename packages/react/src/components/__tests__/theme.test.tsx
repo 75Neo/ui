@@ -9,6 +9,7 @@ import {
   angleSlider,
   container as containerRecipe,
   error as errorRecipe,
+  fileUpload as fileUploadRecipe,
   footer as footerRecipe,
   header as headerRecipe,
   main as mainRecipe,
@@ -37,6 +38,7 @@ import { App } from "../App";
 import { Button } from "../Button";
 import { Container } from "../Container";
 import { Error as ErrorPage } from "../Error";
+import { FileUpload } from "../FileUpload";
 import { Footer } from "../Footer";
 import { Header } from "../Header";
 import { Main } from "../Main";
@@ -271,6 +273,47 @@ describe("Combobox", () => {
  * the same `base` slot the top one does. The panel is portalled, so its parts are found
  * on the document rather than in the container.
  */
+/**
+ * Files cannot be dropped from a test, so what is worth testing is the part this adapter
+ * decides: which rows get a thumbnail, and that the list can be taken away. The files are
+ * handed in directly, which is what a controlled caller does anyway.
+ */
+describe("FileUpload", () => {
+  const picture = new File(["x"], "shot.png", { type: "image/png" });
+  const document = new File(["x"], "notes.pdf", { type: "application/pdf" });
+
+  it("renders every slot the recipe declares", async () => {
+    const container = await mount(
+      <FileUpload label="Attachments" description="Up to 5 MB" acceptedFiles={[picture]} />,
+    );
+
+    for (const name of Object.keys(fileUploadRecipe.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("draws a thumbnail for an image and not for anything else", async () => {
+    const container = await mount(<FileUpload maxFiles={4} acceptedFiles={[picture, document]} />);
+
+    expect(container.querySelectorAll("[data-slot='item']")).toHaveLength(2);
+    expect(container.querySelectorAll("[data-slot='itemPreview']")).toHaveLength(1);
+  });
+
+  it("leaves the thumbnails out when they are turned off", async () => {
+    const container = await mount(<FileUpload preview={false} acceptedFiles={[picture]} />);
+
+    expect(slot(container, "item")).not.toBeNull();
+    expect(slot(container, "itemPreview")).toBeNull();
+  });
+
+  it("leaves the list out when it is turned off", async () => {
+    const container = await mount(<FileUpload list={false} acceptedFiles={[picture]} />);
+
+    expect(slot(container, "dropzone")).not.toBeNull();
+    expect(slot(container, "list")).toBeNull();
+  });
+});
+
 describe("Menu", () => {
   const rows = [
     { type: "label" as const, label: "File" },

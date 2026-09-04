@@ -9,6 +9,7 @@ import {
   angleSlider,
   container as containerRecipe,
   error as errorRecipe,
+  fileUpload as fileUploadRecipe,
   footer as footerRecipe,
   header as headerRecipe,
   main as mainRecipe,
@@ -37,6 +38,7 @@ import App from "../App.vue";
 import Button from "../Button.vue";
 import Container from "../Container.vue";
 import ErrorPage from "../Error.vue";
+import FileUpload from "../FileUpload.vue";
 import Footer from "../Footer.vue";
 import Header from "../Header.vue";
 import Main from "../Main.vue";
@@ -269,6 +271,55 @@ describe("Combobox", () => {
  * the same `base` slot the top one does. The panel is teleported, so its parts are found
  * on the document rather than in the container.
  */
+/**
+ * Files cannot be dropped from a test, so what is worth testing is the part this adapter
+ * decides: which rows get a thumbnail, and that the list can be taken away. The files are
+ * handed in directly, which is what a controlled caller does anyway.
+ */
+describe("FileUpload", () => {
+  const picture = new File(["x"], "shot.png", { type: "image/png" });
+  const document = new File(["x"], "notes.pdf", { type: "application/pdf" });
+
+  // A bound `v-model` with no listener keeps a local value, so the files never reach
+  // Ark. The empty listener is what makes the binding controlled.
+  const held = (files: File[]) => ({ modelValue: files, "onUpdate:modelValue": () => {} });
+
+  it("renders every slot the recipe declares", async () => {
+    const { container } = render(FileUpload, {
+      props: { label: "Attachments", description: "Up to 5 MB", ...held([picture]) },
+    });
+
+    for (const name of Object.keys(fileUploadRecipe.slots)) {
+      await expect.poll(() => slot(container, name), { timeout: 2000 }).not.toBeNull();
+    }
+  });
+
+  it("draws a thumbnail for an image and not for anything else", async () => {
+    const { container } = render(FileUpload, {
+      props: { maxFiles: 4, ...held([picture, document]) },
+    });
+
+    await expect.poll(() => container.querySelectorAll("[data-slot='item']").length).toBe(2);
+    expect(container.querySelectorAll("[data-slot='itemPreview']")).toHaveLength(1);
+  });
+
+  it("leaves the thumbnails out when they are turned off", async () => {
+    const { container } = render(FileUpload, {
+      props: { preview: false, ...held([picture]) },
+    });
+
+    await expect.poll(() => slot(container, "item")).not.toBeNull();
+    expect(slot(container, "itemPreview")).toBeNull();
+  });
+
+  it("leaves the list out when it is turned off", () => {
+    const { container } = render(FileUpload, { props: { list: false, ...held([picture]) } });
+
+    expect(slot(container, "dropzone")).not.toBeNull();
+    expect(slot(container, "list")).toBeNull();
+  });
+});
+
 describe("Menu", () => {
   const rows = [
     { type: "label" as const, label: "File" },

@@ -14,6 +14,7 @@ export { default as DateInput } from "./components/DateInput.vue";
 export { default as DatePicker } from "./components/DatePicker.vue";
 export { default as Dialog } from "./components/Dialog.vue";
 export { default as Error } from "./components/Error.vue";
+export { default as FileUpload } from "./components/FileUpload.vue";
 export { default as Footer } from "./components/Footer.vue";
 export { default as Header } from "./components/Header.vue";
 export { default as Main } from "./components/Main.vue";
@@ -104,6 +105,10 @@ export {
   type ErrorProps,
   type ErrorTheme,
   type ErrorUI,
+  type FileLike,
+  type FileUploadProps,
+  type FileUploadTheme,
+  type FileUploadUI,
   type FooterProps,
   type FooterTheme,
   type FooterUI,

@@ -187,9 +187,9 @@
  * strengths `src/colors.ts` documents. Adding an opacity step to a recipe means adding
  * it here too, and `pnpm dev:play` shows an unlisted one as an unstyled component.
  */
-@source inline("{hover:,active:,disabled:,aria-disabled:,data-current:,data-focus:,data-highlighted:,data-in-range:,data-selected:,before:,}bg-{primary,secondary,success,info,warning,error}{,/10,/15,/75}");
+@source inline("{hover:,active:,disabled:,aria-disabled:,data-current:,data-dragging:,data-focus:,data-highlighted:,data-in-range:,data-selected:,before:,}bg-{primary,secondary,success,info,warning,error}{,/10,/15,/75}");
 @source inline("{hover:,active:,data-active:,data-focus:,data-highlighted:,data-in-range:,data-selected:,data-today:,disabled:,aria-disabled:,}text-{primary,secondary,success,info,warning,error}{,/75}");
-@source inline("{focus-visible:,focus-within:,}ring-{primary,secondary,success,info,warning,error}{,/25,/50}");
+@source inline("{data-dragging:,focus-visible:,focus-within:,}ring-{primary,secondary,success,info,warning,error}{,/25,/50}");
 @source inline("{before:,}outline-{primary,secondary,success,info,warning,error}/25");
 @source inline("{stroke,fill}-{primary,secondary,success,info,warning,error}");
 @source inline("data-[state={checked,indeterminate}]:{bg,ring,text}-{primary,secondary,success,info,warning,error}");

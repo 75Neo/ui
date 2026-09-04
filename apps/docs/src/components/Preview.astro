@@ -16,6 +16,7 @@ import { DateInputPreview } from "../previews/DateInputPreview";
 import { DatePickerPreview } from "../previews/DatePickerPreview";
 import { DialogPreview } from "../previews/DialogPreview";
 import { ErrorPreview } from "../previews/ErrorPreview";
+import { FileUploadPreview } from "../previews/FileUploadPreview";
 import { FooterPreview } from "../previews/FooterPreview";
 import { HeaderPreview } from "../previews/HeaderPreview";
 import { MainPreview } from "../previews/MainPreview";
@@ -50,6 +51,7 @@ import DateInputPreviewVue from "../previews/DateInputPreview.vue";
 import DatePickerPreviewVue from "../previews/DatePickerPreview.vue";
 import DialogPreviewVue from "../previews/DialogPreview.vue";
 import ErrorPreviewVue from "../previews/ErrorPreview.vue";
+import FileUploadPreviewVue from "../previews/FileUploadPreview.vue";
 import FooterPreviewVue from "../previews/FooterPreview.vue";
 import HeaderPreviewVue from "../previews/HeaderPreview.vue";
 import MainPreviewVue from "../previews/MainPreview.vue";
@@ -107,6 +109,7 @@ const vue = framework === "vue";
 {react && name === "DatePicker" && <DatePickerPreview client:visible />}
 {react && name === "Dialog" && <DialogPreview client:visible />}
 {react && name === "Error" && <ErrorPreview client:visible />}
+{react && name === "FileUpload" && <FileUploadPreview client:visible />}
 {react && name === "Footer" && <FooterPreview client:visible />}
 {react && name === "Header" && <HeaderPreview client:visible />}
 {react && name === "Main" && <MainPreview client:visible />}
@@ -142,6 +145,7 @@ const vue = framework === "vue";
 {vue && name === "DatePicker" && <DatePickerPreviewVue client:visible />}
 {vue && name === "Dialog" && <DialogPreviewVue client:visible />}
 {vue && name === "Error" && <ErrorPreviewVue client:visible />}
+{vue && name === "FileUpload" && <FileUploadPreviewVue client:visible />}
 {vue && name === "Footer" && <FooterPreviewVue client:visible />}
 {vue && name === "Header" && <HeaderPreviewVue client:visible />}
 {vue && name === "Main" && <MainPreviewVue client:visible />}

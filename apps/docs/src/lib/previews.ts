@@ -24,6 +24,7 @@ export const previewed = new Set([
   "DatePicker",
   "Dialog",
   "Error",
+  "FileUpload",
   "Footer",
   "Header",
   "Main",
