@@ -184,6 +184,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "pagination",
   },
   {
+    href: "/password-input",
+    label: "PasswordInput",
+    summary:
+      "A field holding a secret and the button that shows it, across three sizes and seven accents, with an eye per state.",
+    key: "passwordInput",
+  },
+  {
     href: "/pin-input",
     label: "PinInput",
     summary:

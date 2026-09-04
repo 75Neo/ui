@@ -29,6 +29,7 @@ export { Menu, type MenuProps } from "./components/Menu";
 export { NavigationMenu, type NavigationMenuProps } from "./components/NavigationMenu";
 export { NumberInput, type NumberInputProps } from "./components/NumberInput";
 export { Pagination, type PaginationProps } from "./components/Pagination";
+export { PasswordInput, type PasswordInputProps } from "./components/PasswordInput";
 export { PinInput, type PinInputProps } from "./components/PinInput";
 export { Popover, type PopoverProps } from "./components/Popover";
 export { Progress, type ProgressProps } from "./components/Progress";
@@ -145,6 +146,9 @@ export {
   type NumberInputUI,
   type PaginationTheme,
   type PaginationUI,
+  type PasswordInputAutoComplete,
+  type PasswordInputTheme,
+  type PasswordInputUI,
   type PinInputTheme,
   type PinInputType,
   type PinInputUI,
