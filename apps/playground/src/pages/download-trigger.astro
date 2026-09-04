@@ -1,0 +1,38 @@
+---
+import { downloadTrigger, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import DownloadTriggerPreview from "../previews/DownloadTriggerPreview.tsx";
+import DownloadTriggerPreviewVue from "../previews/DownloadTriggerPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(downloadTrigger.slots);
+const variantKeys = [...downloadTrigger.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(downloadTrigger, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "downloadTrigger" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="DownloadTrigger"
+  description="One recipe in @75neo/themes, rendered by both adapters. The Button's action dressed for one job: handing the caller a file, with the data, the file name and the MIME type as props."
+  hasStage
+>
+  <Preview
+    title="Sizes, variants and colors"
+    description="Three sizes, then four variants with a leading icon, then the color variant in soft. Every button saves the same text file."
+    meta={meta}
+  >
+    <Fragment slot="react"><DownloadTriggerPreview client:load /></Fragment>
+    <Fragment slot="vue"><DownloadTriggerPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

@@ -267,4 +267,11 @@ export const previews: readonly PreviewRoute[] = [
       "A track and a thumb per value, across five thicknesses and seven colors, with marks and a two-thumb range.",
     key: "slider",
   },
+  {
+    href: "/download-trigger",
+    label: "DownloadTrigger",
+    summary:
+      "A button that saves data to a file, in four variants across seven colors and three sizes.",
+    key: "downloadTrigger",
+  },
 ];
