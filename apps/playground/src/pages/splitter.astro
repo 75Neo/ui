@@ -1,0 +1,38 @@
+---
+import { splitter, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import SplitterPreview from "../previews/SplitterPreview.tsx";
+import SplitterPreviewVue from "../previews/SplitterPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(splitter.slots);
+const variantKeys = [...splitter.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(splitter, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "splitter" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") || "none" },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="Splitter"
+  description="Resizable panels divided by draggable handles, in horizontal or vertical orientation, wrapping Ark UI."
+  hasStage
+>
+  <Preview
+    title="Horizontal and vertical layouts"
+    description="Drag the handles between panels to resize them."
+    meta={meta}
+  >
+    <Fragment slot="react"><SplitterPreview client:load /></Fragment>
+    <Fragment slot="vue"><SplitterPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

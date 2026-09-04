@@ -344,4 +344,11 @@ export const previews: readonly PreviewRoute[] = [
       "A scrollable box whose scrollbars are the theme's rather than the browser's, across three thicknesses and both axes.",
     key: "scrollArea",
   },
+  {
+    href: "/splitter",
+    label: "Splitter",
+    summary:
+      "Panels divided by handles the caller drags, running across the page or down it, with sizes held between bounds.",
+    key: "splitter",
+  },
 ];
