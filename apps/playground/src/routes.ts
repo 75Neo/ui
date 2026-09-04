@@ -163,6 +163,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "sidebar",
   },
   {
+    href: "/tags-input",
+    label: "TagsInput",
+    summary:
+      "A field whose answers stay in it as chips, across three sizes and seven accents, with a limit and a rule about what counts.",
+    key: "tagsInput",
+  },
+  {
     href: "/table-of-contents",
     label: "TableOfContents",
     summary:

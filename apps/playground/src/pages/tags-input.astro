@@ -1,0 +1,38 @@
+---
+import { tagsInput as recipe, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import TagsInputPreview from "../previews/TagsInputPreview.tsx";
+import TagsInputPreviewVue from "../previews/TagsInputPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(recipe.slots);
+const variantKeys = [...recipe.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(recipe, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "tagsInput" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="TagsInput"
+  description="One recipe in @75neo/themes, rendered by both adapters. The control wraps rather than scrolls, so a long list of tags makes the field taller instead of hiding the ones that came first."
+  hasStage
+>
+  <Preview
+    title="Sizes, accents, limits and what counts as a tag"
+    description="Three sizes, then every accent color, then a limit, a limit that only marks the field invalid, duplicates, pasting, tags that cannot be rewritten, a rule about what may become one, read only and disabled. The last one is controlled and prints its own tags."
+    meta={meta}
+  >
+    <Fragment slot="react"><TagsInputPreview client:load /></Fragment>
+    <Fragment slot="vue"><TagsInputPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

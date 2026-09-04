@@ -38,6 +38,7 @@ export const previewed = new Set([
   "Switch",
   "TableOfContents",
   "Tabs",
+  "TagsInput",
   "Tooltip",
 ]);
 

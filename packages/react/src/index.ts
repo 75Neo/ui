@@ -28,6 +28,7 @@ export { Slider, type SliderProps } from "./components/Slider";
 export { Switch, type SwitchProps } from "./components/Switch";
 export { TableOfContents, type TableOfContentsProps } from "./components/TableOfContents";
 export { Tabs, type TabsProps } from "./components/Tabs";
+export { TagsInput, type TagsInputProps } from "./components/TagsInput";
 export { Tooltip, type TooltipProps } from "./components/Tooltip";
 export { Theme, type ThemeProps } from "./components/Theme";
 export { useResolvedTheme } from "./hooks/useResolvedTheme";
@@ -121,6 +122,10 @@ export {
   type TabsItem,
   type TabsTheme,
   type TabsUI,
+  type TagsInputBlurBehavior,
+  type TagsInputCandidate,
+  type TagsInputTheme,
+  type TagsInputUI,
   type TooltipTheme,
   type TooltipUI,
 } from "@75neo/themes";

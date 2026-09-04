@@ -28,6 +28,7 @@ export { default as Slider } from "./components/Slider.vue";
 export { default as Switch } from "./components/Switch.vue";
 export { default as TableOfContents } from "./components/TableOfContents.vue";
 export { default as Tabs } from "./components/Tabs.vue";
+export { default as TagsInput } from "./components/TagsInput.vue";
 export { default as Tooltip } from "./components/Tooltip.vue";
 export { default as Theme } from "./components/Theme.vue";
 export { useResolvedTheme } from "./composables/theme";
@@ -151,6 +152,11 @@ export {
   type TabsProps,
   type TabsTheme,
   type TabsUI,
+  type TagsInputBlurBehavior,
+  type TagsInputCandidate,
+  type TagsInputProps,
+  type TagsInputTheme,
+  type TagsInputUI,
   type TooltipProps,
   type TooltipTheme,
   type TooltipUI,

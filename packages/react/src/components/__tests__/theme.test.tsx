@@ -26,6 +26,7 @@ import {
   slider,
   switch as switchRecipe,
   tabs,
+  tagsInput,
   tooltip,
 } from "@75neo/themes";
 import { Accordion } from "../Accordion";
@@ -51,6 +52,7 @@ import { Sidebar } from "../Sidebar";
 import { Slider } from "../Slider";
 import { Switch } from "../Switch";
 import { Tabs } from "../Tabs";
+import { TagsInput } from "../TagsInput";
 import { Theme } from "../Theme";
 import { Tooltip } from "../Tooltip";
 
@@ -912,6 +914,56 @@ describe("Slider", () => {
     const container = await mount(<Slider showValue min={-50} max={50} defaultValue={[-20]} />);
 
     expect(slot(container, "valueText")!.textContent).toBe("-20");
+  });
+});
+
+/**
+ * The chips come from Ark's own context rather than from the prop, so what is worth
+ * testing is that an uncontrolled field draws the tags it actually has, that typing a
+ * delimiter makes one, and that a limit is enforced or merely reported.
+ */
+describe("TagsInput", () => {
+  it("renders every slot the recipe declares", async () => {
+    const container = await mount(<TagsInput label="Topics" defaultValue={["one"]} />);
+
+    for (const name of Object.keys(tagsInput.slots)) {
+      expect(slot(container, name), name).not.toBeNull();
+    }
+  });
+
+  it("draws a chip per tag it holds", async () => {
+    const container = await mount(<TagsInput defaultValue={["one", "two", "three"]} />);
+
+    expect(container.querySelectorAll("[data-slot='item']")).toHaveLength(3);
+    expect(slot(container, "itemText")!.textContent).toBe("one");
+  });
+
+  it("turns typed text into a tag at the delimiter", async () => {
+    const container = await mount(<TagsInput />);
+
+    slot(container, "input")!.focus();
+    await userEvent.keyboard("rust,");
+
+    await expect.poll(() => container.querySelectorAll("[data-slot='item']").length).toBe(1);
+  });
+
+  it("refuses a tag past the limit", async () => {
+    const container = await mount(<TagsInput max={1} defaultValue={["one"]} />);
+
+    slot(container, "input")!.focus();
+    await userEvent.keyboard("two,");
+
+    await expect.poll(() => container.querySelectorAll("[data-slot='item']").length).toBe(1);
+  });
+
+  it("takes the tag and marks the field invalid when overflow is allowed", async () => {
+    const container = await mount(<TagsInput max={1} allowOverflow defaultValue={["one"]} />);
+
+    slot(container, "input")!.focus();
+    await userEvent.keyboard("two,");
+
+    await expect.poll(() => container.querySelectorAll("[data-slot='item']").length).toBe(2);
+    expect(slot(container, "control")!.dataset.invalid).toBeDefined();
   });
 });
 
