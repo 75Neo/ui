@@ -135,6 +135,13 @@ export const previews: readonly PreviewRoute[] = [
     key: "main",
   },
   {
+    href: "/select",
+    label: "Select",
+    summary:
+      "A button holding the current answer and the list it opens, across three sizes and seven accents, single or multiple.",
+    key: "select",
+  },
+  {
     href: "/sidebar",
     label: "Sidebar",
     summary:

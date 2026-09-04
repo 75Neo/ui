@@ -14,6 +14,7 @@ import {
   main as mainRecipe,
   sidebar,
   combobox,
+  select,
   dateInput,
   datePicker,
   dialog,
@@ -41,6 +42,7 @@ import { Dialog } from "../Dialog";
 import { Popover } from "../Popover";
 import { Progress } from "../Progress";
 import { RadioGroup } from "../RadioGroup";
+import { Select } from "../Select";
 import { Sidebar } from "../Sidebar";
 import { Slider } from "../Slider";
 import { Switch } from "../Switch";
@@ -243,6 +245,40 @@ describe("Combobox", () => {
     await userEvent.keyboard("zzz");
 
     await expect.poll(() => anywhere("empty")?.textContent).toBe("Nothing here.");
+  });
+});
+
+/**
+ * The Select hands every list decision to Ark, so what is left to this adapter is the
+ * control: that the trigger shows the placeholder until there is an answer and the
+ * chosen label after, and that the clear button is the one indicator a caller can drop.
+ * The popup is portalled, so its parts are found on the document rather than in the
+ * container.
+ */
+describe("Select", () => {
+  it("renders every slot the recipe declares", async () => {
+    await mount(<Select items={options} label="Framework" placeholder="Pick one" />);
+
+    for (const name of Object.keys(select.slots)) {
+      expect(anywhere(name), name).not.toBeNull();
+    }
+  });
+
+  it("shows the placeholder until an option is chosen", async () => {
+    const empty = await mount(<Select items={options} placeholder="Pick one" />);
+    expect(slot(empty, "valueText")!.textContent).toBe("Pick one");
+
+    const chosen = await mount(
+      <Select items={options} placeholder="Pick one" defaultValue={["vue"]} />,
+    );
+    expect(slot(chosen, "valueText")!.textContent).toBe("Vue");
+  });
+
+  it("leaves the clear button out when it is turned off", async () => {
+    const container = await mount(<Select items={options} clearable={false} />);
+
+    expect(slot(container, "clearTrigger")).toBeNull();
+    expect(slot(container, "trailingIcon")).not.toBeNull();
   });
 });
 

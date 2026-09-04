@@ -22,6 +22,7 @@ import { MainPreview } from "../previews/MainPreview";
 import { PopoverPreview } from "../previews/PopoverPreview";
 import { ProgressPreview } from "../previews/ProgressPreview";
 import { RadioGroupPreview } from "../previews/RadioGroupPreview";
+import { SelectPreview } from "../previews/SelectPreview";
 import { SidebarPreview } from "../previews/SidebarPreview";
 import { SliderPreview } from "../previews/SliderPreview";
 import { SwitchPreview } from "../previews/SwitchPreview";
@@ -50,6 +51,7 @@ import MainPreviewVue from "../previews/MainPreview.vue";
 import PopoverPreviewVue from "../previews/PopoverPreview.vue";
 import ProgressPreviewVue from "../previews/ProgressPreview.vue";
 import RadioGroupPreviewVue from "../previews/RadioGroupPreview.vue";
+import SelectPreviewVue from "../previews/SelectPreview.vue";
 import SidebarPreviewVue from "../previews/SidebarPreview.vue";
 import SliderPreviewVue from "../previews/SliderPreview.vue";
 import SwitchPreviewVue from "../previews/SwitchPreview.vue";
@@ -101,6 +103,7 @@ const vue = framework === "vue";
 {react && name === "Popover" && <PopoverPreview client:visible />}
 {react && name === "Progress" && <ProgressPreview client:visible />}
 {react && name === "RadioGroup" && <RadioGroupPreview client:visible />}
+{react && name === "Select" && <SelectPreview client:visible />}
 {react && name === "Sidebar" && <SidebarPreview client:visible />}
 {react && name === "Slider" && <SliderPreview client:visible />}
 {react && name === "Switch" && <SwitchPreview client:visible />}
@@ -130,6 +133,7 @@ const vue = framework === "vue";
 {vue && name === "Popover" && <PopoverPreviewVue client:visible />}
 {vue && name === "Progress" && <ProgressPreviewVue client:visible />}
 {vue && name === "RadioGroup" && <RadioGroupPreviewVue client:visible />}
+{vue && name === "Select" && <SelectPreviewVue client:visible />}
 {vue && name === "Sidebar" && <SidebarPreviewVue client:visible />}
 {vue && name === "Slider" && <SliderPreviewVue client:visible />}
 {vue && name === "Switch" && <SwitchPreviewVue client:visible />}

@@ -1,0 +1,38 @@
+---
+import { select as recipe, variantValues } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import SelectPreview from "../previews/SelectPreview.tsx";
+import SelectPreviewVue from "../previews/SelectPreview.vue";
+
+// Read off the recipe rather than restated here, so this ledger cannot drift.
+const slots = Object.keys(recipe.slots);
+const variantKeys = [...recipe.variantKeys];
+const combinations = variantKeys.reduce(
+  (total, key) => total * variantValues(recipe, key).length,
+  1,
+);
+
+const meta = [
+  { term: "key", value: "select" },
+  { term: "slots", value: String(slots.length) },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  eyebrow="component"
+  title="Select"
+  description="One recipe in @75neo/themes, rendered by both adapters. The Combobox's sibling: the same sizes, the same accents and the same list, behind one button rather than a text field."
+  hasStage
+>
+  <Preview
+    title="Sizes, accents and the ways it takes an answer"
+    description="Three sizes, then every accent color, then several answers at once, an answer that can be taken back, a chevron that does not turn, and disabled. The last one is controlled and prints its own selection."
+    meta={meta}
+  >
+    <Fragment slot="react"><SelectPreview client:load /></Fragment>
+    <Fragment slot="vue"><SelectPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

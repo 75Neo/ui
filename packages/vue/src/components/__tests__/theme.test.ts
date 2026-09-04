@@ -14,6 +14,7 @@ import {
   main as mainRecipe,
   sidebar,
   combobox,
+  select,
   dateInput,
   datePicker,
   dialog,
@@ -41,6 +42,7 @@ import Dialog from "../Dialog.vue";
 import Popover from "../Popover.vue";
 import Progress from "../Progress.vue";
 import RadioGroup from "../RadioGroup.vue";
+import Select from "../Select.vue";
 import Sidebar from "../Sidebar.vue";
 import Slider from "../Slider.vue";
 import Switch from "../Switch.vue";
@@ -241,6 +243,40 @@ describe("Combobox", () => {
     await userEvent.keyboard("zzz");
 
     await expect.poll(() => anywhere("empty")?.textContent?.trim()).toBe("Nothing here.");
+  });
+});
+
+/**
+ * The Select hands every list decision to Ark, so what is left to this adapter is the
+ * control: that the trigger shows the placeholder until there is an answer and the
+ * chosen label after, and that the clear button is the one indicator a caller can drop.
+ * The popup is teleported, so its parts are found on the document rather than in the
+ * container.
+ */
+describe("Select", () => {
+  it("renders every slot the recipe declares", () => {
+    render(Select, { props: { items: options, label: "Framework", placeholder: "Pick one" } });
+
+    for (const name of Object.keys(select.slots)) {
+      expect(anywhere(name), name).not.toBeNull();
+    }
+  });
+
+  it("shows the placeholder until an option is chosen", () => {
+    const empty = render(Select, { props: { items: options, placeholder: "Pick one" } });
+    expect(slot(empty.container, "valueText")!.textContent).toBe("Pick one");
+
+    const chosen = render(Select, {
+      props: { items: options, placeholder: "Pick one", defaultValue: ["vue"] },
+    });
+    expect(slot(chosen.container, "valueText")!.textContent).toBe("Vue");
+  });
+
+  it("leaves the clear button out when it is turned off", () => {
+    const { container } = render(Select, { props: { items: options, clearable: false } });
+
+    expect(slot(container, "clearTrigger")).toBeNull();
+    expect(slot(container, "trailingIcon")).not.toBeNull();
   });
 });
 

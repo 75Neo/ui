@@ -20,6 +20,7 @@ export { Main, type MainProps } from "./components/Main";
 export { Popover, type PopoverProps } from "./components/Popover";
 export { Progress, type ProgressProps } from "./components/Progress";
 export { RadioGroup, type RadioGroupProps } from "./components/RadioGroup";
+export { Select, type SelectProps } from "./components/Select";
 export { Sidebar, type SidebarProps } from "./components/Sidebar";
 export { Slider, type SliderProps } from "./components/Slider";
 export { Switch, type SwitchProps } from "./components/Switch";
@@ -96,6 +97,9 @@ export {
   type RadioGroupItem,
   type RadioGroupTheme,
   type RadioGroupUI,
+  type SelectItem,
+  type SelectTheme,
+  type SelectUI,
   type SidebarState,
   type SidebarTheme,
   type SidebarUI,

@@ -30,6 +30,7 @@ export const previewed = new Set([
   "Popover",
   "Progress",
   "RadioGroup",
+  "Select",
   "Sidebar",
   "Slider",
   "Switch",
