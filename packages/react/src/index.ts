@@ -21,6 +21,7 @@ export { FileUpload, type FileUploadProps } from "./components/FileUpload";
 export { FloatingPanel, type FloatingPanelProps } from "./components/FloatingPanel";
 export { Footer, type FooterProps } from "./components/Footer";
 export { Header, type HeaderProps } from "./components/Header";
+export { HoverCard, type HoverCardProps } from "./components/HoverCard";
 export { Main, type MainProps } from "./components/Main";
 export { Menu, type MenuProps } from "./components/Menu";
 export { NumberInput, type NumberInputProps } from "./components/NumberInput";
@@ -117,6 +118,8 @@ export {
   type FooterUI,
   type HeaderTheme,
   type HeaderUI,
+  type HoverCardTheme,
+  type HoverCardUI,
   type MainTheme,
   type MainUI,
   type MenuItem,

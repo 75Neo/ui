@@ -21,6 +21,7 @@ export { default as FileUpload } from "./components/FileUpload.vue";
 export { default as FloatingPanel } from "./components/FloatingPanel.vue";
 export { default as Footer } from "./components/Footer.vue";
 export { default as Header } from "./components/Header.vue";
+export { default as HoverCard } from "./components/HoverCard.vue";
 export { default as Main } from "./components/Main.vue";
 export { default as Menu } from "./components/Menu.vue";
 export { default as NumberInput } from "./components/NumberInput.vue";
@@ -140,6 +141,9 @@ export {
   type HeaderProps,
   type HeaderTheme,
   type HeaderUI,
+  type HoverCardProps,
+  type HoverCardTheme,
+  type HoverCardUI,
   type MainProps,
   type MainTheme,
   type MainUI,

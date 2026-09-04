@@ -295,4 +295,11 @@ export const previews: readonly PreviewRoute[] = [
       "A window the caller drags and resizes over the page, with minimize, maximize and close controls, across three sizes.",
     key: "floatingPanel",
   },
+  {
+    href: "/hover-card",
+    label: "HoverCard",
+    summary:
+      "A preview panel a trigger opens on hover or focus, across three sizes and twelve placements, with an optional arrow.",
+    key: "hoverCard",
+  },
 ];
