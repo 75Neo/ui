@@ -13,6 +13,7 @@ export { default as Container } from "./components/Container.vue";
 export { default as DateInput } from "./components/DateInput.vue";
 export { default as DatePicker } from "./components/DatePicker.vue";
 export { default as Dialog } from "./components/Dialog.vue";
+export { default as DownloadTrigger } from "./components/DownloadTrigger.vue";
 export { default as Error } from "./components/Error.vue";
 export { default as FileUpload } from "./components/FileUpload.vue";
 export { default as Footer } from "./components/Footer.vue";
@@ -104,6 +105,11 @@ export {
   type DialogProps,
   type DialogTheme,
   type DialogUI,
+  type DownloadData,
+  type DownloadDataInput,
+  type DownloadTriggerProps,
+  type DownloadTriggerTheme,
+  type DownloadTriggerUI,
   type ErrorProps,
   type ErrorTheme,
   type ErrorUI,
