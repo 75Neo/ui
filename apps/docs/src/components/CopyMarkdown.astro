@@ -2,22 +2,15 @@
 import { Check, Copy } from "@lucide/astro";
 
 /**
- * Hands the reader the page's own Markdown.
+ * Hands the reader the page's own Markdown: what the content collection holds, not a
+ * rendering of it.
  *
  * @remarks
- * The source is what the content collection holds, not a rendering of the page, so what
- * lands on the clipboard is the file an agent or an editor would want rather than the
- * prose with its tables flattened out of it.
- *
- * It travels as JSON inside a script element the browser neither runs nor renders.
- * JSON rather than raw text because the Markdown quotes Vue examples: an HTML parser
- * ends a script element at the first closing script tag it meets, whatever is around
- * it, so the end of a Vue fence would spill the rest of the file onto the page. The
- * `replaceAll` below escapes that sequence, which is what stops it.
- *
- * The sequence is spelled out nowhere in this block on purpose. Written literally in
- * the frontmatter, even inside a comment, it mis-slices the file for `astro check`,
- * which then reports `Props` as unused.
+ * The source travels as JSON inside a script element, because the Markdown quotes Vue
+ * examples and an HTML parser ends a script at the first tag that closes one. The
+ * `replaceAll` below escapes that sequence. It is spelled out nowhere here on purpose:
+ * written literally in the frontmatter, a comment included, it mis-slices the file for
+ * `astro check`, which then reports `Props` as unused.
  */
 interface Props {
   source: string;
@@ -46,9 +39,7 @@ const { source } = Astro.props;
 </div>
 
 <script>
-  /**
-   * Bound once for the whole visit, because client-side navigation replaces the button.
-   */
+  // Bound once for the visit, because a navigation replaces the button.
   document.addEventListener("click", async (event) => {
     const button = (event.target as HTMLElement | null)?.closest<HTMLElement>(
       "[data-copy-markdown]",

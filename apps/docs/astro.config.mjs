@@ -6,13 +6,9 @@ import react from "@astrojs/react";
 import vue from "@astrojs/vue";
 
 /**
- * The repository root, handed to the build as a literal.
- *
- * @remarks
- * `component-api.ts` reads the library's own sources with ts-morph, and it needs a path
- * to do it. It cannot work one out from its own `import.meta.url`, because by the time
- * it runs it has been bundled into a chunk somewhere under `dist`. This file is never
- * bundled, so its location is the one that stays true.
+ * The repository root, handed to the build as a literal. `component-api.ts` reads the
+ * library's sources with ts-morph and cannot find them from its own `import.meta.url`,
+ * because it runs bundled into a chunk under `dist`. This file is never bundled.
  */
 const repoRoot = fileURLToPath(new URL("../../", import.meta.url));
 
@@ -21,15 +17,9 @@ const src = (name) =>
   fileURLToPath(new URL(`../../packages/${name}/src/index.ts`, import.meta.url));
 
 /**
- * Turn off React Fast Refresh's transform in dev.
- *
- * @remarks
- * It goes with the aliasing below. Once `@75neo/vue` resolves to source, Vue single
- * file components are compiled here rather than arriving pre-built, and the refresh
- * transform reaches them too — it injects `$RefreshSig$` into a module the React
- * runtime never loads, so the first Vue island on the page dies with
- * `$RefreshSig$ is not defined`. The playground carries the same plugin for the same
- * reason.
+ * Turn off React Fast Refresh's transform in dev. It goes with the aliasing below: once
+ * `@75neo/vue` resolves to source its components are compiled here, and the transform
+ * injects `$RefreshSig$` into a module the React runtime never loads.
  */
 const disableJsxRefresh = () => ({
   name: "docs:disable-jsx-refresh",
@@ -40,24 +30,14 @@ const disableJsxRefresh = () => ({
 });
 
 export default defineConfig({
-  /*
-   * Cloudflare Pages serves the project at the root of its own hostname, so there is no
-   * base path to carry and every URL on the page is the one written.
-   */
+  // Cloudflare serves the project at the root of its hostname, so there is no base path.
   site: "https://75neo-ui.pages.dev",
-  /*
-   * `/docs` belongs to no framework, so it hands the reader to one. React first because
-   * it is the larger audience, not because it is the better supported: the switcher in
-   * the header is one click away and lands on the same page.
-   *
-   */
+  // `/docs` belongs to no framework. React first for the larger audience, not for support.
   redirects: { "/docs": "/docs/react/getting-started" },
   markdown: {
     /*
-     * One theme per mode. Shiki writes the light colors inline and the dark ones as
-     * `--shiki-dark-*` custom properties beside them, and `main.css` spends those under
-     * the root element's `dark` class. That is what keeps a code block in the same
-     * light as the prose around it rather than a dark panel dropped into a light page.
+     * One theme per mode. Shiki writes the light colors inline and the dark ones beside
+     * them as `--shiki-dark-*`, which `main.css` spends under the root `dark` class.
      */
     shikiConfig: {
       themes: { light: "github-light", dark: "github-dark" },
@@ -69,10 +49,8 @@ export default defineConfig({
     plugins: [tailwindcss(), disableJsxRefresh()],
     define: { __REPO_ROOT__: JSON.stringify(repoRoot) },
     /*
-     * The same aliasing the playground uses. The docs render live specimens and read
-     * the API off the same files, so resolving through `dist` meant a prop rename
-     * showed up in the tables from source and in the specimens from a stale build.
-     * Pointing both at each package's own `src` keeps one answer, and hot-reloads it.
+     * The same aliasing the playground uses. Resolving through `dist` meant a renamed
+     * prop reached the tables from source and the specimens from a stale build.
      */
     resolve: {
       alias: [

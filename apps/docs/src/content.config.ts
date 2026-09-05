@@ -3,13 +3,9 @@ import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
 /**
- * Prose lives in Markdown; the API tables do not.
- *
- * @remarks
- * A component entry carries the writing a reader needs and the three coordinates
- * `componentApi` needs to find its source. Everything mechanical — props, types,
- * variant values, slot names — is read back out of `packages/*` at build time, so a
- * renamed prop cannot go stale here.
+ * Prose lives in Markdown; the API tables do not. An entry carries the writing and the
+ * three coordinates `componentApi` needs to find the source. Props, types, variant
+ * values and slot names are read out of `packages/*` at build time.
  */
 
 const guides = defineCollection({

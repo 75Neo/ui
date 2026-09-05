@@ -1,23 +1,14 @@
 ---
 /**
- * A labelled group of exclusive options whose current value lives on the
- * `<html>` element as `data-{name}`. The active segment is painted by attribute
- * selectors in `main.css`, so it is correct on first paint with no JavaScript and
- * survives a client-side navigation without anything repainting it.
- *
- * @remarks
- * An option carries either a word or an icon. The theme is three states of one thing
- * and reads faster as three glyphs; the surface is three named tokens, and a glyph for
- * each would be a code the reader has to learn. So the shape is per option rather than
- * per control.
+ * A labelled group of exclusive options whose value lives on the root element as
+ * `data-{name}`. The active segment is painted by attribute selectors in `main.css`, so
+ * it is right on first paint and survives a navigation with nothing to repaint it.
  */
+
 /**
- * One of the icon components the icon package ships.
- *
- * @remarks
- * Taken off the package rather than named from Astro's own types: the icons are `.astro`
- * files, and what a component boundary sees is not the factory type an `.astro` file's
- * default export is usually annotated with.
+ * One of the icon components the icon package ships. Taken off the package rather than
+ * from Astro's own types: an `.astro` file's default export is not the factory type a
+ * component boundary sees.
  */
 type Icon = (typeof import("@lucide/astro"))["Sun"];
 

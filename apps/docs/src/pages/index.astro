@@ -16,10 +16,7 @@ import { docHref, frameworkFacts, frameworks } from "../lib/framework";
 
 const components = await documentedComponents();
 
-/**
- * The strengths a recipe is allowed to spend a color at. Six cover the library, and
- * `packages/themes/src/colors.ts` is where they are documented.
- */
+/** The strengths a recipe may spend a color at, documented in `themes/src/colors.ts`. */
 const strengths = [
   { class: "bg-primary/10", label: "/10", note: "A soft, tinted fill." },
   { class: "bg-primary/15", label: "/15", note: "That fill, hovered." },
@@ -38,9 +35,8 @@ const layers = [
 ];
 
 /*
- * The same call, written in each framework. One prop is renamed by the framework's own
- * conventions and nothing else moves, which is the claim the whole library rests on and
- * the fastest way to check it is to read the two side by side.
+ * The same call in each framework. One prop is renamed by the framework's own
+ * conventions and nothing else moves, which is the claim the library rests on.
  */
 const sample = {
   react: `import { ArrowRight } from "lucide-react";
@@ -123,15 +119,10 @@ const frameHeader =
 
         {
           /*
-           * The hero's asset is the library itself, hydrated so a reader can work it
-           * before reading a word.
-           *
-           * All four have a settled footprint: working them changes what they show and
-           * never how much room it takes. That is the whole reason for this particular
-           * four. An Accordion here opened its panel into the grid row, which moved the
-           * headline beside it, so the first thing the page did was shift under the
-           * reader. A component that resizes belongs on its own page, where the room
-           * below it is nobody else's.
+           * Hydrated, so a reader can work the library before reading a word. All four
+           * have a settled footprint: working them changes what they show and never how
+           * much room it takes. An Accordion here opened its panel into the grid row and
+           * moved the headline beside it, so the page shifted under the reader.
            */
         }
         <div

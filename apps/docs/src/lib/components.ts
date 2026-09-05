@@ -15,13 +15,9 @@ export interface DocumentedComponent {
  * Every documented component, in alphabetical order.
  *
  * @remarks
- * The Markdown drives the list. Adding a component to the docs is adding one file, and
- * the API tables follow from the three coordinates in its frontmatter.
- *
- * The order is the name's, not a number in the frontmatter. A reference of this size is
- * scanned for a component someone already knows the name of, and an order written by
- * hand is one more thing per file to keep true; it also decided the previous and next
- * links, which then walked the list in an order the sidebar did not show.
+ * The Markdown drives the list: adding a component is adding one file, and the API
+ * tables follow from the three coordinates in its frontmatter. The order is the name's
+ * rather than a number per file, and the previous and next links walk the same list.
  */
 export async function documentedComponents(): Promise<DocumentedComponent[]> {
   const entries = await getCollection("components");
@@ -40,12 +36,8 @@ export async function documentedComponents(): Promise<DocumentedComponent[]> {
 }
 
 /**
- * The URL of one component's page.
- *
- * @remarks
- * The slug is the content file's own name, so `table-of-contents.md` answers at
- * `/docs/react/components/table-of-contents`. Nothing derives it from the exported
- * component name, which would have to guess where the words break.
+ * The URL of one component's page. The slug is the content file's own name, so nothing
+ * has to guess where the words break in an exported component name.
  */
 export function componentHref(framework: Framework, slug: string): string {
   return `${docHref(framework, "components")}/${slug}`;

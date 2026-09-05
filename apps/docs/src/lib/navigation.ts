@@ -23,13 +23,9 @@ export function componentLinks(
 }
 
 /**
- * The rail entries for the generated half of a component page.
- *
- * @remarks
- * These headings are rendered by `ComponentApi.astro` rather than written in Markdown,
- * so they are not in what `render()` hands back and have to be listed here. Which
- * sections exist depends on the component and the framework: a recipe with no variants
- * gets no variants section, and each adapter's own props only appear on its own route.
+ * The rail entries for the generated half of a component page. These headings are
+ * rendered by `ComponentApi.astro` rather than written in Markdown, so `render()` does
+ * not hand them back. Which exist depends on the component and the framework.
  */
 export function apiSections(api: ComponentApi, framework: Framework): TableOfContentsItem[] {
   const sections: TableOfContentsItem[] = [{ value: "slots", depth: 2, label: "Slots" }];
@@ -57,15 +53,11 @@ export function apiSections(api: ComponentApi, framework: Framework): TableOfCon
 }
 
 /**
- * Turn Astro's rendered headings into rail entries.
+ * Turn Astro's rendered headings into rail entries. The slug Astro generates is the `id`
+ * it put on the heading, which is what the rail resolves, so nothing re-slugs anything.
  *
  * @param headings - What `render()` returned for one Markdown entry.
- * @param maxDepth - The deepest level to list. Past `h3` a rail lists more than it
- * helps with.
- *
- * @remarks
- * The slug Astro generates is the `id` it put on the heading, which is exactly what
- * the rail resolves with `getElementById`, so nothing here re-slugs anything.
+ * @param maxDepth - The deepest level to list. Past `h3` a rail lists more than it helps.
  */
 export function railItems(headings: MarkdownHeading[], maxDepth = 3): TableOfContentsItem[] {
   return headings

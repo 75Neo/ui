@@ -12,21 +12,13 @@ import { shell, stickyColumn } from "../lib/layout";
  * The playground shell: a column of every page, and one page's specimens beside it.
  *
  * @remarks
- * The column is what makes this a workbench rather than a set of pages. Comparing a
- * recipe against its neighbours is most of what happens here, and it used to mean going
- * back to the index between every two components.
- *
  * The column is carried across client-side navigations, so its scroll position and the
- * page's own scroll are independent and neither is lost on the way to the next
- * component.
+ * page's own are independent and neither is lost on the way to the next component.
  */
 interface Props {
   title: string;
   description: string;
-  /**
-   * Whether this page renders a specimen stage. The surface control only has
-   * something to act on when it does, so it is left out otherwise.
-   */
+  /** Whether the page has a stage for the surface control to act on. */
   hasStage?: boolean;
 }
 
@@ -48,14 +40,6 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
     <link rel="icon" href="/logo-brand.png" type="image/png" sizes="512x512" />
     <link rel="apple-touch-icon" href="/logo-brand.png" />
 
-    {
-      /*
-       * Client-side routing. A navigation swaps the head and the body and leaves the
-       * root element alone, which is where both controls keep their state, so moving
-       * between components never repaints the page from scratch and never drops the
-       * surface or the theme on the way.
-       */
-    }
     <ClientRouter />
 
     <script is:inline>
@@ -179,16 +163,10 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
        * The chrome's stateful controls, bound once for the whole visit.
        *
        * @remarks
-       * Everything here is delegated from `document`, because client-side navigation
-       * replaces the body and would otherwise leave every listener attached to an
-       * element no longer on the page.
-       *
-       * The choices themselves are held here rather than read back off the root element,
-       * because a swap rewrites the root element's attributes from the incoming
-       * document: `data-theme`, `data-surface` and the `dark` class are all gone by the
-       * time the new page is in place. So they are put back on `astro:after-swap`, which
-       * runs before the browser paints, and walking from one component to the next never
-       * drops the surface you were comparing them on.
+       * Listeners are delegated from `document`, because a navigation replaces the body.
+       * The choices are held here rather than read off the root element, whose attributes
+       * a swap rewrites from the incoming document, and are put back on
+       * `astro:after-swap` before the browser paints.
        */
       const root = document.documentElement;
       const media = window.matchMedia("(prefers-color-scheme: dark)");
@@ -220,11 +198,7 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
         }
       };
 
-      /*
-       * The column is carried across navigations so its scroll position survives, which
-       * means the row it marks as current is the one from the page before. Nothing else
-       * on the page needs this: everything else is rendered fresh by the swap.
-       */
+      /** The persisted column keeps the previous page's current row, so move it here. */
       const markCurrent = () => {
         const here = window.location.pathname.replace(/\/$/, "") || "/";
         for (const link of document.querySelectorAll<HTMLAnchorElement>("[data-page-nav] a")) {

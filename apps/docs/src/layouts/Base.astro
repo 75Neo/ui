@@ -9,19 +9,15 @@ import type { SearchEntry } from "../lib/search";
 interface Props {
   title: string;
   description: string;
-  /**
-   * The adapter this page documents. Absent on the landing page, which belongs to
-   * neither, and where the switcher would have nothing to switch.
-   */
+  /** The adapter this page documents. Absent on the landing page, which has neither. */
   framework?: Framework;
   /** Every page the search dialog can reach from here. */
   entries: SearchEntry[];
   /** Whether the page has a sidebar the narrow layout needs a button for. */
   hasSidebar?: boolean;
   /**
-   * Whether to close the page with the site footer. The documentation shell fills the
-   * viewport and scrolls its middle column, so a footer under it would only ever be
-   * reachable by scrolling past the end of an article.
+   * Whether to close the page with the site footer. The doc shell scrolls its own middle
+   * column, so a footer under it would sit past the end of every article.
    */
   footer?: boolean;
 }
@@ -51,13 +47,6 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
     <link rel="icon" href="/logo-brand.png" type="image/png" sizes="512x512" />
     <link rel="apple-touch-icon" href="/logo-brand.png" />
 
-    {
-      /*
-       * Client-side routing. A navigation swaps the head and the body and leaves the
-       * root element alone, which is where the theme lives, so the page never repaints
-       * from scratch and never flashes the wrong theme on the way.
-       */
-    }
     <ClientRouter />
 
     <script is:inline>
@@ -120,15 +109,10 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
        * The chrome's two stateful controls, bound once for the whole visit.
        *
        * @remarks
-       * Everything here is delegated from `document`, because client-side navigation
-       * replaces the body and would otherwise leave every listener attached to an
-       * element no longer on the page.
-       *
-       * The choice itself is held here rather than read back off the root element,
-       * because a swap rewrites the root element's attributes from the incoming
-       * document: `data-theme` and the `dark` class are both gone by the time the new
-       * page is in place. So they are put back on `astro:after-swap`, which runs before
-       * the browser paints, and the reader never sees the light theme flash past.
+       * Listeners are delegated from `document`, because a navigation replaces the body.
+       * The theme is held here rather than read off the root element, whose attributes a
+       * swap rewrites from the incoming document, and is put back on `astro:after-swap`
+       * before the browser paints.
        */
       const root = document.documentElement;
       const media = window.matchMedia("(prefers-color-scheme: dark)");
@@ -145,11 +129,7 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
         }
       };
 
-      /*
-       * The sidebar is carried across navigations so its scroll position survives, which
-       * means the row it marks as current is the one from the page before. Nothing else
-       * on the page needs this: everything else is rendered fresh by the swap.
-       */
+      /** The persisted sidebar keeps the previous page's current row, so move it here. */
       const markCurrent = () => {
         const here = window.location.pathname.replace(/\/$/, "") || "/";
         for (const link of document.querySelectorAll<HTMLAnchorElement>("[data-page-nav] a")) {

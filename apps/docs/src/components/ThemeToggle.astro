@@ -5,16 +5,10 @@ import { Check, ChevronDown, Monitor, Moon, Sun } from "@lucide/astro";
  * A three-way theme control, behind one button.
  *
  * @remarks
- * A `details` element rather than a menu built out of the library, because this stands
- * in chrome the React route, the Vue route and the landing page all share, and either
- * adapter's component would be the wrong one on two thirds of the site. It opens and
- * closes on its own; the delegated script only has to shut it when the pointer leaves.
- *
- * The trigger shows the mode in force, which is only known at runtime. So all three
- * icons are rendered and `main.css` reveals the one matching `data-theme` on the root
- * element, the same way the rows below are ticked. That makes the button right on the
- * first frame, before any script has run, and after a client-side navigation with
- * nothing to repaint it.
+ * A `details` element rather than a menu built out of the library, which stands in
+ * chrome both routes and the landing page share. All three icons
+ * are rendered and `main.css` reveals the one matching `data-theme` on the root element,
+ * so the trigger is right on the first frame and after a navigation repaints nothing.
  */
 const options = [
   { value: "light", label: "Light", icon: Sun },

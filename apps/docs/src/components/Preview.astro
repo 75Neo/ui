@@ -79,12 +79,9 @@ import TooltipPreviewVue from "../previews/TooltipPreview.vue";
  * One component's live specimen, in the framework the route is for.
  *
  * @remarks
- * Written out as a switch because a client directive has to name its component through
- * a static import. Reaching one through a lookup table leaves Astro with nothing to
- * hydrate, and it says so at build time.
- *
- * Both adapters appear here because the routes are split by framework: a reader on the
- * Vue route sees Vue rendering, not a React specimen with Vue code printed beside it.
+ * Written out as a switch because a client directive has to name its component through a
+ * static import; one reached through a lookup table leaves Astro nothing to hydrate.
+ * Both adapters appear, so a reader on the Vue route sees Vue rendering.
  */
 interface Props {
   /** Exported component name, as it appears in a content entry. */

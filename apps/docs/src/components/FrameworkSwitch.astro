@@ -2,13 +2,8 @@
 import { type Framework, docHref, frameworkFacts, frameworks, isFramework } from "../lib/framework";
 
 /**
- * React or Vue, without leaving the page.
- *
- * @remarks
- * Every documentation route exists under both adapters, so the other framework's copy
- * of the current page is the current path with one segment swapped. That is why this
- * takes the path rather than a destination: switching mid-page lands on the same
- * subject rather than back at the top of the section.
+ * React or Vue, without leaving the page. Every route exists under both adapters, so
+ * this takes the path rather than a destination: the other copy is one segment swapped.
  */
 interface Props {
   framework: Framework;

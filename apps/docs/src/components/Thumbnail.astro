@@ -79,15 +79,11 @@ import TooltipPreviewVue from "../previews/TooltipPreview.vue";
  * One component's specimen at thumbnail size, rendered but never hydrated.
  *
  * @remarks
- * The components index shows every component at once, so a live island per card would
- * be forty of them on one page. Left without a client directive, each one is rendered
- * to markup at build time and ships no JavaScript: the classes, the anatomy and the
- * `data-slot` attributes are the real ones, and only the behaviour is missing. That is
- * the right trade for a picture, and it is why this exists beside `Preview.astro`
- * rather than as a flag on it — a client directive has to be written or not written,
- * and cannot be decided by a prop.
- *
- * Cards are keyed to the route's own adapter, so the Vue index is a page of Vue markup.
+ * The index shows forty at once, so each is rendered to real markup at build time and
+ * ships no JavaScript: the classes, the anatomy and the `data-slot` attributes are the
+ * real ones and only the behaviour is missing. This exists beside `Preview.astro` rather
+ * than as a flag on it because a client directive is written or not written, and cannot
+ * be decided by a prop.
  */
 interface Props {
   /** Exported component name, as it appears in a content entry. */

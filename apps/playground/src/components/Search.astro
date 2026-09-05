@@ -1,20 +1,16 @@
 ---
 import { Search as SearchIcon } from "@lucide/astro";
-import { previews } from "../routes";
+import { overview, previews } from "../routes";
 
 /**
  * A command palette over every page in the playground.
  *
  * @remarks
- * A native `dialog` rather than the library's own `Dialog`. Every page here renders both
- * adapters side by side, so a palette built out of one of them would be a third specimen
- * with a claim on the page it does not deserve. Everything this needs is markup and one
- * delegated listener.
- *
- * There are close to sixty routes, which is more than a column can be scanned for. The
- * index is inlined as JSON beside the dialog and read when the dialog opens.
+ * A native `dialog` rather than the library's own `Dialog`: every page here renders both
+ * adapters side by side, so a palette built out of one would be a third specimen. The
+ * index is inlined as JSON beside the dialog and read when it opens.
  */
-const entries = previews.map(({ href, label, summary, key }) => ({
+const entries = [...overview, ...previews].map(({ href, label, summary, key }) => ({
   href,
   label,
   group: key,
@@ -71,12 +67,8 @@ const kbd =
 
 <script>
   /**
-   * One delegated controller for the palette.
-   *
-   * @remarks
-   * A bundled module script runs once for the whole visit, so every listener is on
-   * `document` and every element is looked up when it is needed rather than held. That
-   * is what keeps this working after client-side navigation replaces the body.
+   * One delegated controller for the palette. The script runs once for the visit, so
+   * listeners sit on `document` and elements are looked up when needed rather than held.
    */
   interface Entry {
     href: string;
