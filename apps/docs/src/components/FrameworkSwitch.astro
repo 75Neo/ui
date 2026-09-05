@@ -41,7 +41,7 @@ const hrefFor = (next: Framework) => {
         href={hrefFor(option)}
         aria-current={option === framework ? "true" : undefined}
         class:list={[
-          "rounded-[0.4rem] px-2 py-1 font-mono text-[0.6875rem] leading-none",
+          "rounded-[0.4rem] px-2 py-1 font-mono text-xs leading-none",
           option === framework
             ? "shadow-segment text-highlighted"
             : "text-dimmed hover:text-toned",

@@ -30,7 +30,7 @@ const kbd =
   class="border-muted bg-elevated/60 text-dimmed hover:border-accented hover:text-muted flex size-8 shrink-0 items-center justify-center gap-2 rounded-lg border sm:w-56 sm:justify-start sm:px-2.5"
 >
   <SearchIcon size={14} aria-hidden="true" class="shrink-0" />
-  <span class="hidden truncate text-[0.8125rem] sm:inline">Search</span>
+  <span class="hidden truncate text-sm sm:inline">Search</span>
   <kbd class={`${kbd} ml-auto hidden shrink-0 sm:block`} data-identifier>⌘K</kbd>
   <span class="sr-only sm:hidden">Search</span>
 </button>
@@ -129,7 +129,7 @@ const kbd =
       if (entry.group !== group) {
         group = entry.group;
         const heading = document.createElement("li");
-        heading.className = "text-dimmed px-2 pt-3 pb-1.5 font-mono text-[0.6875rem] first:pt-1";
+        heading.className = "text-dimmed px-2 pt-3 pb-1.5 font-mono text-xs first:pt-1";
         heading.textContent = group.toLowerCase();
         heading.setAttribute("data-identifier", "");
         target.append(heading);

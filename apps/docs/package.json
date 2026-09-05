@@ -24,6 +24,7 @@
     "lucide-react": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
+    "simple-icons": "^16.29.0",
     "vue": "catalog:"
   },
   "devDependencies": {
