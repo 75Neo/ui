@@ -209,8 +209,8 @@ catalogs:
       specifier: ^1.39.0
       version: 1.39.0
     '@lucide/vue':
-      specifier: ^1.37.0
-      version: 1.37.0
+      specifier: ^1.39.0
+      version: 1.39.0
     '@tailwindcss/vite':
       specifier: ^4.3.3
       version: 4.3.3
@@ -323,7 +323,7 @@ importers:
         version: 1.39.0(astro@7.2.9(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.3)(@types/node@26.4.0)(jiti@2.7.0)(yaml@2.9.0))
       '@lucide/vue':
         specifier: 'catalog:'
-        version: 1.37.0(vue@3.5.42(typescript@6.0.3))
+        version: 1.39.0(vue@3.5.42(typescript@6.0.3))
       astro:
         specifier: ^7.2.9
         version: 7.2.9(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.3)(@types/node@26.4.0)(jiti@2.7.0)(yaml@2.9.0)
@@ -396,7 +396,7 @@ importers:
         version: 1.39.0(astro@7.2.9(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.3)(@types/node@26.4.0)(jiti@2.7.0)(yaml@2.9.0))
       '@lucide/vue':
         specifier: 'catalog:'
-        version: 1.37.0(vue@3.5.42(typescript@6.0.3))
+        version: 1.39.0(vue@3.5.42(typescript@6.0.3))
       astro:
         specifier: ^7.2.9
         version: 7.2.9(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.3)(@types/node@26.4.0)(jiti@2.7.0)(yaml@2.9.0)
@@ -541,7 +541,7 @@ importers:
         version: 5.39.1(vue@3.5.42(typescript@6.0.3))
       '@lucide/vue':
         specifier: 'catalog:'
-        version: 1.37.0(vue@3.5.42(typescript@6.0.3))
+        version: 1.39.0(vue@3.5.42(typescript@6.0.3))
     devDependencies:
       '@vitest/browser-playwright':
         specifier: 'catalog:'
@@ -1379,8 +1379,8 @@ packages:
     peerDependencies:
       astro: ^4 || ^5 || ^6 || ^7
 
-  '@lucide/vue@1.37.0':
-    resolution: {integrity: sha512-outqiaDIgg8SUANr8q27cHB0V6vAOEB0CwEDe+fyVjSuCDAscVlplHH+cRld9nNNYQ5KJ6MBRmNMICpq42pXYw==}
+  '@lucide/vue@1.39.0':
+    resolution: {integrity: sha512-dKqoDT4lAY200w+hrzavxw9qqzw1SVuO5ZHBA+F75UgBJD4yNfDk6VuvFr8N09EeSJqVLU+IQ3mCxbV/Zfex/A==}
     peerDependencies:
       vue: '>=3.0.1'
 
@@ -5568,7 +5568,7 @@ snapshots:
     dependencies:
       astro: 7.2.9(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.3)(@types/node@26.4.0)(jiti@2.7.0)(yaml@2.9.0)
 
-  '@lucide/vue@1.37.0(vue@3.5.42(typescript@6.0.3))':
+  '@lucide/vue@1.39.0(vue@3.5.42(typescript@6.0.3))':
     dependencies:
       vue: 3.5.42(typescript@6.0.3)
 
