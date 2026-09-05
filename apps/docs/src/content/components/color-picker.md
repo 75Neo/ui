@@ -2,7 +2,6 @@
 name: ColorPicker
 key: colorPicker
 module: color-picker
-order: 10
 summary: An inline color picker across three sizes and seven accents, with an alpha channel, an eyedropper and preset swatches.
 ---
 

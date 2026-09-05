@@ -2,7 +2,6 @@
 name: Pagination
 key: pagination
 module: pagination
-order: 34
 summary: The row of page numbers and the arrows either side, across three sizes and seven accents, as buttons or as links.
 ---
 

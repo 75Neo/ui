@@ -2,7 +2,6 @@
 name: Main
 key: main
 module: main
-order: 24
 summary: The page's content region, tall enough to push a Footer to the bottom of the screen.
 ---
 

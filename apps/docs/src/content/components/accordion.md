@@ -2,7 +2,6 @@
 name: Accordion
 key: accordion
 module: accordion
-order: 3
 summary: Three variants across three sizes, wrapping Ark UI for keyboard and ARIA behaviour.
 ---
 

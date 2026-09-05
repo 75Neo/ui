@@ -15,20 +15,32 @@
  * application would: by redefining `--ui-*` after the import. Nothing else changes.
  */
 :root {
-  --ui-container: 84rem;
+  --ui-container: 90rem;
 }
 
 @theme {
   --font-sans:
     "Geist Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
   --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /*
+   * Shadows are tinted with the theme's own neutral, so they read as the same light
+   * source in both light and dark rather than as grey haze on grey.
+   */
+  --shadow-panel:
+    0 1px 2px 0 color-mix(in oklab, var(--ui-text) 8%, transparent),
+    0 24px 60px -20px color-mix(in oklab, var(--ui-text) 28%, transparent);
+
+  /* One z-index scale for the whole site. */
+  --z-index-header: 20;
+  --z-index-skip-link: 30;
 }
 
 @layer base {
   /*
-   * The page itself animates nothing. The only thing allowed to move is a component
-   * specimen, so any motion a reader sees belongs to the library rather than to the
-   * page around it. This block is motion suppression, not motion.
+   * The page itself animates nothing. The only things allowed to move are a component
+   * specimen and the crossfade between two pages, so any other motion a reader sees
+   * belongs to the library rather than to the page around it.
    */
   @media (prefers-reduced-motion: reduce) {
     *,
@@ -59,7 +71,73 @@
 
   /* Anchored headings land below the sticky header rather than under it. */
   [id] {
-    scroll-margin-top: 6rem;
+    scroll-margin-top: 5.5rem;
+  }
+
+  /*
+   * The two sticky columns scroll on their own, and a browser scrollbar in each one
+   * would put three of them on the page at once. Thin and untinted until the pointer is
+   * over the column.
+   */
+  [data-page-nav],
+  [data-page-nav] ~ aside {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+
+  [data-page-nav]:hover,
+  [data-page-nav] ~ aside:hover {
+    scrollbar-color: var(--ui-border-accented) transparent;
+  }
+}
+
+@layer components {
+  /*
+   * The page navigation is a column above `lg` and a disclosure below it.
+   *
+   * Written here rather than as a `hidden` attribute the button toggles, because
+   * Tailwind's preflight hides `[hidden]` with `!important` and no responsive utility
+   * can climb back over that at the wide viewport where the column is permanent.
+   */
+  [data-page-nav] {
+    display: none;
+  }
+
+  [data-page-nav][data-open="true"] {
+    display: block;
+  }
+
+  @media (width >= 64rem) {
+    [data-page-nav] {
+      display: block;
+    }
+  }
+
+  /*
+   * The current row of the sidebar. Painted from the attribute rather than from a class
+   * because the sidebar is carried across client-side navigations to keep its scroll
+   * position, so a script moves the highlight afterwards and an attribute is all it can
+   * reach for.
+   */
+  [data-page-nav] a[aria-current="page"] {
+    background-color: var(--ui-bg-elevated);
+    color: var(--ui-text-highlighted);
+    font-weight: 500;
+  }
+
+  /*
+   * A segment is active when its value matches `data-theme` on the root element. CSS
+   * cannot compare two attributes to each other, so the pairs are written out; in
+   * exchange the active segment is right on first paint, before any script runs.
+   */
+  :root[data-theme="light"] [data-theme-option="light"],
+  :root[data-theme="dark"] [data-theme-option="dark"],
+  :root[data-theme="auto"] [data-theme-option="auto"],
+  .shadow-segment {
+    background-color: var(--ui-bg);
+    color: var(--ui-text-highlighted);
+    /* Tinted to the theme's own neutral rather than a generic black. */
+    box-shadow: 0 1px 2px -1px color-mix(in oklab, var(--ui-text) 22%, transparent);
   }
 }
 
@@ -73,7 +151,7 @@
     color: var(--ui-text-muted);
     font-size: 0.9375rem;
     line-height: 1.75;
-    max-width: 68ch;
+    max-width: 70ch;
   }
 
   .prose > * + * {
@@ -89,7 +167,7 @@
   }
 
   .prose h2 {
-    font-size: 1.375rem;
+    font-size: 1.3125rem;
     margin-top: 3rem;
   }
 
@@ -150,7 +228,7 @@
    */
   .prose pre {
     border: 1px solid var(--ui-border-muted);
-    border-radius: 0.5rem;
+    border-radius: 0.75rem;
     font-size: 0.8125rem;
     line-height: 1.7;
     overflow-x: auto;
@@ -194,23 +272,6 @@
 
 @layer components {
   /*
-   * A segment is active when its value matches `data-theme` on the root element. CSS
-   * cannot compare two attributes to each other, so the pairs are written out; in
-   * exchange the active segment is right on first paint, before any script runs.
-   */
-  :root[data-theme="light"] [data-theme-option="light"],
-  :root[data-theme="dark"] [data-theme-option="dark"],
-  :root[data-theme="auto"] [data-theme-option="auto"],
-  .shadow-segment {
-    background-color: var(--ui-bg);
-    color: var(--ui-text-highlighted);
-    /* Tinted to the theme's own neutral rather than a generic black. */
-    box-shadow: 0 1px 2px -1px color-mix(in oklab, var(--ui-text) 22%, transparent);
-  }
-}
-
-@layer components {
-  /*
    * A component is shown against the page's own background, with a dot grid for a
    * floor. Written here rather than as utilities because the grid is a paint, not a
    * layout.
@@ -239,4 +300,27 @@
     background-position: -0.5px -0.5px;
     background-size: 0.5rem 0.5rem;
   }
+
+  /*
+   * A specimen on the components index is a real component rendered at real size, in a
+   * box that is the same height on every card. Anything taller is cut off rather than
+   * scaled, and faded out at the cut so the crop reads as deliberate.
+   */
+  [data-thumbnail] {
+    mask-image: linear-gradient(to bottom, black 60%, transparent);
+  }
+}
+
+/*
+ * Client-side navigation. `ClientRouter` opts the site into view transitions and brings
+ * its own crossfade; the only thing changed here is how long it lasts. A documentation
+ * site is read by moving between pages quickly, and the default is long enough to be
+ * felt as a delay rather than as continuity.
+ *
+ * Outside a cascade layer, because Astro's own transition rules are not in one either
+ * and a layered rule would lose to them.
+ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 120ms;
 }

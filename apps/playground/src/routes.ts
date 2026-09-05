@@ -8,7 +8,7 @@ export interface PreviewRoute {
   key: string;
 }
 
-export const previews: readonly PreviewRoute[] = [
+const routes: readonly PreviewRoute[] = [
   {
     href: "/accordion",
     label: "Accordion",
@@ -407,3 +407,15 @@ export const previews: readonly PreviewRoute[] = [
     key: "toast",
   },
 ];
+
+/**
+ * Every component page, in alphabetical order.
+ *
+ * @remarks
+ * Sorted here rather than kept sorted by hand, so adding a route is appending to the
+ * array above and nothing else. The sidebar, the search dialog and the index all read
+ * this one list.
+ */
+export const previews: readonly PreviewRoute[] = [...routes].sort((a, b) =>
+  a.label.localeCompare(b.label),
+);

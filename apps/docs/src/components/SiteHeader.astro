@@ -1,0 +1,91 @@
+---
+import { PanelLeft } from "@lucide/astro";
+import FrameworkSwitch from "./FrameworkSwitch.astro";
+import Search from "./Search.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+import { shell } from "../lib/layout";
+import { type Framework, docHref } from "../lib/framework";
+import type { SearchEntry } from "../lib/search";
+
+/**
+ * The one bar across the top of every page.
+ *
+ * @remarks
+ * It is the only chrome the landing page and the documentation share, so it takes the
+ * framework as optional: without one there is nothing for the switcher to switch, and
+ * the navigation points at React because the redirect at `/docs` does too.
+ */
+interface Props {
+  framework?: Framework;
+  /** The path the reader is on, so one navigation link can be marked current. */
+  path: string;
+  entries: SearchEntry[];
+  /** Whether the page has a sidebar the narrow layout needs a button for. */
+  hasSidebar?: boolean;
+}
+
+const { framework, path, entries, hasSidebar = false } = Astro.props;
+const target = framework ?? "react";
+
+const nav = [
+  { href: docHref(target, "getting-started"), label: "Docs" },
+  { href: docHref(target, "components"), label: "Components" },
+];
+---
+
+<header
+  class="bg-default/85 border-muted sticky top-0 z-header h-14 border-b backdrop-blur-md"
+>
+  <div class={`${shell} flex h-full items-center gap-3`}>
+    {
+      hasSidebar && (
+        <button
+          type="button"
+          data-nav-toggle
+          aria-expanded="false"
+          aria-controls="page-nav"
+          class="text-muted hover:text-highlighted border-muted -ml-1 grid size-8 cursor-pointer place-items-center rounded-lg border lg:hidden"
+        >
+          <PanelLeft size={15} aria-hidden="true" />
+          <span class="sr-only">Navigation</span>
+        </button>
+      )
+    }
+
+    <a
+      href="/"
+      class="hover:text-highlighted -mx-2 flex shrink-0 items-center gap-2.5 rounded-lg px-2 py-1.5"
+    >
+      <img src="/logo-brand.svg" alt="" width="22" height="22" class="rounded-[0.35rem]" />
+      <span class="text-highlighted text-sm font-semibold tracking-[-0.015em]">75NeoUI</span>
+    </a>
+
+    <nav aria-label="Sections" class="ml-2 hidden items-center gap-1 md:flex">
+      {
+        nav.map(({ href, label }) => (
+          <a
+            href={href}
+            aria-current={path.startsWith(href) ? "page" : undefined}
+            class="text-muted hover:text-highlighted aria-[current]:text-highlighted rounded-lg px-2.5 py-1.5 text-[0.8125rem] aria-[current]:font-medium"
+          >
+            {label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="ml-auto flex min-w-0 items-center gap-2 sm:gap-3">
+      <Search entries={entries} />
+      {framework && <FrameworkSwitch framework={framework} path={path} />}
+      {/* Lucide dropped its brand icons, so this one stays a word. */}
+      <a
+        href="https://github.com/75Neo/ui"
+        class="text-dimmed hover:text-highlighted hidden rounded-sm font-mono text-xs lg:inline"
+        data-identifier
+      >
+        github
+      </a>
+      <ThemeToggle />
+    </div>
+  </div>
+</header>

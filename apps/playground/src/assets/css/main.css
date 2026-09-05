@@ -14,7 +14,7 @@
  * application would: by redefining `--ui-*` after the import. Nothing else changes.
  */
 :root {
-  --ui-container: 88rem;
+  --ui-container: 100rem;
 }
 
 @theme {
@@ -22,18 +22,17 @@
     "Geist Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
   --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
-  /*
-   * Shadows are tinted with the theme's own neutral, so they read as the same
-   * light source in both light and dark rather than as grey haze on grey.
-   */
-  --shadow-stage:
-    0 1px 2px 0 color-mix(in oklab, var(--ui-text) 8%, transparent),
-    0 10px 28px -14px color-mix(in oklab, var(--ui-text) 16%, transparent);
-
   /* One z-index scale for the whole playground. */
-  --z-index-stage-tab: 1;
   --z-index-header: 20;
   --z-index-skip-link: 30;
+
+  /*
+   * The one shadow on the page, tinted with the theme's own neutral so it reads as the
+   * same light source in both light and dark rather than as grey haze on grey.
+   */
+  --shadow-panel:
+    0 1px 2px 0 color-mix(in oklab, var(--ui-text) 8%, transparent),
+    0 24px 60px -20px color-mix(in oklab, var(--ui-text) 28%, transparent);
 }
 
 @layer base {
@@ -74,6 +73,59 @@
   ::selection {
     background-color: color-mix(in oklab, var(--ui-primary) 20%, transparent);
     color: var(--ui-text-highlighted);
+  }
+
+  /* Anchored headings land below the sticky header rather than under it. */
+  [id] {
+    scroll-margin-top: 5.5rem;
+  }
+
+  /*
+   * The page column scrolls on its own, and a second browser scrollbar beside the
+   * page's would be one too many. Thin, and untinted until the pointer is over it.
+   */
+  [data-page-nav] {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+
+  [data-page-nav]:hover {
+    scrollbar-color: var(--ui-border-accented) transparent;
+  }
+}
+
+@layer components {
+  /*
+   * The page list is a column above `lg` and a disclosure below it.
+   *
+   * Written here rather than as a `hidden` attribute the button toggles, because
+   * Tailwind's preflight hides `[hidden]` with `!important` and no responsive utility
+   * can climb back over that at the wide viewport where the column is permanent.
+   */
+  [data-page-nav] {
+    display: none;
+  }
+
+  [data-page-nav][data-open="true"] {
+    display: block;
+  }
+
+  @media (width >= 64rem) {
+    [data-page-nav] {
+      display: block;
+    }
+  }
+
+  /*
+   * The current row of the page list. Painted from the attribute rather than from a
+   * class because the column is carried across client-side navigations to keep its
+   * scroll position, so a script moves the highlight afterwards and an attribute is all
+   * it can reach for.
+   */
+  [data-page-nav] a[aria-current="page"] {
+    background-color: var(--ui-bg-elevated);
+    color: var(--ui-text-highlighted);
+    font-weight: 500;
   }
 }
 
@@ -133,4 +185,18 @@
       -0.25rem 0;
     background-size: 0.5rem 0.5rem;
   }
+}
+
+/*
+ * Client-side navigation. `ClientRouter` opts the playground into view transitions and
+ * brings its own crossfade; the only thing changed here is how long it lasts. This is a
+ * workbench, walked component by component, and the default is long enough to be felt
+ * as a delay rather than as continuity.
+ *
+ * Outside a cascade layer, because Astro's own transition rules are not in one either
+ * and a layered rule would lose to them.
+ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 120ms;
 }

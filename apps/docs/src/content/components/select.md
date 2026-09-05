@@ -2,7 +2,6 @@
 name: Select
 key: select
 module: select
-order: 29
 summary: A button holding the current answer and the list it opens, across three sizes and seven accents, single or multiple.
 ---
 

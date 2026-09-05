@@ -1,9 +1,10 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import "../assets/css/main.css";
-import FrameworkSwitch from "../components/FrameworkSwitch.astro";
-import ThemeToggle from "../components/ThemeToggle.astro";
+import SiteHeader from "../components/SiteHeader.astro";
 import { shell } from "../lib/layout";
-import { type Framework, docHref } from "../lib/framework";
+import type { Framework } from "../lib/framework";
+import type { SearchEntry } from "../lib/search";
 
 interface Props {
   title: string;
@@ -13,21 +14,27 @@ interface Props {
    * neither, and where the switcher would have nothing to switch.
    */
   framework?: Framework;
+  /** Every page the search dialog can reach from here. */
+  entries: SearchEntry[];
+  /** Whether the page has a sidebar the narrow layout needs a button for. */
+  hasSidebar?: boolean;
+  /**
+   * Whether to close the page with the site footer. The documentation shell fills the
+   * viewport and scrolls its middle column, so a footer under it would only ever be
+   * reachable by scrolling past the end of an article.
+   */
+  footer?: boolean;
 }
 
-const { title, description, framework } = Astro.props;
+const {
+  title,
+  description,
+  framework,
+  entries,
+  hasSidebar = false,
+  footer = false,
+} = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
-
-// The header keeps the reader inside the framework they are already reading.
-const nav = framework
-  ? [
-      { href: docHref(framework, "getting-started"), label: "Getting started" },
-      { href: docHref(framework, "components"), label: "Components" },
-    ]
-  : [
-      { href: docHref("react", "getting-started"), label: "Getting started" },
-      { href: docHref("react", "components"), label: "Components" },
-    ];
 ---
 
 <html lang="en">
@@ -43,6 +50,16 @@ const nav = framework
     <link rel="icon" href="/logo-brand.svg" type="image/svg+xml" />
     <link rel="icon" href="/logo-brand.png" type="image/png" sizes="512x512" />
     <link rel="apple-touch-icon" href="/logo-brand.png" />
+
+    {
+      /*
+       * Client-side routing. A navigation swaps the head and the body and leaves the
+       * root element alone, which is where the theme lives, so the page never repaints
+       * from scratch and never flashes the wrong theme on the way.
+       */
+    }
+    <ClientRouter />
+
     <script is:inline>
       // Runs before first paint so the page never flashes the wrong theme.
       (() => {
@@ -63,137 +80,129 @@ const nav = framework
     </script>
   </head>
 
-  <body class="bg-default text-default flex min-h-dvh flex-col font-sans antialiased">
+  <body class="bg-muted text-default font-sans antialiased">
     <a
       href="#content"
-      class="bg-inverted text-inverted sr-only rounded-md px-4 py-2 text-sm font-medium focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-30"
+      class="bg-inverted text-inverted sr-only rounded-lg px-4 py-2 text-sm font-medium focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-skip-link"
     >
       Skip to content
     </a>
 
-    <header
-      class="bg-default/80 border-muted sticky top-0 z-20 border-b backdrop-blur-md"
-    >
-      <div class={`${shell} flex min-h-14 items-center gap-x-6`}>
-        <a
-          href="/"
-          class="group hover:text-highlighted -mx-2 flex shrink-0 items-center gap-2.5 rounded-md px-2 py-1.5"
-        >
-          <img src="/logo-brand.svg" alt="" width="22" height="22" class="rounded-[0.3rem]" />
-          <span class="text-highlighted text-sm font-semibold tracking-[-0.01em]">75NeoUI</span>
-        </a>
-
-        <nav aria-label="Documentation" class="hidden gap-1 sm:flex">
-          {
-            nav.map(({ href, label }) => (
-              <a
-                href={href}
-                aria-current={path === href ? "page" : undefined}
-                class:list={[
-                  "rounded-md px-2.5 py-1.5 text-sm",
-                  path === href
-                    ? "text-highlighted font-medium"
-                    : "text-muted hover:text-highlighted",
-                ]}
-              >
-                {label}
-              </a>
-            ))
-          }
-        </nav>
-
-        <div class="ml-auto flex items-center gap-3 sm:gap-4">
-          {framework && <FrameworkSwitch framework={framework} path={path} />}
-          {/* Lucide dropped its brand icons, so this one stays a word. */}
-          <a
-            href="https://github.com/75Neo/ui"
-            class="text-muted hover:text-highlighted hidden rounded-sm font-mono text-xs sm:inline"
-            data-identifier
-          >
-            github
-          </a>
-          <ThemeToggle />
-        </div>
-      </div>
-
-      <nav aria-label="Documentation" class="border-muted border-t sm:hidden">
-        <div class={`${shell} -mb-px flex gap-1 overflow-x-auto`}>
-          {
-            nav.map(({ href, label }) => (
-              <a
-                href={href}
-                aria-current={path === href ? "page" : undefined}
-                class:list={[
-                  "border-b-2 px-2.5 py-2.5 text-sm whitespace-nowrap",
-                  path === href
-                    ? "border-primary text-highlighted font-medium"
-                    : "text-muted hover:text-highlighted border-transparent",
-                ]}
-              >
-                {label}
-              </a>
-            ))
-          }
-        </div>
-      </nav>
-    </header>
+    <SiteHeader framework={framework} path={path} entries={entries} hasSidebar={hasSidebar} />
 
     <slot />
 
-    <footer class="border-muted mt-auto border-t">
-      <div
-        class={`${shell} flex flex-wrap items-center justify-between gap-x-8 gap-y-3 py-8`}
-      >
-        <p class="text-dimmed max-w-[58ch] text-xs/6">
-          Every props table on this site is read out of <code
-            class="text-muted"
-            data-identifier>packages/*/src</code
-          > at build time, so a renamed prop changes the docs or fails the build.
-        </p>
-        <a
-          href="https://github.com/75Neo/ui"
-          class="text-muted hover:text-highlighted rounded-sm font-mono text-xs"
-          data-identifier
-        >
-          github.com/75Neo/ui
-        </a>
-      </div>
-    </footer>
+    {
+      footer && (
+        <footer class="border-muted border-t">
+          <div class={`${shell} flex flex-wrap items-center justify-between gap-x-8 gap-y-3 py-8`}>
+            <p class="text-dimmed max-w-[58ch] text-xs/6">
+              Every props table on this site is read out of{" "}
+              <code class="text-muted" data-identifier>
+                packages/*/src
+              </code>{" "}
+              at build time, so a renamed prop changes the docs or fails the build.
+            </p>
+            <a
+              href="https://github.com/75Neo/ui"
+              class="text-muted hover:text-highlighted rounded-sm font-mono text-xs"
+              data-identifier
+            >
+              github.com/75Neo/ui
+            </a>
+          </div>
+        </footer>
+      )
+    }
 
-    <script is:inline>
-      (() => {
-        const root = document.documentElement;
-        const media = window.matchMedia("(prefers-color-scheme: dark)");
+    <script>
+      /**
+       * The chrome's two stateful controls, bound once for the whole visit.
+       *
+       * @remarks
+       * Everything here is delegated from `document`, because client-side navigation
+       * replaces the body and would otherwise leave every listener attached to an
+       * element no longer on the page.
+       *
+       * The choice itself is held here rather than read back off the root element,
+       * because a swap rewrites the root element's attributes from the incoming
+       * document: `data-theme` and the `dark` class are both gone by the time the new
+       * page is in place. So they are put back on `astro:after-swap`, which runs before
+       * the browser paints, and the reader never sees the light theme flash past.
+       */
+      const root = document.documentElement;
+      const media = window.matchMedia("(prefers-color-scheme: dark)");
 
-        const paint = () => {
-          root.classList.toggle(
-            "dark",
-            root.dataset.theme === "dark"
-              || (root.dataset.theme === "auto" && media.matches),
-          );
-          for (const button of document.querySelectorAll("[data-theme-option]")) {
-            button.setAttribute(
-              "aria-pressed",
-              String(root.dataset.theme === button.dataset.themeOption),
-            );
+      /** `"light"`, `"dark"` or `"auto"`. */
+      let theme = root.dataset.theme ?? "auto";
+
+      const apply = () => {
+        root.dataset.theme = theme;
+        root.classList.toggle("dark", theme === "dark" || (theme === "auto" && media.matches));
+
+        for (const button of document.querySelectorAll<HTMLElement>("[data-theme-option]")) {
+          button.setAttribute("aria-pressed", String(theme === button.dataset.themeOption));
+        }
+      };
+
+      /*
+       * The sidebar is carried across navigations so its scroll position survives, which
+       * means the row it marks as current is the one from the page before. Nothing else
+       * on the page needs this: everything else is rendered fresh by the swap.
+       */
+      const markCurrent = () => {
+        const here = window.location.pathname.replace(/\/$/, "") || "/";
+        for (const link of document.querySelectorAll<HTMLAnchorElement>("[data-page-nav] a")) {
+          const href = new URL(link.href).pathname.replace(/\/$/, "") || "/";
+          if (href === here) link.setAttribute("aria-current", "page");
+          else link.removeAttribute("aria-current");
+        }
+      };
+
+      document.addEventListener("click", (event) => {
+        const target = event.target as HTMLElement | null;
+
+        const option = target?.closest<HTMLElement>("[data-theme-option]");
+        if (option?.dataset.themeOption) {
+          theme = option.dataset.themeOption;
+          try {
+            localStorage.setItem("neo-theme", theme);
+          } catch {
+            // Nothing to persist to; the choice still applies to this visit.
           }
-        };
-
-        for (const button of document.querySelectorAll("[data-theme-option]")) {
-          button.addEventListener("click", () => {
-            root.dataset.theme = button.dataset.themeOption;
-            try {
-              localStorage.setItem("neo-theme", button.dataset.themeOption);
-            } catch {
-              // Nothing to persist to; the choice still applies to this page.
-            }
-            paint();
-          });
+          apply();
+          return;
         }
 
-        media.addEventListener("change", paint);
-        paint();
-      })();
+        const toggle = target?.closest<HTMLElement>("[data-nav-toggle]");
+        if (toggle) {
+          const panel = document.querySelector<HTMLElement>("[data-page-nav]");
+          if (!panel) return;
+          const open = panel.dataset.open !== "true";
+          panel.dataset.open = String(open);
+          toggle.setAttribute("aria-expanded", String(open));
+          return;
+        }
+
+        // A tap on a link inside the narrow-layout navigation puts it away again.
+        if (target?.closest("[data-page-nav] a")) {
+          const panel = document.querySelector<HTMLElement>("[data-page-nav]");
+          const button = document.querySelector<HTMLElement>("[data-nav-toggle]");
+          if (panel && window.matchMedia("(width < 64rem)").matches) {
+            panel.dataset.open = "false";
+            button?.setAttribute("aria-expanded", "false");
+          }
+        }
+      });
+
+      media.addEventListener("change", apply);
+      document.addEventListener("astro:after-swap", () => {
+        apply();
+        markCurrent();
+      });
+
+      apply();
+      markCurrent();
     </script>
   </body>
 </html>

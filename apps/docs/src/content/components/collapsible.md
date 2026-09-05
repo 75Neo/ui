@@ -2,7 +2,6 @@
 name: Collapsible
 key: collapsible
 module: collapsible
-order: 9
 summary: One trigger and the panel it opens, across three variants and three sizes, with a collapsed height that turns it into a show-more.
 ---
 

@@ -1,8 +1,9 @@
 ---
-import { ArrowRight } from "@lucide/astro";
 import Doc from "../../../../layouts/Doc.astro";
-import { componentHref, documentedComponents } from "../../../../lib/components";
+import ComponentCard from "../../../../components/ComponentCard.astro";
+import { documentedComponents } from "../../../../lib/components";
 import { componentLinks } from "../../../../lib/navigation";
+import { searchIndex } from "../../../../lib/search";
 import { type Framework, frameworkFacts, frameworks } from "../../../../lib/framework";
 
 export function getStaticPaths() {
@@ -16,34 +17,17 @@ const components = await documentedComponents();
 ---
 
 <Doc
-  eyebrow="reference"
   title="Components"
-  description={`Every component has a page of its own, with a live specimen and an API read out of the source at build time. Props, variant values and slot names come from each package's src rather than from prose, and every specimen is ${facts.package} rendering for real.`}
+  description={`Every component has a page of its own, with a live specimen and an API read out of the source at build time. The card below each name is ${facts.package} rendering for real, so it carries the same classes and the same slot names the page it links to documents.`}
   framework={framework}
   components={componentLinks(framework, components)}
   headings={[]}
+  entries={searchIndex(framework, components)}
 >
-  <ul>
+  <ul class="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
     {
-      components.map(({ entry, api, slug }) => (
-        <li>
-          <a
-            href={componentHref(framework, slug)}
-            class="group border-muted grid items-baseline gap-x-10 gap-y-2 border-b py-7 first:border-t lg:grid-cols-[11rem_minmax(0,1fr)_auto]"
-          >
-            <h2 class="text-highlighted group-hover:text-primary text-xl font-medium tracking-[-0.02em]">
-              {entry.data.name}
-            </h2>
-            <p class="text-muted max-w-[58ch] text-sm/6 text-pretty">{entry.data.summary}</p>
-            <span
-              class="text-dimmed group-hover:text-primary flex items-center gap-2 font-mono text-xs lg:justify-end"
-              data-identifier
-            >
-              {api.slots.length} slots
-              <ArrowRight size={13} aria-hidden="true" />
-            </span>
-          </a>
-        </li>
+      components.map((component) => (
+        <ComponentCard component={component} framework={framework} />
       ))
     }
   </ul>

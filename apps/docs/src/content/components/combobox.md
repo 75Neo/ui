@@ -2,7 +2,6 @@
 name: Combobox
 key: combobox
 module: combobox
-order: 11
 summary: A field that filters a list as it is typed into, across three sizes and seven accents, single or multiple.
 ---
 

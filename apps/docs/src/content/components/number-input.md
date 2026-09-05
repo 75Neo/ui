@@ -2,7 +2,6 @@
 name: NumberInput
 key: numberInput
 module: number-input
-order: 30
 summary: A field holding one number and the two buttons that step it, in a row or a column, across three sizes and seven accents.
 ---
 

@@ -2,7 +2,6 @@
 name: PinInput
 key: pinInput
 module: pin-input
-order: 31
 summary: A row of one-character boxes holding a short code, across three sizes and seven accents, in digits or letters.
 ---
 

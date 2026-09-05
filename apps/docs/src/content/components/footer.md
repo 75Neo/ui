@@ -2,7 +2,6 @@
 name: Footer
 key: footer
 module: footer
-order: 26
 summary: Three regions in a row plus two full-bleed bands, reordered so a phone stacks the links above the copyright.
 ---
 

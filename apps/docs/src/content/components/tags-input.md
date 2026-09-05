@@ -2,7 +2,6 @@
 name: TagsInput
 key: tagsInput
 module: tags-input
-order: 32
 summary: A field whose answers stay in it as chips, across three sizes and seven accents, with a limit and a rule about what counts.
 ---
 

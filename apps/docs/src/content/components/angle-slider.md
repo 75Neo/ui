@@ -2,7 +2,6 @@
 name: AngleSlider
 key: angleSlider
 module: angle-slider
-order: 5
 summary: A circular dial for picking a rotation, across three sizes and seven colors, with markers and a live readout.
 ---
 

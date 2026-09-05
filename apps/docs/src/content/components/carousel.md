@@ -2,7 +2,6 @@
 name: Carousel
 key: carousel
 module: carousel
-order: 4
 summary: A looping, autoplaying slideshow with keyboard, drag and indicator navigation, wrapping Ark UI.
 ---
 

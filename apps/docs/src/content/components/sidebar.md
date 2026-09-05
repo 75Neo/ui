@@ -2,7 +2,6 @@
 name: Sidebar
 key: sidebar
 module: sidebar
-order: 28
 summary: A collapsing column beside the page across three looks and three collapse modes, sliding in over the page on a phone.
 ---
 

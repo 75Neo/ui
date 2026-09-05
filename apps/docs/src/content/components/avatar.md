@@ -2,7 +2,6 @@
 name: Avatar
 key: avatar
 module: avatar
-order: 2
 summary: Nine sizes across two shapes and seven colors, with an image, a fallback, and a slot for a framework image component.
 ---
 

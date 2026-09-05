@@ -1,13 +1,22 @@
 ---
-import { BookOpen, Boxes } from "@lucide/astro";
 import { type Framework, docHref } from "../lib/framework";
 import type { SidebarLink } from "../lib/navigation";
 
+/**
+ * The column of every page in the documentation.
+ *
+ * @remarks
+ * The current row is marked with `aria-current` and painted from it, rather than from a
+ * class decided here. That matters because this element is carried across client-side
+ * navigations to keep its scroll position: the markup that arrives with the new page is
+ * discarded, so the only thing that can move the highlight afterwards is an attribute a
+ * script can set.
+ */
 interface Props {
   framework: Framework;
   /** The components section, one row per documented component. */
   components: SidebarLink[];
-  /** The path the reader is on, so one row can be marked current. */
+  /** The path the reader is on, so one row is already current on first paint. */
   path: string;
 }
 
@@ -15,50 +24,36 @@ const { framework, components, path } = Astro.props;
 
 const sections = [
   {
-    label: "Guides",
-    icon: BookOpen,
-    links: [{ href: docHref(framework, "getting-started"), label: "Getting started" }],
+    label: "Sections",
+    links: [
+      { href: docHref(framework, "getting-started"), label: "Getting started" },
+      { href: docHref(framework, "components"), label: "Components" },
+    ],
   },
-  {
-    label: "Components",
-    icon: Boxes,
-    links: components,
-  },
+  { label: "Components", links: components },
 ];
-
-const heading = "text-dimmed flex items-center gap-2 font-mono text-xs";
 ---
 
-<nav aria-label="Documentation" class="flex flex-col gap-7">
+<nav aria-label="Documentation" class="flex flex-col gap-6 pb-10 lg:pt-6">
   {
-    sections.map(({ label, icon: Icon, links }) => (
+    sections.map(({ label, links }) => (
       <div>
-        <p class={heading} data-identifier>
-          <Icon size={13} aria-hidden="true" />
+        <p class="text-dimmed px-2.5 pb-1.5 font-mono text-[0.6875rem]" data-identifier>
           {label.toLowerCase()}
         </p>
 
-        <ul class="mt-2.5 flex flex-col">
-          {links.map(({ href, label: link }) => {
-            const current = path === href;
-
-            return (
-              <li>
-                <a
-                  href={href}
-                  aria-current={current ? "page" : undefined}
-                  class:list={[
-                    "block truncate rounded-md py-1.5 text-sm",
-                    current
-                      ? "text-highlighted font-medium"
-                      : "text-muted hover:text-highlighted",
-                  ]}
-                >
-                  {link}
-                </a>
-              </li>
-            );
-          })}
+        <ul class="flex flex-col gap-px">
+          {links.map(({ href, label: link }) => (
+            <li>
+              <a
+                href={href}
+                aria-current={path === href ? "page" : undefined}
+                class="text-muted hover:text-highlighted hover:bg-elevated/60 block truncate rounded-lg px-2.5 py-1.5 text-[0.8125rem]"
+              >
+                {link}
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
     ))

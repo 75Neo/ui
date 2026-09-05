@@ -12,17 +12,22 @@ export interface DocumentedComponent {
 }
 
 /**
- * Every documented component, in the order the content files ask for.
+ * Every documented component, in alphabetical order.
  *
  * @remarks
  * The Markdown drives the list. Adding a component to the docs is adding one file, and
  * the API tables follow from the three coordinates in its frontmatter.
+ *
+ * The order is the name's, not a number in the frontmatter. A reference of this size is
+ * scanned for a component someone already knows the name of, and an order written by
+ * hand is one more thing per file to keep true; it also decided the previous and next
+ * links, which then walked the list in an order the sidebar did not show.
  */
 export async function documentedComponents(): Promise<DocumentedComponent[]> {
   const entries = await getCollection("components");
 
   return entries
-    .sort((a, b) => a.data.order - b.data.order)
+    .sort((a, b) => a.data.name.localeCompare(b.data.name))
     .map((entry) => ({
       entry,
       slug: entry.id,

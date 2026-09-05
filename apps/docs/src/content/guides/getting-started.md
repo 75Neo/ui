@@ -1,6 +1,5 @@
 ---
 title: Getting started
-eyebrow: guide
 description: One package, one stylesheet import, and a component on the page. Then the three ways to restyle it, from broadest to narrowest.
 ---
 

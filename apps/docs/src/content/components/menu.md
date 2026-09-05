@@ -2,7 +2,6 @@
 name: Menu
 key: menu
 module: menu
-order: 33
 summary: The panel a trigger drops, from one flat array of rows, with headings, ticks, links and submenus to any depth.
 ---
 

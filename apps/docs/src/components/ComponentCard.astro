@@ -1,0 +1,66 @@
+---
+import Thumbnail from "./Thumbnail.astro";
+import { componentHref } from "../lib/components";
+import { hasPreview } from "../lib/previews";
+import type { DocumentedComponent } from "../lib/components";
+import type { Framework } from "../lib/framework";
+
+/**
+ * One component on a wall of them: its name, its line, and a picture of it.
+ *
+ * @remarks
+ * The picture is the component itself, rendered and then scaled down, rather than a
+ * drawing of one. It lays out in half again the card's width and is scaled to two
+ * thirds, so a specimen that would wrap at card width keeps the proportions it has on
+ * its own page and every card is reduced by the same amount.
+ *
+ * Nothing in the picture is reachable: it is inert and hidden from the accessibility
+ * tree, and the name above it carries a stretched link so the whole card is one target
+ * without a specimen's own buttons ending up inside it.
+ */
+interface Props {
+  component: DocumentedComponent;
+  framework: Framework;
+  /**
+   * Heading level, so a card can sit under an `h1` or under an `h2`.
+   *
+   * @remarks
+   * Not spelled `as`, which is the name this would have anywhere else: `astro check`
+   * loses the link between `Props` and `Astro.props` when it meets a prop by that name,
+   * and reports the interface as unused.
+   */
+  level?: "h2" | "h3";
+}
+
+const { component, framework, level: Heading = "h2" } = Astro.props;
+const { entry, api, slug } = component;
+---
+
+<li class="border-muted hover:border-accented relative flex flex-col overflow-hidden rounded-xl border">
+  <div class="px-4 pt-4 pb-3.5">
+    <Heading class="text-highlighted text-[0.9375rem] font-medium tracking-[-0.01em]">
+      <a href={componentHref(framework, slug)} class="after:absolute after:inset-0">
+        {entry.data.name}
+      </a>
+    </Heading>
+    <p class="text-dimmed mt-1 line-clamp-2 text-xs/5 text-pretty">{entry.data.summary}</p>
+  </div>
+
+  <div data-stage data-thumbnail class="border-muted mt-auto h-36 overflow-hidden border-t">
+    {
+      hasPreview(entry.data.name) ? (
+        <div
+          aria-hidden="true"
+          inert
+          class="pointer-events-none flex h-[13.85rem] w-[154%] origin-top-left scale-[0.65] items-center justify-center px-6"
+        >
+          <Thumbnail name={entry.data.name} framework={framework} />
+        </div>
+      ) : (
+        <p class="text-dimmed grid h-full place-items-center font-mono text-xs" data-identifier>
+          {api.slots.length} slots
+        </p>
+      )
+    }
+  </div>
+</li>

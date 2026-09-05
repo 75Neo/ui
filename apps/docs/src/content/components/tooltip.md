@@ -2,7 +2,6 @@
 name: Tooltip
 key: tooltip
 module: tooltip
-order: 16
 summary: A bubble that appears beside whatever it explains, across three sizes and twelve placements, with an optional arrow.
 ---
 

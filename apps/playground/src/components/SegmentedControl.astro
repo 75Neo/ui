@@ -2,22 +2,25 @@
 /**
  * A labelled group of exclusive options whose current value lives on the
  * `<html>` element as `data-{name}`. The active segment is painted by attribute
- * selectors in `main.css`, so it is correct on first paint with no JavaScript.
+ * selectors in `main.css`, so it is correct on first paint with no JavaScript and
+ * survives a client-side navigation without anything repainting it.
  */
 interface Props {
   /** Root data attribute this control writes, e.g. `theme` → `data-theme`. */
   name: string;
   label: string;
   options: readonly { value: string; label: string }[];
+  /** Where the control is shown, for the ones a narrow header has no room for. */
+  class?: string;
 }
 
-const { name, label, options } = Astro.props;
+const { name, label, options, class: className } = Astro.props;
 ---
 
-<div class="flex items-center gap-2">
+<div class:list={["flex items-center gap-2", className]}>
   <span
     id={`${name}-label`}
-    class="text-dimmed hidden font-mono text-[0.6875rem] sm:inline"
+    class="text-dimmed hidden font-mono text-[0.6875rem] xl:inline"
     data-identifier
   >
     {label}
@@ -25,7 +28,7 @@ const { name, label, options } = Astro.props;
   <div
     role="group"
     aria-labelledby={`${name}-label`}
-    class="border-muted bg-muted flex gap-px rounded-md border p-px"
+    class="border-muted bg-elevated/60 flex items-center gap-px rounded-lg border p-px"
   >
     {
       options.map((option) => (
@@ -34,7 +37,7 @@ const { name, label, options } = Astro.props;
           data-control={name}
           data-option={`${name}:${option.value}`}
           data-value={option.value}
-          class="text-muted hover:text-highlighted cursor-pointer rounded-sm px-2 py-1 font-mono text-[0.6875rem] leading-none"
+          class="text-dimmed hover:text-toned cursor-pointer rounded-[0.4rem] px-2 py-1 font-mono text-[0.6875rem] leading-none"
         >
           {option.label}
         </button>

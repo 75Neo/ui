@@ -2,7 +2,6 @@
 name: SegmentGroup
 key: segmentGroup
 module: segment-group
-order: 37
 summary: A track of options with a pill that slides to the chosen one, across three sizes, seven accents and both directions.
 ---
 
