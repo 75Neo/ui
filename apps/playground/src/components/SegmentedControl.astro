@@ -4,12 +4,29 @@
  * `<html>` element as `data-{name}`. The active segment is painted by attribute
  * selectors in `main.css`, so it is correct on first paint with no JavaScript and
  * survives a client-side navigation without anything repainting it.
+ *
+ * @remarks
+ * An option carries either a word or an icon. The theme is three states of one thing
+ * and reads faster as three glyphs; the surface is three named tokens, and a glyph for
+ * each would be a code the reader has to learn. So the shape is per option rather than
+ * per control.
  */
+/**
+ * One of the icon components the icon package ships.
+ *
+ * @remarks
+ * Taken off the package rather than named from Astro's own types: the icons are `.astro`
+ * files, and what a component boundary sees is not the factory type an `.astro` file's
+ * default export is usually annotated with.
+ */
+type Icon = (typeof import("@lucide/astro"))["Sun"];
+
 interface Props {
   /** Root data attribute this control writes, e.g. `theme` → `data-theme`. */
   name: string;
   label: string;
-  options: readonly { value: string; label: string }[];
+  /** An option shows its `icon` where it has one, and its `label` otherwise. */
+  options: readonly { value: string; label: string; icon?: Icon }[];
   /** Where the control is shown, for the ones a narrow header has no room for. */
   class?: string;
 }
@@ -31,17 +48,31 @@ const { name, label, options, class: className } = Astro.props;
     class="border-muted bg-elevated/60 flex items-center gap-px rounded-lg border p-px"
   >
     {
-      options.map((option) => (
-        <button
-          type="button"
-          data-control={name}
-          data-option={`${name}:${option.value}`}
-          data-value={option.value}
-          class="text-dimmed hover:text-toned cursor-pointer rounded-[0.4rem] px-2 py-1 font-mono text-[0.6875rem] leading-none"
-        >
-          {option.label}
-        </button>
-      ))
+      options.map(({ value, label: option, icon: Icon }) =>
+        Icon ? (
+          <button
+            type="button"
+            data-control={name}
+            data-option={`${name}:${value}`}
+            data-value={value}
+            title={option}
+            class="text-dimmed hover:text-toned grid size-6 cursor-pointer place-items-center rounded-[0.4rem]"
+          >
+            <Icon size={13} aria-hidden="true" />
+            <span class="sr-only">{option}</span>
+          </button>
+        ) : (
+          <button
+            type="button"
+            data-control={name}
+            data-option={`${name}:${value}`}
+            data-value={value}
+            class="text-dimmed hover:text-toned cursor-pointer rounded-[0.4rem] px-2 py-1 font-mono text-[0.6875rem] leading-none"
+          >
+            {option}
+          </button>
+        ),
+      )
     }
   </div>
 </div>
