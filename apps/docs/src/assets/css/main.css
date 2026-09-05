@@ -126,18 +126,45 @@
   }
 
   /*
-   * A segment is active when its value matches `data-theme` on the root element. CSS
-   * cannot compare two attributes to each other, so the pairs are written out; in
-   * exchange the active segment is right on first paint, before any script runs.
+   * The framework switch's active segment.
    */
-  :root[data-theme="light"] [data-theme-option="light"],
-  :root[data-theme="dark"] [data-theme-option="dark"],
-  :root[data-theme="auto"] [data-theme-option="auto"],
   .shadow-segment {
     background-color: var(--ui-bg);
     color: var(--ui-text-highlighted);
     /* Tinted to the theme's own neutral rather than a generic black. */
     box-shadow: 0 1px 2px -1px color-mix(in oklab, var(--ui-text) 22%, transparent);
+  }
+
+  /*
+   * The theme control, painted from `data-theme` on the root element: the trigger shows
+   * the mode in force and the row for it carries the tick. CSS cannot compare two
+   * attributes to each other, so the three pairs are written out; in exchange the
+   * control is right on first paint, before any script runs, and stays right after a
+   * client-side navigation with nothing to repaint it.
+   */
+  [data-theme-current],
+  [data-theme-tick] {
+    display: none;
+  }
+
+  :root[data-theme="light"] [data-theme-current="light"],
+  :root[data-theme="dark"] [data-theme-current="dark"],
+  :root[data-theme="auto"] [data-theme-current="auto"],
+  :root[data-theme="light"] [data-theme-option="light"] [data-theme-tick],
+  :root[data-theme="dark"] [data-theme-option="dark"] [data-theme-tick],
+  :root[data-theme="auto"] [data-theme-option="auto"] [data-theme-tick] {
+    display: block;
+  }
+
+  :root[data-theme="light"] [data-theme-option="light"],
+  :root[data-theme="dark"] [data-theme-option="dark"],
+  :root[data-theme="auto"] [data-theme-option="auto"] {
+    color: var(--ui-text-highlighted);
+  }
+
+  /* The disclosure triangle is replaced by the chevron the trigger draws itself. */
+  [data-theme-menu] > summary::-webkit-details-marker {
+    display: none;
   }
 }
 
@@ -240,8 +267,13 @@
     padding: 0.75rem 1.25rem 1rem;
   }
 
-  :root.dark .prose pre,
-  :root.dark .prose pre span {
+  /*
+   * Keyed to Shiki's own class rather than to the prose, because a highlighted block
+   * also appears outside an article: the landing page sets the same example in both
+   * frameworks side by side, and it needs the same two themes.
+   */
+  :root.dark .astro-code,
+  :root.dark .astro-code span {
     color: var(--shiki-dark) !important;
     font-style: var(--shiki-dark-font-style, inherit) !important;
     font-weight: var(--shiki-dark-font-weight, inherit) !important;

@@ -141,7 +141,7 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
         root.classList.toggle("dark", theme === "dark" || (theme === "auto" && media.matches));
 
         for (const button of document.querySelectorAll<HTMLElement>("[data-theme-option]")) {
-          button.setAttribute("aria-pressed", String(theme === button.dataset.themeOption));
+          button.setAttribute("aria-checked", String(theme === button.dataset.themeOption));
         }
       };
 
@@ -159,6 +159,11 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
         }
       };
 
+      /** Put the theme menu away. It is a `details`, so this is one attribute. */
+      const closeThemeMenu = () => {
+        document.querySelector<HTMLDetailsElement>("[data-theme-menu]")?.removeAttribute("open");
+      };
+
       document.addEventListener("click", (event) => {
         const target = event.target as HTMLElement | null;
 
@@ -171,8 +176,12 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
             // Nothing to persist to; the choice still applies to this visit.
           }
           apply();
+          closeThemeMenu();
           return;
         }
+
+        // A `details` element closes on its own summary and on nothing else.
+        if (!target?.closest("[data-theme-menu]")) closeThemeMenu();
 
         const toggle = target?.closest<HTMLElement>("[data-nav-toggle]");
         if (toggle) {
@@ -193,6 +202,10 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
             button?.setAttribute("aria-expanded", "false");
           }
         }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeThemeMenu();
       });
 
       media.addEventListener("change", apply);
