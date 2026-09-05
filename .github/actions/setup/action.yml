@@ -4,11 +4,9 @@ description: Node, pnpm, the workspace's dependencies, and the caches a job read
 inputs:
   turbo-cache-key:
     description: >-
-      Names this job's slice of the Turborepo cache, and leaving it out skips that cache
-      entirely — which is what a job running only oxlint or oxfmt wants. Jobs run in
-      parallel and a cache entry is written once, so two jobs sharing a key would race
-      and one of them would throw its work away. Each job keeps its own lineage instead,
-      and still starts from the last run of the same job.
+      Names this job's slice of the Turborepo cache; leaving it out skips that cache, which
+      is what a job running only oxlint or oxfmt wants. A cache entry is written once, so
+      two jobs sharing a key would race and one would throw its work away.
     required: false
     default: ""
 

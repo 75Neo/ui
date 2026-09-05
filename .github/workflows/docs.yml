@@ -2,13 +2,10 @@ name: Docs
 
 # The documentation site, published to Cloudflare Pages at https://75neo-ui.pages.dev.
 #
-# It builds on its own rather than waiting for CI, because the build is the check that
-# matters here: the docs read every props table out of the packages' sources with
-# ts-morph, so a renamed prop fails this build rather than shipping a wrong table.
-#
-# `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are repository secrets. A push to
-# master is a production deployment; a manual run from any other branch is a preview,
-# which is wrangler reading the branch it was run on rather than anything set here.
+# It builds on its own rather than waiting for CI: the docs read every props table out of
+# the packages' sources, so a renamed prop fails this build rather than shipping a wrong
+# table. `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are repository secrets, and
+# wrangler reads the branch it ran on, so only master is a production deployment.
 
 on:
   push:
@@ -53,16 +50,13 @@ jobs:
       - name: Build
         run: pnpm exec turbo run build --filter docs
 
-      # `cloudflare/wrangler-action` installs wrangler into the checkout before running
-      # it, and neither package manager can do that here: pnpm refuses to add to the
-      # root of a workspace without `-w`, and npm cannot read the `catalog:` protocol
-      # this workspace's manifests are written in. `pnpm dlx` fetches wrangler into the
-      # store instead, touching nothing in the repo. Wrangler reads the token and the
-      # account from the environment.
-      # `pages deploy` will not create the project it deploys into, and Cloudflare has
-      # no create-if-missing. So this creates it and shrugs when it is already there,
-      # which is every run after the first. A token that cannot create one cannot deploy
-      # either, so a real failure here still fails loudly in the step below.
+      # `pnpm dlx` rather than `cloudflare/wrangler-action`, which installs into the
+      # checkout: pnpm refuses to add to a workspace root without `-w`, and npm cannot
+      # read the `catalog:` protocol these manifests use.
+      #
+      # `pages deploy` will not create the project it deploys into and Cloudflare has no
+      # create-if-missing, so this creates it and shrugs on every run after the first. A
+      # token that cannot create one cannot deploy either, so the step below still fails.
       - name: Ensure the Pages project exists
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
