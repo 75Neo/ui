@@ -9,11 +9,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
-# `pull-requests: read` is for the `changes` job below. On a pull request
-# `dorny/paths-filter` asks the API which files the PR touches rather than comparing
-# refs itself, and without the scope that call fails and takes the whole workflow with
-# it. A push needs only `contents`, which is why this went unnoticed until the first
-# pull request after the workflow was split.
+# `pull-requests: read` is for the `changes` job: on a pull request `dorny/paths-filter`
+# asks the API which files the PR touches, and without the scope that call fails and
+# takes the workflow with it. A push needs only `contents`.
 permissions:
   contents: read
   pull-requests: read
@@ -23,10 +21,8 @@ env:
 
 jobs:
   # What the rest of the workflow asks before it runs. A filter names the paths a job
-  # would read, expanded along the dependency graph by hand: `@75neo/react` is built
-  # from `core` and `themes` as well as its own source, so all three belong to its
-  # filter. The comparison is against the merge base on a pull request and against the
-  # commit the branch moved from on a push.
+  # reads, expanded along the dependency graph by hand: `@75neo/react` is built from
+  # `core` and `themes` too, so all three belong to its filter.
   changes:
     name: Changes
     runs-on: ubuntu-latest
@@ -78,9 +74,8 @@ jobs:
         env:
           MATCHED: ${{ steps.filter.outputs.changes }}
         run: |
-          # `changes` lists every filter that matched, and an anchor is a filter like
-          # any other. `shared` and `code` name no package, and `themes` carries no
-          # tests, so what is left is the matrix.
+          # `changes` lists every filter that matched, anchors included. `shared` and
+          # `code` name no package, so what is left is the matrix.
           packages=$(jq -cn --argjson matched "$MATCHED" '$matched - ["code", "shared"]')
           echo "packages=$packages" >> "$GITHUB_OUTPUT"
 
@@ -145,8 +140,8 @@ jobs:
         with:
           turbo-cache-key: typecheck
 
-      # `typecheck` depends on `build`, so this covers both. It stays a separate job
-      # from `Build` so a broken build is named as one rather than as a type error.
+      # `typecheck` depends on `build`, so this covers both. Separate from `Build` so a
+      # broken build is named as one rather than as a type error.
       - name: Type check
         run: pnpm typecheck
 
@@ -188,9 +183,8 @@ jobs:
           PACKAGE: ${{ matrix.package }}
         run: pnpm exec turbo run test --filter "@75neo/$PACKAGE"
 
-  # One name for branch protection to require. The jobs above are skipped rather than
-  # failed when nothing they cover changed, and a matrix job's name moves with the
-  # matrix, so neither can be required directly.
+  # One name for branch protection to require. The jobs above skip rather than fail when
+  # nothing they cover changed, and a matrix job's name moves with the matrix.
   ci:
     name: CI
     if: always()
