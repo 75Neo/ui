@@ -156,9 +156,6 @@
    * pairs are written out; in exchange the active segment is right on first
    * paint, before any script runs.
    */
-  :root[data-theme="light"] [data-option="theme:light"],
-  :root[data-theme="dark"] [data-option="theme:dark"],
-  :root[data-theme="auto"] [data-option="theme:auto"],
   :root[data-surface="default"] [data-option="surface:default"],
   :root[data-surface="muted"] [data-option="surface:muted"],
   :root[data-surface="elevated"] [data-option="surface:elevated"] {
@@ -166,6 +163,35 @@
     color: var(--ui-text-highlighted);
     /* Tinted to the theme's own neutral rather than a generic black. */
     box-shadow: 0 1px 2px -1px color-mix(in oklab, var(--ui-text) 22%, transparent);
+  }
+
+  /*
+   * The theme control, painted from `data-theme` on the root element the same way: the
+   * trigger shows the mode in force and the row for it carries the tick.
+   */
+  [data-theme-current],
+  [data-theme-tick] {
+    display: none;
+  }
+
+  :root[data-theme="light"] [data-theme-current="light"],
+  :root[data-theme="dark"] [data-theme-current="dark"],
+  :root[data-theme="auto"] [data-theme-current="auto"],
+  :root[data-theme="light"] [data-theme-option="light"] [data-theme-tick],
+  :root[data-theme="dark"] [data-theme-option="dark"] [data-theme-tick],
+  :root[data-theme="auto"] [data-theme-option="auto"] [data-theme-tick] {
+    display: block;
+  }
+
+  :root[data-theme="light"] [data-theme-option="light"],
+  :root[data-theme="dark"] [data-theme-option="dark"],
+  :root[data-theme="auto"] [data-theme-option="auto"] {
+    color: var(--ui-text-highlighted);
+  }
+
+  /* The disclosure triangle is replaced by the chevron the trigger draws itself. */
+  [data-theme-menu] > summary::-webkit-details-marker {
+    display: none;
   }
 
   /*

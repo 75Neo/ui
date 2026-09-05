@@ -19,8 +19,14 @@ interface FrameworkFacts {
   label: string;
   /** The package to install. */
   package: string;
-  /** The language a code fence uses for this framework's examples. */
-  language: string;
+  /**
+   * The language a code fence uses for this framework's examples.
+   *
+   * @remarks
+   * Narrowed to the two it can be, rather than left as a string, because the landing
+   * page hands it to Shiki and Shiki takes a name it knows.
+   */
+  language: "tsx" | "vue";
   /** What the framework calls an icon, for the props tables. */
   icon: string;
   /** The lowest version the adapter supports. */

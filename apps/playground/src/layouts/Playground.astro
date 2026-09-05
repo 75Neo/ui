@@ -1,9 +1,10 @@
 ---
 import { ClientRouter } from "astro:transitions";
-import { Monitor, Moon, PanelLeft, Sun } from "@lucide/astro";
+import { PanelLeft } from "@lucide/astro";
 import "../assets/css/main.css";
 import Search from "../components/Search.astro";
 import SegmentedControl from "../components/SegmentedControl.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
 import Sidebar from "../components/Sidebar.astro";
 import { shell, stickyColumn } from "../lib/layout";
 
@@ -133,15 +134,7 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
               />
             )
           }
-          <SegmentedControl
-            name="theme"
-            label="theme"
-            options={[
-              { value: "light", label: "Light", icon: Sun },
-              { value: "dark", label: "Dark", icon: Moon },
-              { value: "auto", label: "System", icon: Monitor },
-            ]}
-          />
+          <ThemeToggle />
         </div>
       </div>
     </header>
@@ -218,6 +211,13 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
           const { control, value } = button.dataset;
           button.setAttribute("aria-pressed", String(!!control && chosen[control] === value));
         }
+
+        for (const button of document.querySelectorAll<HTMLElement>("[data-theme-option]")) {
+          button.setAttribute(
+            "aria-checked",
+            String(chosen.theme === button.dataset.themeOption),
+          );
+        }
       };
 
       /*
@@ -234,8 +234,29 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
         }
       };
 
+      /** Put the theme menu away. It is a `details`, so this is one attribute. */
+      const closeThemeMenu = () => {
+        document.querySelector<HTMLDetailsElement>("[data-theme-menu]")?.removeAttribute("open");
+      };
+
       document.addEventListener("click", (event) => {
         const target = event.target as HTMLElement | null;
+
+        const mode = target?.closest<HTMLElement>("[data-theme-option]");
+        if (mode?.dataset.themeOption) {
+          chosen.theme = mode.dataset.themeOption;
+          try {
+            localStorage.setItem("neo-theme", chosen.theme);
+          } catch {
+            // Nothing to persist to; the choice still applies to this visit.
+          }
+          apply();
+          closeThemeMenu();
+          return;
+        }
+
+        // A `details` element closes on its own summary and on nothing else.
+        if (!target?.closest("[data-theme-menu]")) closeThemeMenu();
 
         const option = target?.closest<HTMLElement>("[data-control]");
         if (option?.dataset.control && option.dataset.value) {
@@ -269,6 +290,10 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
             button?.setAttribute("aria-expanded", "false");
           }
         }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeThemeMenu();
       });
 
       media.addEventListener("change", apply);
