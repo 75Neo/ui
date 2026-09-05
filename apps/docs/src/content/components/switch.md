@@ -2,7 +2,6 @@
 name: Switch
 key: switch
 module: switch
-order: 15
 summary: A track the thumb slides along, across five sizes and seven colors, with a label, a description and an icon per state.
 ---
 

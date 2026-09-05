@@ -1,32 +1,37 @@
 ---
+import { Monitor, Moon, Sun } from "@lucide/astro";
+
 /**
  * A three-way theme control.
  *
  * @remarks
- * The active segment is styled off `data-theme` on the root element, which an inline
+ * The active segment is painted from `data-theme` on the root element, which an inline
  * script sets before first paint, so the right segment is lit on the first frame rather
- * than after hydration.
+ * than after hydration. That also means it survives a client-side navigation: the root
+ * element is never swapped, so nothing has to repaint the control afterwards.
  */
 const options = [
-  { value: "light", label: "light" },
-  { value: "dark", label: "dark" },
-  { value: "auto", label: "auto" },
+  { value: "light", label: "Light", icon: Sun },
+  { value: "dark", label: "Dark", icon: Moon },
+  { value: "auto", label: "System", icon: Monitor },
 ] as const;
 ---
 
 <div
   role="group"
   aria-label="Theme"
-  class="bg-elevated flex items-center gap-0.5 rounded-md p-0.5"
+  class="border-muted bg-elevated/60 flex items-center gap-px rounded-lg border p-px"
 >
   {
-    options.map(({ value, label }) => (
+    options.map(({ value, label, icon: Icon }) => (
       <button
         type="button"
         data-theme-option={value}
-        class="text-dimmed hover:text-toned rounded-[0.3rem] px-2 py-1 font-mono text-[0.6875rem] leading-none"
+        title={label}
+        class="text-dimmed hover:text-toned grid size-6 cursor-pointer place-items-center rounded-[0.4rem]"
       >
-        {label}
+        <Icon size={13} aria-hidden="true" />
+        <span class="sr-only">{label}</span>
       </button>
     ))
   }

@@ -2,7 +2,6 @@
 name: TableOfContents
 key: tableOfContents
 module: table-of-contents
-order: 7
 summary: A rail of heading links that follows the reading position, with an indicator that slides to the section on screen.
 ---
 

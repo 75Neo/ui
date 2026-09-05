@@ -1,11 +1,5 @@
 ---
-import {
-  type Framework,
-  docHref,
-  frameworkFacts,
-  frameworks,
-  isFramework,
-} from "../lib/framework";
+import { type Framework, docHref, frameworkFacts, frameworks, isFramework } from "../lib/framework";
 
 /**
  * React or Vue, without leaving the page.
@@ -39,7 +33,7 @@ const hrefFor = (next: Framework) => {
 <div
   role="group"
   aria-label="Framework"
-  class="bg-elevated flex items-center gap-0.5 rounded-md p-0.5"
+  class="border-muted bg-elevated/60 flex items-center gap-px rounded-lg border p-px"
 >
   {
     frameworks.map((option) => (
@@ -47,9 +41,9 @@ const hrefFor = (next: Framework) => {
         href={hrefFor(option)}
         aria-current={option === framework ? "true" : undefined}
         class:list={[
-          "rounded-[0.3rem] px-2 py-1 font-mono text-[0.6875rem] leading-none",
+          "rounded-[0.4rem] px-2 py-1 font-mono text-[0.6875rem] leading-none",
           option === framework
-            ? "bg-default text-highlighted shadow-segment"
+            ? "shadow-segment text-highlighted"
             : "text-dimmed hover:text-toned",
         ]}
       >

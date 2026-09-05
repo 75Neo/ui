@@ -2,7 +2,6 @@
 name: Progress
 key: progress
 module: progress
-order: 20
 summary: A track and the part of it that is done, across five thicknesses and seven colors, with an indeterminate state.
 ---
 

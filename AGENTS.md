@@ -48,6 +48,13 @@ Four packages. The dependency direction is `core` → `themes` → `react`/`vue`
 - **`@75neo/react`** / **`@75neo/vue`** — **adapters**. Each is a `Theme` component, one
   hook or composable, and one file per component. Styling stays in the component module.
 
+Both apps are the same shell: a sticky header carrying a `⌘K` search dialog and the
+theme control, a column of every page down the left, and the page itself on a card. The
+playground adds the surface control; the docs add the framework switch and a rail of
+headings. `apps/playground/src/routes.ts` is the playground's whole list, sorted by name
+where it is exported rather than kept in order by hand, and the sidebar, the search
+dialog and the index all read it.
+
 Both apps reach `@75neo/*` straight into each package's `src`. Nothing about an app goes
 through `dist`, so both hot-reload against source with no build step in between and a
 prop renamed in a package is wrong in the app immediately rather than after a rebuild.
@@ -102,13 +109,21 @@ every paragraph. Fences in any other language show on both.
 
 Documenting a component is still one file, `src/content/components/<name>.md`, whose
 frontmatter names the component, its registry key and its module file. That one file
-grows a route under both frameworks, a row in the sidebar, a card on the index, and its
-place in the previous and next links, none of which is written down a second time.
+grows a route under both frameworks, a row in the sidebar, a card on the index, its
+place in the previous and next links, and a row in the search dialog, none of which is
+written down a second time. There is no order in the frontmatter: the list sorts itself
+by name, which is what the sidebar shows and so what the previous and next links have to
+walk.
 
 A live specimen is optional and needs a preview per adapter in `src/previews/`, a line
-per adapter in `src/components/Preview.astro`, and the name in `src/lib/previews.ts`.
-Those switches are written out rather than looked up in a table because a client
-directive has to name its component through a static import.
+per adapter in **both** `src/components/Preview.astro` and
+`src/components/Thumbnail.astro`, and the name in `src/lib/previews.ts`. Those switches
+are written out rather than looked up in a table because a client directive has to name
+its component through a static import — which is also why there are two of them.
+`Preview` hydrates one specimen on a component's own page; `Thumbnail` renders the same
+specimen with no client directive at all, so the index can put forty of them on one page
+as real markup that ships no JavaScript. A directive is written or not written and
+cannot be decided by a prop.
 
 The rail on a component page is two lists joined: the Markdown subheadings `render()`
 returns, then the generated API sections, which are rendered by `ComponentApi.astro` and
@@ -127,7 +142,34 @@ extraction is bundled into a chunk under `dist` before it runs and cannot find
 The docs use the library for their own chrome. The install command is `Clipboard` and
 the rail of headings is `TableOfContents`, each rendered by the adapter its route is
 for, so the React route is proof the React adapter works and the Vue route is proof the
-Vue one does.
+Vue one does. The search dialog is the exception: it is a native `dialog` and one
+delegated listener, because it stands in chrome both routes share and either adapter's
+component would be the wrong one on half the site.
+
+### Client-side routing
+
+Both apps carry `<ClientRouter />`, so a navigation swaps the head and the body instead
+of loading a document. Three things follow, and all three are already handled in
+`Base.astro` and `Playground.astro`; a new script has to respect them.
+
+**Listeners are delegated from `document`.** A bundled module script runs once for the
+visit, and anything it attached to an element in the body is attached to an element that
+is gone after the first navigation. So handlers sit on `document` and look their elements
+up when they fire.
+
+**The swap rewrites the root element's attributes.** Astro copies them from the incoming
+document, which means `data-theme`, `data-surface` and the `dark` class are all gone by
+the time the new page is in place. The chosen values are held in the script and put back
+on `astro:after-swap`, which runs before the browser paints. Reading the current value
+back off the root element instead is the bug this replaced: the theme reverted on every
+click of the sidebar.
+
+**The page column is `transition:persist`ed**, so its scroll position survives. The
+markup that arrives with the new page is discarded, so its current row is the one from
+the page before; a script moves `aria-current` afterwards and the row is painted from
+that attribute rather than from a class. In the docs the persist key carries the
+framework, so switching adapters replaces the column rather than keeping one full of the
+other adapter's links.
 
 ### The cascade
 
@@ -294,6 +336,13 @@ defaults, so an explicit `undefined` overwrites the default with nothing and tur
 behaviour off. NumberInput's `allowOverflow` reached Ark that way and no button ever
 disabled at the end of its range. Resolve such a prop in the adapter and pass a real
 value, in both frameworks, so neither depends on how a machine treats an absent key.
+
+**Two things silently unhook `astro check` from a component's props.** Both end as the
+same hint, `'Props' is declared but never used`, which names neither cause. The first is
+a prop named `as`: rename it, as `ComponentCard` did. The second is the two characters
+that open a closing HTML tag appearing literally anywhere in an `.astro` file's
+frontmatter, a comment included — it mis-slices the file for the checker. `CopyMarkdown`
+escapes exactly that sequence and describes the escaping without spelling it out.
 
 **Vue needs a file to recurse; React does not.** A `<script setup>` component is the only
 thing in Vue that can render itself, which is what a submenu of arbitrary depth needs. So

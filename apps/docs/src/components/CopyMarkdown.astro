@@ -1,0 +1,80 @@
+---
+import { Check, Copy } from "@lucide/astro";
+
+/**
+ * Hands the reader the page's own Markdown.
+ *
+ * @remarks
+ * The source is what the content collection holds, not a rendering of the page, so what
+ * lands on the clipboard is the file an agent or an editor would want rather than the
+ * prose with its tables flattened out of it.
+ *
+ * It travels as JSON inside a script element the browser neither runs nor renders.
+ * JSON rather than raw text because the Markdown quotes Vue examples: an HTML parser
+ * ends a script element at the first closing script tag it meets, whatever is around
+ * it, so the end of a Vue fence would spill the rest of the file onto the page. The
+ * `replaceAll` below escapes that sequence, which is what stops it.
+ *
+ * The sequence is spelled out nowhere in this block on purpose. Written literally in
+ * the frontmatter, even inside a comment, it mis-slices the file for `astro check`,
+ * which then reports `Props` as unused.
+ */
+interface Props {
+  source: string;
+}
+
+const { source } = Astro.props;
+---
+
+<div class="shrink-0">
+  <button
+    type="button"
+    data-copy-markdown
+    class="border-muted text-muted hover:border-accented hover:text-highlighted flex h-8 cursor-pointer items-center gap-1.5 rounded-lg border px-2.5 text-xs font-medium"
+  >
+    {/* The state lives on a wrapper, because the icon component takes no `hidden`. */}
+    <span data-copy-idle class="flex"><Copy size={13} aria-hidden="true" /></span>
+    <span data-copy-done hidden class="text-success flex"><Check size={13} aria-hidden="true" /></span>
+    Copy Markdown
+  </button>
+  <script
+    is:inline
+    type="application/json"
+    data-copy-source
+    set:html={JSON.stringify(source).replaceAll("</", String.raw`<\/`)}
+  />
+</div>
+
+<script>
+  /**
+   * Bound once for the whole visit, because client-side navigation replaces the button.
+   */
+  document.addEventListener("click", async (event) => {
+    const button = (event.target as HTMLElement | null)?.closest<HTMLElement>(
+      "[data-copy-markdown]",
+    );
+    if (!button) return;
+
+    const encoded = document.querySelector("[data-copy-source]")?.textContent;
+    if (!encoded) return;
+    const source = JSON.parse(encoded) as string;
+
+    try {
+      await navigator.clipboard.writeText(source);
+    } catch {
+      // A denied permission or an insecure origin. Nothing to report on the button.
+      return;
+    }
+
+    const idle = button.querySelector<HTMLElement>("[data-copy-idle]");
+    const done = button.querySelector<HTMLElement>("[data-copy-done]");
+    if (!idle || !done) return;
+
+    idle.hidden = true;
+    done.hidden = false;
+    window.setTimeout(() => {
+      idle.hidden = false;
+      done.hidden = true;
+    }, 1600);
+  });
+</script>

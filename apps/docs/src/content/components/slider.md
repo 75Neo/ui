@@ -2,7 +2,6 @@
 name: Slider
 key: slider
 module: slider
-order: 21
 summary: A track and a thumb per value, across five thicknesses and seven colors, with marks and a two-thumb range.
 ---
 

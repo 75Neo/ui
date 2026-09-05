@@ -2,7 +2,6 @@
 name: Container
 key: container
 module: container
-order: 23
 summary: The measure a page's content is held to, and the gutter that keeps it off the edge. One slot and no variants.
 ---
 

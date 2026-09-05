@@ -2,7 +2,6 @@
 name: DatePicker
 key: datePicker
 module: date-picker
-order: 13
 summary: A field with a calendar behind it, taking one date, several, or a range, across three sizes and seven accents.
 ---
 

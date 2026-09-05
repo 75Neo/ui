@@ -2,7 +2,6 @@
 name: FileUpload
 key: fileUpload
 module: file-upload
-order: 35
 summary: The area files are dropped on and the list of what landed, across three sizes and seven accents, with thumbnails.
 ---
 

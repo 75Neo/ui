@@ -2,7 +2,6 @@
 name: Popover
 key: popover
 module: popover
-order: 17
 summary: A titled panel anchored to whatever opened it, across three sizes and twelve placements, with an arrow and a modal mode.
 ---
 

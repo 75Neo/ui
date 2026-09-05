@@ -2,7 +2,6 @@
 name: Checkbox
 key: checkbox
 module: checkbox
-order: 8
 summary: A box, a label and an optional description, across five sizes and seven colors, with a real indeterminate state.
 ---
 

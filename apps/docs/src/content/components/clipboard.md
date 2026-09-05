@@ -2,7 +2,6 @@
 name: Clipboard
 key: clipboard
 module: clipboard
-order: 6
 summary: A read-only field holding a value and a button that copies it, across three sizes and seven colors.
 ---
 

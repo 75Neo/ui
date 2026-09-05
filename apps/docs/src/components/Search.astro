@@ -1,0 +1,212 @@
+---
+import { Search as SearchIcon } from "@lucide/astro";
+import type { SearchEntry } from "../lib/search";
+
+/**
+ * A command palette over every page in the current framework.
+ *
+ * @remarks
+ * A native `dialog` rather than the library's own `Dialog`, because this sits in the
+ * chrome of both routes and one of them would otherwise be hydrating the other
+ * adapter's component. Everything it needs is markup and one delegated listener.
+ *
+ * The index is inlined as JSON beside the dialog and read when the dialog opens, so a
+ * navigation that replaces the body also replaces the index, and the palette on a Vue
+ * page never offers React links.
+ */
+interface Props {
+  entries: SearchEntry[];
+}
+
+const { entries } = Astro.props;
+
+const kbd =
+  "border-muted text-dimmed rounded-[0.25rem] border px-1 py-0.5 font-mono text-[0.625rem] leading-none";
+---
+
+<button
+  type="button"
+  data-search-open
+  class="border-muted bg-elevated/60 text-dimmed hover:border-accented hover:text-muted flex size-8 shrink-0 items-center justify-center gap-2 rounded-lg border sm:w-56 sm:justify-start sm:px-2.5"
+>
+  <SearchIcon size={14} aria-hidden="true" class="shrink-0" />
+  <span class="hidden truncate text-[0.8125rem] sm:inline">Search</span>
+  <kbd class={`${kbd} ml-auto hidden shrink-0 sm:block`} data-identifier>⌘K</kbd>
+  <span class="sr-only sm:hidden">Search</span>
+</button>
+
+<script is:inline type="application/json" data-search-index set:html={JSON.stringify(entries).replaceAll("</", String.raw`<\/`)}
+/>
+
+<dialog
+  data-search-dialog
+  aria-label="Search documentation"
+  class="border-muted bg-default text-default m-0 w-[min(36rem,calc(100vw-2rem))] rounded-xl border p-0 shadow-panel backdrop:bg-black/40 backdrop:backdrop-blur-[2px]"
+>
+  <div class="border-muted flex items-center gap-2.5 border-b px-4">
+    <SearchIcon size={15} aria-hidden="true" class="text-dimmed shrink-0" />
+    <input
+      type="text"
+      data-search-input
+      autocomplete="off"
+      spellcheck="false"
+      placeholder="Search components and guides"
+      aria-label="Search documentation"
+      class="text-highlighted placeholder:text-dimmed h-12 w-full min-w-0 bg-transparent text-sm outline-none"
+    />
+    <kbd class={`${kbd} shrink-0`} data-identifier>esc</kbd>
+  </div>
+
+  <ul data-search-results class="max-h-[min(24rem,60dvh)] overflow-y-auto p-2"></ul>
+
+  <p
+    data-search-empty
+    hidden
+    class="text-dimmed px-4 py-10 text-center text-sm"
+  >
+    Nothing matches that.
+  </p>
+</dialog>
+
+<script>
+  /**
+   * One delegated controller for the palette.
+   *
+   * @remarks
+   * A bundled module script runs once for the whole visit, so every listener is on
+   * `document` and every element is looked up when it is needed rather than held. That
+   * is what keeps this working after client-side navigation replaces the body.
+   */
+  interface Entry {
+    href: string;
+    label: string;
+    group: string;
+    summary: string;
+  }
+
+  const dialog = () => document.querySelector<HTMLDialogElement>("[data-search-dialog]");
+  const input = () => document.querySelector<HTMLInputElement>("[data-search-input]");
+  const list = () => document.querySelector<HTMLUListElement>("[data-search-results]");
+  const empty = () => document.querySelector<HTMLElement>("[data-search-empty]");
+
+  const index = (): Entry[] => {
+    const node = document.querySelector("[data-search-index]");
+    return node?.textContent ? (JSON.parse(node.textContent) as Entry[]) : [];
+  };
+
+  /** Every query word has to appear somewhere in the row, in any order. */
+  const matches = (entry: Entry, terms: string[]) => {
+    const haystack = `${entry.label} ${entry.group} ${entry.summary}`.toLowerCase();
+    return terms.every((term) => haystack.includes(term));
+  };
+
+  const rows = () => [...(list()?.querySelectorAll<HTMLAnchorElement>("a") ?? [])];
+
+  function highlight(next: number) {
+    const all = rows();
+    if (all.length === 0) return;
+
+    const at = (next + all.length) % all.length;
+    for (const [position, row] of all.entries()) {
+      row.setAttribute("aria-selected", String(position === at));
+    }
+    all[at]?.scrollIntoView({ block: "nearest" });
+  }
+
+  function render(query: string) {
+    const target = list();
+    const nothing = empty();
+    if (!target || !nothing) return;
+
+    const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+    const found = terms.length === 0 ? index() : index().filter((entry) => matches(entry, terms));
+
+    target.replaceChildren();
+    nothing.hidden = found.length > 0;
+
+    let group = "";
+    for (const entry of found) {
+      if (entry.group !== group) {
+        group = entry.group;
+        const heading = document.createElement("li");
+        heading.className = "text-dimmed px-2 pt-3 pb-1.5 font-mono text-[0.6875rem] first:pt-1";
+        heading.textContent = group.toLowerCase();
+        heading.setAttribute("data-identifier", "");
+        target.append(heading);
+      }
+
+      const row = document.createElement("li");
+      const link = document.createElement("a");
+      link.href = entry.href;
+      link.className =
+        "block rounded-lg px-2.5 py-2 aria-selected:bg-elevated";
+      link.setAttribute("aria-selected", "false");
+      link.innerHTML =
+        `<span class="text-highlighted block text-sm font-medium"></span>`
+        + `<span class="text-dimmed mt-0.5 block truncate text-xs"></span>`;
+      link.children[0]!.textContent = entry.label;
+      link.children[1]!.textContent = entry.summary;
+      row.append(link);
+      target.append(row);
+    }
+
+    highlight(0);
+  }
+
+  function open() {
+    const panel = dialog();
+    const field = input();
+    if (!panel || !field || panel.open) return;
+
+    field.value = "";
+    render("");
+    panel.showModal();
+    field.focus();
+  }
+
+  document.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement | null;
+
+    if (target?.closest("[data-search-open]")) {
+      open();
+      return;
+    }
+
+    // A click on the backdrop lands on the dialog itself rather than on its content.
+    const panel = dialog();
+    if (panel?.open && target === panel) panel.close();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    const panel = dialog();
+
+    if (event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey)) {
+      event.preventDefault();
+      if (panel?.open) panel.close();
+      else open();
+      return;
+    }
+
+    if (!panel?.open) return;
+
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      const at = rows().findIndex((row) => row.getAttribute("aria-selected") === "true");
+      highlight(at + (event.key === "ArrowDown" ? 1 : -1));
+      return;
+    }
+
+    if (event.key === "Enter") {
+      const selected = rows().find((row) => row.getAttribute("aria-selected") === "true");
+      if (!selected) return;
+      event.preventDefault();
+      panel.close();
+      selected.click();
+    }
+  });
+
+  document.addEventListener("input", (event) => {
+    const field = event.target as HTMLElement | null;
+    if (field?.matches("[data-search-input]")) render((field as HTMLInputElement).value);
+  });
+</script>

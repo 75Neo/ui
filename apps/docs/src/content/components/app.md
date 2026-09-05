@@ -2,7 +2,6 @@
 name: App
 key: app
 module: app
-order: 22
 summary: The element an application is wrapped in, publishing a theme, a locale, and the reading direction every right-to-left utility depends on.
 ---
 

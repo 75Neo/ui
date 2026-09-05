@@ -2,7 +2,6 @@
 name: RatingGroup
 key: ratingGroup
 module: rating-group
-order: 36
 summary: A row of stars across three sizes and seven accents, with half stars cut from the same shape rather than a second icon.
 ---
 

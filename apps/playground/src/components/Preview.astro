@@ -1,12 +1,18 @@
 ---
 /**
  * One specimen stage: the same matrix rendered by both adapters, on the page's
- * current surface, with the section's own notes held in a rail alongside it.
+ * current surface.
+ *
+ * @remarks
+ * The section's notes sit above the frames rather than in a rail beside them. The
+ * shell already spends a column on the page list, and the thing worth the remaining
+ * width is the comparison: two adapters rendering the same matrix, wide enough that a
+ * difference between them is a difference and not a wrap.
  */
 interface Props {
   title: string;
   description: string;
-  /** Facts read off the recipe, shown as a small ledger under the notes. */
+  /** Facts read off the recipe, shown as a row of chips under the notes. */
   meta?: readonly { term: string; value: string }[];
 }
 
@@ -19,32 +25,28 @@ const frameHeader =
 const stage = "p-5 sm:p-7";
 ---
 
-<section class="grid gap-6 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-12">
-  <div class="lg:sticky lg:top-28 lg:self-start">
-    <h2 class="text-highlighted text-base font-semibold tracking-[-0.015em]">
-      {title}
-    </h2>
-    <p class="text-muted mt-2 max-w-[46ch] text-sm/6 text-pretty">{description}</p>
+<section class="mt-10">
+  <h2 class="text-highlighted text-lg font-semibold tracking-[-0.02em]">{title}</h2>
+  <p class="text-muted mt-2 max-w-[68ch] text-sm/6 text-pretty">{description}</p>
 
-    {
-      meta.length > 0 && (
-        <dl class="border-muted divide-muted mt-6 divide-y border-t text-xs">
-          {meta.map(({ term, value }) => (
-            <div class="flex items-baseline justify-between gap-4 py-2">
-              <dt class="text-dimmed font-mono" data-identifier>
-                {term}
-              </dt>
-              <dd class="text-toned text-right font-mono" data-identifier>
-                {value}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      )
-    }
-  </div>
+  {
+    meta.length > 0 && (
+      <dl class="mt-4 flex flex-wrap gap-x-2 gap-y-1.5">
+        {meta.map(({ term, value }) => (
+          <div class="border-muted flex items-baseline gap-2 rounded-lg border px-2 py-1">
+            <dt class="text-dimmed font-mono text-[0.6875rem]" data-identifier>
+              {term}
+            </dt>
+            <dd class="text-toned font-mono text-[0.6875rem]" data-identifier>
+              {value}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    )
+  }
 
-  <div class="border-muted shadow-stage bg-default overflow-hidden rounded-xl border">
+  <div class="border-muted bg-default mt-5 overflow-hidden rounded-xl border">
     <div class="grid md:grid-cols-2">
       <article class="border-muted min-w-0 border-b md:border-r md:border-b-0">
         <header class={frameHeader}>

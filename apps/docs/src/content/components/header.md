@@ -2,7 +2,6 @@
 name: Header
 key: header
 module: header
-order: 25
 summary: The bar across the top of a page, and the fullscreen menu it opens where there is no room for a navigation.
 ---
 

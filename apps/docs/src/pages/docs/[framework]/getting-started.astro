@@ -1,6 +1,5 @@
 ---
 import { getEntry, render } from "astro:content";
-import { Terminal } from "@lucide/astro";
 import { Clipboard } from "@75neo/react";
 import InstallCommandVue from "../../../previews/InstallCommand.vue";
 import Doc from "../../../layouts/Doc.astro";
@@ -8,6 +7,7 @@ import Prose from "../../../components/Prose.astro";
 import { type Framework, frameworkFacts, frameworks } from "../../../lib/framework";
 import { componentLinks, railItems } from "../../../lib/navigation";
 import { documentedComponents } from "../../../lib/components";
+import { searchIndex } from "../../../lib/search";
 
 export function getStaticPaths() {
   return frameworks.map((framework) => ({ params: { framework } }));
@@ -34,19 +34,16 @@ const rail = [{ value: "install", depth: 2, label: "Install" }, ...railItems(hea
 ---
 
 <Doc
-  eyebrow={entry.data.eyebrow}
   title={entry.data.title}
   description={entry.data.description}
   framework={framework}
   components={componentLinks(framework, components)}
   headings={rail}
+  entries={searchIndex(framework, components)}
+  source={entry.body}
 >
-  <section aria-labelledby="install" class="max-w-[46rem]">
-    <h2
-      id="install"
-      class="text-highlighted flex items-center gap-2 text-2xl font-semibold tracking-[-0.025em]"
-    >
-      <Terminal size={20} aria-hidden="true" class="text-dimmed" />
+  <section aria-labelledby="install" class="mt-10 max-w-[46rem]">
+    <h2 class="text-highlighted text-xl font-semibold tracking-[-0.02em]" id="install">
       Install
     </h2>
     <p class="text-muted mt-3 text-sm/7 text-pretty">

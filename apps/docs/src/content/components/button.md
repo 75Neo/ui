@@ -2,7 +2,6 @@
 name: Button
 key: button
 module: button
-order: 1
 summary: Six variants across seven colors and five sizes, with block, square, loading and icon slots.
 ---
 

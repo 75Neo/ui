@@ -2,7 +2,6 @@
 name: RadioGroup
 key: radioGroup
 module: radio-group
-order: 19
 summary: A legend and the options under it, across five sizes and seven colors, with a description per option.
 ---
 

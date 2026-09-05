@@ -1,11 +1,26 @@
 ---
+import { ClientRouter } from "astro:transitions";
+import { PanelLeft } from "@lucide/astro";
 import "../assets/css/main.css";
+import Search from "../components/Search.astro";
 import SegmentedControl from "../components/SegmentedControl.astro";
+import Sidebar from "../components/Sidebar.astro";
+import { shell, stickyColumn } from "../lib/layout";
 
+/**
+ * The playground shell: a column of every page, and one page's specimens beside it.
+ *
+ * @remarks
+ * The column is what makes this a workbench rather than a set of pages. Comparing a
+ * recipe against its neighbours is most of what happens here, and it used to mean going
+ * back to the index between every two components.
+ *
+ * The column is carried across client-side navigations, so its scroll position and the
+ * page's own scroll are independent and neither is lost on the way to the next
+ * component.
+ */
 interface Props {
   title: string;
-  /** Small mono line above the page title — the kind of page this is. */
-  eyebrow: string;
   description: string;
   /**
    * Whether this page renders a specimen stage. The surface control only has
@@ -14,9 +29,8 @@ interface Props {
   hasStage?: boolean;
 }
 
-const { title, eyebrow, description, hasStage = false } = Astro.props;
-
-const shell = "mx-auto w-full max-w-page px-5 sm:px-8 lg:px-12";
+const { title, description, hasStage = false } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
 ---
 
 <html lang="en">
@@ -32,6 +46,17 @@ const shell = "mx-auto w-full max-w-page px-5 sm:px-8 lg:px-12";
     <link rel="icon" href="/logo-brand.svg" type="image/svg+xml" />
     <link rel="icon" href="/logo-brand.png" type="image/png" sizes="512x512" />
     <link rel="apple-touch-icon" href="/logo-brand.png" />
+
+    {
+      /*
+       * Client-side routing. A navigation swaps the head and the body and leaves the
+       * root element alone, which is where both controls keep their state, so moving
+       * between components never repaints the page from scratch and never drops the
+       * surface or the theme on the way.
+       */
+    }
+    <ClientRouter />
+
     <script is:inline>
       // Runs before first paint so the page never flashes the wrong theme.
       (() => {
@@ -49,62 +74,63 @@ const shell = "mx-auto w-full max-w-page px-5 sm:px-8 lg:px-12";
         root.classList.toggle(
           "dark",
           theme === "dark"
-            || (theme === "auto"
-              && window.matchMedia("(prefers-color-scheme: dark)").matches),
+            || (theme === "auto" && window.matchMedia("(prefers-color-scheme: dark)").matches),
         );
       })();
     </script>
   </head>
 
-  <body class="flex min-h-dvh flex-col">
+  <body class="bg-muted text-default font-sans antialiased">
     <a
       href="#content"
-      class="bg-inverted text-inverted sr-only rounded-md px-4 py-2 text-sm font-medium focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-30"
+      class="bg-inverted text-inverted sr-only rounded-lg px-4 py-2 text-sm font-medium focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-skip-link"
     >
       Skip to content
     </a>
 
-    <header class="bg-default/80 border-muted sticky top-0 z-20 border-b backdrop-blur-md">
-      <div
-        class={`${shell} flex min-h-14 flex-wrap items-center gap-x-4 gap-y-2 py-2 sm:py-0`}
-      >
+    <header
+      class="bg-default/85 border-muted sticky top-0 z-header h-14 border-b backdrop-blur-md"
+    >
+      <div class={`${shell} flex h-full items-center gap-3`}>
+        <button
+          type="button"
+          data-nav-toggle
+          aria-expanded="false"
+          aria-controls="page-nav"
+          class="text-muted hover:text-highlighted border-muted -ml-1 grid size-8 cursor-pointer place-items-center rounded-lg border lg:hidden"
+        >
+          <PanelLeft size={15} aria-hidden="true" />
+          <span class="sr-only">Navigation</span>
+        </button>
+
         <a
           href="/"
-          class="group hover:text-highlighted -mx-2 flex shrink-0 items-center gap-2.5 rounded-md px-2 py-1.5"
+          class="hover:text-highlighted -mx-2 flex shrink-0 items-center gap-2.5 rounded-lg px-2 py-1.5"
         >
-          <img
-            src="/logo-brand.svg"
-            alt=""
-            width="22"
-            height="22"
-            class="rounded-[0.3rem]"
-          />
-          <span class="text-highlighted text-sm font-semibold tracking-[-0.01em]">
-            75NeoUI
-          </span>
+          <img src="/logo-brand.svg" alt="" width="22" height="22" class="rounded-[0.35rem]" />
+          <span class="text-highlighted text-sm font-semibold tracking-[-0.015em]">75NeoUI</span>
           <span
-            class="border-muted text-dimmed hidden rounded-sm border px-1.5 py-0.5 font-mono text-[0.625rem] leading-none sm:inline"
+            class="border-muted text-dimmed hidden rounded-md border px-1.5 py-0.5 font-mono text-[0.625rem] leading-none sm:inline"
             data-identifier
           >
             playground
           </span>
         </a>
 
-        <div class="ml-auto flex items-center gap-3 sm:gap-5">
+        <div class="ml-auto flex min-w-0 items-center gap-2 sm:gap-3">
+          <Search />
           {
             hasStage && (
-              <>
-                <SegmentedControl
-                  name="surface"
-                  label="surface"
-                  options={[
-                    { value: "default", label: "default" },
-                    { value: "muted", label: "muted" },
-                    { value: "elevated", label: "elevated" },
-                  ]}
-                />
-                <span class="border-muted hidden h-5 border-l sm:block" />
-              </>
+              <SegmentedControl
+                class="hidden md:flex"
+                name="surface"
+                label="surface"
+                options={[
+                  { value: "default", label: "default" },
+                  { value: "muted", label: "muted" },
+                  { value: "elevated", label: "elevated" },
+                ]}
+              />
             )
           }
           <SegmentedControl
@@ -120,81 +146,139 @@ const shell = "mx-auto w-full max-w-page px-5 sm:px-8 lg:px-12";
       </div>
     </header>
 
-    <div class="border-muted border-b">
-      <div class={`${shell} py-12 lg:py-16`}>
-        <p class="text-dimmed font-mono text-xs tracking-wide" data-identifier>
-          {eyebrow}
-        </p>
-        <h1
-          class="text-highlighted mt-3 max-w-[16ch] text-4xl font-semibold tracking-[-0.035em] text-balance sm:text-5xl"
+    <div class={shell}>
+      <div class="grid items-start gap-x-8 lg:grid-cols-[14rem_minmax(0,1fr)]">
+        <aside
+          id="page-nav"
+          data-page-nav
+          data-open="false"
+          transition:persist="sidebar"
+          class={`border-muted border-b py-2 lg:border-b-0 lg:py-0 ${stickyColumn}`}
         >
-          {title}
-        </h1>
-        <p class="text-muted mt-5 max-w-[62ch] text-base/7 text-pretty">
-          {description}
-        </p>
+          <Sidebar path={path} />
+        </aside>
+
+        <main id="content" class="min-w-0 py-4 lg:py-6">
+          <div class="border-muted bg-default rounded-2xl border px-5 py-8 sm:px-8 sm:py-10">
+            <h1
+              class="text-highlighted text-3xl font-semibold tracking-[-0.03em] text-balance sm:text-[2rem]"
+            >
+              {title}
+            </h1>
+            <p class="text-muted mt-3 max-w-[68ch] text-[0.9375rem]/7 text-pretty">
+              {description}
+            </p>
+
+            <slot />
+          </div>
+
+          <p class="text-dimmed px-1 py-6 text-xs/6">
+            Components render straight from <code class="text-muted" data-identifier
+              >packages/*/src</code
+            >, so what you see here is source, not a published build.
+          </p>
+        </main>
       </div>
     </div>
 
-    <main id="content" class={`${shell} flex-1 py-12 lg:py-16`}>
-      <slot />
-    </main>
+    <script>
+      /**
+       * The chrome's stateful controls, bound once for the whole visit.
+       *
+       * @remarks
+       * Everything here is delegated from `document`, because client-side navigation
+       * replaces the body and would otherwise leave every listener attached to an
+       * element no longer on the page.
+       *
+       * The choices themselves are held here rather than read back off the root element,
+       * because a swap rewrites the root element's attributes from the incoming
+       * document: `data-theme`, `data-surface` and the `dark` class are all gone by the
+       * time the new page is in place. So they are put back on `astro:after-swap`, which
+       * runs before the browser paints, and walking from one component to the next never
+       * drops the surface you were comparing them on.
+       */
+      const root = document.documentElement;
+      const media = window.matchMedia("(prefers-color-scheme: dark)");
 
-    <footer class="border-muted mt-8 border-t">
-      <div
-        class={`${shell} flex flex-wrap items-center justify-between gap-x-8 gap-y-3 py-8`}
-      >
-        <p class="text-dimmed max-w-[54ch] text-xs/6">
-          Components render straight from <code class="text-muted" data-identifier>
-            packages/*/src</code
-          >, so what you see here is source, not a published build.
-        </p>
-        <a
-          href="https://github.com/75Neo/ui"
-          class="text-muted hover:text-highlighted rounded-sm font-mono text-xs"
-          data-identifier
-        >
-          github.com/75Neo/ui
-        </a>
-      </div>
-    </footer>
+      /** The current value of each control, keyed by the attribute it writes. */
+      const chosen: Record<string, string> = {
+        theme: root.dataset.theme ?? "auto",
+        surface: root.dataset.surface ?? "default",
+      };
 
-    <script is:inline>
-      (() => {
-        const root = document.documentElement;
-        const media = window.matchMedia("(prefers-color-scheme: dark)");
+      const apply = () => {
+        for (const [control, value] of Object.entries(chosen)) root.dataset[control] = value;
 
-        const paint = () => {
-          root.classList.toggle(
-            "dark",
-            root.dataset.theme === "dark"
-              || (root.dataset.theme === "auto" && media.matches),
-          );
-          for (const button of document.querySelectorAll("[data-control]")) {
-            const { control, value } = button.dataset;
-            button.setAttribute(
-              "aria-pressed",
-              String(root.dataset[control] === value),
-            );
+        root.classList.toggle(
+          "dark",
+          chosen.theme === "dark" || (chosen.theme === "auto" && media.matches),
+        );
+
+        for (const button of document.querySelectorAll<HTMLElement>("[data-control]")) {
+          const { control, value } = button.dataset;
+          button.setAttribute("aria-pressed", String(!!control && chosen[control] === value));
+        }
+      };
+
+      /*
+       * The column is carried across navigations so its scroll position survives, which
+       * means the row it marks as current is the one from the page before. Nothing else
+       * on the page needs this: everything else is rendered fresh by the swap.
+       */
+      const markCurrent = () => {
+        const here = window.location.pathname.replace(/\/$/, "") || "/";
+        for (const link of document.querySelectorAll<HTMLAnchorElement>("[data-page-nav] a")) {
+          const href = new URL(link.href).pathname.replace(/\/$/, "") || "/";
+          if (href === here) link.setAttribute("aria-current", "page");
+          else link.removeAttribute("aria-current");
+        }
+      };
+
+      document.addEventListener("click", (event) => {
+        const target = event.target as HTMLElement | null;
+
+        const option = target?.closest<HTMLElement>("[data-control]");
+        if (option?.dataset.control && option.dataset.value) {
+          const { control, value } = option.dataset;
+          chosen[control] = value;
+          try {
+            localStorage.setItem(`neo-${control}`, value);
+          } catch {
+            // Nothing to persist to; the choice still applies to this visit.
           }
-        };
-
-        for (const button of document.querySelectorAll("[data-control]")) {
-          button.addEventListener("click", () => {
-            const { control, value } = button.dataset;
-            root.dataset[control] = value;
-            try {
-              localStorage.setItem(`neo-${control}`, value);
-            } catch {
-              // Nothing to persist to; the choice still applies to this page.
-            }
-            paint();
-          });
+          apply();
+          return;
         }
 
-        media.addEventListener("change", paint);
-        paint();
-      })();
+        const toggle = target?.closest<HTMLElement>("[data-nav-toggle]");
+        if (toggle) {
+          const panel = document.querySelector<HTMLElement>("[data-page-nav]");
+          if (!panel) return;
+          const open = panel.dataset.open !== "true";
+          panel.dataset.open = String(open);
+          toggle.setAttribute("aria-expanded", String(open));
+          return;
+        }
+
+        // A tap on a link inside the narrow-layout navigation puts it away again.
+        if (target?.closest("[data-page-nav] a")) {
+          const panel = document.querySelector<HTMLElement>("[data-page-nav]");
+          const button = document.querySelector<HTMLElement>("[data-nav-toggle]");
+          if (panel && window.matchMedia("(width < 64rem)").matches) {
+            panel.dataset.open = "false";
+            button?.setAttribute("aria-expanded", "false");
+          }
+        }
+      });
+
+      media.addEventListener("change", apply);
+      document.addEventListener("astro:after-swap", () => {
+        apply();
+        markCurrent();
+      });
+
+      apply();
+      markCurrent();
     </script>
   </body>
 </html>

@@ -2,7 +2,6 @@
 name: Dialog
 key: dialog
 module: dialog
-order: 14
 summary: A panel over the page in four sizes, with the overlay, the motion and every way out under the caller's control.
 ---
 

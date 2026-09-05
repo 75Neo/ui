@@ -2,7 +2,6 @@
 name: Error
 key: error
 module: error
-order: 27
 summary: The page shown when there is nothing else to show, across seven colors, centred in what the Header leaves.
 ---
 

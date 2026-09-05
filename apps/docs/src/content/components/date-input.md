@@ -2,7 +2,6 @@
 name: DateInput
 key: dateInput
 module: date-input
-order: 12
 summary: A date typed a segment at a time, with no format to explain, across three sizes and seven accents.
 ---
 

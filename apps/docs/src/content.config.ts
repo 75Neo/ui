@@ -16,8 +16,6 @@ const guides = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/guides" }),
   schema: z.object({
     title: z.string(),
-    /** Small mono line above the page title. */
-    eyebrow: z.string(),
     description: z.string(),
   }),
 });
@@ -33,8 +31,6 @@ const components = defineCollection({
     module: z.string(),
     /** One line for the index — what the component is. */
     summary: z.string(),
-    /** Position in the components page and its contents list. */
-    order: z.number(),
   }),
 });
 

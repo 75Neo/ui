@@ -2,7 +2,6 @@
 name: Tabs
 key: tabs
 module: tabs
-order: 18
 summary: A row of triggers and the panel the selected one shows, in two variants across three sizes and seven colors.
 ---
 
