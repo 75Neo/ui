@@ -4,7 +4,7 @@ packages:
 
 catalog:
   # Tooling
-  "@types/node": ^24.13.3
+  "@types/node": ^26.4.1
   publint: ^0.3.24
   tsdown: ^0.22.14
   typescript: ~6.0.3
