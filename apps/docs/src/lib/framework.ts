@@ -20,6 +20,8 @@ interface FrameworkFacts {
   icon: string;
   /** The lowest version the adapter supports. */
   requires: string;
+  /** The framework's own mark, as a Simple Icons slug. */
+  brand: string;
 }
 
 export const frameworkFacts: Record<Framework, FrameworkFacts> = {
@@ -29,6 +31,7 @@ export const frameworkFacts: Record<Framework, FrameworkFacts> = {
     language: "tsx",
     icon: "ReactNode",
     requires: "React 18 or newer",
+    brand: "react",
   },
   vue: {
     label: "Vue",
@@ -36,6 +39,7 @@ export const frameworkFacts: Record<Framework, FrameworkFacts> = {
     language: "vue",
     icon: "Component",
     requires: "Vue 3.5 or newer",
+    brand: "vuedotjs",
   },
 };
 

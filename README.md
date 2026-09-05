@@ -1,52 +1,53 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.png">
   <source media="(prefers-color-scheme: light)" srcset="assets/banner-light.png">
-  <img alt="75NeoUI — One design system, two frameworks. React • Vue • Ark UI • Tailwind CSS" src="assets/banner-dark.png" width="100%">
+  <img alt="75NeoUI — a component library for React and Vue, built on Ark UI and Tailwind CSS" src="assets/banner-dark.png" width="100%">
 </picture>
 
 # 75NeoUI
 
-75NeoUI builds on [Ark UI](https://ark-ui.com), [Tailwind CSS](https://tailwindcss.com) and
-[Tailwind Variants](https://www.tailwind-variants.org) to ship sophisticated, accessible,
-performant interfaces — one design system, two frameworks.
+A component library for React and Vue. Behaviour and accessibility come from
+[Ark UI](https://ark-ui.com), styling from [Tailwind CSS](https://tailwindcss.com) and
+[Tailwind Variants](https://www.tailwind-variants.org), and theming from a set of CSS
+custom properties you can redefine.
 
-Every token, variant and interaction is tuned for clarity, rhythm and comfort, so
-interfaces stay consistent and quietly confident at any scale.
+Both adapters ship the same components with the same props, the same slot names and the
+same variants.
 
-## Installation
+| Framework | Package        | Requires            |
+| --------- | -------------- | ------------------- |
+| React     | `@75neo/react` | React 18 or greater |
+| Vue       | `@75neo/vue`   | Vue 3.5 or greater  |
+
+## Install
 
 ```sh
 pnpm add @75neo/react   # or @75neo/vue
 ```
 
-Both adapters pull `@75neo/themes` in with them. Swap `pnpm add` for `npm install`,
-`yarn add` or `bun add` as you prefer. React needs 18 or newer, Vue 3.5 or newer.
+Either adapter pulls `@75neo/themes` in with it. Swap `pnpm add` for `npm install`,
+`yarn add` or `bun add`.
 
-Then import Tailwind CSS and the theme in your stylesheet:
+Then add two imports to the stylesheet your app already loads:
 
 ```css
 @import "tailwindcss";
 @import "@75neo/themes";
 ```
 
-That one import ships the tokens, the `light` and `dark` variants and the base layer.
-Dark mode is a `.dark` class on a root element, and nothing else needs wiring.
+That brings the tokens, the `light` and `dark` variants and the base layer. Dark mode is
+a `.dark` class on a root element, so a theme toggle only has to move that class.
 
-## Usage
+## Use a component
 
 ```tsx
 import { Button } from "@75neo/react";
 
 export function App() {
   return (
-    <>
-      <Button variant="solid" color="primary">
-        Get started
-      </Button>
-      <Button variant="soft" color="neutral" loading>
-        Saving
-      </Button>
-    </>
+    <Button variant="solid" color="primary">
+      Get started
+    </Button>
   );
 }
 ```
@@ -58,15 +59,14 @@ import { Button } from "@75neo/vue";
 
 <template>
   <Button variant="solid" color="primary">Get started</Button>
-  <Button variant="soft" color="neutral" loading>Saving</Button>
 </template>
 ```
 
-## Theming
+## Restyle it
 
-Three ways to restyle, from broadest to narrowest.
+Three entry points, from broadest to narrowest.
 
-**Redefine the tokens** in your own CSS, after the import. Every value is a plain custom
+**Redefine a token** in your own CSS, after the import. Every value is a plain custom
 property, and both themes flip with it:
 
 ```css
@@ -80,11 +80,10 @@ property, and both themes flip with it:
 }
 ```
 
-Each color is a single token. Recipes spend it at different strengths with Tailwind's
-opacity modifier rather than reaching for a second one, so two lines rebrand the library
-and no role has to be retuned to match.
+Each semantic color is one token, spent at different strengths with Tailwind's opacity
+modifier, so a rebrand is one line per color.
 
-**Wrap a subtree in `Theme`** to restyle every component below it. Nesting composes:
+**Wrap a subtree in `Theme`** to restyle everything below it. Nesting composes:
 
 ```tsx
 <Theme theme={{ button: { ui: { base: "rounded-full" }, props: { color: "neutral" } } }}>
@@ -99,32 +98,37 @@ slots:
 <Button ui={{ base: "rounded-full", label: "tracking-wide" }}>One-off</Button>
 ```
 
-All three settle through one cascade: the recipe, then `Theme` layers, then the `ui` prop,
-then `class` on the base slot. Tailwind-merge resolves conflicts, so a later layer replaces
-a conflicting utility and everything else survives.
+All three settle through one cascade: the recipe, then `Theme` layers, then `ui`, then
+`class` on the base slot. Tailwind-merge resolves conflicts, so a later layer replaces a
+conflicting utility and everything else survives.
 [`packages/themes/README.md`](packages/themes/README.md) has the token vocabulary.
 
 ## Documentation
 
-- **Docs site:** `pnpm dev:docs` runs `apps/docs`
-- **Playground:** `pnpm dev:play` renders every component in React and Vue side by side
+- `pnpm dev:docs` runs the documentation site
+- `pnpm dev:play` runs the playground, every component in React and Vue side by side
 
-## Local development
+## Develop locally
 
 ```sh
 mise install   # Node 24 and pnpm 11
 pnpm install
-pnpm build     # core → themes → react/vue → apps
+pnpm build     # core → themes → react/vue
 ```
 
-Before opening a pull request, run what CI runs: `pnpm format:check`, `pnpm build`,
-`pnpm test`, `pnpm lint`, `pnpm typecheck`.
+Before opening a pull request, run what CI runs:
+
+```sh
+pnpm format:check && pnpm lint && pnpm build && pnpm typecheck && pnpm test
+```
+
+The first `pnpm test` needs `pnpm exec playwright install --with-deps chromium`.
 
 ## Contributing
 
-Thank you for considering contributing to 75NeoUI. Open an issue with a minimal
-reproduction for a bug, or an issue or discussion for a proposal.
+Open an issue with a minimal reproduction for a bug, or an issue or discussion for a
+proposal.
 
 > [!TIP]
-> [`AGENTS.md`](AGENTS.md) carries the contributing guidelines in the form AI coding agents
-> pick up automatically: project commands, architecture, quality checks and workflow.
+> [`AGENTS.md`](AGENTS.md) carries the same guidelines in the form AI coding agents pick
+> up automatically: commands, architecture, conventions and the checks to run.
