@@ -9,12 +9,9 @@ import { type Framework, docHref } from "../lib/framework";
 import type { SearchEntry } from "../lib/search";
 
 /**
- * The one bar across the top of every page.
- *
- * @remarks
- * It is the only chrome the landing page and the documentation share, so it takes the
- * framework as optional: without one there is nothing for the switcher to switch, and
- * the navigation points at React because the redirect at `/docs` does too.
+ * The one bar across the top of every page. The framework is optional because the
+ * landing page belongs to neither; without one the navigation points at React, as the
+ * redirect at `/docs` does.
  */
 interface Props {
   framework?: Framework;

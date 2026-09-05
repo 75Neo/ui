@@ -13,13 +13,9 @@ import { searchIndex } from "../../../../lib/search";
 import { type Framework, frameworks } from "../../../../lib/framework";
 
 /**
- * One page per component, per adapter.
- *
- * @remarks
- * The content collection is the list of pages. Adding a component to the docs is still
- * adding one Markdown file: it grows a route under both frameworks, a row in the
- * sidebar, a card on the index, and its place in the previous and next links, without
- * any of those being written down a second time.
+ * One page per component, per adapter. The content collection is the list of pages, so
+ * one Markdown file grows a route under both frameworks, a sidebar row, an index card
+ * and its place in the previous and next links.
  */
 export async function getStaticPaths() {
   const components = await documentedComponents();
@@ -43,11 +39,7 @@ const { entry, api, slug } = component;
 
 const { Content, headings } = await render(entry);
 
-/*
- * The prose subheadings first, then the generated tables, which is the order they
- * appear in. The API headings are rendered by a component rather than written in
- * Markdown, so `render()` knows nothing about them.
- */
+// The prose subheadings first, then the generated tables, which is the order on the page.
 const rail = [...railItems(headings), ...apiSections(api, framework)];
 
 const step =

@@ -8,20 +8,14 @@ export interface SearchEntry {
   label: string;
   /** The heading the row is filed under, and the second thing the query matches. */
   group: string;
-  /** One line under the label, so a row that is not the obvious match still explains itself. */
+  /** One line under the label, so a row that is not the obvious match explains itself. */
   summary: string;
 }
 
 /**
- * Everything the search dialog can reach, for one framework.
- *
- * @remarks
- * The index is built at page render and inlined as JSON, so the dialog needs no fetch
- * and no build step of its own. It is a few kilobytes for a site this size, and it
- * stays correct because it is the same list the sidebar is built from.
- *
- * It is framework-scoped for the same reason every other link is: a reader searching
- * from the Vue route should land on Vue pages.
+ * Everything the search dialog can reach, for one framework. Built at page render and
+ * inlined as JSON, from the same list the sidebar is built from, so the dialog needs no
+ * fetch and a reader searching from the Vue route lands on Vue pages.
  */
 export function searchIndex(
   framework: Framework,

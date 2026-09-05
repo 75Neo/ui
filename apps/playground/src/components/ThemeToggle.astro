@@ -6,15 +6,10 @@ import { Check, ChevronDown, Monitor, Moon, Sun } from "@lucide/astro";
  *
  * @remarks
  * A `details` element rather than the library's own `Menu`, because every page here
- * renders both adapters side by side and a third specimen in the chrome would have a
- * claim on the page it does not deserve. It opens and closes on its own; the delegated
- * script only has to shut it when the pointer leaves.
- *
- * The trigger shows the mode in force, which is only known at runtime. So all three
- * icons are rendered and `main.css` reveals the one matching `data-theme` on the root
- * element, the same way the rows below are ticked. That makes the button right on the
- * first frame, before any script has run, and after a client-side navigation with
- * nothing to repaint it.
+ * renders both adapters and a third specimen in the chrome would claim a share of them.
+ * All three icons are rendered and `main.css` reveals the one matching `data-theme` on
+ * the root element, so the trigger is right on the first frame and after a navigation
+ * repaints nothing.
  */
 const options = [
   { value: "light", label: "Light", icon: Sun },

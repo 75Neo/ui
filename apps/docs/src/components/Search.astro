@@ -6,13 +6,10 @@ import type { SearchEntry } from "../lib/search";
  * A command palette over every page in the current framework.
  *
  * @remarks
- * A native `dialog` rather than the library's own `Dialog`, because this sits in the
- * chrome of both routes and one of them would otherwise be hydrating the other
- * adapter's component. Everything it needs is markup and one delegated listener.
- *
- * The index is inlined as JSON beside the dialog and read when the dialog opens, so a
- * navigation that replaces the body also replaces the index, and the palette on a Vue
- * page never offers React links.
+ * A native `dialog` rather than the library's own `Dialog`, because it sits in chrome
+ * both routes share and either adapter's component would be wrong on half the site. The
+ * index is inlined as JSON, so a navigation replaces it and a Vue page never offers
+ * React links.
  */
 interface Props {
   entries: SearchEntry[];
@@ -70,12 +67,8 @@ const kbd =
 
 <script>
   /**
-   * One delegated controller for the palette.
-   *
-   * @remarks
-   * A bundled module script runs once for the whole visit, so every listener is on
-   * `document` and every element is looked up when it is needed rather than held. That
-   * is what keeps this working after client-side navigation replaces the body.
+   * One delegated controller for the palette. The script runs once for the visit, so
+   * listeners sit on `document` and elements are looked up when needed rather than held.
    */
   interface Entry {
     href: string;

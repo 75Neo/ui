@@ -1,12 +1,7 @@
 /**
- * The two adapters, and everything that differs between them.
- *
- * @remarks
- * The docs split by framework rather than showing both at once. A reader has already
- * chosen React or Vue by the time they arrive, and a page that answers for both makes
- * them read past half of it. The prose is shared: only the install command, the
- * package name and the code examples change, so one Markdown file still serves both
- * routes.
+ * The two adapters, and everything that differs between them. The docs split by
+ * framework rather than answering for both at once; the prose is still one Markdown
+ * file, because only the package name and the code examples change.
  */
 
 export const frameworks = ["react", "vue"] as const;
@@ -19,13 +14,7 @@ interface FrameworkFacts {
   label: string;
   /** The package to install. */
   package: string;
-  /**
-   * The language a code fence uses for this framework's examples.
-   *
-   * @remarks
-   * Narrowed to the two it can be, rather than left as a string, because the landing
-   * page hands it to Shiki and Shiki takes a name it knows.
-   */
+  /** The language a code fence uses, narrowed because the landing page hands it Shiki. */
   language: "tsx" | "vue";
   /** What the framework calls an icon, for the props tables. */
   icon: string;
@@ -60,13 +49,7 @@ export function docHref(framework: Framework, page: "getting-started" | "compone
   return `/docs/${framework}/${page}`;
 }
 
-/**
- * The same page in the other framework.
- *
- * @remarks
- * Every documentation route exists under both, so switching never lands on a 404 and
- * never drops the reader back at the top of the section.
- */
+/** The same page in the other framework. Every route exists under both. */
 export function otherFramework(framework: Framework): Framework {
   return framework === "react" ? "vue" : "react";
 }

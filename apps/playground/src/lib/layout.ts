@@ -1,7 +1,4 @@
-/**
- * The page gutter, shared by the header and the columns under it so the header rule and
- * the shell line up on the same two edges.
- */
+/** The page gutter, so the header rule and the columns under it share two edges. */
 export const shell = "mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8";
 
 /** A column that stays put while the middle scrolls, and scrolls on its own. */

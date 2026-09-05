@@ -8,6 +8,22 @@ export interface PreviewRoute {
   key: string;
 }
 
+/** The pages that are not one component. They file under `overview` in the palette. */
+export const overview: readonly PreviewRoute[] = [
+  {
+    href: "/",
+    label: "Every component",
+    summary: "The whole library on one page, each card linking to its own specimens.",
+    key: "overview",
+  },
+  {
+    href: "/tokens",
+    label: "Tokens",
+    summary: "Every color, strength and surface a recipe is allowed to compose.",
+    key: "overview",
+  },
+];
+
 const routes: readonly PreviewRoute[] = [
   {
     href: "/accordion",
@@ -409,12 +425,9 @@ const routes: readonly PreviewRoute[] = [
 ];
 
 /**
- * Every component page, in alphabetical order.
- *
- * @remarks
- * Sorted here rather than kept sorted by hand, so adding a route is appending to the
- * array above and nothing else. The sidebar, the search dialog and the index all read
- * this one list.
+ * Every component page, in alphabetical order. Sorted here rather than by hand, so
+ * adding a route is appending to the array above. The sidebar, the search dialog and
+ * the index all read this one list.
  */
 export const previews: readonly PreviewRoute[] = [...routes].sort((a, b) =>
   a.label.localeCompare(b.label),

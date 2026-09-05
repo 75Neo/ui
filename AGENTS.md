@@ -51,9 +51,10 @@ Four packages. The dependency direction is `core` → `themes` → `react`/`vue`
 Both apps are the same shell: a sticky header carrying a `⌘K` search dialog and the
 theme control, a column of every page down the left, and the page itself on a card. The
 playground adds the surface control; the docs add the framework switch and a rail of
-headings. `apps/playground/src/routes.ts` is the playground's whole list, sorted by name
-where it is exported rather than kept in order by hand, and the sidebar, the search
-dialog and the index all read it.
+headings. `apps/playground/src/routes.ts` is the playground's whole list: `previews`,
+sorted by name where it is exported rather than kept in order by hand, and `overview`
+for the two pages that are not one component. The sidebar, the search dialog and the
+404 page read both, so a page reachable from one is reachable from all three.
 
 Both apps reach `@75neo/*` straight into each package's `src`. Nothing about an app goes
 through `dist`, so both hot-reload against source with no build step in between and a

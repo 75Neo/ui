@@ -3,11 +3,9 @@ import { componentColors, themeColors } from "@75neo/themes";
 import Playground from "../layouts/Playground.astro";
 
 /*
- * Everything on this page is read off the design system rather than restated, so a
- * color added to `themeColors` shows up here without an edit. The class strings are
- * built by interpolation, which Tailwind's scanner cannot follow — they render because
- * `packages/themes/src/tokens/utilities.css` safelists exactly this set. That is the
- * point of the page: what is listed here is what a recipe is allowed to compose.
+ * Everything here is read off the design system, so a color added to `themeColors` shows
+ * up without an edit. The class strings are interpolated, which Tailwind's scanner
+ * cannot follow: they render because `tokens/utilities.css` safelists exactly this set.
  */
 const strengths = [
   { label: "fill", classes: (c: string) => `bg-${c}/10`, suffix: "/10" },

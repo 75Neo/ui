@@ -1,15 +1,13 @@
 ---
-import { previews } from "../routes";
+import { overview, previews } from "../routes";
 
 /**
  * The column of every page in the playground.
  *
  * @remarks
- * The current row is marked with `aria-current` and painted from it, rather than from a
- * class decided here. That matters because this element is carried across client-side
- * navigations to keep its scroll position: the markup that arrives with the new page is
- * discarded, so the only thing that can move the highlight afterwards is an attribute a
- * script can set.
+ * The current row is painted from `aria-current` rather than from a class decided here.
+ * This element is carried across navigations, so the markup arriving with the new page
+ * is discarded and only an attribute a script can set moves the highlight.
  */
 interface Props {
   /** The path the reader is on, so one row is already current on first paint. */
@@ -26,16 +24,15 @@ const row =
   <div>
     <p class="text-dimmed px-2.5 pb-1.5 font-mono text-xs" data-identifier>overview</p>
     <ul class="flex flex-col gap-px">
-      <li>
-        <a href="/" aria-current={path === "/" ? "page" : undefined} class={row}>
-          Every component
-        </a>
-      </li>
-      <li>
-        <a href="/tokens" aria-current={path === "/tokens" ? "page" : undefined} class={row}>
-          Tokens
-        </a>
-      </li>
+      {
+        overview.map(({ href, label }) => (
+          <li>
+            <a href={href} aria-current={path === href ? "page" : undefined} class={row}>
+              {label}
+            </a>
+          </li>
+        ))
+      }
     </ul>
   </div>
 

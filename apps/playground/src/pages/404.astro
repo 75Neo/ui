@@ -1,6 +1,6 @@
 ---
 import Playground from "../layouts/Playground.astro";
-import { previews } from "../routes";
+import { overview, previews } from "../routes";
 ---
 
 <Playground
@@ -9,28 +9,27 @@ import { previews } from "../routes";
 >
   <ul class="border-muted divide-muted max-w-2xl divide-y border-y">
     {
-      [{ href: "/", label: "Overview", summary: "Every component in the library." }, ...previews]
-        .map(({ href, label, summary }) => (
-          <li>
-            <a
-              href={href}
-              class="group focus-visible:ring-primary/40 flex items-baseline justify-between gap-8 py-5 focus-visible:rounded-sm focus-visible:ring-2 focus-visible:outline-none"
+      [...overview, ...previews].map(({ href, label, summary }) => (
+        <li>
+          <a
+            href={href}
+            class="group focus-visible:ring-primary/40 flex items-baseline justify-between gap-8 py-5 focus-visible:rounded-sm focus-visible:ring-2 focus-visible:outline-none"
+          >
+            <span class="min-w-0">
+              <span class="text-highlighted group-hover:text-primary block text-base font-medium">
+                {label}
+              </span>
+              <span class="text-muted mt-1 block text-sm/6">{summary}</span>
+            </span>
+            <span
+              class="text-dimmed group-hover:text-primary shrink-0 font-mono text-xs"
+              data-identifier
             >
-              <span class="min-w-0">
-                <span class="text-highlighted group-hover:text-primary block text-base font-medium">
-                  {label}
-                </span>
-                <span class="text-muted mt-1 block text-sm/6">{summary}</span>
-              </span>
-              <span
-                class="text-dimmed group-hover:text-primary shrink-0 font-mono text-xs"
-                data-identifier
-              >
-                {href}
-              </span>
-            </a>
-          </li>
-        ))
+              {href}
+            </span>
+          </a>
+        </li>
+      ))
     }
   </ul>
 </Playground>

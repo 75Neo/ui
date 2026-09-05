@@ -6,11 +6,9 @@ import type { SidebarLink } from "../lib/navigation";
  * The column of every page in the documentation.
  *
  * @remarks
- * The current row is marked with `aria-current` and painted from it, rather than from a
- * class decided here. That matters because this element is carried across client-side
- * navigations to keep its scroll position: the markup that arrives with the new page is
- * discarded, so the only thing that can move the highlight afterwards is an attribute a
- * script can set.
+ * The current row is painted from `aria-current` rather than from a class decided here.
+ * This element is carried across navigations, so the markup arriving with the new page
+ * is discarded and only an attribute a script can set moves the highlight.
  */
 interface Props {
   framework: Framework;

@@ -5,21 +5,13 @@ import * as icons from "simple-icons";
  * A brand mark, drawn from Simple Icons.
  *
  * @remarks
- * Lucide dropped its brand icons, and a brand mark is the one glyph that cannot be
- * approximated: it is somebody's trademark, drawn one way. Simple Icons is the library
- * that carries them, so the path here is looked up rather than drawn, and the title it
- * ships is what names the icon to a screen reader.
- *
- * The import runs at build time and the mark is inlined into the page, so nothing about
- * this reaches the browser as a dependency.
- *
- * The mark itself is decorative, the way every other icon in this app is: it is hidden
- * from the accessibility tree and whatever contains it carries the name. A `title`
- * element inside the `svg` would be ignored under `aria-hidden` anyway, and would put a
- * second `title` element in the document for no one to read.
+ * Lucide dropped its brand icons, and a trademark is the one glyph that cannot be
+ * approximated. The lookup runs at build time and the path is inlined, so the package
+ * reaches no browser. The mark is decorative, like every other icon here: whatever
+ * contains it carries the name.
  */
 interface Props {
-  /** A Simple Icons slug, as in `github`. */
+  /** A Simple Icons slug, as in `github` or `visual-studio-code`. */
   name: string;
   /** Edge length in pixels. */
   size?: number;
@@ -28,8 +20,12 @@ interface Props {
 
 const { name, size = 16, class: className } = Astro.props;
 
-const key = `si${name[0]?.toUpperCase()}${name.slice(1)}`;
-const icon = (icons as Record<string, { path: string } | undefined>)[key];
+/** Simple Icons exports a hyphenated slug camel-cased, so `x-y` is `siXY`. */
+const camel = name
+  .split("-")
+  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+  .join("");
+const icon = (icons as Record<string, { path: string } | undefined>)[`si${camel}`];
 
 if (!icon) throw new Error(`Simple Icons has no icon named "${name}"`);
 ---

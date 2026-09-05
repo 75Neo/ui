@@ -24,10 +24,9 @@ const { Content, headings } = await render(entry);
 const components = await documentedComponents();
 
 /*
- * The install command is the one thing on this page a reader copies rather than reads,
- * so it is a Clipboard rather than a code fence. It is also the only part of the guide
- * that differs between adapters by more than a language tag, which is why it lives on
- * the page and the prose stays one file.
+ * The install command is copied rather than read, so it is a Clipboard rather than a
+ * fence. It is also the only part of the guide that differs between adapters by more
+ * than a language tag, which is why it lives here and the prose stays one file.
  */
 const install = `pnpm add ${facts.package}`;
 const rail = [{ value: "install", depth: 2, label: "Install" }, ...railItems(headings)];

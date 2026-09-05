@@ -13,11 +13,9 @@ import type { SearchEntry } from "../lib/search";
  * The documentation shell: a column of pages, an article, and a rail of headings.
  *
  * @remarks
- * The two outer columns are sticky and scroll on their own, so a long components list
- * and a long article never drag each other around. The article sits on a card because
- * the page behind it is the muted surface: that one step of elevation is what separates
- * the thing being read from the furniture around it, and it is the only elevation on
- * the page.
+ * The two outer columns scroll on their own, so a long list and a long article never
+ * drag each other around. The article sits on a card, the page's one step of elevation
+ * above the muted surface behind it.
  */
 interface Props {
   title: string;
@@ -46,9 +44,8 @@ const path = Astro.url.pathname.replace(/\/$/, "");
 >
   {
     /*
-     * `data-framework` is what hides the code fences belonging to the other adapter.
-     * It sits on the whole page rather than on the prose, so a specimen or a panel
-     * outside the article can key off it too.
+     * `data-framework` hides the other adapter's fences. It sits on the whole page, so a
+     * specimen or a panel outside the article can key off it too.
      */
   }
   <div data-framework={framework} class={shell}>
