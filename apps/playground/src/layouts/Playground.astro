@@ -1,6 +1,6 @@
 ---
 import { ClientRouter } from "astro:transitions";
-import { PanelLeft } from "@lucide/astro";
+import { Monitor, Moon, PanelLeft, Sun } from "@lucide/astro";
 import "../assets/css/main.css";
 import Search from "../components/Search.astro";
 import SegmentedControl from "../components/SegmentedControl.astro";
@@ -137,9 +137,9 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
             name="theme"
             label="theme"
             options={[
-              { value: "light", label: "light" },
-              { value: "dark", label: "dark" },
-              { value: "auto", label: "auto" },
+              { value: "light", label: "Light", icon: Sun },
+              { value: "dark", label: "Dark", icon: Moon },
+              { value: "auto", label: "System", icon: Monitor },
             ]}
           />
         </div>
