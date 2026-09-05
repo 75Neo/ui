@@ -19,12 +19,12 @@ interface Props {
 const { path } = Astro.props;
 
 const row =
-  "text-muted hover:text-highlighted hover:bg-elevated/60 block truncate rounded-lg px-2.5 py-1.5 text-[0.8125rem]";
+  "text-muted hover:text-highlighted hover:bg-elevated/60 block truncate rounded-lg px-2.5 py-1.5 text-sm";
 ---
 
 <nav aria-label="Playground" class="flex flex-col gap-6 pb-10 lg:pt-6">
   <div>
-    <p class="text-dimmed px-2.5 pb-1.5 font-mono text-[0.6875rem]" data-identifier>overview</p>
+    <p class="text-dimmed px-2.5 pb-1.5 font-mono text-xs" data-identifier>overview</p>
     <ul class="flex flex-col gap-px">
       <li>
         <a href="/" aria-current={path === "/" ? "page" : undefined} class={row}>
@@ -40,7 +40,7 @@ const row =
   </div>
 
   <div>
-    <p class="text-dimmed px-2.5 pb-1.5 font-mono text-[0.6875rem]" data-identifier>
+    <p class="text-dimmed px-2.5 pb-1.5 font-mono text-xs" data-identifier>
       components · {previews.length}
     </p>
     <ul class="flex flex-col gap-px">

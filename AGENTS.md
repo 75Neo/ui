@@ -146,6 +146,17 @@ Vue one does. The search dialog is the exception: it is a native `dialog` and on
 delegated listener, because it stands in chrome both routes share and either adapter's
 component would be the wrong one on half the site.
 
+Icons are Lucide, except a brand mark. Lucide dropped those, and a brand mark is the one
+glyph that cannot be approximated, so `BrandIcon.astro` looks its path up in
+`simple-icons` by slug. The lookup runs at build time and the mark is inlined, so the
+package reaches no browser.
+
+Code blocks carry one Shiki theme per mode. Shiki writes the light colors inline and the
+dark ones beside them as `--shiki-dark-*` custom properties, and `main.css` spends those
+under the root element's `dark` class. The background is not Shiki's in either mode: a
+code block sits on `--ui-bg-muted`, the design system's own recessed surface, because the
+two themes disagree about what a page is made of and the page wins.
+
 ### Client-side routing
 
 Both apps carry `<ClientRouter />`, so a navigation swaps the head and the body instead

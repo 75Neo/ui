@@ -1,0 +1,46 @@
+---
+import * as icons from "simple-icons";
+
+/**
+ * A brand mark, drawn from Simple Icons.
+ *
+ * @remarks
+ * Lucide dropped its brand icons, and a brand mark is the one glyph that cannot be
+ * approximated: it is somebody's trademark, drawn one way. Simple Icons is the library
+ * that carries them, so the path here is looked up rather than drawn, and the title it
+ * ships is what names the icon to a screen reader.
+ *
+ * The import runs at build time and the mark is inlined into the page, so nothing about
+ * this reaches the browser as a dependency.
+ *
+ * The mark itself is decorative, the way every other icon in this app is: it is hidden
+ * from the accessibility tree and whatever contains it carries the name. A `title`
+ * element inside the `svg` would be ignored under `aria-hidden` anyway, and would put a
+ * second `title` element in the document for no one to read.
+ */
+interface Props {
+  /** A Simple Icons slug, as in `github`. */
+  name: string;
+  /** Edge length in pixels. */
+  size?: number;
+  class?: string;
+}
+
+const { name, size = 16, class: className } = Astro.props;
+
+const key = `si${name[0]?.toUpperCase()}${name.slice(1)}`;
+const icon = (icons as Record<string, { path: string } | undefined>)[key];
+
+if (!icon) throw new Error(`Simple Icons has no icon named "${name}"`);
+---
+
+<svg
+  viewBox="0 0 24 24"
+  width={size}
+  height={size}
+  fill="currentColor"
+  aria-hidden="true"
+  class={className}
+>
+  <path d={icon.path} />
+</svg>

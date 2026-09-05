@@ -1,5 +1,6 @@
 ---
 import { PanelLeft } from "@lucide/astro";
+import BrandIcon from "./BrandIcon.astro";
 import FrameworkSwitch from "./FrameworkSwitch.astro";
 import Search from "./Search.astro";
 import ThemeToggle from "./ThemeToggle.astro";
@@ -66,7 +67,7 @@ const nav = [
           <a
             href={href}
             aria-current={path.startsWith(href) ? "page" : undefined}
-            class="text-muted hover:text-highlighted aria-[current]:text-highlighted rounded-lg px-2.5 py-1.5 text-[0.8125rem] aria-[current]:font-medium"
+            class="text-muted hover:text-highlighted aria-[current]:text-highlighted rounded-lg px-2.5 py-1.5 text-sm aria-[current]:font-medium"
           >
             {label}
           </a>
@@ -77,13 +78,12 @@ const nav = [
     <div class="ml-auto flex min-w-0 items-center gap-2 sm:gap-3">
       <Search entries={entries} />
       {framework && <FrameworkSwitch framework={framework} path={path} />}
-      {/* Lucide dropped its brand icons, so this one stays a word. */}
       <a
         href="https://github.com/75Neo/ui"
-        class="text-dimmed hover:text-highlighted hidden rounded-sm font-mono text-xs lg:inline"
-        data-identifier
+        class="text-dimmed hover:text-highlighted border-muted hidden size-8 place-items-center rounded-lg border sm:grid"
       >
-        github
+        <BrandIcon name="github" size={15} />
+        <span class="sr-only">75NeoUI on GitHub</span>
       </a>
       <ThemeToggle />
     </div>

@@ -38,7 +38,7 @@ const sections = [
   {
     sections.map(({ label, links }) => (
       <div>
-        <p class="text-dimmed px-2.5 pb-1.5 font-mono text-[0.6875rem]" data-identifier>
+        <p class="text-dimmed px-2.5 pb-1.5 font-mono text-xs" data-identifier>
           {label.toLowerCase()}
         </p>
 
@@ -48,7 +48,7 @@ const sections = [
               <a
                 href={href}
                 aria-current={path === href ? "page" : undefined}
-                class="text-muted hover:text-highlighted hover:bg-elevated/60 block truncate rounded-lg px-2.5 py-1.5 text-[0.8125rem]"
+                class="text-muted hover:text-highlighted hover:bg-elevated/60 block truncate rounded-lg px-2.5 py-1.5 text-sm"
               >
                 {link}
               </a>

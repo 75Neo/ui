@@ -53,7 +53,16 @@ export default defineConfig({
    */
   redirects: { "/docs": "/docs/react/getting-started" },
   markdown: {
-    shikiConfig: { theme: "github-dark", wrap: false },
+    /*
+     * One theme per mode. Shiki writes the light colors inline and the dark ones as
+     * `--shiki-dark-*` custom properties beside them, and `main.css` spends those under
+     * the root element's `dark` class. That is what keeps a code block in the same
+     * light as the prose around it rather than a dark panel dropped into a light page.
+     */
+    shikiConfig: {
+      themes: { light: "github-light", dark: "github-dark" },
+      wrap: false,
+    },
   },
   integrations: [react(), vue()],
   vite: {

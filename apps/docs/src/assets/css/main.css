@@ -222,17 +222,30 @@
   }
 
   /*
-   * Shiki paints its own background, and it is dark in both themes on purpose: a code
-   * block is a quotation from an editor, and reading it as one is what keeps it from
-   * competing with the prose around it.
+   * A code block sits on the design system's own recessed surface in both modes, which
+   * is why Shiki's background is overridden rather than used: the two themes disagree
+   * about what a page is made of, and the page wins.
+   *
+   * Only the token colors come from Shiki, and only the light half arrives as inline
+   * styles. The dark half rides along as `--shiki-dark-*` custom properties, which the
+   * rule below spends when the root element carries `dark`.
    */
   .prose pre {
+    background-color: var(--ui-bg-muted) !important;
     border: 1px solid var(--ui-border-muted);
     border-radius: 0.75rem;
     font-size: 0.8125rem;
     line-height: 1.7;
     overflow-x: auto;
     padding: 0.75rem 1.25rem 1rem;
+  }
+
+  :root.dark .prose pre,
+  :root.dark .prose pre span {
+    color: var(--shiki-dark) !important;
+    font-style: var(--shiki-dark-font-style, inherit) !important;
+    font-weight: var(--shiki-dark-font-weight, inherit) !important;
+    text-decoration: var(--shiki-dark-text-decoration, inherit) !important;
   }
 
   /*
@@ -244,7 +257,7 @@
    * stays at the left edge while long lines scroll under it.
    */
   .prose pre::before {
-    color: color-mix(in oklab, white 45%, transparent);
+    color: color-mix(in oklab, currentcolor 45%, transparent);
     content: attr(data-language);
     display: block;
     font-family: var(--font-mono);

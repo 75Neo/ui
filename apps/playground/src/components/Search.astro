@@ -31,7 +31,7 @@ const kbd =
   class="border-muted bg-elevated/60 text-dimmed hover:border-accented hover:text-muted flex size-8 shrink-0 items-center justify-center gap-2 rounded-lg border sm:w-56 sm:justify-start sm:px-2.5"
 >
   <SearchIcon size={14} aria-hidden="true" class="shrink-0" />
-  <span class="hidden truncate text-[0.8125rem] sm:inline">Search</span>
+  <span class="hidden truncate text-sm sm:inline">Search</span>
   <kbd class={`${kbd} ml-auto hidden shrink-0 sm:block`} data-identifier>⌘K</kbd>
   <span class="sr-only sm:hidden">Search</span>
 </button>
@@ -135,7 +135,7 @@ const kbd =
       link.innerHTML =
         `<span class="flex items-baseline justify-between gap-4">`
         + `<span class="text-highlighted text-sm font-medium"></span>`
-        + `<span class="text-dimmed shrink-0 font-mono text-[0.6875rem]" data-identifier></span>`
+        + `<span class="text-dimmed shrink-0 font-mono text-xs" data-identifier></span>`
         + `</span>`
         + `<span class="text-dimmed mt-0.5 block truncate text-xs"></span>`;
       const [names, summary] = link.children as unknown as HTMLElement[];
