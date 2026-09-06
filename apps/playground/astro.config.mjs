@@ -89,6 +89,26 @@ export default defineConfig({
           replacement: src("react", "download-trigger/index.ts"),
         },
         {
+          find: /^@75neo\/react\/dialog$/,
+          replacement: src("react", "dialog/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/drawer$/,
+          replacement: src("react", "drawer/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/popover$/,
+          replacement: src("react", "popover/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/hover-card$/,
+          replacement: src("react", "hover-card/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/floating-panel$/,
+          replacement: src("react", "floating-panel/index.ts"),
+        },
+        {
           find: /^@75neo\/react\/checkbox$/,
           replacement: src("react", "checkbox/index.ts"),
         },
@@ -190,6 +210,26 @@ export default defineConfig({
         {
           find: /^@75neo\/vue\/download-trigger$/,
           replacement: src("vue", "download-trigger/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/dialog$/,
+          replacement: src("vue", "dialog/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/drawer$/,
+          replacement: src("vue", "drawer/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/popover$/,
+          replacement: src("vue", "popover/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/hover-card$/,
+          replacement: src("vue", "hover-card/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/floating-panel$/,
+          replacement: src("vue", "floating-panel/index.ts"),
         },
         {
           find: /^@75neo\/vue\/checkbox$/,

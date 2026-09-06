@@ -26,6 +26,11 @@ import { PasswordInputPreview } from "../previews/PasswordInputPreview";
 import { NumberInputPreview } from "../previews/NumberInputPreview";
 import { EditablePreview } from "../previews/EditablePreview";
 import { TableOfContentsPreview } from "../previews/TableOfContentsPreview";
+import { DialogPreview } from "../previews/DialogPreview";
+import { DrawerPreview } from "../previews/DrawerPreview";
+import { PopoverPreview } from "../previews/PopoverPreview";
+import { HoverCardPreview } from "../previews/HoverCardPreview";
+import { FloatingPanelPreview } from "../previews/FloatingPanelPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import ButtonPreviewVue from "../previews/ButtonPreview.vue";
 import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
@@ -52,6 +57,11 @@ import PasswordInputPreviewVue from "../previews/PasswordInputPreview.vue";
 import NumberInputPreviewVue from "../previews/NumberInputPreview.vue";
 import EditablePreviewVue from "../previews/EditablePreview.vue";
 import TableOfContentsPreviewVue from "../previews/TableOfContentsPreview.vue";
+import DialogPreviewVue from "../previews/DialogPreview.vue";
+import DrawerPreviewVue from "../previews/DrawerPreview.vue";
+import PopoverPreviewVue from "../previews/PopoverPreview.vue";
+import HoverCardPreviewVue from "../previews/HoverCardPreview.vue";
+import FloatingPanelPreviewVue from "../previews/FloatingPanelPreview.vue";
 
 /**
  * One component's specimen at thumbnail size, rendered but never hydrated.
@@ -84,6 +94,11 @@ const vue = framework === "vue";
 {react && name === "Tabs" && <TabsPreview />}
 {react && name === "ToggleGroup" && <ToggleGroupPreview />}
 {react && name === "Toggle" && <TogglePreview />}
+{react && name === "Dialog" && <DialogPreview />}
+{react && name === "Drawer" && <DrawerPreview />}
+{react && name === "Popover" && <PopoverPreview />}
+{react && name === "HoverCard" && <HoverCardPreview />}
+{react && name === "FloatingPanel" && <FloatingPanelPreview />}
 {react && name === "Select" && <SelectPreview />}
 {react && name === "RatingGroup" && <RatingGroupPreview />}
 {react && name === "SegmentGroup" && <SegmentGroupPreview />}
@@ -111,6 +126,11 @@ const vue = framework === "vue";
 {vue && name === "Tabs" && <TabsPreviewVue />}
 {vue && name === "ToggleGroup" && <ToggleGroupPreviewVue />}
 {vue && name === "Toggle" && <TogglePreviewVue />}
+{vue && name === "Dialog" && <DialogPreviewVue />}
+{vue && name === "Drawer" && <DrawerPreviewVue />}
+{vue && name === "Popover" && <PopoverPreviewVue />}
+{vue && name === "HoverCard" && <HoverCardPreviewVue />}
+{vue && name === "FloatingPanel" && <FloatingPanelPreviewVue />}
 {vue && name === "Select" && <SelectPreviewVue />}
 {vue && name === "RatingGroup" && <RatingGroupPreviewVue />}
 {vue && name === "SegmentGroup" && <SegmentGroupPreviewVue />}

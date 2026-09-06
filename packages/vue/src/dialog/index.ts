@@ -1,0 +1,11 @@
+export { default as Dialog } from "./dialog.vue";
+export { default as DialogTrigger } from "./trigger.vue";
+export { default as DialogBackdrop } from "./backdrop.vue";
+export { default as DialogContent } from "./content.vue";
+export { default as DialogHeader } from "./header.vue";
+export { default as DialogTitle } from "./title.vue";
+export { default as DialogDescription } from "./description.vue";
+export { default as DialogBody } from "./body.vue";
+export { default as DialogFooter } from "./footer.vue";
+export { default as DialogCloseTrigger } from "./close-trigger.vue";
+export { dialogVariantsKey, useDialogVariants } from "./variants";

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type Component, computed, onMounted, provide, reactive, ref } from "vue";
+import { type Component, computed, provide, reactive } from "vue";
 import { Menu as Ark } from "@ark-ui/vue/menu";
 import { Check as CheckIcon, ChevronRight as ChevronRightIcon } from "@lucide/vue";
 import { cn, menuDefaults, type MenuRootProps } from "@75neo/themes";
@@ -62,15 +62,6 @@ const resolved = reactive({
 });
 provide(menuVariantsKey, resolved);
 
-/*
- * Gates the teleport below. Vue casts an absent Teleport target to nothing during the
- * server pass, so the panel is left in place until the component is mounted.
- */
-const mounted = ref(false);
-onMounted(() => {
-  mounted.value = true;
-});
-
 const rootClass = computed(() => props.class as string | undefined);
 </script>
 
@@ -92,7 +83,7 @@ const rootClass = computed(() => props.class as string | undefined);
     <Ark.Trigger v-if="$slots.default" as-child>
       <slot />
     </Ark.Trigger>
-    <MenuContent :portal="props.portal && mounted" :class="rootClass">
+    <MenuContent :portal="props.portal" :class="rootClass">
       <MenuArrow v-if="props.arrow" />
       <MenuRows
         :rows="props.items"
@@ -100,7 +91,7 @@ const rootClass = computed(() => props.class as string | undefined);
           trailingIcon: props.trailingIcon ?? ChevronRightIcon,
           checkedIcon: props.checkedIcon ?? CheckIcon,
         }"
-        :portal="props.portal && mounted"
+        :portal="props.portal"
         :transition="true"
       />
     </MenuContent>

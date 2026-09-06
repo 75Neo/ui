@@ -184,6 +184,36 @@ const routes: readonly PreviewRoute[] = [
     summary: "An inline color picker with alpha, eyedropper and swatches.",
     key: "colorPicker",
   },
+  {
+    href: "/dialog",
+    label: "Dialog",
+    summary: "A centered panel over a backdrop, with a title and a cross.",
+    key: "dialog",
+  },
+  {
+    href: "/drawer",
+    label: "Drawer",
+    summary: "A panel sliding in from an edge, with a title and a cross.",
+    key: "drawer",
+  },
+  {
+    href: "/popover",
+    label: "Popover",
+    summary: "A small panel anchored to a trigger, with a title and a cross.",
+    key: "popover",
+  },
+  {
+    href: "/hover-card",
+    label: "HoverCard",
+    summary: "A small panel appearing beside whatever it describes.",
+    key: "hoverCard",
+  },
+  {
+    href: "/floating-panel",
+    label: "FloatingPanel",
+    summary: "A draggable window with stage controls and resize handles.",
+    key: "floatingPanel",
+  },
 ];
 
 /**

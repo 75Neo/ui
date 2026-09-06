@@ -1,0 +1,11 @@
+export { default as FloatingPanel } from "./floating-panel.vue";
+export { default as FloatingPanelContent } from "./content.vue";
+export { default as FloatingPanelDragTrigger } from "./drag-trigger.vue";
+export { default as FloatingPanelHeader } from "./header.vue";
+export { default as FloatingPanelTitle } from "./title.vue";
+export { default as FloatingPanelControl } from "./control.vue";
+export { default as FloatingPanelStageTrigger } from "./stage-trigger.vue";
+export { default as FloatingPanelCloseTrigger } from "./close-trigger.vue";
+export { default as FloatingPanelBody } from "./body.vue";
+export { default as FloatingPanelResizeTrigger } from "./resize-trigger.vue";
+export { floatingPanelVariantsKey, useFloatingPanelVariants } from "./variants";

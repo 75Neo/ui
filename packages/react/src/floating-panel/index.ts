@@ -1,0 +1,11 @@
+export { FloatingPanel, type FloatingPanelProps } from "./floating-panel";
+export { FloatingPanelContent, type FloatingPanelContentProps } from "./content";
+export { FloatingPanelDragTrigger, type FloatingPanelDragTriggerProps } from "./drag-trigger";
+export { FloatingPanelHeader, type FloatingPanelHeaderProps } from "./header";
+export { FloatingPanelTitle, type FloatingPanelTitleProps } from "./title";
+export { FloatingPanelControl, type FloatingPanelControlProps } from "./control";
+export { FloatingPanelStageTrigger, type FloatingPanelStageTriggerProps } from "./stage-trigger";
+export { FloatingPanelCloseTrigger, type FloatingPanelCloseTriggerProps } from "./close-trigger";
+export { FloatingPanelBody, type FloatingPanelBodyProps } from "./body";
+export { FloatingPanelResizeTrigger, type FloatingPanelResizeTriggerProps } from "./resize-trigger";
+export { useFloatingPanelVariants } from "./variants";

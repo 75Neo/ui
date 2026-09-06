@@ -30,6 +30,11 @@ export const previewed = new Set([
   "ToggleGroup",
   "Tabs",
   "DownloadTrigger",
+  "Dialog",
+  "Drawer",
+  "Popover",
+  "HoverCard",
+  "FloatingPanel",
 ]);
 
 /** Whether a component has a live specimen on the reference page. */
