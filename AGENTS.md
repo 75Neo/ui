@@ -2,8 +2,8 @@
 
 Guidance for AI agents working in this repo. `CLAUDE.md` is a symlink to this file.
 
-75NeoUI is a component library for React and Vue, built on Ark UI, Tailwind CSS and
-Tailwind Variants. `mise install` gets the Node 24 and pnpm 11 the repo expects.
+75NeoUI is a component library for React and Vue, built on Ark UI, Tailwind CSS,
+`cva` and `cn`. `mise install` gets the Node 24 and pnpm 11 the repo expects.
 
 ## Gates
 
@@ -14,8 +14,8 @@ pnpm format:check && pnpm lint && pnpm build && pnpm typecheck && pnpm test
 ```
 
 Build before typecheck: packages resolve each other through `dist`, so stale output
-fails the typecheck in the wrong place. `pnpm test` drives real Chromium for both
-adapters, and the first run needs `pnpm exec playwright install --with-deps chromium`.
+fails the typecheck in the wrong place. `pnpm test` is a no-op until something worth
+testing appears.
 
 CI runs the same five as parallel jobs, and picks which from the paths a commit touched.
 `CI` is the job to require in branch protection: it is the one name that does not move
@@ -24,99 +24,107 @@ with the test matrix.
 Scoped to one package:
 
 ```sh
-pnpm --filter @75neo/core test
-pnpm --filter @75neo/core exec vitest run -t "lets class beat the ui prop"
+pnpm --filter @75neo/react build
 ```
-
-`@75neo/core` is node-only and fast, so put a test there whenever the behaviour needs no
-DOM. `@75neo/themes` carries no tests: it is Tailwind classes, not logic.
 
 ## Architecture
 
-Four packages, `core` → `themes` → `react`/`vue`, and two apps that read all four.
+Three packages, `themes` → `react`/`vue`, and two apps that read all three.
 
-- **`@75neo/core`** — the cascade, and nothing else. `resolveTheme`, `layerTheme`, and
-  the recipe and registry types. Knows no component.
-- **`@75neo/themes`** — tokens in `src/tokens/`, plus one **component module** per
-  component in `src/components/`. The module owns everything about a component that is
-  not framework-specific: the `tailwind-variants` recipe, its slot and variant types, the
-  props type, the registry augmentation, and any rule both adapters would share.
-- **`@75neo/react`** / **`@75neo/vue`** — **adapters**. A `Theme` component, one hook or
-  composable, and one file per component. Styling stays in the component module.
+- **`@75neo/themes`** — tokens in `src/tokens/`, the configured `cn` in `src/cn.ts`,
+  the shared vocabulary in `src/colors.ts`, and one **data module** per component in
+  `src/components/`. The module owns everything about a component that is not
+  framework-specific: literal types, defaults, the schema object, per-part class data,
+  the shared props interfaces, and any rule both adapters would share. It holds no
+  `cva` call and no framework code.
+- **`@75neo/react`** / **`@75neo/vue`** — **adapters**. A directory per component, one
+  file per anatomy part, in both adapters alike. Each part builds its own `cva` from
+  the shared data and merges the call site through `cn`.
 
-## The cascade
+## One layer
 
-Read this before touching anything. Four layers set a component's classes, and
-`resolveTheme` folds them weakest first:
+Read this before touching anything. A part's classes come from exactly one place —
+its own `cva` call — merged with the call site through `cn`:
 
-1. the recipe's own classes;
-2. `Theme` layers above the component, already folded into one config by `layerTheme`;
-3. the component's own `ui` prop;
-4. `class` / `className` at the call site, which reaches the **`base` slot only**.
+```tsx
+className={cn(triggerCva({ variant, size }), className)}
+```
 
-Tailwind-merge settles conflicts, so a later layer replaces a conflicting utility and
-every non-conflicting utility survives. `resolveTheme` hands back finished per-slot
-strings, so a component renders `theme.class.base` and merges nothing itself.
+`cn` settles conflicts, so a later class replaces a conflicting utility and every
+non-conflicting utility survives. There is no theme cascade, no `ui` prop, no
+`Theme` component, and no `tailwind-variants`: every one of those died in the
+migration and must not be reintroduced.
 
-`packages/core/src/utils/__tests__/resolve.test.ts` asserts that order and is the
-specification. Test cascade behaviour there, in node.
+One consequence lands on callers rather than on us. Every variant prefix is its own
+conflict group, so an unprefixed `bg-error` never overrides a `disabled:bg-primary`
+baked into a part. Reskinning a state means reaching for the same prefix, and the
+docs teach that where reskinning is taught.
 
-## Slot-name identity
+## Part-name identity
 
-For one component the recipe slot name, the `data-slot` attribute and the `ui` object key
-are the same word. One vocabulary, three uses. Every rendered part carries `data-slot`,
-and tests select on it.
+For one component the export name, the file name and the `data-slot` attribute are
+the same word in three spellings. One vocabulary, three uses. Every rendered part
+carries `data-slot`, including internal spans that are never exported, and tests
+select on it.
 
-Two names hold across every component. The root slot is `base`, because `resolveTheme`
-sends the call-site `class` there and nowhere else. Icon slots are named for their
-position, `leadingIcon` and `trailingIcon`, so `ui.trailingIcon` means the same thing on
-Button and on Accordion.
+Three rules hold across every component. The root exports under the bare component
+name (`Accordion`, never `AccordionRoot`), because subpaths already disambiguate.
+Ark's `Item`-prefixed parts keep the prefix (`AccordionItemTrigger`), because
+Select's `Indicator` and `ItemIndicator` collapse onto each other without it.
+Icons are props and children, never parts: `leadingIcon` and `trailingIcon` name
+positions, so the glyph on Button and the chevron on Accordion arrive the same way.
 
 ## One token per color
 
-One `--ui-<color>` per semantic color. A recipe that wants a hover shade asks for the same
+One `--ui-<color>` per semantic color. A part that wants a hover shade asks for the same
 color at a different strength, `hover:bg-primary/75`. Six strengths cover the library and
 are documented in `packages/themes/src/colors.ts`; a seventh means editing the safelist,
 which is deliberate friction.
 
 `neutral` has no hue to spend, so it borrows `bg-inverted`, `bg-elevated` and
-`ring-accented`. `byColor` and `eachColor` in that same file generate a recipe's color
+`ring-accented`. `byColor` and `eachColor` in that same file generate a component's color
 half — Button's six variants across seven colors is a forty-two cell table for six calls
 — and the `neutral` row is written by hand.
 
-Recipes carry tokens rather than hardcoded colors, and no `dark:` classes, because the
+Parts carry tokens rather than hardcoded colors, and no `dark:` classes, because the
 tokens flip instead. `oxlint` enforces both against `packages/themes/src/tokens/lint.css`.
 `packages/themes/README.md` has the token vocabulary.
 
 ## Adding a component
 
-One file per component per package. Registry keys are inline strings (`"button"`).
+A directory per component per package, tail-only file names (`accordion/item-trigger.tsx`).
+Registry keys are inline strings (`"button"`).
 
-1. **`packages/themes/src/components/<name>.ts`** — the recipe, its `<Name>Slots` and
-   `<Name>Variants` types, `<Name>UI`, `<Name>Theme`, the `<Name>Props<F>` interface (`F`
-   is the framework's icon type), the `declare global` registry augmentation, and any rule
-   both adapters would otherwise duplicate. Re-export from `src/index.ts`.
-2. **`packages/react/src/components/<Name>.tsx`** and
-   **`packages/vue/src/components/<Name>.vue`** — call `useResolvedTheme`, then put
-   `theme.class.<slot>` on the elements carrying `data-slot`. Export from each package's
-   `src/index.ts`.
-3. **`apps/playground/src/previews/`** — a `.tsx` and a `.vue` preview, an entry in
-   `src/routes.ts`, and a page under `src/pages/`.
+1. **`packages/themes/src/components/<name>.ts`** — literal types, defaults, the schema
+   object, per-part class data with one compound interface per `cva`, the shared
+   `<Name>…Props` interfaces, and any rule both adapters would otherwise duplicate.
+   Re-export from `src/index.ts`.
+2. **`packages/react/src/<name>/`** and **`packages/vue/src/<name>/`** — one file per
+   part plus `index.ts`, and a `variants.ts` wherever more than one part reads the
+   root's axes. Export from each package's `src/index.ts`, add the tsdown entry and the
+   exports-map lines, and the alias lines in both apps.
+3. **`apps/playground/src/previews/`** — a `.tsx` and a `.vue` preview reading the
+   schema object, an entry in `src/routes.ts`, and a page under `src/pages/`.
+4. **`apps/docs`** — a `.md` under `src/content/components/`, a preview pair, lines in
+   both preview switches, and `PARTS` entries in the docs reader.
 
 Ark UI (`@ark-ui/react`, `@ark-ui/vue`) is the dependency for components that need
-behaviour. Its anatomy stays inside the adapter file: ship one component with one prop
-API, and let the parts talk to each other through Ark's own context.
+behaviour. Its anatomy stays inside the adapter files: ship one export per part with
+one prop API, and let the parts talk to each other through Ark's own context. The
+variant context beside them is ours — the root's multi-part axes with defaults
+fallback — and Ark's state stays Ark's.
 
 Nuxt UI is the reference for naming and API shape. Where it has a counterpart, read it
 and adopt its shape rather than inventing one.
 
 ## Where the rest lives
 
-- [`packages/AGENTS.md`](packages/AGENTS.md) — writing a recipe: what a `tv()` result
-  exposes at runtime, the layout family's shared tokens, Ark's two spellings of disabled,
-  and the safelist that interpolated classes render nothing without.
+- [`packages/AGENTS.md`](packages/AGENTS.md) — writing a data module: what the schema
+  object carries, the layout family's shared tokens, Ark's two spellings of disabled,
+  the variant context beside the root, minimal motion, and the safelist that
+  interpolated classes render nothing without.
 - [`packages/vue/AGENTS.md`](packages/vue/AGENTS.md) — Vue's prop casts, which turn an
-  absent boolean into `false` and kill the matching default, and why one component file
+  absent boolean into `false` and kill the matching default, and why one rows file
   is exported from nothing.
 - [`apps/AGENTS.md`](apps/AGENTS.md) — the playground and the docs site: the shell both
   share, client-side routing, how the docs read their API tables out of `packages/*`, and

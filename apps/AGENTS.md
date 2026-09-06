@@ -11,15 +11,17 @@ against source with no build step between and a renamed prop is wrong in the app
 immediately. That takes two files per app, and a third app means copying both:
 
 - `astro.config.mjs` — a Vite `resolve.alias` entry per package, pointing at
-  `packages/<name>/src/index.ts`. This is what the browser sees.
-- `tsconfig.json` — a matching `paths` entry per package, so `astro check` reads the same
+  `packages/<name>/src/index.ts`, plus one entry per component subpath, pointing at
+  `packages/<name>/src/<component>/index.ts`. This is what the browser sees.
+- `tsconfig.json` — a matching `paths` entry per package, plus `"@75neo/<pkg>/*"` to
+  `"../../packages/<pkg>/src/*/index.ts"`, so `astro check` reads the same
   source Vite does. Without it TypeScript follows the workspace symlink and typechecks
   the app against `dist` types the app never loads.
 
 The app stylesheet imports the token layer by relative path for the same reason, so
 Tailwind scans the same files.
 
-Each app still declares a `workspace:*` dependency on all four packages, and needs to.
+Each app still declares a `workspace:*` dependency on all three packages, and needs to.
 The dependency is the edge turbo reads to know a package change invalidates the app: drop
 it and a package edit leaves a stale app build cached and green. Resolving to source is a
 development convenience; the dependency is the build graph.
@@ -28,8 +30,9 @@ development convenience; the dependency is the build graph.
 
 Both apps are the same shell: a sticky header carrying a `⌘K` search dialog and the theme
 control, a column of every page down the left behind a hairline, and the page itself on
-the page's own surface. The playground adds the surface control; the docs add the
-framework switch and a rail of headings behind a second hairline.
+the page's own surface. The playground renders every specimen on the one solid surface —
+tinted page, flat card, no switcher — and the docs add the framework switch and a rail
+of headings behind a second hairline.
 
 **Neither app redefines a `--ui-*` token.** The bar is `h-header`, the measure is
 `max-w-page`, the gutters are the Container's `px-5 sm:px-8 lg:px-12`, and every corner
@@ -39,9 +42,9 @@ faces, because serving a font is the application's job and the system ships none
 measurement that is not already a token belongs in the design system first.
 
 `src/lib/controls.ts` in each app is the rest of that rule: the class strings for the
-icon button, the floating panel and its rows, copied from `header.ts` and `menu.ts`. The
-chrome is hand-written markup, which is a reason to write the elements out and not a
-licence to give them a second appearance.
+icon button, the floating panel and its rows, copied from the old header and menu
+recipes. The chrome is hand-written markup, which is a reason to write the elements out
+and not a licence to give them a second appearance.
 
 `apps/playground/src/routes.ts` is the playground's whole list: `previews`, sorted by name
 where it is exported rather than kept in order by hand, and `overview` for the two pages
@@ -50,9 +53,10 @@ a page listed in one is listed in all three.
 
 The search dialog is a native `dialog` and one delegated listener in both apps, because it
 stands in chrome both routes share and either adapter's component would be the wrong one
-on half the site. Everything else in the docs chrome does use the library: the install
-command is `Clipboard` and the rail of headings is `TableOfContents`, each rendered by the
-adapter its route is for, so the React route is proof the React adapter works.
+on half the site. The docs chrome renders the library where it can — the install command
+and the rail of headings reach for `Clipboard` and `TableOfContents`, each rendered by the
+adapter its route is for, so the React route is proof the React adapter works — and wears
+temporary native markup wherever those components have not migrated yet.
 
 Icons are Lucide, except a brand mark. Lucide dropped those, so `BrandIcon.astro` looks
 its path up in `simple-icons` by slug. The lookup runs at build time and the mark is
@@ -70,7 +74,7 @@ gone after the first navigation. Handlers sit on `document` and look their eleme
 when they fire.
 
 **The swap rewrites the root element's attributes.** Astro copies them from the incoming
-document, so `data-theme`, `data-surface` and the `dark` class are gone by the time the
+document, so `data-theme` and the `dark` class are gone by the time the
 new page is in place. The chosen values are held in the script and put back on
 `astro:after-swap`, which runs before the browser paints. Reading the current value back
 off the root element is the bug this replaced: the theme reverted on every sidebar click.
@@ -93,7 +97,7 @@ than branching on a string.
 
 Prose is Markdown in an Astro content collection under `src/content/`. Documenting a
 component is one file, `src/content/components/<name>.md`, whose frontmatter names the
-component, its registry key and its module file. That file grows a route under both
+component, its data-module key and its directory. That file grows a route under both
 frameworks, a row in the sidebar, a card on the index, its place in the previous and next
 links, and a row in the search dialog. The list sorts itself by name, which is what the
 sidebar shows and so what the previous and next links walk. The slug is the file's own
@@ -103,14 +107,16 @@ One Markdown file serves both routes. An example is written twice, in a `tsx` fe
 `vue` fence, and CSS on the page's `data-framework` hides the one that is not the route's.
 Fences in any other language show on both.
 
-Every props table, variant list and slot name is read back out of each package's `src`
+Every props table, variant list and part name is read back out of each package's `src`
 with ts-morph at build time by `src/lib/component-api.ts`, so a renamed prop either
-changes the docs or fails the build. `astro.config.mjs` hands the repository root down as
+changes the docs or fails the build. Variants come from the schema object, parts from the
+descriptor the data module carries beside it, and the per-part props from the shared
+contract plus each adapter's file. `astro.config.mjs` hands the repository root down as
 `__REPO_ROOT__`, because the extraction is bundled into a chunk under `dist` before it
 runs and cannot find `packages/` from its own location.
 
 The rail on a component page is two lists joined: the Markdown subheadings `render()`
-returns, then the generated API sections, which `ComponentApi.astro` renders and
+returns, then the generated API sections, which `ComponentApi.astro` renders per part and
 `apiSections` lists by hand.
 
 A live specimen is optional. It needs a preview per adapter in `src/previews/`, a line per
@@ -153,5 +159,4 @@ it out.
 Astro's checker also infers nothing from a Vue component reached through a package barrel
 inside an `.astro` file: the props come back as bare attributes and each one is an error.
 A local single-file component wrapping the library one is typed the way the checker
-expects, and `src/previews/InstallCommand.vue` is the example. React components have no
-such problem.
+expects. React components have no such problem.
