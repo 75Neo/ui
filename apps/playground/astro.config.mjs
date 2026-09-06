@@ -61,6 +61,18 @@ export default defineConfig({
           replacement: src("react", "tree-view/index.ts"),
         },
         {
+          find: /^@75neo\/react\/date-picker$/,
+          replacement: src("react", "date-picker/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/date-input$/,
+          replacement: src("react", "date-input/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/color-picker$/,
+          replacement: src("react", "color-picker/index.ts"),
+        },
+        {
           find: /^@75neo\/react\/toggle$/,
           replacement: src("react", "toggle/index.ts"),
         },
@@ -150,6 +162,18 @@ export default defineConfig({
         {
           find: /^@75neo\/vue\/tree-view$/,
           replacement: src("vue", "tree-view/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/date-picker$/,
+          replacement: src("vue", "date-picker/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/date-input$/,
+          replacement: src("vue", "date-input/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/color-picker$/,
+          replacement: src("vue", "color-picker/index.ts"),
         },
         {
           find: /^@75neo\/vue\/toggle$/,

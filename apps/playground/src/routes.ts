@@ -166,6 +166,24 @@ const routes: readonly PreviewRoute[] = [
     summary: "A button that saves a blob to disk.",
     key: "downloadTrigger",
   },
+  {
+    href: "/date-picker",
+    label: "DatePicker",
+    summary: "A field with a calendar behind it, taking one date or a range.",
+    key: "datePicker",
+  },
+  {
+    href: "/date-input",
+    label: "DateInput",
+    summary: "A date typed a segment at a time, with no format to explain.",
+    key: "dateInput",
+  },
+  {
+    href: "/color-picker",
+    label: "ColorPicker",
+    summary: "An inline color picker with alpha, eyedropper and swatches.",
+    key: "colorPicker",
+  },
 ];
 
 /**

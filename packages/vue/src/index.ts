@@ -21,3 +21,6 @@ export * from "./toggle/index";
 export * from "./toggle-group/index";
 export * from "./tabs/index";
 export * from "./download-trigger/index";
+export * from "./date-picker/index";
+export * from "./date-input/index";
+export * from "./color-picker/index";

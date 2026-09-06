@@ -1,0 +1,37 @@
+---
+import * as DateInputParts from "@75neo/react/date-input";
+import { dateInputSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import DateInputPreview from "../previews/DateInputPreview.tsx";
+import DateInputPreviewVue from "../previews/DateInputPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(DateInputParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(dateInputSchema);
+const combinations = variantKeys.reduce(
+  (total, key) =>
+    total * (dateInputSchema[key as keyof typeof dateInputSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  title="DateInput"
+  description="A date typed a segment at a time, with no format to explain. Literal segments rewrite their whitespace so server and browser agree."
+>
+  <Preview
+    title="Variant matrix"
+    description="Every size, then all seven colors, then range and states. Both columns render the same matrix, so anything that differs between them is a real difference between the adapters."
+    meta={meta}
+  >
+    <Fragment slot="react"><DateInputPreview client:load /></Fragment>
+    <Fragment slot="vue"><DateInputPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

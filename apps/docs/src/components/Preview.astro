@@ -19,6 +19,9 @@ import { RadioGroupPreview } from "../previews/RadioGroupPreview";
 import { CheckboxPreview } from "../previews/CheckboxPreview";
 import { TableOfContentsPreview } from "../previews/TableOfContentsPreview";
 import { TreeViewPreview } from "../previews/TreeViewPreview";
+import { ColorPickerPreview } from "../previews/ColorPickerPreview";
+import { DateInputPreview } from "../previews/DateInputPreview";
+import { DatePickerPreview } from "../previews/DatePickerPreview";
 import { DownloadTriggerPreview } from "../previews/DownloadTriggerPreview";
 import { TabsPreview } from "../previews/TabsPreview";
 import { ToggleGroupPreview } from "../previews/ToggleGroupPreview";
@@ -42,6 +45,9 @@ import RadioGroupPreviewVue from "../previews/RadioGroupPreview.vue";
 import CheckboxPreviewVue from "../previews/CheckboxPreview.vue";
 import TableOfContentsPreviewVue from "../previews/TableOfContentsPreview.vue";
 import TreeViewPreviewVue from "../previews/TreeViewPreview.vue";
+import ColorPickerPreviewVue from "../previews/ColorPickerPreview.vue";
+import DateInputPreviewVue from "../previews/DateInputPreview.vue";
+import DatePickerPreviewVue from "../previews/DatePickerPreview.vue";
 import DownloadTriggerPreviewVue from "../previews/DownloadTriggerPreview.vue";
 import TabsPreviewVue from "../previews/TabsPreview.vue";
 import ToggleGroupPreviewVue from "../previews/ToggleGroupPreview.vue";
@@ -88,6 +94,9 @@ const vue = framework === "vue";
 {react && name === "Checkbox" && <CheckboxPreview client:visible />}
 {react && name === "TableOfContents" && <TableOfContentsPreview client:visible />}
 {react && name === "TreeView" && <TreeViewPreview client:visible />}
+{react && name === "ColorPicker" && <ColorPickerPreview client:visible />}
+{react && name === "DateInput" && <DateInputPreview client:visible />}
+{react && name === "DatePicker" && <DatePickerPreview client:visible />}
 {react && name === "DownloadTrigger" && <DownloadTriggerPreview client:visible />}
 {react && name === "Tabs" && <TabsPreview client:visible />}
 {react && name === "ToggleGroup" && <ToggleGroupPreview client:visible />}
@@ -112,6 +121,9 @@ const vue = framework === "vue";
 {vue && name === "Checkbox" && <CheckboxPreviewVue client:visible />}
 {vue && name === "TableOfContents" && <TableOfContentsPreviewVue client:visible />}
 {vue && name === "TreeView" && <TreeViewPreviewVue client:visible />}
+{vue && name === "ColorPicker" && <ColorPickerPreviewVue client:visible />}
+{vue && name === "DateInput" && <DateInputPreviewVue client:visible />}
+{vue && name === "DatePicker" && <DatePickerPreviewVue client:visible />}
 {vue && name === "DownloadTrigger" && <DownloadTriggerPreviewVue client:visible />}
 {vue && name === "Tabs" && <TabsPreviewVue client:visible />}
 {vue && name === "ToggleGroup" && <ToggleGroupPreviewVue client:visible />}
