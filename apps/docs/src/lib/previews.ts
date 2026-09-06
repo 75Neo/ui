@@ -49,6 +49,11 @@ export const previewed = new Set([
   "Slider",
   "Splitter",
   "Tooltip",
+  "FileUpload",
+  "Marquee",
+  "NavigationMenu",
+  "ScrollArea",
+  "Swap",
 ]);
 
 /** Whether a component has a live specimen on the reference page. */

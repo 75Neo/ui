@@ -45,6 +45,11 @@ import { PaginationPreview } from "../previews/PaginationPreview";
 import { SliderPreview } from "../previews/SliderPreview";
 import { SplitterPreview } from "../previews/SplitterPreview";
 import { TooltipPreview } from "../previews/TooltipPreview";
+import { FileUploadPreview } from "../previews/FileUploadPreview";
+import { MarqueePreview } from "../previews/MarqueePreview";
+import { NavigationMenuPreview } from "../previews/NavigationMenuPreview";
+import { ScrollAreaPreview } from "../previews/ScrollAreaPreview";
+import { SwapPreview } from "../previews/SwapPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import ButtonPreviewVue from "../previews/ButtonPreview.vue";
 import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
@@ -90,6 +95,11 @@ import PaginationPreviewVue from "../previews/PaginationPreview.vue";
 import SliderPreviewVue from "../previews/SliderPreview.vue";
 import SplitterPreviewVue from "../previews/SplitterPreview.vue";
 import TooltipPreviewVue from "../previews/TooltipPreview.vue";
+import FileUploadPreviewVue from "../previews/FileUploadPreview.vue";
+import MarqueePreviewVue from "../previews/MarqueePreview.vue";
+import NavigationMenuPreviewVue from "../previews/NavigationMenuPreview.vue";
+import ScrollAreaPreviewVue from "../previews/ScrollAreaPreview.vue";
+import SwapPreviewVue from "../previews/SwapPreview.vue";
 
 // The vertical slice: Button and Accordion only. The batch migration restores one
 // group at a time, appending its lines here and in Thumbnail.astro.
@@ -158,6 +168,11 @@ const vue = framework === "vue";
 {react && name === "Slider" && <SliderPreview client:visible />}
 {react && name === "Splitter" && <SplitterPreview client:visible />}
 {react && name === "Tooltip" && <TooltipPreview client:visible />}
+{react && name === "FileUpload" && <FileUploadPreview client:visible />}
+{react && name === "Marquee" && <MarqueePreview client:visible />}
+{react && name === "NavigationMenu" && <NavigationMenuPreview client:visible />}
+{react && name === "ScrollArea" && <ScrollAreaPreview client:visible />}
+{react && name === "Swap" && <SwapPreview client:visible />}
 
 {vue && name === "Accordion" && <AccordionPreviewVue client:visible />}
 {vue && name === "Button" && <ButtonPreviewVue client:visible />}
@@ -204,3 +219,8 @@ const vue = framework === "vue";
 {vue && name === "Slider" && <SliderPreviewVue client:visible />}
 {vue && name === "Splitter" && <SplitterPreviewVue client:visible />}
 {vue && name === "Tooltip" && <TooltipPreviewVue client:visible />}
+{vue && name === "FileUpload" && <FileUploadPreviewVue client:visible />}
+{vue && name === "Marquee" && <MarqueePreviewVue client:visible />}
+{vue && name === "NavigationMenu" && <NavigationMenuPreviewVue client:visible />}
+{vue && name === "ScrollArea" && <ScrollAreaPreviewVue client:visible />}
+{vue && name === "Swap" && <SwapPreviewVue client:visible />}

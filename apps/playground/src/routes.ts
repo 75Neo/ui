@@ -298,6 +298,36 @@ const routes: readonly PreviewRoute[] = [
     summary: "A bubble that appears beside whatever it explains.",
     key: "tooltip",
   },
+  {
+    href: "/file-upload",
+    label: "FileUpload",
+    summary: "The area files are dropped on, and the list of what landed.",
+    key: "fileUpload",
+  },
+  {
+    href: "/marquee",
+    label: "Marquee",
+    summary: "A row of items scrolling in a seamless loop.",
+    key: "marquee",
+  },
+  {
+    href: "/navigation-menu",
+    label: "NavigationMenu",
+    summary: "A row of triggers, each opening a panel of links.",
+    key: "navigationMenu",
+  },
+  {
+    href: "/scroll-area",
+    label: "ScrollArea",
+    summary: "A scrollable region with scrollbars of its own.",
+    key: "scrollArea",
+  },
+  {
+    href: "/swap",
+    label: "Swap",
+    summary: "One icon shown while on, another while off.",
+    key: "swap",
+  },
 ];
 
 /**

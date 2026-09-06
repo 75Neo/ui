@@ -235,6 +235,26 @@ export default defineConfig({
           find: /^@75neo\/react\/tooltip$/,
           replacement: src("react", "tooltip/index.ts"),
         },
+        {
+          find: /^@75neo\/react\/file-upload$/,
+          replacement: src("react", "file-upload/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/marquee$/,
+          replacement: src("react", "marquee/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/navigation-menu$/,
+          replacement: src("react", "navigation-menu/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/scroll-area$/,
+          replacement: src("react", "scroll-area/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/swap$/,
+          replacement: src("react", "swap/index.ts"),
+        },
         { find: /^@75neo\/themes$/, replacement: src("themes") },
         { find: /^@75neo\/vue$/, replacement: src("vue") },
         {
@@ -413,6 +433,26 @@ export default defineConfig({
         {
           find: /^@75neo\/vue\/tooltip$/,
           replacement: src("vue", "tooltip/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/file-upload$/,
+          replacement: src("vue", "file-upload/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/marquee$/,
+          replacement: src("vue", "marquee/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/navigation-menu$/,
+          replacement: src("vue", "navigation-menu/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/scroll-area$/,
+          replacement: src("vue", "scroll-area/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/swap$/,
+          replacement: src("vue", "swap/index.ts"),
         },
       ],
     },

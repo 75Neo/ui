@@ -1,0 +1,33 @@
+---
+import * as MarqueeParts from "@75neo/react/marquee";
+import { marqueeSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import MarqueePreview from "../previews/MarqueePreview.tsx";
+import MarqueePreviewVue from "../previews/MarqueePreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(MarqueeParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(marqueeSchema);
+const combinations = variantKeys.reduce(
+  (total, key) => total * (marqueeSchema[key as keyof typeof marqueeSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground title="Marquee" description="A row of items scrolling in a seamless loop. The one place in the library that ships continuous motion, because the scroll is the component rather than decoration on one.">
+  <Preview
+    title="Variant matrix"
+    description="Every size, then the three paces, then the fade, reversed, and pausing on interaction. Both columns render the same matrix."
+    meta={meta}
+  >
+    <Fragment slot="react"><MarqueePreview client:load /></Fragment>
+    <Fragment slot="vue"><MarqueePreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

@@ -1,0 +1,33 @@
+---
+import * as FileUploadParts from "@75neo/react/file-upload";
+import { fileUploadSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import FileUploadPreview from "../previews/FileUploadPreview.tsx";
+import FileUploadPreviewVue from "../previews/FileUploadPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(FileUploadParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(fileUploadSchema);
+const combinations = variantKeys.reduce(
+  (total, key) => total * (fileUploadSchema[key as keyof typeof fileUploadSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground title="FileUpload" description="The area files are dropped on, and the list of what landed. The dropzone is the whole control, and the button inside it is a second way in rather than the only one.">
+  <Preview
+    title="Variant matrix"
+    description="Every size, then all seven colors, then a described dropzone, several files, disabled and invalid. Both columns render the same matrix, so anything that differs between them is a real difference between the adapters."
+    meta={meta}
+  >
+    <Fragment slot="react"><FileUploadPreview client:load /></Fragment>
+    <Fragment slot="vue"><FileUploadPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

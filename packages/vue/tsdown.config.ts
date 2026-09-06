@@ -5,6 +5,11 @@ export default defineConfig({
   entry: [
     "src/index.ts",
     "src/accordion/index.ts",
+    "src/file-upload/index.ts",
+    "src/marquee/index.ts",
+    "src/navigation-menu/index.ts",
+    "src/scroll-area/index.ts",
+    "src/swap/index.ts",
     "src/carousel/index.ts",
     "src/pagination/index.ts",
     "src/slider/index.ts",

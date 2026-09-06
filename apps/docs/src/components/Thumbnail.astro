@@ -45,6 +45,11 @@ import { PaginationPreview } from "../previews/PaginationPreview";
 import { SliderPreview } from "../previews/SliderPreview";
 import { SplitterPreview } from "../previews/SplitterPreview";
 import { TooltipPreview } from "../previews/TooltipPreview";
+import { FileUploadPreview } from "../previews/FileUploadPreview";
+import { MarqueePreview } from "../previews/MarqueePreview";
+import { NavigationMenuPreview } from "../previews/NavigationMenuPreview";
+import { ScrollAreaPreview } from "../previews/ScrollAreaPreview";
+import { SwapPreview } from "../previews/SwapPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import ButtonPreviewVue from "../previews/ButtonPreview.vue";
 import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
@@ -90,6 +95,11 @@ import PaginationPreviewVue from "../previews/PaginationPreview.vue";
 import SliderPreviewVue from "../previews/SliderPreview.vue";
 import SplitterPreviewVue from "../previews/SplitterPreview.vue";
 import TooltipPreviewVue from "../previews/TooltipPreview.vue";
+import FileUploadPreviewVue from "../previews/FileUploadPreview.vue";
+import MarqueePreviewVue from "../previews/MarqueePreview.vue";
+import NavigationMenuPreviewVue from "../previews/NavigationMenuPreview.vue";
+import ScrollAreaPreviewVue from "../previews/ScrollAreaPreview.vue";
+import SwapPreviewVue from "../previews/SwapPreview.vue";
 
 /**
  * One component's specimen at thumbnail size, rendered but never hydrated.
@@ -156,6 +166,11 @@ const vue = framework === "vue";
 {react && name === "Slider" && <SliderPreview />}
 {react && name === "Splitter" && <SplitterPreview />}
 {react && name === "Tooltip" && <TooltipPreview />}
+{react && name === "FileUpload" && <FileUploadPreview />}
+{react && name === "Marquee" && <MarqueePreview />}
+{react && name === "NavigationMenu" && <NavigationMenuPreview />}
+{react && name === "ScrollArea" && <ScrollAreaPreview />}
+{react && name === "Swap" && <SwapPreview />}
 
 {vue && name === "Accordion" && <AccordionPreviewVue />}
 {vue && name === "Button" && <ButtonPreviewVue />}
@@ -202,3 +217,8 @@ const vue = framework === "vue";
 {vue && name === "Slider" && <SliderPreviewVue />}
 {vue && name === "Splitter" && <SplitterPreviewVue />}
 {vue && name === "Tooltip" && <TooltipPreviewVue />}
+{vue && name === "FileUpload" && <FileUploadPreviewVue />}
+{vue && name === "Marquee" && <MarqueePreviewVue />}
+{vue && name === "NavigationMenu" && <NavigationMenuPreviewVue />}
+{vue && name === "ScrollArea" && <ScrollAreaPreviewVue />}
+{vue && name === "Swap" && <SwapPreviewVue />}

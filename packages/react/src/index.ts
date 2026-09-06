@@ -43,3 +43,8 @@ export * from "./pagination/index";
 export * from "./slider/index";
 export * from "./splitter/index";
 export * from "./tooltip/index";
+export * from "./file-upload/index";
+export * from "./marquee/index";
+export * from "./navigation-menu/index";
+export * from "./scroll-area/index";
+export * from "./swap/index";
