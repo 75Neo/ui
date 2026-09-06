@@ -1,25 +1,37 @@
 {
   "name": "75NeoUI",
-  "version": "0.0.0",
-  "description": "A component library for React, and Vue",
+  "version": "1.0.0",
+  "description": "A component library for React and Vue",
   "type": "module",
   "scripts": {
-    "dev:docs": "turbo run dev --filter docs",
-    "dev:play": "turbo run dev --filter playground",
-    "dev": "turbo run dev",
-    "build": "turbo run build",
-    "typecheck": "turbo run typecheck",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "format": "oxfmt",
-    "format:check": "oxfmt --check",
-    "test": "turbo run test"
+    "format:check": "oxfmt --check"
+  },
+  "dependencies": {
+    "@ark-ui/react": "^5.39.1",
+    "@ark-ui/vue": "^5.39.1",
+    "@astrojs/react": "^6.0.5",
+    "@astrojs/ts-plugin": "^1.10.11",
+    "@astrojs/vue": "^7.0.2",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwindcss": "^4.3.3",
+    "vue": "^3.5.42"
   },
   "devDependencies": {
+    "astro": "^7.3.1",
     "oxfmt": "^0.66.0",
     "oxlint": "^1.81.0",
-    "oxlint-tailwindcss": "^1.10.2",
-    "turbo": "^2.10.12"
+    "oxlint-tailwindcss": "^1.10.2"
   },
   "devEngines": {
     "packageManager": {

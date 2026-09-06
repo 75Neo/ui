@@ -1,9 +1,0 @@
-import { Container } from "@75neo/react/container";
-
-export default function ContainerPreview() {
-  return (
-    <Container className="rounded-lg bg-muted py-6 text-center text-sm text-toned">
-      Held to the page measure, with a gutter that grows on wider screens.
-    </Container>
-  );
-}

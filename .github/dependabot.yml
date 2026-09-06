@@ -4,47 +4,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    commit-message:
-      prefix: "chore"
-    groups:
-      actions:
-        patterns:
-          - "*"
 
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 5
-    commit-message:
-      prefix: "chore"
-      prefix-development: "chore"
-    groups:
-      react:
-        patterns:
-          - "react"
-          - "react-dom"
-          - "@types/react"
-          - "@types/react-dom"
-          - "@ark-ui/react"
-          - "lucide-react"
-          - "@vitejs/plugin-react"
-      vue:
-        patterns:
-          - "vue"
-          - "vue-tsc"
-          - "@vue/*"
-          - "@ark-ui/vue"
-          - "@lucide/vue"
-          - "@vitejs/plugin-vue"
-      tailwind:
-        patterns:
-          - "tailwindcss"
-          - "@tailwindcss/*"
-          - "tailwind-variants"
-      tooling:
-        patterns:
-          - "*"
-    ignore:
-      - dependency-name: "typescript"
-        update-types: ["version-update:semver-major"]
