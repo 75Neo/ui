@@ -40,6 +40,11 @@ import { AvatarPreview } from "../previews/AvatarPreview";
 import { CollapsiblePreview } from "../previews/CollapsiblePreview";
 import { QrCodePreview } from "../previews/QrCodePreview";
 import { TimerPreview } from "../previews/TimerPreview";
+import { CarouselPreview } from "../previews/CarouselPreview";
+import { PaginationPreview } from "../previews/PaginationPreview";
+import { SliderPreview } from "../previews/SliderPreview";
+import { SplitterPreview } from "../previews/SplitterPreview";
+import { TooltipPreview } from "../previews/TooltipPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import ButtonPreviewVue from "../previews/ButtonPreview.vue";
 import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
@@ -80,6 +85,11 @@ import AvatarPreviewVue from "../previews/AvatarPreview.vue";
 import CollapsiblePreviewVue from "../previews/CollapsiblePreview.vue";
 import QrCodePreviewVue from "../previews/QrCodePreview.vue";
 import TimerPreviewVue from "../previews/TimerPreview.vue";
+import CarouselPreviewVue from "../previews/CarouselPreview.vue";
+import PaginationPreviewVue from "../previews/PaginationPreview.vue";
+import SliderPreviewVue from "../previews/SliderPreview.vue";
+import SplitterPreviewVue from "../previews/SplitterPreview.vue";
+import TooltipPreviewVue from "../previews/TooltipPreview.vue";
 
 /**
  * One component's specimen at thumbnail size, rendered but never hydrated.
@@ -141,6 +151,11 @@ const vue = framework === "vue";
 {react && name === "Collapsible" && <CollapsiblePreview />}
 {react && name === "QrCode" && <QrCodePreview />}
 {react && name === "Timer" && <TimerPreview />}
+{react && name === "Carousel" && <CarouselPreview />}
+{react && name === "Pagination" && <PaginationPreview />}
+{react && name === "Slider" && <SliderPreview />}
+{react && name === "Splitter" && <SplitterPreview />}
+{react && name === "Tooltip" && <TooltipPreview />}
 
 {vue && name === "Accordion" && <AccordionPreviewVue />}
 {vue && name === "Button" && <ButtonPreviewVue />}
@@ -182,3 +197,8 @@ const vue = framework === "vue";
 {vue && name === "Collapsible" && <CollapsiblePreviewVue />}
 {vue && name === "QrCode" && <QrCodePreviewVue />}
 {vue && name === "Timer" && <TimerPreviewVue />}
+{vue && name === "Carousel" && <CarouselPreviewVue />}
+{vue && name === "Pagination" && <PaginationPreviewVue />}
+{vue && name === "Slider" && <SliderPreviewVue />}
+{vue && name === "Splitter" && <SplitterPreviewVue />}
+{vue && name === "Tooltip" && <TooltipPreviewVue />}

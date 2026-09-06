@@ -215,6 +215,26 @@ export default defineConfig({
           find: /^@75neo\/react\/timer$/,
           replacement: src("react", "timer/index.ts"),
         },
+        {
+          find: /^@75neo\/react\/carousel$/,
+          replacement: src("react", "carousel/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/pagination$/,
+          replacement: src("react", "pagination/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/slider$/,
+          replacement: src("react", "slider/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/splitter$/,
+          replacement: src("react", "splitter/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/tooltip$/,
+          replacement: src("react", "tooltip/index.ts"),
+        },
         { find: /^@75neo\/themes$/, replacement: src("themes") },
         { find: /^@75neo\/vue$/, replacement: src("vue") },
         {
@@ -373,6 +393,26 @@ export default defineConfig({
         {
           find: /^@75neo\/vue\/timer$/,
           replacement: src("vue", "timer/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/carousel$/,
+          replacement: src("vue", "carousel/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/pagination$/,
+          replacement: src("vue", "pagination/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/slider$/,
+          replacement: src("vue", "slider/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/splitter$/,
+          replacement: src("vue", "splitter/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/tooltip$/,
+          replacement: src("vue", "tooltip/index.ts"),
         },
       ],
     },

@@ -6,6 +6,11 @@ export default defineConfig({
   entry: [
     "src/index.ts",
     "src/accordion/index.ts",
+    "src/carousel/index.ts",
+    "src/pagination/index.ts",
+    "src/slider/index.ts",
+    "src/splitter/index.ts",
+    "src/tooltip/index.ts",
     "src/angle-slider/index.ts",
     "src/avatar/index.ts",
     "src/collapsible/index.ts",

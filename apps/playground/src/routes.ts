@@ -268,6 +268,36 @@ const routes: readonly PreviewRoute[] = [
     summary: "Digits counting up or down, with the buttons that drive them.",
     key: "timer",
   },
+  {
+    href: "/carousel",
+    label: "Carousel",
+    summary: "A paged slideshow with arrows and a row of dots.",
+    key: "carousel",
+  },
+  {
+    href: "/pagination",
+    label: "Pagination",
+    summary: "A row of page numbers with the arrows either side.",
+    key: "pagination",
+  },
+  {
+    href: "/slider",
+    label: "Slider",
+    summary: "A track, the part of it selected, and a thumb per value.",
+    key: "slider",
+  },
+  {
+    href: "/splitter",
+    label: "Splitter",
+    summary: "Resizable panels divided by draggable handles.",
+    key: "splitter",
+  },
+  {
+    href: "/tooltip",
+    label: "Tooltip",
+    summary: "A bubble that appears beside whatever it explains.",
+    key: "tooltip",
+  },
 ];
 
 /**

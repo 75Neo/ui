@@ -44,6 +44,11 @@ export const previewed = new Set([
   "Collapsible",
   "QrCode",
   "Timer",
+  "Carousel",
+  "Pagination",
+  "Slider",
+  "Splitter",
+  "Tooltip",
 ]);
 
 /** Whether a component has a live specimen on the reference page. */

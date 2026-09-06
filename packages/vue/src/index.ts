@@ -38,3 +38,8 @@ export * from "./avatar/index";
 export * from "./collapsible/index";
 export * from "./qr-code/index";
 export * from "./timer/index";
+export * from "./carousel/index";
+export * from "./pagination/index";
+export * from "./slider/index";
+export * from "./splitter/index";
+export * from "./tooltip/index";

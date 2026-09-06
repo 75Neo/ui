@@ -1,0 +1,33 @@
+---
+import * as CarouselParts from "@75neo/react/carousel";
+import { carouselSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import CarouselPreview from "../previews/CarouselPreview.tsx";
+import CarouselPreviewVue from "../previews/CarouselPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(CarouselParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(carouselSchema);
+const combinations = variantKeys.reduce(
+  (total, key) => total * (carouselSchema[key as keyof typeof carouselSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground title="Carousel" description="A paged slideshow with arrows and a row of dots. Orientation is read off the data attribute Ark sets, so one class string covers both directions.">
+  <Preview
+    title="Variant matrix"
+    description="Every size, then looping, then two slides a page, then vertical. Both columns render the same matrix, so anything that differs between them is a real difference between the adapters."
+    meta={meta}
+  >
+    <Fragment slot="react"><CarouselPreview client:load /></Fragment>
+    <Fragment slot="vue"><CarouselPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

@@ -40,6 +40,11 @@ import { AvatarPreview } from "../previews/AvatarPreview";
 import { CollapsiblePreview } from "../previews/CollapsiblePreview";
 import { QrCodePreview } from "../previews/QrCodePreview";
 import { TimerPreview } from "../previews/TimerPreview";
+import { CarouselPreview } from "../previews/CarouselPreview";
+import { PaginationPreview } from "../previews/PaginationPreview";
+import { SliderPreview } from "../previews/SliderPreview";
+import { SplitterPreview } from "../previews/SplitterPreview";
+import { TooltipPreview } from "../previews/TooltipPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import ButtonPreviewVue from "../previews/ButtonPreview.vue";
 import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
@@ -80,6 +85,11 @@ import AvatarPreviewVue from "../previews/AvatarPreview.vue";
 import CollapsiblePreviewVue from "../previews/CollapsiblePreview.vue";
 import QrCodePreviewVue from "../previews/QrCodePreview.vue";
 import TimerPreviewVue from "../previews/TimerPreview.vue";
+import CarouselPreviewVue from "../previews/CarouselPreview.vue";
+import PaginationPreviewVue from "../previews/PaginationPreview.vue";
+import SliderPreviewVue from "../previews/SliderPreview.vue";
+import SplitterPreviewVue from "../previews/SplitterPreview.vue";
+import TooltipPreviewVue from "../previews/TooltipPreview.vue";
 
 // The vertical slice: Button and Accordion only. The batch migration restores one
 // group at a time, appending its lines here and in Thumbnail.astro.
@@ -143,6 +153,11 @@ const vue = framework === "vue";
 {react && name === "Collapsible" && <CollapsiblePreview client:visible />}
 {react && name === "QrCode" && <QrCodePreview client:visible />}
 {react && name === "Timer" && <TimerPreview client:visible />}
+{react && name === "Carousel" && <CarouselPreview client:visible />}
+{react && name === "Pagination" && <PaginationPreview client:visible />}
+{react && name === "Slider" && <SliderPreview client:visible />}
+{react && name === "Splitter" && <SplitterPreview client:visible />}
+{react && name === "Tooltip" && <TooltipPreview client:visible />}
 
 {vue && name === "Accordion" && <AccordionPreviewVue client:visible />}
 {vue && name === "Button" && <ButtonPreviewVue client:visible />}
@@ -184,3 +199,8 @@ const vue = framework === "vue";
 {vue && name === "Collapsible" && <CollapsiblePreviewVue client:visible />}
 {vue && name === "QrCode" && <QrCodePreviewVue client:visible />}
 {vue && name === "Timer" && <TimerPreviewVue client:visible />}
+{vue && name === "Carousel" && <CarouselPreviewVue client:visible />}
+{vue && name === "Pagination" && <PaginationPreviewVue client:visible />}
+{vue && name === "Slider" && <SliderPreviewVue client:visible />}
+{vue && name === "Splitter" && <SplitterPreviewVue client:visible />}
+{vue && name === "Tooltip" && <TooltipPreviewVue client:visible />}
