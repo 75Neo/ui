@@ -1,13 +1,27 @@
 <script setup lang="ts">
-import { accordion, variantValues } from "@75neo/themes";
-import { Accordion } from "@75neo/vue";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionItemContent,
+  AccordionItemTrigger,
+} from "@75neo/vue/accordion";
+import { accordionSchema } from "@75neo/themes";
+import { Star } from "@lucide/vue";
 
-const variants = variantValues(accordion, "variant");
-const sizes = variantValues(accordion, "size");
+const variants = accordionSchema.variant.values;
+const sizes = accordionSchema.size.values;
 
-const items = [
-  { value: "cascade", label: "What settles a class?", content: "Four layers, weakest first." },
-  { value: "slots", label: "Why one word per slot?", content: "Recipe, data-slot and ui key." },
+const rows = [
+  {
+    value: "cascade",
+    label: "What settles a class?",
+    content: "One layer: the call-site class over the part classes.",
+  },
+  {
+    value: "slots",
+    label: "Why one word per slot?",
+    content: "The export, the file and the data-slot share it.",
+  },
   {
     value: "tokens",
     label: "Where does dark mode live?",
@@ -15,11 +29,10 @@ const items = [
   },
 ];
 
-const itemsWithOneOff = items.map((item, i) => (i === 1 ? { ...item, disabled: true } : item));
-
 /*
- * Kept identical to AccordionPreview.tsx on purpose: matching scaffolds are what
- * make a React/Vue divergence visible as a break in the shared rhythm.
+ * Both adapters render this scaffold, so the two stages line up row for row and
+ * any divergence between React and Vue shows as a break in the rhythm rather
+ * than as something you have to hunt for.
  */
 const row = "grid gap-2 @sm:grid-cols-[4.5rem_minmax(0,1fr)] @sm:gap-4";
 const rowLabel = "text-dimmed font-mono text-[0.6875rem] leading-none @sm:pt-3";
@@ -34,7 +47,12 @@ const rule = "border-muted my-6";
       <div v-for="variant in variants" :key="variant" :class="row">
         <p :class="rowLabel" data-identifier>{{ variant }}</p>
         <div :class="rowItems">
-          <Accordion :items="items" :variant="variant" />
+          <Accordion :variant="variant">
+            <AccordionItem v-for="item in rows" :key="item.value" :value="item.value">
+              <AccordionItemTrigger>{{ item.label }}</AccordionItemTrigger>
+              <AccordionItemContent>{{ item.content }}</AccordionItemContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </div>
     </div>
@@ -45,7 +63,12 @@ const rule = "border-muted my-6";
       <div v-for="size in sizes" :key="size" :class="row">
         <p :class="rowLabel" data-identifier>{{ size }}</p>
         <div :class="rowItems">
-          <Accordion :items="items" :size="size" />
+          <Accordion :size="size">
+            <AccordionItem v-for="item in rows" :key="item.value" :value="item.value">
+              <AccordionItemTrigger>{{ item.label }}</AccordionItemTrigger>
+              <AccordionItemContent>{{ item.content }}</AccordionItemContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </div>
     </div>
@@ -55,31 +78,52 @@ const rule = "border-muted my-6";
     <div :class="group">
       <div :class="row">
         <p :class="rowLabel" data-identifier>multiple</p>
-        <div :class="rowItems"><Accordion :items="items" multiple /></div>
+        <div :class="rowItems">
+          <Accordion multiple>
+            <AccordionItem v-for="item in rows" :key="item.value" :value="item.value">
+              <AccordionItemTrigger>{{ item.label }}</AccordionItemTrigger>
+              <AccordionItemContent>{{ item.content }}</AccordionItemContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
       </div>
 
       <div :class="row">
         <p :class="rowLabel" data-identifier>collapsible</p>
-        <div :class="rowItems"><Accordion :items="items" collapsible /></div>
+        <div :class="rowItems">
+          <Accordion collapsible>
+            <AccordionItem v-for="item in rows" :key="item.value" :value="item.value">
+              <AccordionItemTrigger>{{ item.label }}</AccordionItemTrigger>
+              <AccordionItemContent>{{ item.content }}</AccordionItemContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
       </div>
 
       <div :class="row">
         <p :class="rowLabel" data-identifier>disabled</p>
-        <div :class="rowItems"><Accordion :items="items" disabled /></div>
-      </div>
-
-      <div :class="row">
-        <p :class="rowLabel" data-identifier>item off</p>
-        <div :class="rowItems"><Accordion :items="itemsWithOneOff" /></div>
-      </div>
-
-      <div :class="row">
-        <p :class="rowLabel" data-identifier>render</p>
         <div :class="rowItems">
-          <Accordion :items="items">
-            <template #content="{ item }">
-              <code class="font-mono text-xs text-toned" data-identifier>{{ item.value }}</code>
-            </template>
+          <Accordion disabled>
+            <AccordionItem v-for="item in rows" :key="item.value" :value="item.value">
+              <AccordionItemTrigger>{{ item.label }}</AccordionItemTrigger>
+              <AccordionItemContent>{{ item.content }}</AccordionItemContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+      </div>
+
+      <div :class="row">
+        <p :class="rowLabel" data-identifier>icons</p>
+        <div :class="rowItems">
+          <Accordion>
+            <AccordionItem value="star">
+              <AccordionItemTrigger :leading-icon="Star" :trailing-icon="Star">
+                Both slots
+              </AccordionItemTrigger>
+              <AccordionItemContent>
+                The trigger owns its indicator; both props are glyphs, not parts.
+              </AccordionItemContent>
+            </AccordionItem>
           </Accordion>
         </div>
       </div>
@@ -88,7 +132,12 @@ const rule = "border-muted my-6";
         <p :class="rowLabel" data-identifier>horizontal</p>
         <div :class="rowItems">
           <div class="h-44">
-            <Accordion :items="items" orientation="horizontal" />
+            <Accordion orientation="horizontal">
+              <AccordionItem v-for="item in rows" :key="item.value" :value="item.value">
+                <AccordionItemTrigger>{{ item.label }}</AccordionItemTrigger>
+                <AccordionItemContent>{{ item.content }}</AccordionItemContent>
+              </AccordionItem>
+            </Accordion>
           </div>
         </div>
       </div>

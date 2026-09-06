@@ -2,7 +2,6 @@
 import { ArrowRight } from "@lucide/astro";
 import { Code } from "astro:components";
 import { themeColors } from "@75neo/themes";
-import { Clipboard } from "@75neo/react";
 import Base from "../layouts/Base.astro";
 import BrandIcon from "../components/BrandIcon.astro";
 import ComponentCard from "../components/ComponentCard.astro";
@@ -10,9 +9,7 @@ import { shell } from "../lib/layout";
 import { documentedComponents } from "../lib/components";
 import { searchIndex } from "../lib/search";
 import { ButtonPreview } from "../previews/ButtonPreview";
-import { SelectPreview } from "../previews/SelectPreview";
-import { SliderPreview } from "../previews/SliderPreview";
-import { SwitchPreview } from "../previews/SwitchPreview";
+import { AccordionPreview } from "../previews/AccordionPreview";
 import { docHref, frameworkFacts, frameworks } from "../lib/framework";
 
 const components = await documentedComponents();
@@ -27,12 +24,14 @@ const strengths = [
   { class: "bg-primary", label: "full", note: "A solid fill, or text." },
 ];
 
-/** `code` is the part of a layer's name that is an identifier rather than a word. */
+/** One layer sets a component's classes: the part's, then the call site's. */
 const layers = [
-  { name: "The recipe", note: "What the component looks like before anyone says anything." },
-  { name: "Every", code: "Theme", after: "above it", note: "Already folded into one config." },
-  { name: "The", code: "ui", after: "prop", note: "This call site, per slot." },
-  { code: "class", note: "This call site, reaching the base slot only." },
+  { name: "The part", note: "What the component looks like before anyone says anything." },
+  {
+    name: "Your",
+    code: "className",
+    note: "This call site, merged over the part through cn. Later wins conflicts; everything else survives.",
+  },
 ];
 
 /* The same call in each framework, so a reader can see what their own would look like. */
@@ -45,7 +44,7 @@ import { Button } from "@75neo/react";
   color="success"
   size="lg"
   trailingIcon={<ArrowRight />}
-  ui={{ label: "tracking-wide" }}
+  className="tracking-wide"
 >
   Continue
 </Button>`,
@@ -58,7 +57,7 @@ import { Button } from "@75neo/vue";
   variant="soft"
   color="success"
   size="lg"
-  :ui="{ label: 'tracking-wide' }"
+  class="tracking-wide"
 >
   Continue
   <template #trailing><ArrowRight /></template>
@@ -80,7 +79,7 @@ const step = "text-dimmed font-mono text-xs";
 
 <Base
   title="75NeoUI · A component library for React and Vue"
-  description="A component library for React and Vue. Behaviour from Ark UI, styling from Tailwind CSS and Tailwind Variants, and theming through CSS custom properties you can redefine."
+  description="A component library for React and Vue. Behaviour from Ark UI, styling from Tailwind CSS and cva, and theming through CSS custom properties you can redefine."
   entries={searchIndex("react", components)}
   footer
 >
@@ -154,16 +153,8 @@ const step = "text-dimmed font-mono text-xs";
             <ButtonPreview client:visible />
           </div>
           <div class={specimenCard}>
-            <span class={specimenLabel} data-identifier>select</span>
-            <SelectPreview client:visible />
-          </div>
-          <div class={specimenCard}>
-            <span class={specimenLabel} data-identifier>switch</span>
-            <SwitchPreview client:visible />
-          </div>
-          <div class={specimenCard}>
-            <span class={specimenLabel} data-identifier>slider</span>
-            <SliderPreview client:visible />
+            <span class={specimenLabel} data-identifier>accordion</span>
+            <AccordionPreview client:visible />
           </div>
         </div>
       </div>
@@ -188,11 +179,9 @@ const step = "text-dimmed font-mono text-xs";
                     size={16}
                     class="text-dimmed w-5 shrink-0"
                   />
-                  <Clipboard
-                    className="min-w-0 flex-1"
-                    value={`pnpm add ${frameworkFacts[framework].package}`}
-                    client:visible
-                  />
+                  <div class="prose min-w-0 flex-1">
+                    <pre>{`pnpm add ${frameworkFacts[framework].package}`}</pre>
+                  </div>
                 </div>
               ))
             }
@@ -280,9 +269,9 @@ const step = "text-dimmed font-mono text-xs";
           <p class={step} data-identifier>step 4</p>
           <h2 id="cascade" class={`${sectionHeading} mt-2`}>Restyle it</h2>
           <p class="text-muted mt-3 max-w-[44ch] text-sm/6 text-pretty">
-            Four layers can set a component's classes, and they fold weakest first.
-            Tailwind-merge settles conflicts, so a later layer replaces the utility it
-            conflicts with and every other utility survives.
+            One layer sets a component's classes: the part's, then the call site's.
+            cn settles conflicts, so a later class replaces the utility it conflicts
+            with and every other utility survives.
           </p>
           <a
             href={docHref("react", "getting-started")}
@@ -295,7 +284,7 @@ const step = "text-dimmed font-mono text-xs";
 
         <ol class="divide-default border-default max-w-[46rem] divide-y border-t">
           {
-            layers.map(({ name, code, after, note }, index) => (
+            layers.map(({ name, code, note }, index) => (
               <li class="flex gap-6 py-4">
                 <span class="text-dimmed w-4 shrink-0 pt-0.5 font-mono text-xs" data-identifier>
                   {index + 1}
@@ -308,7 +297,6 @@ const step = "text-dimmed font-mono text-xs";
                         {code}
                       </code>
                     )}
-                    {after}
                   </p>
                   <p class="text-muted mt-1 text-sm/6 text-pretty">{note}</p>
                 </div>
@@ -325,7 +313,7 @@ const step = "text-dimmed font-mono text-xs";
           <div>
             <h2 id="color" class={sectionHeading}>Rebrand with one line per color</h2>
             <p class="text-muted mt-4 max-w-[52ch] text-sm/6 text-pretty">
-              Each semantic color is a single token, and a recipe asks for it at a
+              Each semantic color is a single token, and each part asks for it at a
               different strength rather than reaching for a second one. So there is no
               hover token to retune and no border token to match.
             </p>

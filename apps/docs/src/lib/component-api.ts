@@ -5,22 +5,21 @@ import {
   SyntaxKind,
   type TypeNode,
 } from "ts-morph";
-import * as themes from "@75neo/themes";
-import type { Recipe } from "@75neo/core";
+import { accordionSchema, buttonSchema } from "@75neo/themes";
 
 /**
  * Reads a component's public API out of the source rather than out of prose.
  *
  * @remarks
- * Three files describe one component and none of them repeats another. The shared
+ * Three files describe one part and none of them repeats another. The shared
  * contract in `@75neo/themes` holds everything both frameworks agree on, and each
  * adapter adds the props only its framework can spell. So the API tables are three
  * extractions stitched together, not one.
  *
  * Variant props are the exception to reading types off the syntax. A contract writes
- * them as `ButtonVariants["size"]`, which is true but says nothing, so those are
- * answered by the recipe instead — recipes describe themselves, and the values they
- * list are the values that actually work.
+ * them as plain unions, but a boolean variant is declared as `boolean` with its
+ * default living in the schema — so those are answered by the schema object instead,
+ * which lists the values that actually resolve.
  */
 
 /**
@@ -40,7 +39,7 @@ export interface PropDoc {
   required: boolean;
   /** The JSDoc summary, as Markdown. */
   description: string;
-  /** From a `@defaultValue` tag, or from the recipe for a variant prop. */
+  /** From a `@defaultValue` tag, or from the schema for a variant prop. */
   defaultValue?: string;
 }
 
@@ -52,22 +51,17 @@ export interface SlotDoc {
   scope?: string;
 }
 
-/** A recipe variant, with every value it accepts. */
+/** A root variant, with every value it accepts. */
 export interface VariantDoc {
   name: string;
   values: string[];
   defaultValue?: string;
 }
 
-/** Everything the docs know about one component. */
-export interface ComponentApi {
-  /** Exported component name, the same in both adapters. */
+/** Everything the docs know about one anatomy part. */
+export interface PartApi {
+  /** Exported part name, such as `"AccordionItemTrigger"`. */
   name: string;
-  /** Registry key, which is also the recipe name and the theme override key. */
-  key: string;
-  /** Slot names, which are also the `data-slot` values and the `ui` keys. */
-  slots: string[];
-  variants: VariantDoc[];
   /** Props both frameworks share, from the component module. */
   shared: PropDoc[];
   react: {
@@ -83,6 +77,16 @@ export interface ComponentApi {
     /** `v-model` names the adapter declares, with `"modelValue"` written as `v-model`. */
     models: string[];
   };
+}
+
+/** Everything the docs know about one component. */
+export interface ComponentApi {
+  /** Exported root name, the same in both adapters. */
+  name: string;
+  /** Data-module key in `@75neo/themes`. */
+  key: string;
+  variants: VariantDoc[];
+  parts: PartApi[];
 }
 
 const project = new Project({
@@ -121,9 +125,8 @@ function taggedDefault(property: PropertySignature): string | undefined {
  * @param icon - What the framework calls an icon, substituted for the `F` parameter.
  *
  * @remarks
- * The written text is kept rather than the checker's expansion: `AccordionItem<Icon>[]`
- * is the answer to "what do I pass", and the structure it stands for belongs in its own
- * table.
+ * The written text is kept rather than the checker's expansion: `leadingIcon?: F`
+ * is the answer to "what do I pass", and the icon type belongs to the framework.
  */
 function readType(node: TypeNode | undefined, icon: string): string {
   if (!node) return "unknown";
@@ -150,35 +153,29 @@ function readInterface(declaration: InterfaceDeclaration, icon: string): PropDoc
 }
 
 /**
- * Describe a recipe from the recipe.
+ * Describe the root's variants from the schema object.
  *
  * @remarks
- * `defaultVariants` is not part of the `Recipe` contract, because nothing in the
- * cascade reads it directly, but `tv()` leaves it on the result and it is the honest
- * answer to "what happens when I pass nothing".
+ * The schema is the honest answer to "what happens when I pass nothing": every
+ * value that resolves, plus the default. It is imported, not extracted, because it
+ * is already data.
  */
-function readRecipe(recipe: Recipe): VariantDoc[] {
-  const defaults = (recipe as { defaultVariants?: Record<string, unknown> }).defaultVariants ?? {};
-
-  return recipe.variantKeys.map((key) => {
-    const name = String(key);
-    const fallback = defaults[name];
-
-    return {
-      name,
-      values: Object.keys(recipe.variants[name] ?? {}),
-      defaultValue: fallback == null ? undefined : String(fallback),
-    };
-  });
+function readSchema(
+  schema: Record<string, { values: readonly unknown[]; defaultValue: unknown }>,
+): VariantDoc[] {
+  return Object.entries(schema).map(([name, entry]) => ({
+    name,
+    values: entry.values.map((value) => String(value)),
+    defaultValue: entry.defaultValue == null ? undefined : String(entry.defaultValue),
+  }));
 }
 
 /**
- * Fill in a variant prop's type and default from the recipe.
+ * Fill in a variant prop's type and default from the schema.
  *
  * @remarks
- * `variant?: ButtonVariants["variant"]` tells a reader nothing, and a boolean variant
- * such as `block` is declared as `boolean` with its default living in the recipe. Both
- * are worth answering from the one place that knows.
+ * A boolean variant such as `block` is declared as `boolean` with its default living
+ * in the schema. Both are worth answering from the one place that knows.
  */
 function withVariant(prop: PropDoc, variants: VariantDoc[]): PropDoc {
   const variant = variants.find((candidate) => candidate.name === prop.name);
@@ -195,45 +192,76 @@ function withVariant(prop: PropDoc, variants: VariantDoc[]): PropDoc {
   };
 }
 
-/** The shared contract, plus the recipe that gives its variant props meaning. */
-function readContract(name: string, file: string, recipe: Recipe) {
-  const source = project.addSourceFileAtPath(`${root}packages/themes/src/components/${file}.ts`);
-  const declaration = source.getInterfaceOrThrow(`${name}Props`);
-  const variants = readRecipe(recipe);
+/**
+ * One anatomy part: the export, its file in each adapter, and its shared contract
+ * in `@75neo/themes` — or `null` when the part takes nothing both frameworks share.
+ *
+ * @remarks
+ * The batch migration generalizes this table away. For the two slice components it
+ * is written out, and a renamed file or interface fails the docs build rather than
+ * quietly dropping a table.
+ */
+interface PartSource {
+  export: string;
+  file: string;
+  contract: string | null;
+}
 
-  return {
-    variants,
-    shared: readInterface(declaration, "Icon").map((prop) => withVariant(prop, variants)),
-  };
+const PARTS: Record<string, PartSource[]> = {
+  accordion: [
+    { export: "Accordion", file: "accordion", contract: "AccordionRootProps" },
+    { export: "AccordionItem", file: "item", contract: "AccordionItemProps" },
+    { export: "AccordionItemTrigger", file: "item-trigger", contract: "AccordionItemTriggerProps" },
+    { export: "AccordionItemIndicator", file: "item-indicator", contract: null },
+    { export: "AccordionItemContent", file: "item-content", contract: null },
+  ],
+  button: [{ export: "Button", file: "button", contract: "ButtonProps" }],
+};
+
+const SCHEMAS: Record<
+  string,
+  Record<string, { values: readonly unknown[]; defaultValue: unknown }>
+> = {
+  accordion: accordionSchema,
+  button: buttonSchema,
+};
+
+/** The shared contract, plus the schema that gives its variant props meaning. */
+function readContract(module: string, contract: string | null, variants: VariantDoc[]) {
+  if (!contract) return [];
+
+  const source = project.addSourceFileAtPath(`${root}packages/themes/src/components/${module}.ts`);
+  const declaration = source.getInterfaceOrThrow(contract);
+
+  return readInterface(declaration, "Icon").map((prop) => withVariant(prop, variants));
 }
 
 /**
- * The React adapter's own half.
+ * One adapter part's own half.
  *
  * @remarks
  * The heritage clauses are reported rather than expanded. "Everything a `<button>`
  * takes, minus `color`" is the useful sentence; four hundred attribute rows are not.
  */
-function readReactAdapter(name: string) {
-  const source = project.addSourceFileAtPath(`${root}packages/react/src/components/${name}.tsx`);
+function readReactPart(dir: string, file: string, name: string) {
+  const source = project.addSourceFileAtPath(`${root}packages/react/src/${dir}/${file}.tsx`);
   const declaration = source.getInterfaceOrThrow(`${name}Props`);
-  const contract = `${name}Contract`;
 
   const inherits = declaration
     .getExtends()
     .map((clause) => clause.getText().replace(/\s*\n\s*/g, " "))
-    .filter((text) => !text.startsWith(contract) && !text.startsWith(`${name}Props`));
+    .filter((text) => !/Contract\b/.test(text) && !text.startsWith(`${name}Props`));
 
   return { props: readInterface(declaration, "React.ReactNode"), inherits };
 }
 
 /** Lift the `<script setup>` block out of an SFC so ts-morph can parse it as TypeScript. */
-function scriptSetup(name: string): string {
-  const path = `${root}packages/vue/src/components/${name}.vue`;
+function scriptSetup(dir: string, file: string): string {
+  const path = `${root}packages/vue/src/${dir}/${file}.vue`;
   const sfc = project.getFileSystem().readFileSync(path);
   const block = /<script\s+setup[^>]*>([\s\S]*?)<\/script>/.exec(sfc);
 
-  if (!block) throw new Error(`${name}.vue has no <script setup> block`);
+  if (!block) throw new Error(`${file}.vue has no <script setup> block`);
 
   return block[1]!;
 }
@@ -259,12 +287,13 @@ function macroTypeArgument(script: string, macro: string, name: string): TypeNod
  * props are exactly the members of the object literal beside the contract. The
  * intersection is read straight from the syntax, because `@vue/compiler-sfc` resolves
  * these the same way and a type the checker would expand is not what Vue sees.
+ * `class` is universal machinery rather than a part prop, so it is not a table row.
  */
-function readVueAdapter(name: string) {
-  const script = scriptSetup(name);
+function readVuePart(dir: string, file: string) {
+  const script = scriptSetup(dir, file);
   const props: PropDoc[] = [];
 
-  const declared = macroTypeArgument(script, "defineProps", name);
+  const declared = macroTypeArgument(script, "defineProps", file);
   const members = declared?.isKind(SyntaxKind.IntersectionType)
     ? declared.getTypeNodes()
     : declared
@@ -274,12 +303,13 @@ function readVueAdapter(name: string) {
   for (const member of members) {
     if (!member.isKind(SyntaxKind.TypeLiteral)) continue;
     for (const property of member.getProperties()) {
+      if (property.getName() === "class") continue;
       props.push(readProperty(property, "Component"));
     }
   }
 
   const slots: SlotDoc[] = [];
-  const declaredSlots = macroTypeArgument(script, "defineSlots", `${name}.slots`);
+  const declaredSlots = macroTypeArgument(script, "defineSlots", `${file}.slots`);
 
   if (declaredSlots?.isKind(SyntaxKind.TypeLiteral)) {
     for (const property of declaredSlots.getProperties()) {
@@ -301,36 +331,40 @@ function readVueAdapter(name: string) {
   return { props, slots, models };
 }
 
-/** What a documented component has to name so the three sources can be found. */
+/** What a documented component has to name so the sources can be found. */
 export interface ComponentSource {
-  /** Exported component name, such as `"Button"`. */
+  /** Exported root name, such as `"Button"`. */
   name: string;
-  /** Registry key and recipe export, such as `"button"`. */
+  /** Data-module key in `@75neo/themes`, such as `"button"`. */
   key: string;
-  /** File name of the component module, such as `"angle-slider"`. */
+  /** Component directory in each adapter and module in themes, such as `"button"`. */
   module: string;
 }
 
 /**
- * Read one component's API out of the three files that describe it.
+ * Read one component's API out of the files that describe it.
  *
- * @throws If a named file, interface or recipe is missing, which is the point: a
+ * @throws If a named file, interface or part is missing, which is the point: a
  * renamed export fails the docs build rather than quietly dropping a table.
  */
 export function componentApi({ name, key, module }: ComponentSource): ComponentApi {
-  const recipe = (themes as Record<string, unknown>)[key];
+  const parts = PARTS[key];
+  const schema = SCHEMAS[key];
 
-  if (!recipe) throw new Error(`@75neo/themes exports no recipe named "${key}"`);
+  if (!parts) throw new Error(`component-api knows no parts for "${key}"`);
+  if (!schema) throw new Error(`component-api knows no schema for "${key}"`);
 
-  const { variants, shared } = readContract(name, module, recipe as Recipe);
+  const variants = readSchema(schema);
 
   return {
     name,
     key,
-    slots: Object.keys((recipe as Recipe).slots),
     variants,
-    shared,
-    react: readReactAdapter(name),
-    vue: readVueAdapter(name),
+    parts: parts.map((part) => ({
+      name: part.export,
+      shared: readContract(module, part.contract, variants),
+      react: readReactPart(module, part.file, part.export),
+      vue: readVuePart(module, part.file),
+    })),
   };
 }

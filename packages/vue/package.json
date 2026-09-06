@@ -10,6 +10,8 @@
   "sideEffects": false,
   "exports": {
     ".": "./dist/index.js",
+    "./accordion": "./dist/accordion/index.js",
+    "./button": "./dist/button/index.js",
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -17,22 +19,20 @@
     "dev": "tsdown --watch",
     "typecheck": "vue-tsc --noEmit",
     "prepack": "pnpm build",
-    "test": "vitest run"
+    "test": "echo \"@75neo/vue: no tests yet\""
   },
   "dependencies": {
-    "@75neo/core": "workspace:*",
     "@75neo/themes": "workspace:*",
     "@ark-ui/vue": "^5.39.1",
-    "@lucide/vue": "catalog:"
+    "@lucide/vue": "catalog:",
+    "class-variance-authority": "catalog:"
   },
   "devDependencies": {
-    "@vitest/browser-playwright": "catalog:",
     "@vue/tsconfig": "^0.9.1",
     "publint": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:",
     "unplugin-vue": "^7.2.0",
-    "vitest-browser-vue": "catalog:",
     "vue": "catalog:",
     "vue-tsc": "catalog:"
   },

@@ -1,13 +1,27 @@
 import type { ReactNode } from "react";
-import { accordion, variantValues } from "@75neo/themes";
-import { Accordion } from "@75neo/react";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionItemContent,
+  AccordionItemTrigger,
+} from "@75neo/react/accordion";
+import { accordionSchema } from "@75neo/themes";
+import { Star } from "lucide-react";
 
-const variants = variantValues(accordion, "variant");
-const sizes = variantValues(accordion, "size");
+const variants = accordionSchema.variant.values;
+const sizes = accordionSchema.size.values;
 
-const items = [
-  { value: "cascade", label: "What settles a class?", content: "Four layers, weakest first." },
-  { value: "slots", label: "Why one word per slot?", content: "Recipe, data-slot and ui key." },
+const rows = [
+  {
+    value: "cascade",
+    label: "What settles a class?",
+    content: "One layer: the call-site className over the part classes.",
+  },
+  {
+    value: "slots",
+    label: "Why one word per slot?",
+    content: "The export, the file and the data-slot share it.",
+  },
   {
     value: "tokens",
     label: "Where does dark mode live?",
@@ -37,13 +51,24 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
   );
 }
 
+function Rows() {
+  return rows.map((item) => (
+    <AccordionItem key={item.value} value={item.value}>
+      <AccordionItemTrigger>{item.label}</AccordionItemTrigger>
+      <AccordionItemContent>{item.content}</AccordionItemContent>
+    </AccordionItem>
+  ));
+}
+
 export default function AccordionPreview() {
   return (
     <div className="@container">
       <div className={group}>
         {variants.map((variant) => (
           <Row key={variant} label={variant}>
-            <Accordion items={items} variant={variant} />
+            <Accordion variant={variant}>
+              <Rows />
+            </Accordion>
           </Row>
         ))}
       </div>
@@ -53,7 +78,9 @@ export default function AccordionPreview() {
       <div className={group}>
         {sizes.map((size) => (
           <Row key={size} label={size}>
-            <Accordion items={items} size={size} />
+            <Accordion size={size}>
+              <Rows />
+            </Accordion>
           </Row>
         ))}
       </div>
@@ -62,37 +89,52 @@ export default function AccordionPreview() {
 
       <div className={group}>
         <Row label="multiple">
-          <Accordion items={items} multiple />
+          <Accordion multiple>
+            <Rows />
+          </Accordion>
         </Row>
 
         <Row label="collapsible">
-          <Accordion items={items} collapsible />
+          <Accordion collapsible>
+            <Rows />
+          </Accordion>
         </Row>
 
         <Row label="disabled">
-          <Accordion items={items} disabled />
+          <Accordion disabled>
+            <Rows />
+          </Accordion>
         </Row>
 
         <Row label="item off">
-          <Accordion
-            items={items.map((item, i) => (i === 1 ? { ...item, disabled: true } : item))}
-          />
+          <Accordion>
+            {rows.map((item, i) => (
+              <AccordionItem key={item.value} value={item.value} disabled={i === 1}>
+                <AccordionItemTrigger>{item.label}</AccordionItemTrigger>
+                <AccordionItemContent>{item.content}</AccordionItemContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </Row>
 
-        <Row label="render">
-          <Accordion
-            items={items}
-            renderContent={(item) => (
-              <code className="font-mono text-xs text-toned" data-identifier>
-                {item.value}
-              </code>
-            )}
-          />
+        <Row label="icons">
+          <Accordion>
+            <AccordionItem value="star">
+              <AccordionItemTrigger leadingIcon={<Star />} trailingIcon={<Star />}>
+                Both slots
+              </AccordionItemTrigger>
+              <AccordionItemContent>
+                The trigger owns its indicator; both props are glyphs, not parts.
+              </AccordionItemContent>
+            </AccordionItem>
+          </Accordion>
         </Row>
 
         <Row label="horizontal">
           <div className="h-44">
-            <Accordion items={items} orientation="horizontal" />
+            <Accordion orientation="horizontal">
+              <Rows />
+            </Accordion>
           </div>
         </Row>
       </div>

@@ -6,11 +6,11 @@ import { previews } from "../routes";
 const steps = [
   {
     path: "packages/themes/src/components/<name>.ts",
-    note: "The recipe, its types, and the registry augmentation.",
+    note: "The styling data, its literal types, and the schema object.",
   },
   {
-    path: "packages/{react,vue}/src/components/<Name>",
-    note: "One adapter file each. No styling logic in either.",
+    path: "packages/{react,vue}/src/components/<name>/",
+    note: "A directory per component, one file per part, in both adapters alike.",
   },
   {
     path: "apps/playground/src/previews/",
@@ -18,14 +18,14 @@ const steps = [
   },
   {
     path: "packages/themes/src/tokens/utilities.css",
-    note: "Only when a recipe needs a color utility nothing else composes yet.",
+    note: "Only when a part needs a color utility nothing else composes yet.",
   },
 ];
 ---
 
 <Playground
   title="Every component, both frameworks"
-  description="Each page renders one component twice, once through @75neo/react and once through @75neo/vue, from the same recipe in @75neo/themes. Edits to packages/*/src hot-reload here with no build step."
+  description="Each page renders one component twice, once through @75neo/react and once through @75neo/vue, from the same styling data in @75neo/themes. Edits to packages/*/src hot-reload here with no build step."
 >
   <section aria-labelledby="components" class="mt-10">
     <h2 id="components" class="text-highlighted text-xl font-semibold tracking-tight">

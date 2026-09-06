@@ -1,20 +1,15 @@
 import type { ReactNode } from "react";
-import { ArrowRight, Bookmark, Plus, Share2 } from "lucide-react";
-import { button, variantValues } from "@75neo/themes";
-import { Button } from "@75neo/react";
+import { Button } from "@75neo/react/button";
+import { buttonSchema } from "@75neo/themes";
+import { Star } from "lucide-react";
 
-const variants = variantValues(button, "variant");
-const sizes = variantValues(button, "size");
-const colors = variantValues(button, "color");
+const variants = buttonSchema.variant.values;
+const colors = buttonSchema.color.values;
+const sizes = buttonSchema.size.values;
 
-/*
- * Both adapters render this scaffold, so the two stages line up row for row and
- * any divergence between React and Vue shows as a break in the rhythm rather
- * than as something you have to hunt for.
- */
-const row = "grid gap-2 @sm:grid-cols-[4.5rem_minmax(0,1fr)] @sm:items-center @sm:gap-4";
-const rowLabel = "text-dimmed font-mono text-[0.6875rem] leading-none";
-const rowItems = "flex flex-wrap items-center gap-2";
+const row = "grid gap-2 @sm:grid-cols-[4.5rem_minmax(0,1fr)] @sm:gap-4";
+const rowLabel = "text-dimmed font-mono text-[0.6875rem] leading-none @sm:pt-3";
+const rowItems = "flex min-w-0 flex-wrap items-center gap-2";
 const group = "flex flex-col gap-5";
 const rule = "border-muted my-6";
 
@@ -35,11 +30,10 @@ export default function ButtonPreview() {
       <div className={group}>
         {variants.map((variant) => (
           <Row key={variant} label={variant}>
-            {colors.map((color) => (
-              <Button key={color} variant={variant} color={color}>
-                {color}
-              </Button>
-            ))}
+            <Button variant={variant}>Save</Button>
+            <Button variant={variant} leadingIcon={<Star />}>
+              Starred
+            </Button>
           </Row>
         ))}
       </div>
@@ -47,56 +41,48 @@ export default function ButtonPreview() {
       <hr className={rule} />
 
       <div className={group}>
-        <Row label="size">
-          {sizes.map((size) => (
-            <Button key={size} size={size}>
-              {size}
+        <Row label="colors">
+          {colors.map((color) => (
+            <Button key={color} color={color}>
+              {color}
             </Button>
           ))}
         </Row>
 
-        <Row label="square">
-          {sizes.map((size) => (
-            <Button key={size} size={size} variant="subtle" leadingIcon={<Plus />} />
-          ))}
-        </Row>
-
-        <Row label="state">
-          <Button>default</Button>
-          <Button disabled>disabled</Button>
-          <Button loading>loading</Button>
-          <Button loading trailingIcon={<ArrowRight />}>
-            loading
-          </Button>
-          <Button leadingIcon={<Plus />}>leading</Button>
-          <Button trailingIcon={<ArrowRight />}>trailing</Button>
-        </Row>
+        {sizes.map((size) => (
+          <Row key={size} label={size}>
+            <Button size={size}>Save</Button>
+            <Button size={size} leadingIcon={<Star />}>
+              Starred
+            </Button>
+          </Row>
+        ))}
       </div>
 
       <hr className={rule} />
 
-      {/*
-        Buttons rarely appear alone. This is the arrangement they actually ship in:
-        one solid call to action carrying the accent, everything beside it quieter.
-      */}
       <div className={group}>
-        <Row label="in use">
-          <Button trailingIcon={<ArrowRight />}>Publish release</Button>
-          <Button variant="subtle" color="neutral" leadingIcon={<Bookmark />}>
-            Save draft
-          </Button>
-          <Button variant="ghost" color="neutral" leadingIcon={<Share2 />} />
-          <Button variant="link" color="neutral">
-            Discard
+        <Row label="block">
+          <Button block>Full width</Button>
+        </Row>
+
+        <Row label="square">
+          <Button square leadingIcon={<Star />} aria-label="Star" />
+        </Row>
+
+        <Row label="loading">
+          <Button loading>Save</Button>
+          <Button loading trailing trailingIcon={<Star />}>
+            Save
           </Button>
         </Row>
 
-        <Row label="block">
-          <div className="w-full max-w-64">
-            <Button block trailingIcon={<ArrowRight />}>
-              Continue
-            </Button>
-          </div>
+        <Row label="disabled">
+          <Button disabled>Save</Button>
+        </Row>
+
+        <Row label="override">
+          <Button className="px-8">Call-site padding wins</Button>
         </Row>
       </div>
     </div>

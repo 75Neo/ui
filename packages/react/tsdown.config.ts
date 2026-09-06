@@ -3,7 +3,7 @@ import { reactCompilerPreset } from "@vitejs/plugin-react";
 import { defineConfig } from "tsdown/config";
 
 export default defineConfig({
-  entry: ["src/index.ts"],
+  entry: ["src/index.ts", "src/accordion/index.ts", "src/button/index.ts"],
   format: ["esm"],
   platform: "neutral",
   fixedExtension: false,

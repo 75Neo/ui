@@ -1,19 +1,15 @@
 <script setup lang="ts">
-import { ArrowRight, Bookmark, Plus, Share2 } from "@lucide/vue";
-import { button, variantValues } from "@75neo/themes";
-import { Button } from "@75neo/vue";
+import { Button } from "@75neo/vue/button";
+import { buttonSchema } from "@75neo/themes";
+import { Star } from "@lucide/vue";
 
-const variants = variantValues(button, "variant");
-const sizes = variantValues(button, "size");
-const colors = variantValues(button, "color");
+const variants = buttonSchema.variant.values;
+const colors = buttonSchema.color.values;
+const sizes = buttonSchema.size.values;
 
-/*
- * Kept identical to ButtonPreview.tsx on purpose: matching scaffolds are what
- * make a React/Vue divergence visible as a break in the shared rhythm.
- */
-const row = "grid gap-2 @sm:grid-cols-[4.5rem_minmax(0,1fr)] @sm:items-center @sm:gap-4";
-const rowLabel = "text-dimmed font-mono text-[0.6875rem] leading-none";
-const rowItems = "flex flex-wrap items-center gap-2";
+const row = "grid gap-2 @sm:grid-cols-[4.5rem_minmax(0,1fr)] @sm:gap-4";
+const rowLabel = "text-dimmed font-mono text-[0.6875rem] leading-none @sm:pt-3";
+const rowItems = "flex min-w-0 flex-wrap items-center gap-2";
 const group = "flex flex-col gap-5";
 const rule = "border-muted my-6";
 </script>
@@ -24,9 +20,8 @@ const rule = "border-muted my-6";
       <div v-for="variant in variants" :key="variant" :class="row">
         <p :class="rowLabel" data-identifier>{{ variant }}</p>
         <div :class="rowItems">
-          <Button v-for="color in colors" :key="color" :variant="variant" :color="color">
-            {{ color }}
-          </Button>
+          <Button :variant="variant">Save</Button>
+          <Button :variant="variant" :leading-icon="Star">Starred</Button>
         </div>
       </div>
     </div>
@@ -35,61 +30,57 @@ const rule = "border-muted my-6";
 
     <div :class="group">
       <div :class="row">
-        <p :class="rowLabel" data-identifier>size</p>
+        <p :class="rowLabel" data-identifier>colors</p>
         <div :class="rowItems">
-          <Button v-for="size in sizes" :key="size" :size="size">{{ size }}</Button>
+          <Button v-for="color in colors" :key="color" :color="color">{{ color }}</Button>
+        </div>
+      </div>
+
+      <div v-for="size in sizes" :key="size" :class="row">
+        <p :class="rowLabel" data-identifier>{{ size }}</p>
+        <div :class="rowItems">
+          <Button :size="size">Save</Button>
+          <Button :size="size" :leading-icon="Star">Starred</Button>
+        </div>
+      </div>
+    </div>
+
+    <hr :class="rule" />
+
+    <div :class="group">
+      <div :class="row">
+        <p :class="rowLabel" data-identifier>block</p>
+        <div :class="rowItems">
+          <Button block>Full width</Button>
         </div>
       </div>
 
       <div :class="row">
         <p :class="rowLabel" data-identifier>square</p>
         <div :class="rowItems">
-          <Button
-            v-for="size in sizes"
-            :key="size"
-            :size="size"
-            variant="subtle"
-            :leading-icon="Plus"
-          />
+          <Button square :leading-icon="Star" aria-label="Star" />
         </div>
       </div>
 
       <div :class="row">
-        <p :class="rowLabel" data-identifier>state</p>
+        <p :class="rowLabel" data-identifier>loading</p>
         <div :class="rowItems">
-          <Button>default</Button>
-          <Button disabled>disabled</Button>
-          <Button loading>loading</Button>
-          <Button loading :trailing-icon="ArrowRight">loading</Button>
-          <Button :leading-icon="Plus">leading</Button>
-          <Button :trailing-icon="ArrowRight">trailing</Button>
-        </div>
-      </div>
-    </div>
-
-    <hr :class="rule" />
-
-    <!--
-      Buttons rarely appear alone. This is the arrangement they actually ship in:
-      one solid call to action carrying the accent, everything beside it quieter.
-    -->
-    <div :class="group">
-      <div :class="row">
-        <p :class="rowLabel" data-identifier>in use</p>
-        <div :class="rowItems">
-          <Button :trailing-icon="ArrowRight">Publish release</Button>
-          <Button variant="subtle" color="neutral" :leading-icon="Bookmark"> Save draft </Button>
-          <Button variant="ghost" color="neutral" :leading-icon="Share2" />
-          <Button variant="link" color="neutral">Discard</Button>
+          <Button loading>Save</Button>
+          <Button loading trailing :trailing-icon="Star">Save</Button>
         </div>
       </div>
 
       <div :class="row">
-        <p :class="rowLabel" data-identifier>block</p>
+        <p :class="rowLabel" data-identifier>disabled</p>
         <div :class="rowItems">
-          <div class="w-full max-w-64">
-            <Button block :trailing-icon="ArrowRight">Continue</Button>
-          </div>
+          <Button disabled>Save</Button>
+        </div>
+      </div>
+
+      <div :class="row">
+        <p :class="rowLabel" data-identifier>override</p>
+        <div :class="rowItems">
+          <Button class="px-8">Call-site padding wins</Button>
         </div>
       </div>
     </div>

@@ -10,7 +10,6 @@
     "typecheck": "astro check"
   },
   "dependencies": {
-    "@75neo/core": "workspace:*",
     "@75neo/react": "workspace:*",
     "@75neo/themes": "workspace:*",
     "@75neo/vue": "workspace:*",

@@ -1,21 +1,41 @@
 ---
-import { TableOfContents } from "@75neo/react";
-import { TableOfContents as TableOfContentsVue } from "@75neo/vue";
-import type { TableOfContentsItem } from "@75neo/themes";
 import type { Framework } from "../lib/framework";
 
 /**
- * The rail of headings, rendered by the adapter the route is for. It is the same
- * `TableOfContents` the reference page documents, so the React route is proof the React
- * adapter works and the Vue route is proof the Vue one does.
+ * The rail of headings, in the route's framework and nothing else.
+ *
+ * @remarks
+ * Temporary shape: this rail was the library's `TableOfContents`, and the batch
+ * migration restores that component first — the docs chrome renders it — at which
+ * point this file goes back to reaching for it. The classes below are copied from
+ * that recipe's neutral `md` row, which is what the chrome is: hand-written markup
+ * wearing the system's own numbers, per `apps/AGENTS.md`.
  */
 interface Props {
   framework: Framework;
-  items: TableOfContentsItem[];
+  items: { value: string; depth: number; label: string }[];
 }
 
-const { framework, items } = Astro.props;
+const { items } = Astro.props;
 ---
 
-{framework === "react" && <TableOfContents items={items} client:load />}
-{framework === "vue" && <TableOfContentsVue items={items} client:load />}
+<nav aria-label="On this page" class="min-w-0">
+  <p class="text-dimmed font-medium text-xs">On this page</p>
+  <ul class="border-muted relative mt-3 flex min-w-0 flex-col border-s">
+    {
+      items.map((item) => (
+        <li
+          class="min-w-0 data-[depth='3']:ps-3 data-[depth='4']:ps-6 data-[depth='5']:ps-6 data-[depth='6']:ps-6"
+          data-depth={item.depth}
+        >
+          <a
+            href={`#${item.value}`}
+            class="text-muted outline-primary/25 hover:text-highlighted block truncate rounded-e-sm py-1 ps-3 text-sm transition-colors focus-visible:outline-3"
+          >
+            {item.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>

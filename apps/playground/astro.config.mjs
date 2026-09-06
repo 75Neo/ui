@@ -5,9 +5,9 @@ import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import vue from "@astrojs/vue";
 
-/** @param {string} name */
-const src = (name) =>
-  fileURLToPath(new URL(`../../packages/${name}/src/index.ts`, import.meta.url));
+/** @param {string} name @param {string} [file] */
+const src = (name, file = "index.ts") =>
+  fileURLToPath(new URL(`../../packages/${name}/src/${file}`, import.meta.url));
 
 const disableJsxRefresh = () => ({
   name: "playground:disable-jsx-refresh",
@@ -23,10 +23,22 @@ export default defineConfig({
     plugins: [tailwindcss(), disableJsxRefresh()],
     resolve: {
       alias: [
-        { find: /^@75neo\/core$/, replacement: src("core") },
         { find: /^@75neo\/react$/, replacement: src("react") },
+        {
+          find: /^@75neo\/react\/accordion$/,
+          replacement: src("react", "accordion/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/button$/,
+          replacement: src("react", "button/index.ts"),
+        },
         { find: /^@75neo\/themes$/, replacement: src("themes") },
         { find: /^@75neo\/vue$/, replacement: src("vue") },
+        {
+          find: /^@75neo\/vue\/accordion$/,
+          replacement: src("vue", "accordion/index.ts"),
+        },
+        { find: /^@75neo\/vue\/button$/, replacement: src("vue", "button/index.ts") },
       ],
     },
   },

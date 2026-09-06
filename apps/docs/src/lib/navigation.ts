@@ -1,9 +1,22 @@
-import type { TableOfContentsItem } from "@75neo/themes";
 import type { MarkdownHeading } from "astro";
 import type { Framework } from "./framework";
 import type { ComponentApi } from "./component-api";
 import type { DocumentedComponent } from "./components";
 import { componentHref } from "./components";
+
+/**
+ * One entry in the rail of headings.
+ *
+ * @remarks
+ * Temporary home: this shape lived in `@75neo/themes` beside the old
+ * `TableOfContents` component. The batch migration restores that component first —
+ * the docs chrome renders it — and this type goes home with it.
+ */
+export interface TableOfContentsItem {
+  value: string;
+  depth: number;
+  label: string;
+}
 
 /** One link in the sidebar. */
 export interface SidebarLink {
@@ -28,25 +41,22 @@ export function componentLinks(
  * not hand them back. Which exist depends on the component and the framework.
  */
 export function apiSections(api: ComponentApi, framework: Framework): TableOfContentsItem[] {
-  const sections: TableOfContentsItem[] = [{ value: "slots", depth: 2, label: "Slots" }];
+  const sections: TableOfContentsItem[] = [{ value: "parts", depth: 2, label: "Parts" }];
 
   if (api.variants.length > 0) {
     sections.push({ value: "variants", depth: 2, label: "Variants" });
   }
 
-  sections.push({ value: "props", depth: 2, label: "Props" });
+  for (const part of api.parts) {
+    const own =
+      (part.shared.length > 0 ? 1 : 0) +
+      (framework === "react"
+        ? part.react.props.length + part.react.inherits.length
+        : part.vue.props.length + part.vue.slots.length + part.vue.models.length);
 
-  const own =
-    framework === "react"
-      ? api.react.props.length + api.react.inherits.length
-      : api.vue.props.length + api.vue.slots.length + api.vue.models.length;
-
-  if (own > 0) {
-    sections.push({
-      value: "framework-props",
-      depth: 2,
-      label: `${framework === "react" ? "React" : "Vue"} only`,
-    });
+    if (own > 0) {
+      sections.push({ value: `part-${part.name}`, depth: 2, label: part.name });
+    }
   }
 
   return sections;

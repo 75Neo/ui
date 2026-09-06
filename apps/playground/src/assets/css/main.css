@@ -118,38 +118,12 @@
 
 @layer components {
   /*
-   * The specimen stage. Components are shown against a real page surface so
-   * their own edges, shadows and transparency read truthfully; the dot grid
-   * gives that surface a floor without adding a color to the palette.
+   * The specimen stage: surface A. Components stand on a muted floor inside the
+   * page's flat card, so their own edges, shadows and transparency read
+   * truthfully in both themes. No dot grid, no switcher: one surface.
    */
   [data-stage] {
-    background-color: var(--ui-bg);
-    background-image: radial-gradient(var(--ui-border) 1px, transparent 1px);
-    background-position: -0.5px -0.5px;
-    background-size: 0.5rem 0.5rem;
-  }
-
-  [data-surface="muted"] [data-stage] {
     background-color: var(--ui-bg-muted);
-  }
-
-  [data-surface="elevated"] [data-stage] {
-    background-color: var(--ui-bg-elevated);
-  }
-
-  /*
-   * A segment is active when its value matches the matching attribute on the root
-   * element. CSS cannot compare two attributes to each other, so the pairs are written
-   * out; in exchange the active segment is right on first paint, before any script
-   * runs. The look is the SegmentGroup's: the current segment lifted back to the page's
-   * own surface, with a hairline around it.
-   */
-  :root[data-surface="default"] [data-option="surface:default"],
-  :root[data-surface="muted"] [data-option="surface:muted"],
-  :root[data-surface="elevated"] [data-option="surface:elevated"] {
-    background-color: var(--ui-bg);
-    box-shadow: inset 0 0 0 1px var(--ui-border);
-    color: var(--ui-text-highlighted);
   }
 
   /*

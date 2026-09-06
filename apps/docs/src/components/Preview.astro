@@ -1,79 +1,12 @@
 ---
 import type { Framework } from "../lib/framework";
 import { AccordionPreview } from "../previews/AccordionPreview";
-import { AngleSliderPreview } from "../previews/AngleSliderPreview";
-import { AppPreview } from "../previews/AppPreview";
-import { AvatarPreview } from "../previews/AvatarPreview";
 import { ButtonPreview } from "../previews/ButtonPreview";
-import { CarouselPreview } from "../previews/CarouselPreview";
-import { CheckboxPreview } from "../previews/CheckboxPreview";
-import { ClipboardPreview } from "../previews/ClipboardPreview";
-import { CollapsiblePreview } from "../previews/CollapsiblePreview";
-import { ColorPickerPreview } from "../previews/ColorPickerPreview";
-import { ComboboxPreview } from "../previews/ComboboxPreview";
-import { ContainerPreview } from "../previews/ContainerPreview";
-import { DateInputPreview } from "../previews/DateInputPreview";
-import { DatePickerPreview } from "../previews/DatePickerPreview";
-import { DialogPreview } from "../previews/DialogPreview";
-import { ErrorPreview } from "../previews/ErrorPreview";
-import { FileUploadPreview } from "../previews/FileUploadPreview";
-import { FooterPreview } from "../previews/FooterPreview";
-import { HeaderPreview } from "../previews/HeaderPreview";
-import { MainPreview } from "../previews/MainPreview";
-import { MenuPreview } from "../previews/MenuPreview";
-import { NumberInputPreview } from "../previews/NumberInputPreview";
-import { PaginationPreview } from "../previews/PaginationPreview";
-import { PinInputPreview } from "../previews/PinInputPreview";
-import { PopoverPreview } from "../previews/PopoverPreview";
-import { ProgressPreview } from "../previews/ProgressPreview";
-import { RadioGroupPreview } from "../previews/RadioGroupPreview";
-import { SegmentGroupPreview } from "../previews/SegmentGroupPreview";
-import { SelectPreview } from "../previews/SelectPreview";
-import { RatingGroupPreview } from "../previews/RatingGroupPreview";
-import { SidebarPreview } from "../previews/SidebarPreview";
-import { SliderPreview } from "../previews/SliderPreview";
-import { SwitchPreview } from "../previews/SwitchPreview";
-import { TableOfContentsPreview } from "../previews/TableOfContentsPreview";
-import { TabsPreview } from "../previews/TabsPreview";
-import { TagsInputPreview } from "../previews/TagsInputPreview";
-import { TooltipPreview } from "../previews/TooltipPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
-import AngleSliderPreviewVue from "../previews/AngleSliderPreview.vue";
-import AppPreviewVue from "../previews/AppPreview.vue";
-import AvatarPreviewVue from "../previews/AvatarPreview.vue";
 import ButtonPreviewVue from "../previews/ButtonPreview.vue";
-import CarouselPreviewVue from "../previews/CarouselPreview.vue";
-import CheckboxPreviewVue from "../previews/CheckboxPreview.vue";
-import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
-import CollapsiblePreviewVue from "../previews/CollapsiblePreview.vue";
-import ColorPickerPreviewVue from "../previews/ColorPickerPreview.vue";
-import ComboboxPreviewVue from "../previews/ComboboxPreview.vue";
-import ContainerPreviewVue from "../previews/ContainerPreview.vue";
-import DateInputPreviewVue from "../previews/DateInputPreview.vue";
-import DatePickerPreviewVue from "../previews/DatePickerPreview.vue";
-import DialogPreviewVue from "../previews/DialogPreview.vue";
-import ErrorPreviewVue from "../previews/ErrorPreview.vue";
-import FileUploadPreviewVue from "../previews/FileUploadPreview.vue";
-import FooterPreviewVue from "../previews/FooterPreview.vue";
-import HeaderPreviewVue from "../previews/HeaderPreview.vue";
-import MainPreviewVue from "../previews/MainPreview.vue";
-import MenuPreviewVue from "../previews/MenuPreview.vue";
-import NumberInputPreviewVue from "../previews/NumberInputPreview.vue";
-import PaginationPreviewVue from "../previews/PaginationPreview.vue";
-import PinInputPreviewVue from "../previews/PinInputPreview.vue";
-import PopoverPreviewVue from "../previews/PopoverPreview.vue";
-import ProgressPreviewVue from "../previews/ProgressPreview.vue";
-import RadioGroupPreviewVue from "../previews/RadioGroupPreview.vue";
-import SegmentGroupPreviewVue from "../previews/SegmentGroupPreview.vue";
-import SelectPreviewVue from "../previews/SelectPreview.vue";
-import RatingGroupPreviewVue from "../previews/RatingGroupPreview.vue";
-import SidebarPreviewVue from "../previews/SidebarPreview.vue";
-import SliderPreviewVue from "../previews/SliderPreview.vue";
-import SwitchPreviewVue from "../previews/SwitchPreview.vue";
-import TableOfContentsPreviewVue from "../previews/TableOfContentsPreview.vue";
-import TabsPreviewVue from "../previews/TabsPreview.vue";
-import TagsInputPreviewVue from "../previews/TagsInputPreview.vue";
-import TooltipPreviewVue from "../previews/TooltipPreview.vue";
+
+// The vertical slice: Button and Accordion only. The batch migration restores one
+// group at a time, appending its lines here and in Thumbnail.astro.
 
 /**
  * One component's live specimen, in the framework the route is for.
@@ -95,77 +28,7 @@ const vue = framework === "vue";
 ---
 
 {react && name === "Accordion" && <AccordionPreview client:visible />}
-{react && name === "AngleSlider" && <AngleSliderPreview client:visible />}
-{react && name === "App" && <AppPreview client:visible />}
-{react && name === "Avatar" && <AvatarPreview client:visible />}
 {react && name === "Button" && <ButtonPreview client:visible />}
-{react && name === "Carousel" && <CarouselPreview client:visible />}
-{react && name === "Checkbox" && <CheckboxPreview client:visible />}
-{react && name === "Clipboard" && <ClipboardPreview client:visible />}
-{react && name === "Collapsible" && <CollapsiblePreview client:visible />}
-{react && name === "ColorPicker" && <ColorPickerPreview client:visible />}
-{react && name === "Combobox" && <ComboboxPreview client:visible />}
-{react && name === "Container" && <ContainerPreview client:visible />}
-{react && name === "DateInput" && <DateInputPreview client:visible />}
-{react && name === "DatePicker" && <DatePickerPreview client:visible />}
-{react && name === "Dialog" && <DialogPreview client:visible />}
-{react && name === "Error" && <ErrorPreview client:visible />}
-{react && name === "FileUpload" && <FileUploadPreview client:visible />}
-{react && name === "Footer" && <FooterPreview client:visible />}
-{react && name === "Header" && <HeaderPreview client:visible />}
-{react && name === "Main" && <MainPreview client:visible />}
-{react && name === "Menu" && <MenuPreview client:visible />}
-{react && name === "NumberInput" && <NumberInputPreview client:visible />}
-{react && name === "Pagination" && <PaginationPreview client:visible />}
-{react && name === "PinInput" && <PinInputPreview client:visible />}
-{react && name === "Popover" && <PopoverPreview client:visible />}
-{react && name === "Progress" && <ProgressPreview client:visible />}
-{react && name === "RadioGroup" && <RadioGroupPreview client:visible />}
-{react && name === "SegmentGroup" && <SegmentGroupPreview client:visible />}
-{react && name === "Select" && <SelectPreview client:visible />}
-{react && name === "RatingGroup" && <RatingGroupPreview client:visible />}
-{react && name === "Sidebar" && <SidebarPreview client:visible />}
-{react && name === "Slider" && <SliderPreview client:visible />}
-{react && name === "Switch" && <SwitchPreview client:visible />}
-{react && name === "TableOfContents" && <TableOfContentsPreview client:visible />}
-{react && name === "Tabs" && <TabsPreview client:visible />}
-{react && name === "TagsInput" && <TagsInputPreview client:visible />}
-{react && name === "Tooltip" && <TooltipPreview client:visible />}
 
 {vue && name === "Accordion" && <AccordionPreviewVue client:visible />}
-{vue && name === "AngleSlider" && <AngleSliderPreviewVue client:visible />}
-{vue && name === "App" && <AppPreviewVue client:visible />}
-{vue && name === "Avatar" && <AvatarPreviewVue client:visible />}
 {vue && name === "Button" && <ButtonPreviewVue client:visible />}
-{vue && name === "Carousel" && <CarouselPreviewVue client:visible />}
-{vue && name === "Checkbox" && <CheckboxPreviewVue client:visible />}
-{vue && name === "Clipboard" && <ClipboardPreviewVue client:visible />}
-{vue && name === "Collapsible" && <CollapsiblePreviewVue client:visible />}
-{vue && name === "ColorPicker" && <ColorPickerPreviewVue client:visible />}
-{vue && name === "Combobox" && <ComboboxPreviewVue client:visible />}
-{vue && name === "Container" && <ContainerPreviewVue client:visible />}
-{vue && name === "DateInput" && <DateInputPreviewVue client:visible />}
-{vue && name === "DatePicker" && <DatePickerPreviewVue client:visible />}
-{vue && name === "Dialog" && <DialogPreviewVue client:visible />}
-{vue && name === "Error" && <ErrorPreviewVue client:visible />}
-{vue && name === "FileUpload" && <FileUploadPreviewVue client:visible />}
-{vue && name === "Footer" && <FooterPreviewVue client:visible />}
-{vue && name === "Header" && <HeaderPreviewVue client:visible />}
-{vue && name === "Main" && <MainPreviewVue client:visible />}
-{vue && name === "Menu" && <MenuPreviewVue client:visible />}
-{vue && name === "NumberInput" && <NumberInputPreviewVue client:visible />}
-{vue && name === "Pagination" && <PaginationPreviewVue client:visible />}
-{vue && name === "PinInput" && <PinInputPreviewVue client:visible />}
-{vue && name === "Popover" && <PopoverPreviewVue client:visible />}
-{vue && name === "Progress" && <ProgressPreviewVue client:visible />}
-{vue && name === "RadioGroup" && <RadioGroupPreviewVue client:visible />}
-{vue && name === "SegmentGroup" && <SegmentGroupPreviewVue client:visible />}
-{vue && name === "Select" && <SelectPreviewVue client:visible />}
-{vue && name === "RatingGroup" && <RatingGroupPreviewVue client:visible />}
-{vue && name === "Sidebar" && <SidebarPreviewVue client:visible />}
-{vue && name === "Slider" && <SliderPreviewVue client:visible />}
-{vue && name === "Switch" && <SwitchPreviewVue client:visible />}
-{vue && name === "TableOfContents" && <TableOfContentsPreviewVue client:visible />}
-{vue && name === "Tabs" && <TabsPreviewVue client:visible />}
-{vue && name === "TagsInput" && <TagsInputPreviewVue client:visible />}
-{vue && name === "Tooltip" && <TooltipPreviewVue client:visible />}

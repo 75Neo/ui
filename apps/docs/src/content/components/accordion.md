@@ -2,48 +2,40 @@
 name: Accordion
 key: accordion
 module: accordion
-summary: Three variants across three sizes, wrapping Ark UI for keyboard and ARIA behaviour.
+summary: Composed anatomy parts around Ark UI for keyboard and ARIA behaviour.
 ---
 
-Rows are data rather than markup. Pass `items` and the accordion renders the whole
-anatomy, so keyboard navigation, ARIA wiring and the open-state animation come with it.
+Rows are markup rather than data. Compose the parts and the accordion renders them,
+so keyboard navigation and ARIA wiring come with it. The root publishes `variant`
+and `size` through context; every part reads them into its own styles.
 
 ```tsx
-<Accordion
-  items={[
-    { value: "shipping", label: "Shipping", content: "Two to four working days." },
-    { value: "returns", label: "Returns", content: "Thirty days, no questions." },
-  ]}
-/>
+<Accordion>
+  <AccordionItem value="shipping">
+    <AccordionItemTrigger>Shipping</AccordionItemTrigger>
+    <AccordionItemContent>Two to four working days.</AccordionItemContent>
+  </AccordionItem>
+  <AccordionItem value="returns">
+    <AccordionItemTrigger>Returns</AccordionItemTrigger>
+    <AccordionItemContent>Thirty days, no questions.</AccordionItemContent>
+  </AccordionItem>
+</Accordion>
 ```
 
 ```vue
-<Accordion
-  :items="[
-    { value: 'shipping', label: 'Shipping', content: 'Two to four working days.' },
-    { value: 'returns', label: 'Returns', content: 'Thirty days, no questions.' },
-  ]"
-/>
+<Accordion>
+  <AccordionItem value="shipping">
+    <AccordionItemTrigger>Shipping</AccordionItemTrigger>
+    <AccordionItemContent>Two to four working days.</AccordionItemContent>
+  </AccordionItem>
+  <AccordionItem value="returns">
+    <AccordionItemTrigger>Returns</AccordionItemTrigger>
+    <AccordionItemContent>Thirty days, no questions.</AccordionItemContent>
+  </AccordionItem>
+</Accordion>
 ```
 
 `multiple` allows more than one row open at a time. `collapsible` allows closing the open
-row and leaving none open. An `item` carries its own `disabled` and its own `icon`,
-shown before that row's label.
-
-### Arbitrary markup in a row
-
-`label` and `content` on an item are text. When a row needs more than text, replace it:
-`renderLabel` and `renderContent` in React, the `label` and `content` slots in Vue. Both
-receive the item and fall back to its text when you render nothing.
-
-```tsx
-<Accordion items={items} renderContent={(item) => <Invoice id={item.value} />} />
-```
-
-```vue
-<Accordion :items="items">
-  <template #content="{ item }">
-    <Invoice :id="item.value" />
-  </template>
-</Accordion>
-```
+row and leaving none open. An `AccordionItem` carries its own `disabled`. The trigger
+owns its indicator: `leadingIcon` puts a glyph before the label and `trailingIcon`
+replaces the chevron, and both are glyphs rather than parts.

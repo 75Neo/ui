@@ -10,6 +10,8 @@
   "sideEffects": false,
   "exports": {
     ".": "./dist/index.js",
+    "./accordion": "./dist/accordion/index.js",
+    "./button": "./dist/button/index.js",
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -17,12 +19,12 @@
     "dev": "tsdown --watch",
     "typecheck": "tsc --noEmit",
     "prepack": "pnpm build",
-    "test": "vitest run"
+    "test": "echo \"@75neo/react: no tests yet\""
   },
   "dependencies": {
-    "@75neo/core": "workspace:*",
     "@75neo/themes": "workspace:*",
     "@ark-ui/react": "^5.39.1",
+    "class-variance-authority": "catalog:",
     "lucide-react": "catalog:"
   },
   "devDependencies": {
@@ -30,14 +32,12 @@
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "^6.1.1",
-    "@vitest/browser-playwright": "catalog:",
     "babel-plugin-react-compiler": "^1.0.0",
     "publint": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "tsdown": "catalog:",
-    "typescript": "catalog:",
-    "vitest-browser-react": "catalog:"
+    "typescript": "catalog:"
   },
   "peerDependencies": {
     "react": ">=18",

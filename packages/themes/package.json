@@ -1,7 +1,7 @@
 {
   "name": "@75neo/themes",
   "version": "0.0.0",
-  "description": "Shared Tailwind CSS theme and tailwind-variants component themes for 75NeoUI",
+  "description": "Shared Tailwind CSS theme and per-part styling data for 75NeoUI",
   "license": "MIT",
   "files": [
     "dist"
@@ -25,8 +25,7 @@
     "prepack": "pnpm build"
   },
   "dependencies": {
-    "@75neo/core": "workspace:*",
-    "tailwind-variants": "catalog:"
+    "cn": "catalog:"
   },
   "devDependencies": {
     "@tsdown/css": "^0.22.14",
