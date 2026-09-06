@@ -8,6 +8,11 @@ import { SelectPreview } from "../previews/SelectPreview";
 import { MenuPreview } from "../previews/MenuPreview";
 import { ListboxPreview } from "../previews/ListboxPreview";
 import { ComboboxPreview } from "../previews/ComboboxPreview";
+import { TagsInputPreview } from "../previews/TagsInputPreview";
+import { PinInputPreview } from "../previews/PinInputPreview";
+import { PasswordInputPreview } from "../previews/PasswordInputPreview";
+import { NumberInputPreview } from "../previews/NumberInputPreview";
+import { EditablePreview } from "../previews/EditablePreview";
 import { TableOfContentsPreview } from "../previews/TableOfContentsPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import ButtonPreviewVue from "../previews/ButtonPreview.vue";
@@ -17,6 +22,11 @@ import SelectPreviewVue from "../previews/SelectPreview.vue";
 import MenuPreviewVue from "../previews/MenuPreview.vue";
 import ListboxPreviewVue from "../previews/ListboxPreview.vue";
 import ComboboxPreviewVue from "../previews/ComboboxPreview.vue";
+import TagsInputPreviewVue from "../previews/TagsInputPreview.vue";
+import PinInputPreviewVue from "../previews/PinInputPreview.vue";
+import PasswordInputPreviewVue from "../previews/PasswordInputPreview.vue";
+import NumberInputPreviewVue from "../previews/NumberInputPreview.vue";
+import EditablePreviewVue from "../previews/EditablePreview.vue";
 import TableOfContentsPreviewVue from "../previews/TableOfContentsPreview.vue";
 
 /**
@@ -47,6 +57,11 @@ const vue = framework === "vue";
 {react && name === "Menu" && <MenuPreview />}
 {react && name === "Listbox" && <ListboxPreview />}
 {react && name === "Combobox" && <ComboboxPreview />}
+{react && name === "TagsInput" && <TagsInputPreview />}
+{react && name === "PinInput" && <PinInputPreview />}
+{react && name === "PasswordInput" && <PasswordInputPreview />}
+{react && name === "NumberInput" && <NumberInputPreview />}
+{react && name === "Editable" && <EditablePreview />}
 {react && name === "TableOfContents" && <TableOfContentsPreview />}
 
 {vue && name === "Accordion" && <AccordionPreviewVue />}
@@ -57,4 +72,9 @@ const vue = framework === "vue";
 {vue && name === "Menu" && <MenuPreviewVue />}
 {vue && name === "Listbox" && <ListboxPreviewVue />}
 {vue && name === "Combobox" && <ComboboxPreviewVue />}
+{vue && name === "TagsInput" && <TagsInputPreviewVue />}
+{vue && name === "PinInput" && <PinInputPreviewVue />}
+{vue && name === "PasswordInput" && <PasswordInputPreviewVue />}
+{vue && name === "NumberInput" && <NumberInputPreviewVue />}
+{vue && name === "Editable" && <EditablePreviewVue />}
 {vue && name === "TableOfContents" && <TableOfContentsPreviewVue />}

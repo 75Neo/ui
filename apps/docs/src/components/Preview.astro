@@ -4,6 +4,11 @@ import { AccordionPreview } from "../previews/AccordionPreview";
 import { ButtonPreview } from "../previews/ButtonPreview";
 import { ClipboardPreview } from "../previews/ClipboardPreview";
 import { ComboboxPreview } from "../previews/ComboboxPreview";
+import { TagsInputPreview } from "../previews/TagsInputPreview";
+import { PinInputPreview } from "../previews/PinInputPreview";
+import { PasswordInputPreview } from "../previews/PasswordInputPreview";
+import { NumberInputPreview } from "../previews/NumberInputPreview";
+import { EditablePreview } from "../previews/EditablePreview";
 import { ListboxPreview } from "../previews/ListboxPreview";
 import { MenuPreview } from "../previews/MenuPreview";
 import { SelectPreview } from "../previews/SelectPreview";
@@ -13,6 +18,11 @@ import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import ButtonPreviewVue from "../previews/ButtonPreview.vue";
 import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
 import ComboboxPreviewVue from "../previews/ComboboxPreview.vue";
+import TagsInputPreviewVue from "../previews/TagsInputPreview.vue";
+import PinInputPreviewVue from "../previews/PinInputPreview.vue";
+import PasswordInputPreviewVue from "../previews/PasswordInputPreview.vue";
+import NumberInputPreviewVue from "../previews/NumberInputPreview.vue";
+import EditablePreviewVue from "../previews/EditablePreview.vue";
 import ListboxPreviewVue from "../previews/ListboxPreview.vue";
 import MenuPreviewVue from "../previews/MenuPreview.vue";
 import SelectPreviewVue from "../previews/SelectPreview.vue";
@@ -45,6 +55,11 @@ const vue = framework === "vue";
 {react && name === "Button" && <ButtonPreview client:visible />}
 {react && name === "Clipboard" && <ClipboardPreview client:visible />}
 {react && name === "Combobox" && <ComboboxPreview client:visible />}
+{react && name === "TagsInput" && <TagsInputPreview client:visible />}
+{react && name === "PinInput" && <PinInputPreview client:visible />}
+{react && name === "PasswordInput" && <PasswordInputPreview client:visible />}
+{react && name === "NumberInput" && <NumberInputPreview client:visible />}
+{react && name === "Editable" && <EditablePreview client:visible />}
 {react && name === "Listbox" && <ListboxPreview client:visible />}
 {react && name === "Menu" && <MenuPreview client:visible />}
 {react && name === "Select" && <SelectPreview client:visible />}
@@ -55,6 +70,11 @@ const vue = framework === "vue";
 {vue && name === "Button" && <ButtonPreviewVue client:visible />}
 {vue && name === "Clipboard" && <ClipboardPreviewVue client:visible />}
 {vue && name === "Combobox" && <ComboboxPreviewVue client:visible />}
+{vue && name === "TagsInput" && <TagsInputPreviewVue client:visible />}
+{vue && name === "PinInput" && <PinInputPreviewVue client:visible />}
+{vue && name === "PasswordInput" && <PasswordInputPreviewVue client:visible />}
+{vue && name === "NumberInput" && <NumberInputPreviewVue client:visible />}
+{vue && name === "Editable" && <EditablePreviewVue client:visible />}
 {vue && name === "Listbox" && <ListboxPreviewVue client:visible />}
 {vue && name === "Menu" && <MenuPreviewVue client:visible />}
 {vue && name === "Select" && <SelectPreviewVue client:visible />}

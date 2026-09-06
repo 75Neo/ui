@@ -82,6 +82,36 @@ const routes: readonly PreviewRoute[] = [
     summary: "Nested rows that expand, collapse and select.",
     key: "treeView",
   },
+  {
+    href: "/number-input",
+    label: "NumberInput",
+    summary: "A quantity picker or a spinner, stepping with buttons, wheel or keys.",
+    key: "numberInput",
+  },
+  {
+    href: "/password-input",
+    label: "PasswordInput",
+    summary: "A secret field with a visibility toggle.",
+    key: "passwordInput",
+  },
+  {
+    href: "/pin-input",
+    label: "PinInput",
+    summary: "One box per character for codes and OTPs.",
+    key: "pinInput",
+  },
+  {
+    href: "/tags-input",
+    label: "TagsInput",
+    summary: "A field that grows chips as text is entered.",
+    key: "tagsInput",
+  },
+  {
+    href: "/editable",
+    label: "Editable",
+    summary: "Text that turns into a field where it stands.",
+    key: "editable",
+  },
 ];
 
 /**

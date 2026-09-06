@@ -7,3 +7,8 @@ export * from "./listbox/index";
 export * from "./menu/index";
 export * from "./select/index";
 export * from "./tree-view/index";
+export * from "./number-input/index";
+export * from "./password-input/index";
+export * from "./pin-input/index";
+export * from "./tags-input/index";
+export * from "./editable/index";

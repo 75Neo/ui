@@ -1,0 +1,37 @@
+---
+import * as NumberInputParts from "@75neo/react/number-input";
+import { numberInputSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import NumberInputPreview from "../previews/NumberInputPreview.tsx";
+import NumberInputPreviewVue from "../previews/NumberInputPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(NumberInputParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(numberInputSchema);
+const combinations = variantKeys.reduce(
+  (total, key) =>
+    total * (numberInputSchema[key as keyof typeof numberInputSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  title="NumberInput"
+  description="A quantity picker or a spinner. Orientation places the two buttons and nothing else, so the markup is one shape and the adapters have no branch in them."
+>
+  <Preview
+    title="Variant matrix"
+    description="Both orientations, then sizes, colors and bounds. Both columns render the same matrix, so anything that differs between them is a real difference between the adapters."
+    meta={meta}
+  >
+    <Fragment slot="react"><NumberInputPreview client:load /></Fragment>
+    <Fragment slot="vue"><NumberInputPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

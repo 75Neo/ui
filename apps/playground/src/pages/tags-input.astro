@@ -1,0 +1,37 @@
+---
+import * as TagsInputParts from "@75neo/react/tags-input";
+import { tagsInputSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import TagsInputPreview from "../previews/TagsInputPreview.tsx";
+import TagsInputPreviewVue from "../previews/TagsInputPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(TagsInputParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(tagsInputSchema);
+const combinations = variantKeys.reduce(
+  (total, key) =>
+    total * (tagsInputSchema[key as keyof typeof tagsInputSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  title="TagsInput"
+  description="A field that grows chips as text is entered. The chips come from Ark's context rather than the prop, which keeps an uncontrolled field honest."
+>
+  <Preview
+    title="Variant matrix"
+    description="Every size, then all seven colors, then filled and disabled states. Both columns render the same matrix, so anything that differs between them is a real difference between the adapters."
+    meta={meta}
+  >
+    <Fragment slot="react"><TagsInputPreview client:load /></Fragment>
+    <Fragment slot="vue"><TagsInputPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

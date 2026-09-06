@@ -1,0 +1,37 @@
+---
+import * as PinInputParts from "@75neo/react/pin-input";
+import { pinInputSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import PinInputPreview from "../previews/PinInputPreview.tsx";
+import PinInputPreviewVue from "../previews/PinInputPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(PinInputParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(pinInputSchema);
+const combinations = variantKeys.reduce(
+  (total, key) =>
+    total * (pinInputSchema[key as keyof typeof pinInputSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  title="PinInput"
+  description="One box per character for codes and OTPs. The count draws the boxes and reaches Ark's ARIA, and each box takes the index it sits at."
+>
+  <Preview
+    title="Variant matrix"
+    description="Every size, then all seven colors, then lengths and states. Both columns render the same matrix, so anything that differs between them is a real difference between the adapters."
+    meta={meta}
+  >
+    <Fragment slot="react"><PinInputPreview client:load /></Fragment>
+    <Fragment slot="vue"><PinInputPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

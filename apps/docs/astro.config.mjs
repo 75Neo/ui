@@ -91,6 +91,26 @@ export default defineConfig({
           find: /^@75neo\/react\/tree-view$/,
           replacement: src("react", "tree-view/index.ts"),
         },
+        {
+          find: /^@75neo\/react\/number-input$/,
+          replacement: src("react", "number-input/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/password-input$/,
+          replacement: src("react", "password-input/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/pin-input$/,
+          replacement: src("react", "pin-input/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/tags-input$/,
+          replacement: src("react", "tags-input/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/editable$/,
+          replacement: src("react", "editable/index.ts"),
+        },
         { find: /^@75neo\/themes$/, replacement: src("themes") },
         { find: /^@75neo\/vue$/, replacement: src("vue") },
         {
@@ -125,6 +145,26 @@ export default defineConfig({
         {
           find: /^@75neo\/vue\/tree-view$/,
           replacement: src("vue", "tree-view/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/number-input$/,
+          replacement: src("vue", "number-input/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/password-input$/,
+          replacement: src("vue", "password-input/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/pin-input$/,
+          replacement: src("vue", "pin-input/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/tags-input$/,
+          replacement: src("vue", "tags-input/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/editable$/,
+          replacement: src("vue", "editable/index.ts"),
         },
       ],
     },
