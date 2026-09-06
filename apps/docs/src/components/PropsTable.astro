@@ -10,7 +10,7 @@ interface Props {
 const { props: rows, id } = Astro.props;
 ---
 
-<dl class="divide-muted border-muted divide-y border-t">
+<dl class="divide-default border-default divide-y border-t">
   {
     rows.map((row) => (
       <div
@@ -18,12 +18,12 @@ const { props: rows, id } = Astro.props;
         class="grid gap-x-10 gap-y-2 py-4 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]"
       >
         <dt class="min-w-0">
-          <span class="text-highlighted font-mono text-[0.8125rem]" data-identifier>
+          <span class="text-highlighted font-mono text-xs" data-identifier>
             {row.name}
           </span>
           {row.required && (
             <span
-              class="text-error ml-1.5 font-mono text-[0.6875rem]"
+              class="text-error ms-1.5 font-mono text-[0.6875rem]"
               title="Required"
               data-identifier
             >

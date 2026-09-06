@@ -7,7 +7,7 @@ import { overview, previews } from "../routes";
   title="No page at this address"
   description="The playground only serves an overview and one page per component, so a mistyped path lands here. Everything it does serve is listed below."
 >
-  <ul class="border-muted divide-muted max-w-2xl divide-y border-y">
+  <ul class="border-default divide-default max-w-2xl divide-y border-y">
     {
       [...overview, ...previews].map(({ href, label, summary }) => (
         <li>

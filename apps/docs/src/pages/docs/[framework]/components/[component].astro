@@ -1,6 +1,5 @@
 ---
 import { render } from "astro:content";
-import { ArrowLeft, ArrowRight } from "@lucide/astro";
 import Doc from "../../../../layouts/Doc.astro";
 import Prose from "../../../../components/Prose.astro";
 import Stage from "../../../../components/Stage.astro";
@@ -10,7 +9,7 @@ import { componentHref, documentedComponents } from "../../../../lib/components"
 import { apiSections, componentLinks, railItems } from "../../../../lib/navigation";
 import { hasPreview } from "../../../../lib/previews";
 import { searchIndex } from "../../../../lib/search";
-import { type Framework, frameworks } from "../../../../lib/framework";
+import { type Framework, docHref, frameworks } from "../../../../lib/framework";
 
 /**
  * One page per component, per adapter. The content collection is the list of pages, so
@@ -41,9 +40,6 @@ const { Content, headings } = await render(entry);
 
 // The prose subheadings first, then the generated tables, which is the order on the page.
 const rail = [...railItems(headings), ...apiSections(api, framework)];
-
-const step =
-  "group border-muted hover:border-accented flex min-w-0 flex-col gap-1 rounded-xl border px-4 py-3";
 ---
 
 <Doc
@@ -54,12 +50,19 @@ const step =
   headings={rail}
   entries={searchIndex(framework, components)}
   source={entry.body}
+  markdown={`/raw/components/${slug}.md`}
+  previous={previous
+    ? { href: componentHref(framework, previous.slug), label: previous.entry.data.name }
+    : { href: docHref(framework, "components"), label: "Components" }}
+  next={next
+    ? { href: componentHref(framework, next.slug), label: next.entry.data.name }
+    : undefined}
 >
-  <p class="text-dimmed mt-4 font-mono text-xs" data-identifier>{entry.data.key}</p>
+  <p class="text-dimmed mt-3 font-mono text-xs" data-identifier>{entry.data.key}</p>
 
   {
     hasPreview(entry.data.name) && (
-      <Stage class="mt-5">
+      <Stage class="mt-6">
         <Preview name={entry.data.name} framework={framework} />
       </Stage>
     )
@@ -70,45 +73,4 @@ const step =
   </Prose>
 
   <ComponentApi api={api} framework={framework} id={slug} />
-
-  <nav
-    aria-label="Components"
-    class="border-muted mt-16 grid gap-3 border-t pt-8 sm:grid-cols-2"
-  >
-    {
-      previous ? (
-        <a href={componentHref(framework, previous.slug)} class={step}>
-          <span
-            class="text-dimmed flex items-center gap-1.5 font-mono text-[0.6875rem]"
-            data-identifier
-          >
-            <ArrowLeft size={12} aria-hidden="true" />
-            previous
-          </span>
-          <span class="text-highlighted group-hover:text-primary truncate text-sm font-medium">
-            {previous.entry.data.name}
-          </span>
-        </a>
-      ) : (
-        <span />
-      )
-    }
-
-    {
-      next && (
-        <a href={componentHref(framework, next.slug)} class={`${step} sm:items-end sm:text-end`}>
-          <span
-            class="text-dimmed flex items-center gap-1.5 font-mono text-[0.6875rem]"
-            data-identifier
-          >
-            next
-            <ArrowRight size={12} aria-hidden="true" />
-          </span>
-          <span class="text-highlighted group-hover:text-primary truncate text-sm font-medium">
-            {next.entry.data.name}
-          </span>
-        </a>
-      )
-    }
-  </nav>
 </Doc>

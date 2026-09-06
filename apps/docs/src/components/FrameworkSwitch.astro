@@ -4,6 +4,10 @@ import { type Framework, docHref, frameworkFacts, frameworks, isFramework } from
 /**
  * React or Vue, without leaving the page. Every route exists under both adapters, so
  * this takes the path rather than a destination: the other copy is one segment swapped.
+ *
+ * @remarks
+ * Painted like the SegmentGroup component: a recessed track, and the current segment
+ * lifted back to the page's own surface with a hairline around it.
  */
 interface Props {
   framework: Framework;
@@ -28,7 +32,7 @@ const hrefFor = (next: Framework) => {
 <div
   role="group"
   aria-label="Framework"
-  class="border-muted bg-elevated/60 flex items-center gap-px rounded-lg border p-px"
+  class="bg-elevated hidden items-center gap-0.5 rounded-md p-0.5 sm:flex"
 >
   {
     frameworks.map((option) => (
@@ -36,13 +40,13 @@ const hrefFor = (next: Framework) => {
         href={hrefFor(option)}
         aria-current={option === framework ? "true" : undefined}
         class:list={[
-          "rounded-[0.4rem] px-2 py-1 font-mono text-xs leading-none",
+          "outline-primary/25 rounded-sm px-2 py-1 text-xs font-medium transition-colors focus-visible:outline-3",
           option === framework
-            ? "shadow-segment text-highlighted"
-            : "text-dimmed hover:text-toned",
+            ? "bg-default text-highlighted ring-default ring"
+            : "text-muted hover:text-highlighted",
         ]}
       >
-        {frameworkFacts[option].label.toLowerCase()}
+        {frameworkFacts[option].label}
       </a>
     ))
   }

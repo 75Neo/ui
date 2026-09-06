@@ -16,40 +16,30 @@ interface Props {
 
 const { path } = Astro.props;
 
+const sections = [
+  { label: "Overview", links: overview },
+  { label: "Components", links: previews },
+];
+
 const row =
-  "text-muted hover:text-highlighted hover:bg-elevated/60 block truncate rounded-lg px-2.5 py-1.5 text-sm";
+  "text-muted hover:text-highlighted hover:bg-elevated outline-primary/25 block truncate rounded-md px-2 py-1.5 text-sm transition-colors focus-visible:outline-3";
 ---
 
-<nav aria-label="Playground" class="flex flex-col gap-6 pb-10 lg:pt-6">
-  <div>
-    <p class="text-dimmed px-2.5 pb-1.5 font-mono text-xs" data-identifier>overview</p>
-    <ul class="flex flex-col gap-px">
-      {
-        overview.map(({ href, label }) => (
-          <li>
-            <a href={href} aria-current={path === href ? "page" : undefined} class={row}>
-              {label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </div>
-
-  <div>
-    <p class="text-dimmed px-2.5 pb-1.5 font-mono text-xs" data-identifier>
-      components · {previews.length}
-    </p>
-    <ul class="flex flex-col gap-px">
-      {
-        previews.map(({ href, label }) => (
-          <li>
-            <a href={href} aria-current={path === href ? "page" : undefined} class={row}>
-              {label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </div>
+<nav aria-label="Playground" class="flex flex-col gap-5 py-6">
+  {
+    sections.map(({ label, links }) => (
+      <div>
+        <p class="text-highlighted px-2 pb-1.5 text-sm font-semibold">{label}</p>
+        <ul class="flex flex-col gap-px">
+          {links.map(({ href, label: link }) => (
+            <li>
+              <a href={href} aria-current={path === href ? "page" : undefined} class={row}>
+                {link}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
 </nav>

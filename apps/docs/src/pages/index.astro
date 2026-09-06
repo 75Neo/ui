@@ -70,11 +70,11 @@ const wall = components.slice(0, 9);
 
 const shiki = { light: "github-light", dark: "github-dark" } as const;
 
-const specimenCard = "border-muted bg-default overflow-hidden rounded-xl border px-4 py-3.5";
+const specimenCard = "border-default bg-default overflow-hidden rounded-lg border px-4 py-3.5";
 const specimenLabel = "text-dimmed mb-3 block font-mono text-xs";
 const frameHeader =
-  "bg-muted border-muted flex items-center justify-between gap-3 border-b px-4 py-2.5";
-const sectionHeading = "text-highlighted text-2xl font-semibold tracking-[-0.025em] text-balance";
+  "bg-muted border-default flex items-center justify-between gap-3 border-b px-4 py-2.5";
+const sectionHeading = "text-highlighted text-2xl font-semibold tracking-tight text-balance";
 const step = "text-dimmed font-mono text-xs";
 ---
 
@@ -85,13 +85,13 @@ const step = "text-dimmed font-mono text-xs";
   footer
 >
   <main id="content">
-    <section class="border-muted bg-default border-b">
+    <section class="border-default bg-default border-b">
       <div
         class={`${shell} grid items-center gap-12 py-16 lg:grid-cols-[minmax(0,30rem)_minmax(0,1fr)] lg:gap-20 lg:py-24`}
       >
         <div>
           <h1
-            class="text-highlighted text-4xl font-semibold tracking-[-0.04em] text-balance sm:text-5xl lg:text-[3.25rem] lg:leading-[1.06]"
+            class="text-highlighted text-4xl font-semibold tracking-tighter text-balance sm:text-5xl lg:text-[3.25rem] lg:leading-[1.06]"
           >
             A component library for React and Vue.
           </h1>
@@ -103,7 +103,7 @@ const step = "text-dimmed font-mono text-xs";
           <ul class="mt-7 flex flex-wrap gap-2.5">
             {
               frameworks.map((framework) => (
-                <li class="border-muted flex items-center gap-2.5 rounded-lg border px-3 py-2">
+                <li class="border-default flex items-center gap-2.5 rounded-lg border px-3 py-2">
                   <BrandIcon
                     name={frameworkFacts[framework].brand}
                     size={17}
@@ -123,13 +123,13 @@ const step = "text-dimmed font-mono text-xs";
           <div class="mt-8 flex flex-wrap items-center gap-3">
             <a
               href={docHref("react", "getting-started")}
-              class="bg-inverted text-inverted hover:bg-inverted/90 inline-flex items-center rounded-lg px-4 py-2.5 text-sm font-medium"
+              class="bg-inverted text-inverted hover:bg-inverted/90 outline-inverted/25 inline-flex items-center rounded-md px-3 py-2 text-base font-medium transition-colors focus-visible:outline-3"
             >
               Get started
             </a>
             <a
               href={docHref("react", "components")}
-              class="text-default ring-accented hover:bg-elevated inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium ring ring-inset"
+              class="text-default ring-accented hover:bg-elevated bg-default outline-inverted/25 inline-flex items-center gap-2 rounded-md px-3 py-2 text-base font-medium ring ring-inset transition-colors focus-visible:outline-3"
             >
               Browse components
               <ArrowRight size={15} aria-hidden="true" />
@@ -147,7 +147,7 @@ const step = "text-dimmed font-mono text-xs";
         }
         <div
           data-stage
-          class="border-muted grid gap-3 rounded-2xl border p-3 sm:grid-cols-2 sm:p-4"
+          class="border-default grid gap-3 rounded-lg border p-3 sm:grid-cols-2 sm:p-4"
         >
           <div class={specimenCard}>
             <span class={specimenLabel} data-identifier>button</span>
@@ -169,7 +169,7 @@ const step = "text-dimmed font-mono text-xs";
       </div>
     </section>
 
-    <section aria-labelledby="install" class="border-muted bg-default border-b">
+    <section aria-labelledby="install" class="border-default bg-default border-b">
       <div class={`${shell} grid gap-10 py-14 lg:grid-cols-2 lg:gap-16 lg:py-20`}>
         <div>
           <p class={step} data-identifier>step 1</p>
@@ -214,13 +214,13 @@ const step = "text-dimmed font-mono text-xs";
 @import "@75neo/themes";`}
             lang="css"
             themes={shiki}
-            class="border-muted !bg-muted mt-6 overflow-x-auto rounded-xl border p-5 text-[0.8125rem]/[1.7]"
+            class="border-default !bg-muted mt-6 overflow-x-auto rounded-lg border p-5 text-[0.8125rem]/[1.7]"
           />
         </div>
       </div>
     </section>
 
-    <section aria-labelledby="usage" class="border-muted bg-default border-b">
+    <section aria-labelledby="usage" class="border-default bg-default border-b">
       <div class={`${shell} py-14 lg:py-20`}>
         <p class={step} data-identifier>step 3</p>
         <h2 id="usage" class={`${sectionHeading} mt-2`}>Render a component</h2>
@@ -230,14 +230,14 @@ const step = "text-dimmed font-mono text-xs";
           spell differently.
         </p>
 
-        <div class="border-muted mt-8 overflow-hidden rounded-xl border">
+        <div class="border-default mt-8 overflow-hidden rounded-lg border">
           <div class="grid lg:grid-cols-2">
             {
               frameworks.map((framework, index) => (
                 <article
                   class:list={[
                     "min-w-0",
-                    index === 0 && "border-muted border-b lg:border-e lg:border-b-0",
+                    index === 0 && "border-default border-b lg:border-e lg:border-b-0",
                   ]}
                 >
                   <header class={frameHeader}>
@@ -272,7 +272,7 @@ const step = "text-dimmed font-mono text-xs";
       </div>
     </section>
 
-    <section aria-labelledby="cascade" class="border-muted bg-default border-b">
+    <section aria-labelledby="cascade" class="border-default bg-default border-b">
       <div
         class={`${shell} grid gap-10 py-14 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:gap-20 lg:py-20`}
       >
@@ -293,7 +293,7 @@ const step = "text-dimmed font-mono text-xs";
           </a>
         </div>
 
-        <ol class="divide-muted border-muted max-w-[46rem] divide-y border-t">
+        <ol class="divide-default border-default max-w-[46rem] divide-y border-t">
           {
             layers.map(({ name, code, after, note }, index) => (
               <li class="flex gap-6 py-4">
@@ -319,7 +319,7 @@ const step = "text-dimmed font-mono text-xs";
       </div>
     </section>
 
-    <section aria-labelledby="color" class="border-muted bg-default border-b">
+    <section aria-labelledby="color" class="border-default bg-default border-b">
       <div class={`${shell} py-14 lg:py-20`}>
         <div class="flex flex-wrap items-end justify-between gap-x-10 gap-y-5">
           <div>
@@ -335,7 +335,7 @@ const step = "text-dimmed font-mono text-xs";
             {
               themeColors.map((color) => (
                 <span
-                  class="border-muted text-toned rounded-lg border px-2 py-1 font-mono text-xs"
+                  class="border-default text-toned rounded-lg border px-2 py-1 font-mono text-xs"
                   data-identifier
                 >
                   {color}
@@ -343,7 +343,7 @@ const step = "text-dimmed font-mono text-xs";
               ))
             }
             <span
-              class="border-muted text-dimmed rounded-lg border border-dashed px-2 py-1 font-mono text-xs"
+              class="border-default text-dimmed rounded-lg border border-dashed px-2 py-1 font-mono text-xs"
               data-identifier
               title="No hue to spend, so it borrows the surface tokens"
             >
@@ -355,7 +355,7 @@ const step = "text-dimmed font-mono text-xs";
         <dl class="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {
             strengths.map(({ class: swatch, label, note }) => (
-              <div class="border-muted flex items-center gap-4 rounded-xl border px-4 py-3.5">
+              <div class="border-default flex items-center gap-4 rounded-lg border px-4 py-3.5">
                 <span
                   class="size-9 shrink-0 overflow-hidden rounded-lg"
                   data-checker

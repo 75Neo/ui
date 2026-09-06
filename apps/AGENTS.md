@@ -27,9 +27,21 @@ development convenience; the dependency is the build graph.
 ## The shell
 
 Both apps are the same shell: a sticky header carrying a `⌘K` search dialog and the theme
-control, a column of every page down the left, and the page itself on a card. The
-playground adds the surface control; the docs add the framework switch and a rail of
-headings.
+control, a column of every page down the left behind a hairline, and the page itself on
+the page's own surface. The playground adds the surface control; the docs add the
+framework switch and a rail of headings behind a second hairline.
+
+**Neither app redefines a `--ui-*` token.** The bar is `h-header`, the measure is
+`max-w-page`, the gutters are the Container's `px-5 sm:px-8 lg:px-12`, and every corner
+comes off the `--ui-radius` scale, so the chrome is built out of the same numbers as the
+components standing in it. The one thing each app declares for itself is the two webfont
+faces, because serving a font is the application's job and the system ships none. A
+measurement that is not already a token belongs in the design system first.
+
+`src/lib/controls.ts` in each app is the rest of that rule: the class strings for the
+icon button, the floating panel and its rows, copied from `header.ts` and `menu.ts`. The
+chrome is hand-written markup, which is a reason to write the elements out and not a
+licence to give them a second appearance.
 
 `apps/playground/src/routes.ts` is the playground's whole list: `previews`, sorted by name
 where it is exported rather than kept in order by hand, and `overview` for the two pages
@@ -109,6 +121,12 @@ import, which is also why there are two files. `Preview` hydrates one specimen o
 component's own page; `Thumbnail` renders the same specimen with no client directive at
 all, so the index can put forty of them on one page as markup that ships no JavaScript.
 
+Every page's Markdown is also served raw, by `src/pages/raw/[...slug].md.ts`, at
+`/raw/getting-started.md` and `/raw/components/<slug>.md`. `PageActions` is what a reader
+reaches it through: a copy button for the source, and a menu offering the file itself or
+the same address handed to an assistant. One route serves both frameworks, because the
+Markdown does.
+
 Code blocks carry one Shiki theme per mode. Shiki writes the light colors inline and the
 dark ones beside them as `--shiki-dark-*` custom properties, which `main.css` spends under
 the root element's `dark` class. The background is the design system's own `--ui-bg-muted`
@@ -129,7 +147,7 @@ The first is a prop named `as`. Rename it, as `ComponentCard` did.
 
 The second is the two characters that open a closing HTML tag, appearing literally
 anywhere in the frontmatter, a comment included: they mis-slice the file for the checker.
-`CopyMarkdown` escapes exactly that sequence and describes the escaping without spelling
+`PageActions` escapes exactly that sequence and describes the escaping without spelling
 it out.
 
 Astro's checker also infers nothing from a Vue component reached through a package barrel

@@ -40,36 +40,42 @@ const rail = [{ value: "install", depth: 2, label: "Install" }, ...railItems(hea
   headings={rail}
   entries={searchIndex(framework, components)}
   source={entry.body}
+  markdown="/raw/getting-started.md"
+  next={{
+    href: `/docs/${framework}/components`,
+    label: "Components",
+  }}
 >
-  <section aria-labelledby="install" class="mt-10 max-w-[46rem]">
-    <h2 class="text-highlighted text-xl font-semibold tracking-[-0.02em]" id="install">
+  <section aria-labelledby="install" class="mt-12">
+    <h2 class="text-highlighted border-default border-t pt-8 text-2xl font-semibold tracking-tight" id="install">
       Install
     </h2>
-    <p class="text-muted mt-3 text-sm/7 text-pretty">
-      One package. It pulls <code class="text-toned font-mono text-xs" data-identifier
-        >@75neo/themes</code
+    <p class="text-muted mt-4 max-w-[70ch] text-base/7 text-pretty">
+      One package. It pulls <code
+        class="bg-elevated text-toned rounded-sm px-1.5 py-0.5 font-mono text-[0.8125em]"
+        data-identifier>@75neo/themes</code
       > in with it, so the styles arrive at the same time as the components. Needs {
         facts.requires
       }.
     </p>
 
-    <div class="mt-5">
+    <div class="mt-5 max-w-[34rem]">
       {framework === "react" && <Clipboard value={install} size="lg" client:load />}
       {framework === "vue" && <InstallCommandVue value={install} client:load />}
     </div>
 
-    <p class="text-dimmed mt-3 text-xs/6">
-      Swap <code class="text-muted font-mono" data-identifier>pnpm add</code> for <code
-        class="text-muted font-mono"
+    <p class="text-dimmed mt-3 text-sm/6">
+      Swap <code class="text-muted font-mono text-xs" data-identifier>pnpm add</code> for <code
+        class="text-muted font-mono text-xs"
         data-identifier>npm install</code
-      >, <code class="text-muted font-mono" data-identifier>yarn add</code> or <code
-        class="text-muted font-mono"
+      >, <code class="text-muted font-mono text-xs" data-identifier>yarn add</code> or <code
+        class="text-muted font-mono text-xs"
         data-identifier>bun add</code
       > as you prefer.
     </p>
   </section>
 
-  <Prose class="mt-4">
+  <Prose class="mt-2">
     <Content />
   </Prose>
 </Doc>
