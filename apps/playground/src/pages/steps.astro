@@ -1,0 +1,37 @@
+---
+import * as StepsParts from "@75neo/react/steps";
+import { stepsSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import StepsPreview from "../previews/StepsPreview.tsx";
+import StepsPreviewVue from "../previews/StepsPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(StepsParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(stepsSchema);
+const combinations = variantKeys.reduce(
+  (total, key) =>
+    total * (stepsSchema[key as keyof typeof stepsSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  title="Steps"
+  description="A row of stations walked in order. The rows arrive as data and the count follows from the array; Ark marks each item complete, current or incomplete."
+>
+  <Preview
+    title="Variant matrix"
+    description="Every size, then all seven colors, then linear, then vertical. Both columns render the same matrix, so anything that differs between them is a real difference between the adapters."
+    meta={meta}
+  >
+    <Fragment slot="react"><StepsPreview client:load /></Fragment>
+    <Fragment slot="vue"><StepsPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

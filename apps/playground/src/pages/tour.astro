@@ -1,0 +1,37 @@
+---
+import * as TourParts from "@75neo/react/tour";
+import { tourSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import TourPreview from "../previews/TourPreview.tsx";
+import TourPreviewVue from "../previews/TourPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(TourParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(tourSchema);
+const combinations = variantKeys.reduce(
+  (total, key) =>
+    total * (tourSchema[key as keyof typeof tourSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  title="Tour"
+  description="A guided walk over the page. The steps live in `useTour` and the open state is the tour object's; the parts render the current step's copy the way Toast's do."
+>
+  <Preview
+    title="Variant matrix"
+    description="One tour with a dialog step, an anchored tooltip step, and a finish. The tour is a singleton, so there is one root, not a matrix of them. Both columns render the same specimens, so anything that differs between them is a real difference between the adapters."
+    meta={meta}
+  >
+    <Fragment slot="react"><TourPreview client:load /></Fragment>
+    <Fragment slot="vue"><TourPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

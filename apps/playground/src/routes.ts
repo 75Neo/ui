@@ -214,6 +214,30 @@ const routes: readonly PreviewRoute[] = [
     summary: "A draggable window with stage controls and resize handles.",
     key: "floatingPanel",
   },
+  {
+    href: "/progress",
+    label: "Progress",
+    summary: "A bar or a ring filling toward a value, or sweeping without one.",
+    key: "progress",
+  },
+  {
+    href: "/steps",
+    label: "Steps",
+    summary: "A row of stations walked in order, each with its own panel.",
+    key: "steps",
+  },
+  {
+    href: "/toast",
+    label: "Toast",
+    summary: "A stack of notices held by a store, each with its own copy.",
+    key: "toast",
+  },
+  {
+    href: "/tour",
+    label: "Tour",
+    summary: "A guided walk over the page, one anchored card at a time.",
+    key: "tour",
+  },
 ];
 
 /**

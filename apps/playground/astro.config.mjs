@@ -109,6 +109,22 @@ export default defineConfig({
           replacement: src("react", "floating-panel/index.ts"),
         },
         {
+          find: /^@75neo\/react\/progress$/,
+          replacement: src("react", "progress/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/steps$/,
+          replacement: src("react", "steps/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/toast$/,
+          replacement: src("react", "toast/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/tour$/,
+          replacement: src("react", "tour/index.ts"),
+        },
+        {
           find: /^@75neo\/react\/checkbox$/,
           replacement: src("react", "checkbox/index.ts"),
         },
@@ -230,6 +246,22 @@ export default defineConfig({
         {
           find: /^@75neo\/vue\/floating-panel$/,
           replacement: src("vue", "floating-panel/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/progress$/,
+          replacement: src("vue", "progress/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/steps$/,
+          replacement: src("vue", "steps/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/toast$/,
+          replacement: src("vue", "toast/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/tour$/,
+          replacement: src("vue", "tour/index.ts"),
         },
         {
           find: /^@75neo\/vue\/checkbox$/,

@@ -1,0 +1,12 @@
+export { default as Steps } from "./steps.vue";
+export { default as StepsList } from "./list.vue";
+export { default as StepsItem } from "./item.vue";
+export { default as StepsTrigger } from "./trigger.vue";
+export { default as StepsIndicator } from "./indicator.vue";
+export { default as StepsSeparator } from "./separator.vue";
+export { default as StepsContent } from "./content.vue";
+export { default as StepsCompletedContent } from "./completed-content.vue";
+export { default as StepsProgress } from "./progress.vue";
+export { default as StepsPrevTrigger } from "./prev-trigger.vue";
+export { default as StepsNextTrigger } from "./next-trigger.vue";
+export { stepsVariantsKey, useStepsVariants } from "./variants";

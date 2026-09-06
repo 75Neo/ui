@@ -31,6 +31,10 @@ import { DrawerPreview } from "../previews/DrawerPreview";
 import { PopoverPreview } from "../previews/PopoverPreview";
 import { HoverCardPreview } from "../previews/HoverCardPreview";
 import { FloatingPanelPreview } from "../previews/FloatingPanelPreview";
+import { ProgressPreview } from "../previews/ProgressPreview";
+import { StepsPreview } from "../previews/StepsPreview";
+import { ToastPreview } from "../previews/ToastPreview";
+import { TourPreview } from "../previews/TourPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import ButtonPreviewVue from "../previews/ButtonPreview.vue";
 import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
@@ -62,6 +66,10 @@ import DrawerPreviewVue from "../previews/DrawerPreview.vue";
 import PopoverPreviewVue from "../previews/PopoverPreview.vue";
 import HoverCardPreviewVue from "../previews/HoverCardPreview.vue";
 import FloatingPanelPreviewVue from "../previews/FloatingPanelPreview.vue";
+import ProgressPreviewVue from "../previews/ProgressPreview.vue";
+import StepsPreviewVue from "../previews/StepsPreview.vue";
+import ToastPreviewVue from "../previews/ToastPreview.vue";
+import TourPreviewVue from "../previews/TourPreview.vue";
 
 /**
  * One component's specimen at thumbnail size, rendered but never hydrated.
@@ -99,6 +107,10 @@ const vue = framework === "vue";
 {react && name === "Popover" && <PopoverPreview />}
 {react && name === "HoverCard" && <HoverCardPreview />}
 {react && name === "FloatingPanel" && <FloatingPanelPreview />}
+{react && name === "Progress" && <ProgressPreview />}
+{react && name === "Steps" && <StepsPreview />}
+{react && name === "Toast" && <ToastPreview />}
+{react && name === "Tour" && <TourPreview />}
 {react && name === "Select" && <SelectPreview />}
 {react && name === "RatingGroup" && <RatingGroupPreview />}
 {react && name === "SegmentGroup" && <SegmentGroupPreview />}
@@ -131,6 +143,10 @@ const vue = framework === "vue";
 {vue && name === "Popover" && <PopoverPreviewVue />}
 {vue && name === "HoverCard" && <HoverCardPreviewVue />}
 {vue && name === "FloatingPanel" && <FloatingPanelPreviewVue />}
+{vue && name === "Progress" && <ProgressPreviewVue />}
+{vue && name === "Steps" && <StepsPreviewVue />}
+{vue && name === "Toast" && <ToastPreviewVue />}
+{vue && name === "Tour" && <TourPreviewVue />}
 {vue && name === "Select" && <SelectPreviewVue />}
 {vue && name === "RatingGroup" && <RatingGroupPreviewVue />}
 {vue && name === "SegmentGroup" && <SegmentGroupPreviewVue />}

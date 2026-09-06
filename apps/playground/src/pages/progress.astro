@@ -1,0 +1,37 @@
+---
+import * as ProgressParts from "@75neo/react/progress";
+import { progressSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import ProgressPreview from "../previews/ProgressPreview.tsx";
+import ProgressPreviewVue from "../previews/ProgressPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(ProgressParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(progressSchema);
+const combinations = variantKeys.reduce(
+  (total, key) =>
+    total * (progressSchema[key as keyof typeof progressSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  title="Progress"
+  description="A bar or a ring filling toward a value. The circle's geometry is Ark's, driven by two variables the size rows set; a null value sweeps instead of filling."
+>
+  <Preview
+    title="Variant matrix"
+    description="Every size, then all seven colors, then the ring, the indeterminate sweep, and no value text. Both columns render the same matrix, so anything that differs between them is a real difference between the adapters."
+    meta={meta}
+  >
+    <Fragment slot="react"><ProgressPreview client:load /></Fragment>
+    <Fragment slot="vue"><ProgressPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

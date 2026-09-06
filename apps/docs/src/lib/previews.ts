@@ -35,6 +35,10 @@ export const previewed = new Set([
   "Popover",
   "HoverCard",
   "FloatingPanel",
+  "Progress",
+  "Steps",
+  "Toast",
+  "Tour",
 ]);
 
 /** Whether a component has a live specimen on the reference page. */

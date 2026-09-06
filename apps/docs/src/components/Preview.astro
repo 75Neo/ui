@@ -31,6 +31,10 @@ import { DrawerPreview } from "../previews/DrawerPreview";
 import { PopoverPreview } from "../previews/PopoverPreview";
 import { HoverCardPreview } from "../previews/HoverCardPreview";
 import { FloatingPanelPreview } from "../previews/FloatingPanelPreview";
+import { ProgressPreview } from "../previews/ProgressPreview";
+import { StepsPreview } from "../previews/StepsPreview";
+import { ToastPreview } from "../previews/ToastPreview";
+import { TourPreview } from "../previews/TourPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import ButtonPreviewVue from "../previews/ButtonPreview.vue";
 import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
@@ -62,6 +66,10 @@ import DrawerPreviewVue from "../previews/DrawerPreview.vue";
 import PopoverPreviewVue from "../previews/PopoverPreview.vue";
 import HoverCardPreviewVue from "../previews/HoverCardPreview.vue";
 import FloatingPanelPreviewVue from "../previews/FloatingPanelPreview.vue";
+import ProgressPreviewVue from "../previews/ProgressPreview.vue";
+import StepsPreviewVue from "../previews/StepsPreview.vue";
+import ToastPreviewVue from "../previews/ToastPreview.vue";
+import TourPreviewVue from "../previews/TourPreview.vue";
 
 // The vertical slice: Button and Accordion only. The batch migration restores one
 // group at a time, appending its lines here and in Thumbnail.astro.
@@ -116,6 +124,10 @@ const vue = framework === "vue";
 {react && name === "Popover" && <PopoverPreview client:visible />}
 {react && name === "HoverCard" && <HoverCardPreview client:visible />}
 {react && name === "FloatingPanel" && <FloatingPanelPreview client:visible />}
+{react && name === "Progress" && <ProgressPreview client:visible />}
+{react && name === "Steps" && <StepsPreview client:visible />}
+{react && name === "Toast" && <ToastPreview client:visible />}
+{react && name === "Tour" && <TourPreview client:visible />}
 
 {vue && name === "Accordion" && <AccordionPreviewVue client:visible />}
 {vue && name === "Button" && <ButtonPreviewVue client:visible />}
@@ -148,3 +160,7 @@ const vue = framework === "vue";
 {vue && name === "Popover" && <PopoverPreviewVue client:visible />}
 {vue && name === "HoverCard" && <HoverCardPreviewVue client:visible />}
 {vue && name === "FloatingPanel" && <FloatingPanelPreviewVue client:visible />}
+{vue && name === "Progress" && <ProgressPreviewVue client:visible />}
+{vue && name === "Steps" && <StepsPreviewVue client:visible />}
+{vue && name === "Toast" && <ToastPreviewVue client:visible />}
+{vue && name === "Tour" && <TourPreviewVue client:visible />}
