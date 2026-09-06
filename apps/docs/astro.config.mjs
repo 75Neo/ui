@@ -195,6 +195,26 @@ export default defineConfig({
           find: /^@75neo\/react\/editable$/,
           replacement: src("react", "editable/index.ts"),
         },
+        {
+          find: /^@75neo\/react\/angle-slider$/,
+          replacement: src("react", "angle-slider/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/avatar$/,
+          replacement: src("react", "avatar/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/collapsible$/,
+          replacement: src("react", "collapsible/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/qr-code$/,
+          replacement: src("react", "qr-code/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/timer$/,
+          replacement: src("react", "timer/index.ts"),
+        },
         { find: /^@75neo\/themes$/, replacement: src("themes") },
         { find: /^@75neo\/vue$/, replacement: src("vue") },
         {
@@ -333,6 +353,26 @@ export default defineConfig({
         {
           find: /^@75neo\/vue\/editable$/,
           replacement: src("vue", "editable/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/angle-slider$/,
+          replacement: src("vue", "angle-slider/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/avatar$/,
+          replacement: src("vue", "avatar/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/collapsible$/,
+          replacement: src("vue", "collapsible/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/qr-code$/,
+          replacement: src("vue", "qr-code/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/timer$/,
+          replacement: src("vue", "timer/index.ts"),
         },
       ],
     },

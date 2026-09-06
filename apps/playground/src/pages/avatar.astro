@@ -1,0 +1,33 @@
+---
+import * as AvatarParts from "@75neo/react/avatar";
+import { avatarSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import AvatarPreview from "../previews/AvatarPreview.tsx";
+import AvatarPreviewVue from "../previews/AvatarPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(AvatarParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(avatarSchema);
+const combinations = variantKeys.reduce(
+  (total, key) => total * (avatarSchema[key as keyof typeof avatarSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground title="Avatar" description="A picture of a person, with their initials under it. The image covers the fallback once it loads, so the color only ever shows through the initials.">
+  <Preview
+    title="Variant matrix"
+    description="Every size, then all seven colors, then both shapes, then a loaded image and a hand-written fallback. Both columns render the same matrix."
+    meta={meta}
+  >
+    <Fragment slot="react"><AvatarPreview client:load /></Fragment>
+    <Fragment slot="vue"><AvatarPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

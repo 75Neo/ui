@@ -39,6 +39,11 @@ export const previewed = new Set([
   "Steps",
   "Toast",
   "Tour",
+  "AngleSlider",
+  "Avatar",
+  "Collapsible",
+  "QrCode",
+  "Timer",
 ]);
 
 /** Whether a component has a live specimen on the reference page. */

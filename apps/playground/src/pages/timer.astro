@@ -1,0 +1,33 @@
+---
+import * as TimerParts from "@75neo/react/timer";
+import { timerSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import TimerPreview from "../previews/TimerPreview.tsx";
+import TimerPreviewVue from "../previews/TimerPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(TimerParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(timerSchema);
+const combinations = variantKeys.reduce(
+  (total, key) => total * (timerSchema[key as keyof typeof timerSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground title="Timer" description="Digits counting up or down, with the buttons that drive them. Which units render is data, so a caller reorders the clock by reordering the array.">
+  <Preview
+    title="Variant matrix"
+    description="Every size counting down, then a three-unit clock, then renamed labels, then a bare pair of digits. Both columns render the same matrix."
+    meta={meta}
+  >
+    <Fragment slot="react"><TimerPreview client:load /></Fragment>
+    <Fragment slot="vue"><TimerPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

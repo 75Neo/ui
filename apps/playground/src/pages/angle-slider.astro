@@ -1,0 +1,33 @@
+---
+import * as AngleSliderParts from "@75neo/react/angle-slider";
+import { angleSliderSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import AngleSliderPreview from "../previews/AngleSliderPreview.tsx";
+import AngleSliderPreviewVue from "../previews/AngleSliderPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(AngleSliderParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(angleSliderSchema);
+const combinations = variantKeys.reduce(
+  (total, key) => total * (angleSliderSchema[key as keyof typeof angleSliderSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground title="AngleSlider" description="A dial you drag around a ring to pick a heading. The geometry is viewBox units, so a size only changes the width of the control and everything else follows.">
+  <Preview
+    title="Variant matrix"
+    description="Every size, then all seven colors, then markers, then disabled. Both columns render the same matrix, so anything that differs between them is a real difference between the adapters."
+    meta={meta}
+  >
+    <Fragment slot="react"><AngleSliderPreview client:load /></Fragment>
+    <Fragment slot="vue"><AngleSliderPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

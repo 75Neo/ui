@@ -238,6 +238,36 @@ const routes: readonly PreviewRoute[] = [
     summary: "A guided walk over the page, one anchored card at a time.",
     key: "tour",
   },
+  {
+    href: "/angle-slider",
+    label: "AngleSlider",
+    summary: "A dial you drag around a ring to pick a heading.",
+    key: "angleSlider",
+  },
+  {
+    href: "/avatar",
+    label: "Avatar",
+    summary: "A picture of a person, with their initials underneath it.",
+    key: "avatar",
+  },
+  {
+    href: "/collapsible",
+    label: "Collapsible",
+    summary: "One trigger and the panel it opens, on its own.",
+    key: "collapsible",
+  },
+  {
+    href: "/qr-code",
+    label: "QrCode",
+    summary: "A scannable code on a card carrying its quiet zone.",
+    key: "qrCode",
+  },
+  {
+    href: "/timer",
+    label: "Timer",
+    summary: "Digits counting up or down, with the buttons that drive them.",
+    key: "timer",
+  },
 ];
 
 /**

@@ -35,6 +35,11 @@ import { ProgressPreview } from "../previews/ProgressPreview";
 import { StepsPreview } from "../previews/StepsPreview";
 import { ToastPreview } from "../previews/ToastPreview";
 import { TourPreview } from "../previews/TourPreview";
+import { AngleSliderPreview } from "../previews/AngleSliderPreview";
+import { AvatarPreview } from "../previews/AvatarPreview";
+import { CollapsiblePreview } from "../previews/CollapsiblePreview";
+import { QrCodePreview } from "../previews/QrCodePreview";
+import { TimerPreview } from "../previews/TimerPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import ButtonPreviewVue from "../previews/ButtonPreview.vue";
 import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
@@ -70,6 +75,11 @@ import ProgressPreviewVue from "../previews/ProgressPreview.vue";
 import StepsPreviewVue from "../previews/StepsPreview.vue";
 import ToastPreviewVue from "../previews/ToastPreview.vue";
 import TourPreviewVue from "../previews/TourPreview.vue";
+import AngleSliderPreviewVue from "../previews/AngleSliderPreview.vue";
+import AvatarPreviewVue from "../previews/AvatarPreview.vue";
+import CollapsiblePreviewVue from "../previews/CollapsiblePreview.vue";
+import QrCodePreviewVue from "../previews/QrCodePreview.vue";
+import TimerPreviewVue from "../previews/TimerPreview.vue";
 
 /**
  * One component's specimen at thumbnail size, rendered but never hydrated.
@@ -126,6 +136,11 @@ const vue = framework === "vue";
 {react && name === "NumberInput" && <NumberInputPreview />}
 {react && name === "Editable" && <EditablePreview />}
 {react && name === "TableOfContents" && <TableOfContentsPreview />}
+{react && name === "AngleSlider" && <AngleSliderPreview />}
+{react && name === "Avatar" && <AvatarPreview />}
+{react && name === "Collapsible" && <CollapsiblePreview />}
+{react && name === "QrCode" && <QrCodePreview />}
+{react && name === "Timer" && <TimerPreview />}
 
 {vue && name === "Accordion" && <AccordionPreviewVue />}
 {vue && name === "Button" && <ButtonPreviewVue />}
@@ -162,3 +177,8 @@ const vue = framework === "vue";
 {vue && name === "NumberInput" && <NumberInputPreviewVue />}
 {vue && name === "Editable" && <EditablePreviewVue />}
 {vue && name === "TableOfContents" && <TableOfContentsPreviewVue />}
+{vue && name === "AngleSlider" && <AngleSliderPreviewVue />}
+{vue && name === "Avatar" && <AvatarPreviewVue />}
+{vue && name === "Collapsible" && <CollapsiblePreviewVue />}
+{vue && name === "QrCode" && <QrCodePreviewVue />}
+{vue && name === "Timer" && <TimerPreviewVue />}

@@ -33,3 +33,8 @@ export * from "./tour/index";
 export * from "./date-picker/index";
 export * from "./date-input/index";
 export * from "./color-picker/index";
+export * from "./angle-slider/index";
+export * from "./avatar/index";
+export * from "./collapsible/index";
+export * from "./qr-code/index";
+export * from "./timer/index";
