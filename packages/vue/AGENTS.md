@@ -49,6 +49,28 @@ The one exception is a part that wraps its Ark element, as the accordion trigger
 its heading: the file opts out with `inheritAttrs: false` and re-binds `$attrs` onto
 the Ark part by hand.
 
+## An empty slot breaks Ark's own text
+
+Ark's text parts read their text themselves when no slot arrives — `Select.ValueText`
+reaches for `valueAsString`, `Tour.Title` for the step's title — and they spell the
+fallback `slots.default?.() || …`. A slot that is always passed but renders nothing
+makes that expression an array of vnodes, which Vue then stringifies into a circular
+JSON error. It crashes the page rather than degrading.
+
+So a wrapper over one of them passes its slot conditionally:
+
+```vue
+<template v-if="$slots.default" #default>
+  <slot />
+</template>
+```
+
+The parts that need it are `ValueText` on Select, Listbox, Progress, Slider,
+AngleSlider and ColorPicker, `ChannelSliderValueText`, `DraggingIndicator`,
+FileUpload's `ItemName` and `ItemSizeText`, and Tour's `Title`, `Description`,
+`ProgressText` and `ActionTrigger`. Grep Ark's dist for `slots.default?.()` before
+wrapping anything new.
+
 ## One rows file is exported from nothing
 
 A `<script setup>` component is the only thing in Vue that can render itself, which is

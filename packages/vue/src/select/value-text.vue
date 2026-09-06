@@ -19,6 +19,9 @@ defineSlots<{
     :class="cn('min-w-0 flex-1 truncate', props.class as string | undefined)"
     :placeholder="props.placeholder"
   >
-    <slot />
+    <!-- Ark renders its own text when no slot arrives; an empty one crashes that fallback. -->
+    <template v-if="$slots.default" #default>
+      <slot />
+    </template>
   </Ark.ValueText>
 </template>
