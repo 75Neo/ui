@@ -1,0 +1,10 @@
+export { Sidebar, type SidebarProps } from "./sidebar";
+export { SidebarHeader, type SidebarHeaderProps } from "./header";
+export { SidebarTitle, type SidebarTitleProps } from "./title";
+export { SidebarDescription, type SidebarDescriptionProps } from "./description";
+export { SidebarActions, type SidebarActionsProps } from "./actions";
+export { SidebarCloseTrigger, type SidebarCloseTriggerProps } from "./close-trigger";
+export { SidebarBody, type SidebarBodyProps } from "./body";
+export { SidebarFooter, type SidebarFooterProps } from "./footer";
+export { SidebarRail, type SidebarRailProps } from "./rail";
+export { useSidebarVariants } from "./variants";

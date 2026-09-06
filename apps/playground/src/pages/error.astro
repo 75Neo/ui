@@ -1,0 +1,33 @@
+---
+import * as ErrorParts from "@75neo/react/error";
+import { errorSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import ErrorPreview from "../previews/ErrorPreview.tsx";
+import ErrorPreviewVue from "../previews/ErrorPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(ErrorParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(errorSchema);
+const combinations = variantKeys.reduce(
+  (total, key) => total * (errorSchema[key as keyof typeof errorSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.length > 0 ? variantKeys.join(" · ") : "none" },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground title="Error" description="The page shown when there is nothing else to show. It fills what the Header leaves, so a 404 under a bar is centred in the space below it.">
+  <Preview
+    title="Variant matrix"
+    description="All seven colors on the status code and icon, then a bare page and a full one. Both columns render the same matrix."
+    meta={meta}
+  >
+    <Fragment slot="react"><ErrorPreview client:load /></Fragment>
+    <Fragment slot="vue"><ErrorPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

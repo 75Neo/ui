@@ -1,0 +1,33 @@
+---
+import * as FooterParts from "@75neo/react/footer";
+import { footerSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import FooterPreview from "../previews/FooterPreview.tsx";
+import FooterPreviewVue from "../previews/FooterPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(FooterParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(footerSchema);
+const combinations = variantKeys.reduce(
+  (total, key) => total * (footerSchema[key as keyof typeof footerSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.length > 0 ? variantKeys.join(" · ") : "none" },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground title="Footer" description="Three regions in a row, and two full-bleed bands above and below it. The regions are reversed in the DOM so a phone stacks the links above the copyright.">
+  <Preview
+    title="Variant matrix"
+    description="A row with all three regions filled. Both columns render the same matrix."
+    meta={meta}
+  >
+    <Fragment slot="react"><FooterPreview client:load /></Fragment>
+    <Fragment slot="vue"><FooterPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

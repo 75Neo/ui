@@ -255,6 +255,34 @@ export default defineConfig({
           find: /^@75neo\/react\/swap$/,
           replacement: src("react", "swap/index.ts"),
         },
+        {
+          find: /^@75neo\/react\/locale-provider$/,
+          replacement: src("react", "locale-provider/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/container$/,
+          replacement: src("react", "container/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/main$/,
+          replacement: src("react", "main/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/header$/,
+          replacement: src("react", "header/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/footer$/,
+          replacement: src("react", "footer/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/sidebar$/,
+          replacement: src("react", "sidebar/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/error$/,
+          replacement: src("react", "error/index.ts"),
+        },
         { find: /^@75neo\/themes$/, replacement: src("themes") },
         { find: /^@75neo\/vue$/, replacement: src("vue") },
         {
@@ -453,6 +481,34 @@ export default defineConfig({
         {
           find: /^@75neo\/vue\/swap$/,
           replacement: src("vue", "swap/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/locale-provider$/,
+          replacement: src("vue", "locale-provider/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/container$/,
+          replacement: src("vue", "container/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/main$/,
+          replacement: src("vue", "main/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/header$/,
+          replacement: src("vue", "header/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/footer$/,
+          replacement: src("vue", "footer/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/sidebar$/,
+          replacement: src("vue", "sidebar/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/error$/,
+          replacement: src("vue", "error/index.ts"),
         },
       ],
     },

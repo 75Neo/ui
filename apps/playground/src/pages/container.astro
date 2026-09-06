@@ -1,0 +1,33 @@
+---
+import * as ContainerParts from "@75neo/react/container";
+import { containerSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import ContainerPreview from "../previews/ContainerPreview.tsx";
+import ContainerPreviewVue from "../previews/ContainerPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(ContainerParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(containerSchema);
+const combinations = variantKeys.reduce(
+  (total, key) => total * (containerSchema[key as keyof typeof containerSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.length > 0 ? variantKeys.join(" · ") : "none" },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground title="Container" description="The measure every page's content is held to. One constraint and a gutter, so every other layout component can be written without repeating either.">
+  <Preview
+    title="Variant matrix"
+    description="One measure at the page width, with the gutter that grows at two breakpoints. Both columns render the same matrix."
+    meta={meta}
+  >
+    <Fragment slot="react"><ContainerPreview client:load /></Fragment>
+    <Fragment slot="vue"><ContainerPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

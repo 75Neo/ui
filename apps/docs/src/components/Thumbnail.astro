@@ -50,6 +50,13 @@ import { MarqueePreview } from "../previews/MarqueePreview";
 import { NavigationMenuPreview } from "../previews/NavigationMenuPreview";
 import { ScrollAreaPreview } from "../previews/ScrollAreaPreview";
 import { SwapPreview } from "../previews/SwapPreview";
+import { LocaleProviderPreview } from "../previews/LocaleProviderPreview";
+import { ContainerPreview } from "../previews/ContainerPreview";
+import { MainPreview } from "../previews/MainPreview";
+import { HeaderPreview } from "../previews/HeaderPreview";
+import { FooterPreview } from "../previews/FooterPreview";
+import { SidebarPreview } from "../previews/SidebarPreview";
+import { ErrorPreview } from "../previews/ErrorPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import ButtonPreviewVue from "../previews/ButtonPreview.vue";
 import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
@@ -100,6 +107,13 @@ import MarqueePreviewVue from "../previews/MarqueePreview.vue";
 import NavigationMenuPreviewVue from "../previews/NavigationMenuPreview.vue";
 import ScrollAreaPreviewVue from "../previews/ScrollAreaPreview.vue";
 import SwapPreviewVue from "../previews/SwapPreview.vue";
+import LocaleProviderPreviewVue from "../previews/LocaleProviderPreview.vue";
+import ContainerPreviewVue from "../previews/ContainerPreview.vue";
+import MainPreviewVue from "../previews/MainPreview.vue";
+import HeaderPreviewVue from "../previews/HeaderPreview.vue";
+import FooterPreviewVue from "../previews/FooterPreview.vue";
+import SidebarPreviewVue from "../previews/SidebarPreview.vue";
+import ErrorPreviewVue from "../previews/ErrorPreview.vue";
 
 /**
  * One component's specimen at thumbnail size, rendered but never hydrated.
@@ -171,6 +185,13 @@ const vue = framework === "vue";
 {react && name === "NavigationMenu" && <NavigationMenuPreview />}
 {react && name === "ScrollArea" && <ScrollAreaPreview />}
 {react && name === "Swap" && <SwapPreview />}
+{react && name === "LocaleProvider" && <LocaleProviderPreview />}
+{react && name === "Container" && <ContainerPreview />}
+{react && name === "Main" && <MainPreview />}
+{react && name === "Header" && <HeaderPreview />}
+{react && name === "Footer" && <FooterPreview />}
+{react && name === "Sidebar" && <SidebarPreview />}
+{react && name === "Error" && <ErrorPreview />}
 
 {vue && name === "Accordion" && <AccordionPreviewVue />}
 {vue && name === "Button" && <ButtonPreviewVue />}
@@ -222,3 +243,10 @@ const vue = framework === "vue";
 {vue && name === "NavigationMenu" && <NavigationMenuPreviewVue />}
 {vue && name === "ScrollArea" && <ScrollAreaPreviewVue />}
 {vue && name === "Swap" && <SwapPreviewVue />}
+{vue && name === "LocaleProvider" && <LocaleProviderPreviewVue />}
+{vue && name === "Container" && <ContainerPreviewVue />}
+{vue && name === "Main" && <MainPreviewVue />}
+{vue && name === "Header" && <HeaderPreviewVue />}
+{vue && name === "Footer" && <FooterPreviewVue />}
+{vue && name === "Sidebar" && <SidebarPreviewVue />}
+{vue && name === "Error" && <ErrorPreviewVue />}

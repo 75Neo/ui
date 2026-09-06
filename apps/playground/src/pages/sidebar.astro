@@ -1,0 +1,33 @@
+---
+import * as SidebarParts from "@75neo/react/sidebar";
+import { sidebarSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import SidebarPreview from "../previews/SidebarPreview.tsx";
+import SidebarPreviewVue from "../previews/SidebarPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(SidebarParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(sidebarSchema);
+const combinations = variantKeys.reduce(
+  (total, key) => total * (sidebarSchema[key as keyof typeof sidebarSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.length > 0 ? variantKeys.join(" · ") : "none" },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground title="Sidebar" description="A column beside the page that collapses, and slides in over the page where there is no room beside it. One tree serves both viewports.">
+  <Preview
+    title="Variant matrix"
+    description="Every surface variant, then both sides, then a footer row. Both columns render the same matrix."
+    meta={meta}
+  >
+    <Fragment slot="react"><SidebarPreview client:load /></Fragment>
+    <Fragment slot="vue"><SidebarPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

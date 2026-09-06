@@ -1,0 +1,33 @@
+---
+import * as LocaleProviderParts from "@75neo/react/locale-provider";
+import { localeProviderSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import LocaleProviderPreview from "../previews/LocaleProviderPreview.tsx";
+import LocaleProviderPreviewVue from "../previews/LocaleProviderPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(LocaleProviderParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(localeProviderSchema);
+const combinations = variantKeys.reduce(
+  (total, key) => total * (localeProviderSchema[key as keyof typeof localeProviderSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.length > 0 ? variantKeys.join(" · ") : "none" },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground title="LocaleProvider" description="The locale and the reading direction, published to a page. Ark keeps its own direction in context, where Tailwind cannot see it, so this writes the attribute.">
+  <Preview
+    title="Variant matrix"
+    description="The same block under a left-to-right locale and a right-to-left one. Both columns render the same matrix, so anything that differs between them is a real difference between the adapters."
+    meta={meta}
+  >
+    <Fragment slot="react"><LocaleProviderPreview client:load /></Fragment>
+    <Fragment slot="vue"><LocaleProviderPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

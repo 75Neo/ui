@@ -1,0 +1,10 @@
+export { default as Sidebar } from "./sidebar.vue";
+export { default as SidebarHeader } from "./header.vue";
+export { default as SidebarTitle } from "./title.vue";
+export { default as SidebarDescription } from "./description.vue";
+export { default as SidebarActions } from "./actions.vue";
+export { default as SidebarCloseTrigger } from "./close-trigger.vue";
+export { default as SidebarBody } from "./body.vue";
+export { default as SidebarFooter } from "./footer.vue";
+export { default as SidebarRail } from "./rail.vue";
+export { sidebarVariantsKey, useSidebarVariants } from "./variants";

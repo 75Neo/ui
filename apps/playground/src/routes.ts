@@ -328,6 +328,48 @@ const routes: readonly PreviewRoute[] = [
     summary: "One icon shown while on, another while off.",
     key: "swap",
   },
+  {
+    href: "/locale-provider",
+    label: "LocaleProvider",
+    summary: "The locale and the reading direction, published to a page.",
+    key: "localeProvider",
+  },
+  {
+    href: "/container",
+    label: "Container",
+    summary: "The measure every page's content is held to.",
+    key: "container",
+  },
+  {
+    href: "/main",
+    label: "Main",
+    summary: "The content region, sized to fill what the Header leaves.",
+    key: "main",
+  },
+  {
+    href: "/header",
+    label: "Header",
+    summary: "The bar across the top of a page, and the menu it opens.",
+    key: "header",
+  },
+  {
+    href: "/footer",
+    label: "Footer",
+    summary: "Three regions in a row, and two bands above and below it.",
+    key: "footer",
+  },
+  {
+    href: "/sidebar",
+    label: "Sidebar",
+    summary: "A column beside the page that collapses, and slides in over it.",
+    key: "sidebar",
+  },
+  {
+    href: "/error",
+    label: "Error",
+    summary: "The page shown when there is nothing else to show.",
+    key: "error",
+  },
 ];
 
 /**

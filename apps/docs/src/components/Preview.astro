@@ -50,6 +50,13 @@ import { MarqueePreview } from "../previews/MarqueePreview";
 import { NavigationMenuPreview } from "../previews/NavigationMenuPreview";
 import { ScrollAreaPreview } from "../previews/ScrollAreaPreview";
 import { SwapPreview } from "../previews/SwapPreview";
+import { LocaleProviderPreview } from "../previews/LocaleProviderPreview";
+import { ContainerPreview } from "../previews/ContainerPreview";
+import { MainPreview } from "../previews/MainPreview";
+import { HeaderPreview } from "../previews/HeaderPreview";
+import { FooterPreview } from "../previews/FooterPreview";
+import { SidebarPreview } from "../previews/SidebarPreview";
+import { ErrorPreview } from "../previews/ErrorPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import ButtonPreviewVue from "../previews/ButtonPreview.vue";
 import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
@@ -100,6 +107,13 @@ import MarqueePreviewVue from "../previews/MarqueePreview.vue";
 import NavigationMenuPreviewVue from "../previews/NavigationMenuPreview.vue";
 import ScrollAreaPreviewVue from "../previews/ScrollAreaPreview.vue";
 import SwapPreviewVue from "../previews/SwapPreview.vue";
+import LocaleProviderPreviewVue from "../previews/LocaleProviderPreview.vue";
+import ContainerPreviewVue from "../previews/ContainerPreview.vue";
+import MainPreviewVue from "../previews/MainPreview.vue";
+import HeaderPreviewVue from "../previews/HeaderPreview.vue";
+import FooterPreviewVue from "../previews/FooterPreview.vue";
+import SidebarPreviewVue from "../previews/SidebarPreview.vue";
+import ErrorPreviewVue from "../previews/ErrorPreview.vue";
 
 // The vertical slice: Button and Accordion only. The batch migration restores one
 // group at a time, appending its lines here and in Thumbnail.astro.
@@ -173,6 +187,13 @@ const vue = framework === "vue";
 {react && name === "NavigationMenu" && <NavigationMenuPreview client:visible />}
 {react && name === "ScrollArea" && <ScrollAreaPreview client:visible />}
 {react && name === "Swap" && <SwapPreview client:visible />}
+{react && name === "LocaleProvider" && <LocaleProviderPreview client:visible />}
+{react && name === "Container" && <ContainerPreview client:visible />}
+{react && name === "Main" && <MainPreview client:visible />}
+{react && name === "Header" && <HeaderPreview client:visible />}
+{react && name === "Footer" && <FooterPreview client:visible />}
+{react && name === "Sidebar" && <SidebarPreview client:visible />}
+{react && name === "Error" && <ErrorPreview client:visible />}
 
 {vue && name === "Accordion" && <AccordionPreviewVue client:visible />}
 {vue && name === "Button" && <ButtonPreviewVue client:visible />}
@@ -224,3 +245,10 @@ const vue = framework === "vue";
 {vue && name === "NavigationMenu" && <NavigationMenuPreviewVue client:visible />}
 {vue && name === "ScrollArea" && <ScrollAreaPreviewVue client:visible />}
 {vue && name === "Swap" && <SwapPreviewVue client:visible />}
+{vue && name === "LocaleProvider" && <LocaleProviderPreviewVue client:visible />}
+{vue && name === "Container" && <ContainerPreviewVue client:visible />}
+{vue && name === "Main" && <MainPreviewVue client:visible />}
+{vue && name === "Header" && <HeaderPreviewVue client:visible />}
+{vue && name === "Footer" && <FooterPreviewVue client:visible />}
+{vue && name === "Sidebar" && <SidebarPreviewVue client:visible />}
+{vue && name === "Error" && <ErrorPreviewVue client:visible />}

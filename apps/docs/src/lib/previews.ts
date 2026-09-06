@@ -54,6 +54,13 @@ export const previewed = new Set([
   "NavigationMenu",
   "ScrollArea",
   "Swap",
+  "LocaleProvider",
+  "Container",
+  "Main",
+  "Header",
+  "Footer",
+  "Sidebar",
+  "Error",
 ]);
 
 /** Whether a component has a live specimen on the reference page. */

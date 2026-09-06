@@ -6,6 +6,13 @@ export default defineConfig({
   entry: [
     "src/index.ts",
     "src/accordion/index.ts",
+    "src/locale-provider/index.ts",
+    "src/container/index.ts",
+    "src/main/index.ts",
+    "src/header/index.ts",
+    "src/footer/index.ts",
+    "src/sidebar/index.ts",
+    "src/error/index.ts",
     "src/file-upload/index.ts",
     "src/marquee/index.ts",
     "src/navigation-menu/index.ts",
