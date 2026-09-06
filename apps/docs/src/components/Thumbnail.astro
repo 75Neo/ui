@@ -2,8 +2,12 @@
 import type { Framework } from "../lib/framework";
 import { AccordionPreview } from "../previews/AccordionPreview";
 import { ButtonPreview } from "../previews/ButtonPreview";
+import { ClipboardPreview } from "../previews/ClipboardPreview";
+import { TableOfContentsPreview } from "../previews/TableOfContentsPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import ButtonPreviewVue from "../previews/ButtonPreview.vue";
+import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
+import TableOfContentsPreviewVue from "../previews/TableOfContentsPreview.vue";
 
 /**
  * One component's specimen at thumbnail size, rendered but never hydrated.
@@ -27,6 +31,10 @@ const vue = framework === "vue";
 
 {react && name === "Accordion" && <AccordionPreview />}
 {react && name === "Button" && <ButtonPreview />}
+{react && name === "Clipboard" && <ClipboardPreview />}
+{react && name === "TableOfContents" && <TableOfContentsPreview />}
 
 {vue && name === "Accordion" && <AccordionPreviewVue />}
 {vue && name === "Button" && <ButtonPreviewVue />}
+{vue && name === "Clipboard" && <ClipboardPreviewVue />}
+{vue && name === "TableOfContents" && <TableOfContentsPreviewVue />}

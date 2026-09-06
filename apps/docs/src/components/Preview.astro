@@ -2,8 +2,12 @@
 import type { Framework } from "../lib/framework";
 import { AccordionPreview } from "../previews/AccordionPreview";
 import { ButtonPreview } from "../previews/ButtonPreview";
+import { ClipboardPreview } from "../previews/ClipboardPreview";
+import { TableOfContentsPreview } from "../previews/TableOfContentsPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import ButtonPreviewVue from "../previews/ButtonPreview.vue";
+import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
+import TableOfContentsPreviewVue from "../previews/TableOfContentsPreview.vue";
 
 // The vertical slice: Button and Accordion only. The batch migration restores one
 // group at a time, appending its lines here and in Thumbnail.astro.
@@ -29,6 +33,10 @@ const vue = framework === "vue";
 
 {react && name === "Accordion" && <AccordionPreview client:visible />}
 {react && name === "Button" && <ButtonPreview client:visible />}
+{react && name === "Clipboard" && <ClipboardPreview client:visible />}
+{react && name === "TableOfContents" && <TableOfContentsPreview client:visible />}
 
 {vue && name === "Accordion" && <AccordionPreviewVue client:visible />}
 {vue && name === "Button" && <ButtonPreviewVue client:visible />}
+{vue && name === "Clipboard" && <ClipboardPreviewVue client:visible />}
+{vue && name === "TableOfContents" && <TableOfContentsPreviewVue client:visible />}

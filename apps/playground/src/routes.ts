@@ -40,6 +40,18 @@ const routes: readonly PreviewRoute[] = [
       "Six variants across seven colors and five sizes, with block, square, loading and icon slots.",
     key: "button",
   },
+  {
+    href: "/clipboard",
+    label: "Clipboard",
+    summary: "A read-only field holding a value and a button that copies it.",
+    key: "clipboard",
+  },
+  {
+    href: "/table-of-contents",
+    label: "TableOfContents",
+    summary: "A rail of heading links that follows the reading position.",
+    key: "tableOfContents",
+  },
 ];
 
 /**

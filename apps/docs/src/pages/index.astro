@@ -2,6 +2,7 @@
 import { ArrowRight } from "@lucide/astro";
 import { Code } from "astro:components";
 import { themeColors } from "@75neo/themes";
+import { Clipboard } from "@75neo/react";
 import Base from "../layouts/Base.astro";
 import BrandIcon from "../components/BrandIcon.astro";
 import ComponentCard from "../components/ComponentCard.astro";
@@ -179,9 +180,11 @@ const step = "text-dimmed font-mono text-xs";
                     size={16}
                     class="text-dimmed w-5 shrink-0"
                   />
-                  <div class="prose min-w-0 flex-1">
-                    <pre>{`pnpm add ${frameworkFacts[framework].package}`}</pre>
-                  </div>
+                  <Clipboard
+                    className="min-w-0 flex-1"
+                    value={`pnpm add ${frameworkFacts[framework].package}`}
+                    client:visible
+                  />
                 </div>
               ))
             }

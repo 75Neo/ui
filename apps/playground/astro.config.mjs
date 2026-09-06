@@ -32,6 +32,14 @@ export default defineConfig({
           find: /^@75neo\/react\/button$/,
           replacement: src("react", "button/index.ts"),
         },
+        {
+          find: /^@75neo\/react\/clipboard$/,
+          replacement: src("react", "clipboard/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/table-of-contents$/,
+          replacement: src("react", "table-of-contents/index.ts"),
+        },
         { find: /^@75neo\/themes$/, replacement: src("themes") },
         { find: /^@75neo\/vue$/, replacement: src("vue") },
         {
@@ -39,6 +47,14 @@ export default defineConfig({
           replacement: src("vue", "accordion/index.ts"),
         },
         { find: /^@75neo\/vue\/button$/, replacement: src("vue", "button/index.ts") },
+        {
+          find: /^@75neo\/vue\/clipboard$/,
+          replacement: src("vue", "clipboard/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/table-of-contents$/,
+          replacement: src("vue", "table-of-contents/index.ts"),
+        },
       ],
     },
   },

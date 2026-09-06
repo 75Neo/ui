@@ -1,3 +1,5 @@
+import type { ComponentPart, ComponentSchema } from "../schema";
+
 /**
  * Accordion styling data: plain class strings both adapters feed into their own
  * `cva` calls, one per anatomy part. Nothing here knows a framework.
@@ -31,7 +33,15 @@ export const accordionDefaults = { variant: "outline", size: "md" } as const;
 export const accordionSchema = {
   variant: { values: ["outline", "soft", "ghost"], defaultValue: "outline" },
   size: { values: ["sm", "md", "lg"], defaultValue: "md" },
-} as const;
+} as const satisfies ComponentSchema;
+
+export const accordionParts = [
+  { export: "Accordion", file: "accordion", contract: "AccordionRootProps" },
+  { export: "AccordionItem", file: "item", contract: "AccordionItemProps" },
+  { export: "AccordionItemTrigger", file: "item-trigger", contract: "AccordionItemTriggerProps" },
+  { export: "AccordionItemIndicator", file: "item-indicator", contract: null },
+  { export: "AccordionItemContent", file: "item-content", contract: null },
+] as const satisfies readonly ComponentPart[];
 
 /** Structural classes: no variant key touches these, so they are not shared. */
 // (They live inline in each adapter's `cva` call, beside the part that wears them.)

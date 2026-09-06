@@ -1,4 +1,5 @@
 import { componentColors, eachColor, type ComponentColor } from "../colors";
+import type { ComponentPart, ComponentSchema } from "../schema";
 
 /**
  * Button styling data: plain class strings both adapters feed into their own
@@ -47,7 +48,11 @@ export const buttonSchema = {
   leading: { values: [true], defaultValue: false },
   trailing: { values: [true], defaultValue: false },
   loading: { values: [true], defaultValue: false },
-} as const;
+} as const satisfies ComponentSchema;
+
+export const buttonParts = [
+  { export: "Button", file: "button", contract: "ButtonProps" },
+] as const satisfies readonly ComponentPart[];
 
 /** Structural classes: no variant key touches these, so they are not shared. */
 // (They live inline in each adapter's `cva` call, beside the part that wears them.)

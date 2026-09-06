@@ -1,22 +1,14 @@
 import type { MarkdownHeading } from "astro";
+import type { TableOfContentsEntry } from "@75neo/themes";
 import type { Framework } from "./framework";
 import type { ComponentApi } from "./component-api";
 import type { DocumentedComponent } from "./components";
 import { componentHref } from "./components";
 
 /**
- * One entry in the rail of headings.
- *
- * @remarks
- * Temporary home: this shape lived in `@75neo/themes` beside the old
- * `TableOfContents` component. The batch migration restores that component first —
- * the docs chrome renders it — and this type goes home with it.
+ * One entry in the rail of headings. The library's own entry shape, home at last.
  */
-export interface TableOfContentsItem {
-  value: string;
-  depth: number;
-  label: string;
-}
+export type TableOfContentsItem = TableOfContentsEntry;
 
 /** One link in the sidebar. */
 export interface SidebarLink {

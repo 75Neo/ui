@@ -1,5 +1,7 @@
 ---
 import { getEntry, render } from "astro:content";
+import { Clipboard } from "@75neo/react";
+import InstallCommandVue from "../../../previews/InstallCommand.vue";
 import Doc from "../../../layouts/Doc.astro";
 import Prose from "../../../components/Prose.astro";
 import { type Framework, frameworkFacts, frameworks } from "../../../lib/framework";
@@ -22,9 +24,11 @@ const { Content, headings } = await render(entry);
 const components = await documentedComponents();
 
 /*
- * The install command is copied rather than read, so it sits in a plain code block —
- * the chrome puts a copy button on every one. This was a Clipboard; the batch
- * migration restores that component and this block goes back to reaching for it.
+ * The install command is copied rather than read, so it sits in a Clipboard rather
+ * than a fence. It is also the only part of the guide that differs between adapters
+ * by more than a language tag, which is why it lives here and the prose stays one
+ * file. The Vue route reaches it through a local wrapper, because `astro check`
+ * infers nothing from a Vue component behind a package barrel.
  */
 const install = `pnpm add ${facts.package}`;
 const rail = [{ value: "install", depth: 2, label: "Install" }, ...railItems(headings)];
@@ -57,8 +61,9 @@ const rail = [{ value: "install", depth: 2, label: "Install" }, ...railItems(hea
       }.
     </p>
 
-    <div class="prose mt-5 max-w-[34rem]">
-      <pre>{install}</pre>
+    <div class="mt-5 max-w-[34rem]">
+      {framework === "react" && <Clipboard value={install} size="lg" client:load />}
+      {framework === "vue" && <InstallCommandVue value={install} client:load />}
     </div>
 
     <p class="text-dimmed mt-3 text-sm/6">

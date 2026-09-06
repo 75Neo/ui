@@ -5,7 +5,8 @@ import {
   SyntaxKind,
   type TypeNode,
 } from "ts-morph";
-import { accordionSchema, buttonSchema } from "@75neo/themes";
+import type { ComponentPart, ComponentSchema } from "@75neo/themes";
+import * as themes from "@75neo/themes";
 
 /**
  * Reads a component's public API out of the source rather than out of prose.
@@ -193,38 +194,27 @@ function withVariant(prop: PropDoc, variants: VariantDoc[]): PropDoc {
 }
 
 /**
- * One anatomy part: the export, its file in each adapter, and its shared contract
- * in `@75neo/themes` — or `null` when the part takes nothing both frameworks share.
+ * One anatomy part: resolved out of the data module, never written out here.
  *
  * @remarks
- * The batch migration generalizes this table away. For the two slice components it
- * is written out, and a renamed file or interface fails the docs build rather than
- * quietly dropping a table.
+ * Each data module describes itself (`<name>Schema` plus `<name>Parts`), the way
+ * recipes described themselves with `variantKeys` and `slots`. The reader below is
+ * fully generic: a new component needs no change here, only its module.
  */
-interface PartSource {
-  export: string;
-  file: string;
-  contract: string | null;
+function resolveComponent(key: string): { schema: ComponentSchema; parts: ComponentPart[] } {
+  const exported = themes as Record<string, unknown>;
+  const schema = exported[`${key}Schema`];
+  const parts = exported[`${key}Parts`];
+
+  if (!schema || typeof schema !== "object") {
+    throw new Error(`@75neo/themes exports no schema object named "${key}Schema"`);
+  }
+  if (!Array.isArray(parts)) {
+    throw new Error(`@75neo/themes exports no parts descriptor named "${key}Parts"`);
+  }
+
+  return { schema: schema as ComponentSchema, parts: parts as ComponentPart[] };
 }
-
-const PARTS: Record<string, PartSource[]> = {
-  accordion: [
-    { export: "Accordion", file: "accordion", contract: "AccordionRootProps" },
-    { export: "AccordionItem", file: "item", contract: "AccordionItemProps" },
-    { export: "AccordionItemTrigger", file: "item-trigger", contract: "AccordionItemTriggerProps" },
-    { export: "AccordionItemIndicator", file: "item-indicator", contract: null },
-    { export: "AccordionItemContent", file: "item-content", contract: null },
-  ],
-  button: [{ export: "Button", file: "button", contract: "ButtonProps" }],
-};
-
-const SCHEMAS: Record<
-  string,
-  Record<string, { values: readonly unknown[]; defaultValue: unknown }>
-> = {
-  accordion: accordionSchema,
-  button: buttonSchema,
-};
 
 /** The shared contract, plus the schema that gives its variant props meaning. */
 function readContract(module: string, contract: string | null, variants: VariantDoc[]) {
@@ -348,12 +338,7 @@ export interface ComponentSource {
  * renamed export fails the docs build rather than quietly dropping a table.
  */
 export function componentApi({ name, key, module }: ComponentSource): ComponentApi {
-  const parts = PARTS[key];
-  const schema = SCHEMAS[key];
-
-  if (!parts) throw new Error(`component-api knows no parts for "${key}"`);
-  if (!schema) throw new Error(`component-api knows no schema for "${key}"`);
-
+  const { schema, parts } = resolveComponent(key);
   const variants = readSchema(schema);
 
   return {

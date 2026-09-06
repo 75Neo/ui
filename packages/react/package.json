@@ -12,6 +12,8 @@
     ".": "./dist/index.js",
     "./accordion": "./dist/accordion/index.js",
     "./button": "./dist/button/index.js",
+    "./clipboard": "./dist/clipboard/index.js",
+    "./table-of-contents": "./dist/table-of-contents/index.js",
     "./package.json": "./package.json"
   },
   "scripts": {
