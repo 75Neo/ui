@@ -1,0 +1,37 @@
+---
+import * as DownloadTriggerParts from "@75neo/react/download-trigger";
+import { downloadTriggerSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import DownloadTriggerPreview from "../previews/DownloadTriggerPreview.tsx";
+import DownloadTriggerPreviewVue from "../previews/DownloadTriggerPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(DownloadTriggerParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(downloadTriggerSchema);
+const combinations = variantKeys.reduce(
+  (total, key) =>
+    total * (downloadTriggerSchema[key as keyof typeof downloadTriggerSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  title="DownloadTrigger"
+  description="A button that saves a blob to disk. The contract spells blobs structurally, so the themes package typechecks without the DOM library."
+>
+  <Preview
+    title="Variant matrix"
+    description="Every variant, then all seven colors and sizes. Both columns render the same matrix, so anything that differs between them is a real difference between the adapters."
+    meta={meta}
+  >
+    <Fragment slot="react"><DownloadTriggerPreview client:load /></Fragment>
+    <Fragment slot="vue"><DownloadTriggerPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

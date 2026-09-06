@@ -4,6 +4,10 @@ import { AccordionPreview } from "../previews/AccordionPreview";
 import { ButtonPreview } from "../previews/ButtonPreview";
 import { ClipboardPreview } from "../previews/ClipboardPreview";
 import { TreeViewPreview } from "../previews/TreeViewPreview";
+import { DownloadTriggerPreview } from "../previews/DownloadTriggerPreview";
+import { TabsPreview } from "../previews/TabsPreview";
+import { ToggleGroupPreview } from "../previews/ToggleGroupPreview";
+import { TogglePreview } from "../previews/TogglePreview";
 import { SelectPreview } from "../previews/SelectPreview";
 import { RatingGroupPreview } from "../previews/RatingGroupPreview";
 import { SegmentGroupPreview } from "../previews/SegmentGroupPreview";
@@ -23,6 +27,10 @@ import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import ButtonPreviewVue from "../previews/ButtonPreview.vue";
 import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
 import TreeViewPreviewVue from "../previews/TreeViewPreview.vue";
+import DownloadTriggerPreviewVue from "../previews/DownloadTriggerPreview.vue";
+import TabsPreviewVue from "../previews/TabsPreview.vue";
+import ToggleGroupPreviewVue from "../previews/ToggleGroupPreview.vue";
+import TogglePreviewVue from "../previews/TogglePreview.vue";
 import SelectPreviewVue from "../previews/SelectPreview.vue";
 import RatingGroupPreviewVue from "../previews/RatingGroupPreview.vue";
 import SegmentGroupPreviewVue from "../previews/SegmentGroupPreview.vue";
@@ -63,6 +71,10 @@ const vue = framework === "vue";
 {react && name === "Button" && <ButtonPreview />}
 {react && name === "Clipboard" && <ClipboardPreview />}
 {react && name === "TreeView" && <TreeViewPreview />}
+{react && name === "DownloadTrigger" && <DownloadTriggerPreview />}
+{react && name === "Tabs" && <TabsPreview />}
+{react && name === "ToggleGroup" && <ToggleGroupPreview />}
+{react && name === "Toggle" && <TogglePreview />}
 {react && name === "Select" && <SelectPreview />}
 {react && name === "RatingGroup" && <RatingGroupPreview />}
 {react && name === "SegmentGroup" && <SegmentGroupPreview />}
@@ -83,6 +95,10 @@ const vue = framework === "vue";
 {vue && name === "Button" && <ButtonPreviewVue />}
 {vue && name === "Clipboard" && <ClipboardPreviewVue />}
 {vue && name === "TreeView" && <TreeViewPreviewVue />}
+{vue && name === "DownloadTrigger" && <DownloadTriggerPreviewVue />}
+{vue && name === "Tabs" && <TabsPreviewVue />}
+{vue && name === "ToggleGroup" && <ToggleGroupPreviewVue />}
+{vue && name === "Toggle" && <TogglePreviewVue />}
 {vue && name === "Select" && <SelectPreviewVue />}
 {vue && name === "RatingGroup" && <RatingGroupPreviewVue />}
 {vue && name === "SegmentGroup" && <SegmentGroupPreviewVue />}

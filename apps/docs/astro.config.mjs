@@ -92,6 +92,22 @@ export default defineConfig({
           replacement: src("react", "tree-view/index.ts"),
         },
         {
+          find: /^@75neo\/react\/toggle$/,
+          replacement: src("react", "toggle/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/toggle-group$/,
+          replacement: src("react", "toggle-group/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/tabs$/,
+          replacement: src("react", "tabs/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/download-trigger$/,
+          replacement: src("react", "download-trigger/index.ts"),
+        },
+        {
           find: /^@75neo\/react\/checkbox$/,
           replacement: src("react", "checkbox/index.ts"),
         },
@@ -165,6 +181,22 @@ export default defineConfig({
         {
           find: /^@75neo\/vue\/tree-view$/,
           replacement: src("vue", "tree-view/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/toggle$/,
+          replacement: src("vue", "toggle/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/toggle-group$/,
+          replacement: src("vue", "toggle-group/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/tabs$/,
+          replacement: src("vue", "tabs/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/download-trigger$/,
+          replacement: src("vue", "download-trigger/index.ts"),
         },
         {
           find: /^@75neo\/vue\/checkbox$/,

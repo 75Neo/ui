@@ -15,6 +15,7 @@
     "./checkbox": "./dist/checkbox/index.js",
     "./clipboard": "./dist/clipboard/index.js",
     "./combobox": "./dist/combobox/index.js",
+    "./download-trigger": "./dist/download-trigger/index.js",
     "./editable": "./dist/editable/index.js",
     "./listbox": "./dist/listbox/index.js",
     "./menu": "./dist/menu/index.js",
@@ -27,7 +28,10 @@
     "./select": "./dist/select/index.js",
     "./switch": "./dist/switch/index.js",
     "./table-of-contents": "./dist/table-of-contents/index.js",
+    "./tabs": "./dist/tabs/index.js",
     "./tags-input": "./dist/tags-input/index.js",
+    "./toggle": "./dist/toggle/index.js",
+    "./toggle-group": "./dist/toggle-group/index.js",
     "./tree-view": "./dist/tree-view/index.js",
     "./package.json": "./package.json"
   },

@@ -23,6 +23,10 @@ export const previewed = new Set([
   "SegmentGroup",
   "RatingGroup",
   "TreeView",
+  "Toggle",
+  "ToggleGroup",
+  "Tabs",
+  "DownloadTrigger",
 ]);
 
 /** Whether a component has a live specimen on the reference page. */

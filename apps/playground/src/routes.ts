@@ -142,6 +142,30 @@ const routes: readonly PreviewRoute[] = [
     summary: "Text that turns into a field where it stands.",
     key: "editable",
   },
+  {
+    href: "/toggle",
+    label: "Toggle",
+    summary: "A button that stays pressed, in five weights and seven colors.",
+    key: "toggle",
+  },
+  {
+    href: "/toggle-group",
+    label: "ToggleGroup",
+    summary: "A row of toggles sharing one pressed state.",
+    key: "toggleGroup",
+  },
+  {
+    href: "/tabs",
+    label: "Tabs",
+    summary: "Triggers and panels, as pills or as links.",
+    key: "tabs",
+  },
+  {
+    href: "/download-trigger",
+    label: "DownloadTrigger",
+    summary: "A button that saves a blob to disk.",
+    key: "downloadTrigger",
+  },
 ];
 
 /**

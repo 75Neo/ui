@@ -1,0 +1,37 @@
+---
+import * as TabsParts from "@75neo/react/tabs";
+import { tabsSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import TabsPreview from "../previews/TabsPreview.tsx";
+import TabsPreviewVue from "../previews/TabsPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(TabsParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(tabsSchema);
+const combinations = variantKeys.reduce(
+  (total, key) =>
+    total * (tabsSchema[key as keyof typeof tabsSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  title="Tabs"
+  description="Triggers and panels, as pills or as links. The indicator snaps to the selected trigger and positions from the properties Ark measures."
+>
+  <Preview
+    title="Variant matrix"
+    description="Both variants, then all seven colors, then sizes, orientation and disabled. Both columns render the same matrix, so anything that differs between them is a real difference between the adapters."
+    meta={meta}
+  >
+    <Fragment slot="react"><TabsPreview client:load /></Fragment>
+    <Fragment slot="vue"><TabsPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

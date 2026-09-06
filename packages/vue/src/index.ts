@@ -17,3 +17,7 @@ export * from "./radio-group/index";
 export * from "./switch/index";
 export * from "./segment-group/index";
 export * from "./rating-group/index";
+export * from "./toggle/index";
+export * from "./toggle-group/index";
+export * from "./tabs/index";
+export * from "./download-trigger/index";

@@ -1,0 +1,37 @@
+---
+import * as ToggleGroupParts from "@75neo/react/toggle-group";
+import { toggleGroupSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import ToggleGroupPreview from "../previews/ToggleGroupPreview.tsx";
+import ToggleGroupPreviewVue from "../previews/ToggleGroupPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(ToggleGroupParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(toggleGroupSchema);
+const combinations = variantKeys.reduce(
+  (total, key) =>
+    total * (toggleGroupSchema[key as keyof typeof toggleGroupSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  title="ToggleGroup"
+  description="A row of toggles sharing one pressed state. Orientation runs the row, and the same five weights color every item."
+>
+  <Preview
+    title="Variant matrix"
+    description="Every variant, then all seven colors, then vertical, multiple and disabled. Both columns render the same matrix, so anything that differs between them is a real difference between the adapters."
+    meta={meta}
+  >
+    <Fragment slot="react"><ToggleGroupPreview client:load /></Fragment>
+    <Fragment slot="vue"><ToggleGroupPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>
