@@ -1,5 +1,6 @@
 ---
 import { Search as SearchIcon } from "@lucide/astro";
+import { kbd as kbdClass } from "../lib/controls";
 import { overview, previews } from "../routes";
 
 /**
@@ -17,19 +18,17 @@ const entries = [...overview, ...previews].map(({ href, label, summary, key }) =
   summary,
 }));
 
-const kbd =
-  "border-muted text-dimmed rounded-[0.25rem] border px-1 py-0.5 font-mono text-[0.625rem] leading-none";
 ---
 
 <button
   type="button"
   data-search-open
-  class="border-muted bg-elevated/60 text-dimmed hover:border-accented hover:text-muted flex size-8 shrink-0 items-center justify-center gap-2 rounded-lg border sm:w-56 sm:justify-start sm:px-2.5"
+  class="bg-elevated text-dimmed hover:text-muted outline-primary/25 flex size-8 shrink-0 items-center justify-center gap-2 rounded-md transition-colors focus-visible:outline-3 lg:w-56 lg:justify-start lg:px-2.5"
 >
-  <SearchIcon size={14} aria-hidden="true" class="shrink-0" />
-  <span class="hidden truncate text-sm sm:inline">Search</span>
-  <kbd class={`${kbd} ml-auto hidden shrink-0 sm:block`} data-identifier>⌘K</kbd>
-  <span class="sr-only sm:hidden">Search</span>
+  <SearchIcon size={15} aria-hidden="true" class="shrink-0" />
+  <span class="hidden truncate text-sm lg:inline">Search components...</span>
+  <kbd class={`${kbdClass} ms-auto hidden shrink-0 lg:block`} data-identifier>⌘K</kbd>
+  <span class="sr-only lg:hidden">Search</span>
 </button>
 
 <script is:inline type="application/json" data-search-index set:html={JSON.stringify(entries).replaceAll("</", String.raw`<\/`)}
@@ -38,9 +37,9 @@ const kbd =
 <dialog
   data-search-dialog
   aria-label="Search documentation"
-  class="border-muted bg-default text-default mx-auto mt-[max(3rem,12vh)] mb-auto w-[min(36rem,calc(100vw-2rem))] rounded-xl border p-0 shadow-panel backdrop:bg-black/40 backdrop:backdrop-blur-[2px]"
+  class="bg-default text-default ring-accented mx-auto mt-[max(3rem,12vh)] mb-auto w-[min(36rem,calc(100vw-2rem))] rounded-lg p-0 shadow-lg ring backdrop:bg-inverted/40 backdrop:backdrop-blur-[2px]"
 >
-  <div class="border-muted flex items-center gap-2.5 border-b px-4">
+  <div class="border-default flex items-center gap-2.5 border-b px-4">
     <SearchIcon size={15} aria-hidden="true" class="text-dimmed shrink-0" />
     <input
       type="text"
@@ -51,10 +50,10 @@ const kbd =
       aria-label="Search documentation"
       class="text-highlighted placeholder:text-dimmed h-12 w-full min-w-0 bg-transparent text-sm outline-none"
     />
-    <kbd class={`${kbd} shrink-0`} data-identifier>esc</kbd>
+    <kbd class={`${kbdClass} shrink-0`} data-identifier>esc</kbd>
   </div>
 
-  <ul data-search-results class="max-h-[min(24rem,60dvh)] overflow-y-auto p-2"></ul>
+  <ul data-search-results class="max-h-[min(24rem,60dvh)] overflow-y-auto p-1.5"></ul>
 
   <p
     data-search-empty
@@ -122,7 +121,7 @@ const kbd =
       const link = document.createElement("a");
       link.href = entry.href;
       link.className =
-        "block rounded-lg px-2.5 py-2 aria-selected:bg-elevated";
+        "block rounded-md px-2.5 py-2 no-underline aria-selected:bg-elevated";
       link.setAttribute("aria-selected", "false");
       link.innerHTML =
         `<span class="flex items-baseline justify-between gap-4">`

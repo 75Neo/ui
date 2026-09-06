@@ -1,0 +1,138 @@
+---
+import { ArrowLeft, ArrowRight, Check, ChevronDown, FileText, Sparkles } from "@lucide/astro";
+import BrandIcon from "./BrandIcon.astro";
+import { iconButton, panel, panelItem } from "../lib/controls";
+
+/**
+ * What a reader can do with the page other than read it: take its Markdown, open that
+ * Markdown somewhere else, or step to the page beside it.
+ *
+ * @remarks
+ * The source travels as JSON inside a script element, because the Markdown quotes Vue
+ * examples and an HTML parser ends a script at the first tag that closes one. The
+ * `replaceAll` below escapes that sequence. It is spelled out nowhere here on purpose:
+ * written literally in the frontmatter, a comment included, it mis-slices the file for
+ * `astro check`, which then reports `Props` as unused.
+ */
+interface Props {
+  /** The page's own Markdown, for the copy button. */
+  source: string;
+  /** Where the same Markdown is served as a file, so a reader or a model can fetch it. */
+  markdown: string;
+  previous?: { href: string; label: string };
+  next?: { href: string; label: string };
+}
+
+const { source, markdown, previous, next } = Astro.props;
+
+/** Absolute, because the two assistants below fetch it from their own side. */
+const raw = new URL(markdown, Astro.site).href;
+const ask = encodeURIComponent(
+  `Read ${raw} — it is one page of the 75NeoUI documentation — and help me use the component it describes.`,
+);
+
+const split =
+  "flex cursor-pointer items-center gap-1.5 text-xs font-medium text-default transition-colors hover:bg-elevated";
+---
+
+<div class="flex shrink-0 items-center gap-1.5">
+  <div class="ring-accented flex items-stretch rounded-md ring">
+    <button type="button" data-copy-markdown class={`${split} outline-primary/25 rounded-s-md px-2.5 py-1.5 focus-visible:outline-3`}>
+      {/* The state lives on a wrapper, because the icon component takes no `hidden`. */}
+      <span data-copy-idle class="flex"><FileText size={14} aria-hidden="true" /></span>
+      <span data-copy-done hidden class="text-success flex"><Check size={14} aria-hidden="true" /></span>
+      Copy Page
+    </button>
+
+    <details data-menu class="relative">
+      <summary
+        aria-label="Page as Markdown"
+        class={`${split} border-default outline-primary/25 h-full list-none rounded-e-md border-s px-1.5 focus-visible:outline-3`}
+      >
+        <ChevronDown size={14} aria-hidden="true" class="text-dimmed" />
+      </summary>
+
+      <div role="menu" class={`${panel} absolute end-0 top-full z-50 mt-1.5 w-52`}>
+        <a href={markdown} class={panelItem}>
+          <FileText size={15} aria-hidden="true" class="text-dimmed shrink-0" />
+          View as Markdown
+        </a>
+        <a
+          href={`https://chatgpt.com/?q=${ask}`}
+          target="_blank"
+          rel="noreferrer"
+          class={panelItem}
+        >
+          <Sparkles size={15} aria-hidden="true" class="text-dimmed shrink-0" />
+          Open in ChatGPT
+        </a>
+        <a
+          href={`https://claude.ai/new?q=${ask}`}
+          target="_blank"
+          rel="noreferrer"
+          class={panelItem}
+        >
+          <BrandIcon name="claude" size={15} class="text-dimmed shrink-0" />
+          Open in Claude
+        </a>
+      </div>
+    </details>
+  </div>
+
+  {
+    previous && (
+      <a href={previous.href} class={iconButton} title={previous.label}>
+        <ArrowLeft aria-hidden="true" />
+        <span class="sr-only">{previous.label}</span>
+      </a>
+    )
+  }
+
+  {
+    next && (
+      <a href={next.href} class={iconButton} title={next.label}>
+        <ArrowRight aria-hidden="true" />
+        <span class="sr-only">{next.label}</span>
+      </a>
+    )
+  }
+
+  <script
+    is:inline
+    type="application/json"
+    data-copy-source
+    set:html={JSON.stringify(source).replaceAll("</", String.raw`<\/`)}
+  />
+</div>
+
+<script>
+  // Bound once for the visit, because a navigation replaces the button.
+  document.addEventListener("click", async (event) => {
+    const button = (event.target as HTMLElement | null)?.closest<HTMLElement>(
+      "[data-copy-markdown]",
+    );
+    if (!button) return;
+
+    const encoded = document.querySelector("[data-copy-source]")?.textContent;
+    if (!encoded) return;
+    const source = JSON.parse(encoded) as string;
+
+    try {
+      await navigator.clipboard.writeText(source);
+    } catch {
+      // A denied permission or an insecure origin. Nothing to report on the button.
+      return;
+    }
+
+    const idle = button.querySelector<HTMLElement>("[data-copy-idle]");
+    const done = button.querySelector<HTMLElement>("[data-copy-done]");
+    if (!idle || !done) return;
+
+    idle.hidden = true;
+    done.hidden = false;
+    window.setTimeout(() => {
+      idle.hidden = false;
+      done.hidden = true;
+    }, 1600);
+  });
+</script>

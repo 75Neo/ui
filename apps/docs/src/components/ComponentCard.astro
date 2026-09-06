@@ -28,17 +28,17 @@ const { component, framework, level: Heading = "h2" } = Astro.props;
 const { entry, api, slug } = component;
 ---
 
-<li class="border-muted hover:border-accented relative flex flex-col overflow-hidden rounded-xl border">
+<li class="border-default hover:bg-elevated/40 relative flex flex-col overflow-hidden rounded-lg border transition-colors">
   <div class="px-4 pt-4 pb-3.5">
-    <Heading class="text-highlighted text-[0.9375rem] font-medium tracking-[-0.01em]">
+    <Heading class="text-highlighted text-sm font-semibold tracking-tight">
       <a href={componentHref(framework, slug)} class="after:absolute after:inset-0">
         {entry.data.name}
       </a>
     </Heading>
-    <p class="text-dimmed mt-1 line-clamp-2 text-xs/5 text-pretty">{entry.data.summary}</p>
+    <p class="text-muted mt-1 line-clamp-2 text-xs/5 text-pretty">{entry.data.summary}</p>
   </div>
 
-  <div data-stage data-thumbnail class="border-muted mt-auto h-36 overflow-hidden border-t">
+  <div data-stage data-thumbnail class="border-default mt-auto h-36 overflow-hidden border-t">
     {
       hasPreview(entry.data.name) ? (
         <div

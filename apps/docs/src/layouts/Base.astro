@@ -69,10 +69,10 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
     </script>
   </head>
 
-  <body class="bg-muted text-default font-sans antialiased">
+  <body class="bg-default text-default font-sans antialiased">
     <a
       href="#content"
-      class="bg-inverted text-inverted sr-only rounded-lg px-4 py-2 text-sm font-medium focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-skip-link"
+      class="bg-inverted text-inverted sr-only rounded-md px-4 py-2 text-sm font-medium focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50"
     >
       Skip to content
     </a>
@@ -83,7 +83,7 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
 
     {
       footer && (
-        <footer class="border-muted border-t">
+        <footer class="border-default border-t">
           <div class={`${shell} flex flex-wrap items-center justify-between gap-x-8 gap-y-3 py-8`}>
             <p class="text-dimmed max-w-[58ch] text-xs/6">
               Every props table on this site is read out of{" "}
@@ -106,7 +106,7 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
 
     <script>
       /**
-       * The chrome's two stateful controls, bound once for the whole visit.
+       * The chrome's stateful controls, bound once for the whole visit.
        *
        * @remarks
        * Listeners are delegated from `document`, because a navigation replaces the body.
@@ -139,13 +139,20 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
         }
       };
 
-      /** Put the theme menu away. It is a `details`, so this is one attribute. */
-      const closeThemeMenu = () => {
-        document.querySelector<HTMLDetailsElement>("[data-theme-menu]")?.removeAttribute("open");
+      /**
+       * Put every menu away. They are `details` elements, so this is one attribute
+       * each, and `except` is the one the reader just clicked inside.
+       */
+      const closeMenus = (except?: Element | null) => {
+        for (const menu of document.querySelectorAll<HTMLDetailsElement>("[data-menu]")) {
+          if (menu !== except) menu.removeAttribute("open");
+        }
       };
 
       document.addEventListener("click", (event) => {
         const target = event.target as HTMLElement | null;
+
+        closeMenus(target?.closest("[data-menu]"));
 
         const option = target?.closest<HTMLElement>("[data-theme-option]");
         if (option?.dataset.themeOption) {
@@ -156,12 +163,9 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
             // Nothing to persist to; the choice still applies to this visit.
           }
           apply();
-          closeThemeMenu();
+          closeMenus();
           return;
         }
-
-        // A `details` element closes on its own summary and on nothing else.
-        if (!target?.closest("[data-theme-menu]")) closeThemeMenu();
 
         const toggle = target?.closest<HTMLElement>("[data-nav-toggle]");
         if (toggle) {
@@ -185,7 +189,7 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
       });
 
       document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") closeThemeMenu();
+        if (event.key === "Escape") closeMenus();
       });
 
       media.addEventListener("change", apply);
@@ -196,6 +200,63 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
 
       apply();
       markCurrent();
+    </script>
+
+    <script>
+      /**
+       * A copy button on every code block.
+       *
+       * @remarks
+       * Shiki hands back a bare `pre`, so the button needs a positioned box around it:
+       * one wrapper per block, added after each navigation and skipped on a block that
+       * already has one. The click itself is delegated from `document`, like every
+       * other listener in the chrome.
+       */
+      const wrap = () => {
+        for (const block of document.querySelectorAll<HTMLPreElement>(".prose pre")) {
+          if (block.parentElement?.classList.contains("code-block")) continue;
+
+          const wrapper = document.createElement("div");
+          wrapper.className = "code-block";
+          block.replaceWith(wrapper);
+          wrapper.append(block);
+
+          const button = document.createElement("button");
+          button.type = "button";
+          button.dataset.copyCode = "";
+          button.className =
+            "bg-default text-dimmed hover:text-highlighted ring-default cursor-pointer"
+            + " rounded-md p-1.5 ring transition-colors";
+          button.setAttribute("aria-label", "Copy code");
+          button.innerHTML =
+            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"'
+            + ' stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+            + '<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>'
+            + '<path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>';
+          wrapper.append(button);
+        }
+      };
+
+      document.addEventListener("click", async (event) => {
+        const button = (event.target as HTMLElement | null)?.closest<HTMLElement>(
+          "[data-copy-code]",
+        );
+        const code = button?.previousElementSibling?.textContent;
+        if (!button || !code) return;
+
+        try {
+          await navigator.clipboard.writeText(code);
+        } catch {
+          // A denied permission or an insecure origin. Nothing to report on the button.
+          return;
+        }
+
+        button.dataset.copied = "true";
+        window.setTimeout(() => delete button.dataset.copied, 1600);
+      });
+
+      document.addEventListener("astro:page-load", wrap);
+      wrap();
     </script>
   </body>
 </html>

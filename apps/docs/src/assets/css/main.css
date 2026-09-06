@@ -11,29 +11,16 @@
 @source "../../../../../packages/vue/src";
 
 /*
- * The docs are a consumer of the design system, so they retune it the way any
- * application would: by redefining `--ui-*` after the import. Nothing else changes.
+ * The site redefines no `--ui-*` token. Every measure on the page — the container, the
+ * gutters, the header height, the radii — is the design system's own, so the docs are
+ * a reading of the library rather than a second design next to it. The two faces below
+ * are the one thing the system does not ship, because a webfont is the application's
+ * to serve.
  */
-:root {
-  --ui-container: 90rem;
-}
-
 @theme {
   --font-sans:
     "Geist Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
   --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-
-  /*
-   * Shadows are tinted with the theme's own neutral, so they read as the same light
-   * source in both light and dark rather than as grey haze on grey.
-   */
-  --shadow-panel:
-    0 1px 2px 0 color-mix(in oklab, var(--ui-text) 8%, transparent),
-    0 24px 60px -20px color-mix(in oklab, var(--ui-text) 28%, transparent);
-
-  /* One z-index scale for the whole site. */
-  --z-index-header: 20;
-  --z-index-skip-link: 30;
 }
 
 @layer base {
@@ -69,24 +56,22 @@
     color: var(--ui-text-highlighted);
   }
 
-  /* Anchored headings land below the sticky header rather than under it. */
+  /* Anchored headings land below the sticky header, whose height is a token. */
   [id] {
-    scroll-margin-top: 5.5rem;
+    scroll-margin-top: calc(var(--ui-header-height) + 1.5rem);
   }
 
   /*
-   * The two sticky columns scroll on their own, and a browser scrollbar in each one
-   * would put three of them on the page at once. Thin and untinted until the pointer is
-   * over the column.
+   * The two outer columns scroll on their own, and a browser scrollbar in each one
+   * would put three of them on the page at once. Thin and untinted until the pointer
+   * is over the column.
    */
-  [data-page-nav],
-  [data-page-nav] ~ aside {
+  [data-column] {
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
   }
 
-  [data-page-nav]:hover,
-  [data-page-nav] ~ aside:hover {
+  [data-column]:hover {
     scrollbar-color: var(--ui-border-accented) transparent;
   }
 }
@@ -126,16 +111,6 @@
   }
 
   /*
-   * The framework switch's active segment.
-   */
-  .shadow-segment {
-    background-color: var(--ui-bg);
-    color: var(--ui-text-highlighted);
-    /* Tinted to the theme's own neutral rather than a generic black. */
-    box-shadow: 0 1px 2px -1px color-mix(in oklab, var(--ui-text) 22%, transparent);
-  }
-
-  /*
    * The theme control, painted from `data-theme` on the root element: the trigger shows
    * the mode in force and the row for it carries the tick. CSS cannot compare two
    * attributes to each other, so the three pairs are written out; in exchange the
@@ -162,8 +137,8 @@
     color: var(--ui-text-highlighted);
   }
 
-  /* The disclosure triangle is replaced by the chevron the trigger draws itself. */
-  [data-theme-menu] > summary::-webkit-details-marker {
+  /* A disclosure triangle, replaced by the chevron the trigger draws itself. */
+  [data-menu] > summary::-webkit-details-marker {
     display: none;
   }
 }
@@ -172,13 +147,12 @@
   /*
    * Rendered Markdown. Written out rather than pulled from a typography plugin,
    * because the whole vocabulary is already here: the same tokens, the same hairline
-   * rules, the same measure as the rest of the page.
+   * rules, the same radii as the rest of the page.
    */
   .prose {
     color: var(--ui-text-muted);
-    font-size: 0.9375rem;
+    font-size: 1rem;
     line-height: 1.75;
-    max-width: 70ch;
   }
 
   .prose > * + * {
@@ -186,21 +160,32 @@
   }
 
   .prose h2,
-  .prose h3 {
+  .prose h3,
+  .prose h4 {
     color: var(--ui-text-highlighted);
     font-weight: 600;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
+    scroll-margin-top: calc(var(--ui-header-height) + 1.5rem);
     text-wrap: balance;
   }
 
   .prose h2 {
-    font-size: 1.3125rem;
+    border-top: 1px solid var(--ui-border);
+    font-size: 1.5rem;
+    line-height: 2rem;
     margin-top: 3rem;
+    padding-top: 2rem;
   }
 
   .prose h3 {
-    font-size: 1.0625rem;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
     margin-top: 2.5rem;
+  }
+
+  .prose h4 {
+    font-size: 1rem;
+    margin-top: 2rem;
   }
 
   .prose strong {
@@ -209,9 +194,15 @@
   }
 
   .prose a {
-    color: var(--ui-primary);
+    color: var(--ui-text-highlighted);
+    font-weight: 500;
     text-decoration: underline;
+    text-decoration-color: var(--ui-border-accented);
     text-underline-offset: 0.25em;
+  }
+
+  .prose a:hover {
+    text-decoration-color: var(--ui-primary);
   }
 
   .prose ol,
@@ -235,13 +226,56 @@
     margin-top: 0.5rem;
   }
 
+  .prose hr {
+    border-top: 1px solid var(--ui-border);
+    margin-block: 2.5rem;
+  }
+
+  /*
+   * A blockquote is the callout: the one thing on a documentation page that has to
+   * stop the eye. It spends `info` at the two strengths the library allows a soft
+   * fill, rather than introducing a colour of its own.
+   */
+  .prose blockquote {
+    background-color: color-mix(in oklab, var(--ui-info) 8%, transparent);
+    border-inline-start: 2px solid var(--ui-info);
+    border-radius: var(--radius-md);
+    color: var(--ui-text-toned);
+    padding: 1rem 1.25rem;
+  }
+
+  .prose blockquote > * + * {
+    margin-top: 0.75rem;
+  }
+
+  .prose table {
+    border-collapse: collapse;
+    display: block;
+    font-size: 0.875rem;
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  .prose th {
+    color: var(--ui-text-highlighted);
+    font-weight: 600;
+    text-align: start;
+  }
+
+  .prose th,
+  .prose td {
+    border-bottom: 1px solid var(--ui-border);
+    padding: 0.625rem 1rem 0.625rem 0;
+    vertical-align: top;
+  }
+
   /*
    * Inline code is a chip rather than quoted text. Prose here names an identifier every
    * other sentence, and punctuation around each one would out-shout the sentence.
    */
   .prose :not(pre) > code {
     background-color: var(--ui-bg-elevated);
-    border-radius: 0.25rem;
+    border-radius: var(--radius-sm);
     color: var(--ui-text-toned);
     font-family: var(--font-mono);
     font-size: 0.8125em;
@@ -259,8 +293,8 @@
    */
   .prose pre {
     background-color: var(--ui-bg-muted) !important;
-    border: 1px solid var(--ui-border-muted);
-    border-radius: 0.75rem;
+    border: 1px solid var(--ui-border);
+    border-radius: var(--radius-lg);
     font-size: 0.8125rem;
     line-height: 1.7;
     overflow-x: auto;
@@ -289,7 +323,7 @@
    * stays at the left edge while long lines scroll under it.
    */
   .prose pre::before {
-    color: color-mix(in oklab, currentcolor 45%, transparent);
+    color: var(--ui-text-dimmed);
     content: attr(data-language);
     display: block;
     font-family: var(--font-mono);
@@ -298,6 +332,31 @@
     letter-spacing: 0.04em;
     margin-bottom: 0.625rem;
     position: sticky;
+  }
+
+  /*
+   * The wrapper a script puts around every block, so the copy button can be positioned
+   * against the block's own corner while long lines scroll underneath it.
+   */
+  .code-block {
+    position: relative;
+  }
+
+  .code-block > [data-copy-code] {
+    inset-block-start: 0.5rem;
+    inset-inline-end: 0.5rem;
+    opacity: 0;
+    position: absolute;
+  }
+
+  .code-block:hover > [data-copy-code],
+  .code-block > [data-copy-code]:focus-visible,
+  .code-block > [data-copy-code][data-copied] {
+    opacity: 1;
+  }
+
+  .code-block > [data-copy-code][data-copied] {
+    color: var(--ui-success);
   }
 
   /*
@@ -310,17 +369,14 @@
    * language — shell, CSS, framework-neutral TypeScript — are shown on both.
    */
   [data-framework="react"] .prose pre[data-language="vue"],
-  [data-framework="vue"] .prose pre[data-language="tsx"] {
+  [data-framework="vue"] .prose pre[data-language="tsx"],
+  [data-framework="react"] .code-block:has(pre[data-language="vue"]),
+  [data-framework="vue"] .code-block:has(pre[data-language="tsx"]) {
     display: none;
   }
 }
 
 @layer components {
-  /*
-   * A component is shown against the page's own background, with a dot grid for a
-   * floor. Written here rather than as utilities because the grid is a paint, not a
-   * layout.
-   */
   /*
    * A checkerboard, so a swatch carrying an opacity modifier shows what it is actually
    * letting through instead of reading as a flat darker color.
@@ -339,9 +395,14 @@
     background-size: 0.5rem 0.5rem;
   }
 
+  /*
+   * A component is shown against the page's own background, with a dot grid for a
+   * floor. Written here rather than as utilities because the grid is a paint, not a
+   * layout.
+   */
   [data-stage] {
     background-color: var(--ui-bg);
-    background-image: radial-gradient(var(--ui-border-muted) 1px, transparent 1px);
+    background-image: radial-gradient(var(--ui-border) 1px, transparent 1px);
     background-position: -0.5px -0.5px;
     background-size: 0.5rem 0.5rem;
   }

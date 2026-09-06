@@ -22,7 +22,7 @@ const { framework, components, path } = Astro.props;
 
 const sections = [
   {
-    label: "Sections",
+    label: "Guides",
     links: [
       { href: docHref(framework, "getting-started"), label: "Getting started" },
       { href: docHref(framework, "components"), label: "Components" },
@@ -32,13 +32,11 @@ const sections = [
 ];
 ---
 
-<nav aria-label="Documentation" class="flex flex-col gap-6 pb-10 lg:pt-6">
+<nav aria-label="Documentation" class="flex flex-col gap-5 py-6">
   {
     sections.map(({ label, links }) => (
       <div>
-        <p class="text-dimmed px-2.5 pb-1.5 font-mono text-xs" data-identifier>
-          {label.toLowerCase()}
-        </p>
+        <p class="text-highlighted px-2 pb-1.5 text-sm font-semibold">{label}</p>
 
         <ul class="flex flex-col gap-px">
           {links.map(({ href, label: link }) => (
@@ -46,7 +44,7 @@ const sections = [
               <a
                 href={href}
                 aria-current={path === href ? "page" : undefined}
-                class="text-muted hover:text-highlighted hover:bg-elevated/60 block truncate rounded-lg px-2.5 py-1.5 text-sm"
+                class="text-muted hover:text-highlighted hover:bg-elevated outline-primary/25 block truncate rounded-md px-2 py-1.5 text-sm transition-colors focus-visible:outline-3"
               >
                 {link}
               </a>

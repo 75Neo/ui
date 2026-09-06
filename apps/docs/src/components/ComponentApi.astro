@@ -29,11 +29,12 @@ const shared = named(api.shared);
 const hasReact = api.react.props.length > 0 || api.react.inherits.length > 0;
 const hasVue = api.vue.props.length > 0 || api.vue.slots.length > 0 || api.vue.models.length > 0;
 
-const heading = "text-highlighted text-xl font-semibold tracking-[-0.02em]";
-const aside = "text-muted mt-2 max-w-[62ch] text-sm/6 text-pretty";
+const heading =
+  "text-highlighted border-default border-t pt-8 text-2xl font-semibold tracking-tight";
+const aside = "text-muted mt-3 max-w-[70ch] text-base/7 text-pretty";
 ---
 
-<div class="mt-14 space-y-12">
+<div class="mt-12 space-y-12">
   <section aria-labelledby="slots">
     <h2 id="slots" class={heading}>Slots</h2>
     <p class={aside}>
@@ -41,11 +42,11 @@ const aside = "text-muted mt-2 max-w-[62ch] text-sm/6 text-pretty";
         >data-slot</code
       > attribute and the key in <code class="text-muted" data-identifier>ui</code>.
     </p>
-    <ul class="mt-3 flex flex-wrap gap-1.5">
+    <ul class="mt-4 flex flex-wrap gap-1.5">
       {
         api.slots.map((slot) => (
           <li
-            class="border-muted text-toned rounded-md border px-2 py-1 font-mono text-xs"
+            class="bg-elevated text-toned rounded-md px-2 py-1 font-mono text-xs"
             data-identifier
           >
             {slot}
@@ -66,11 +67,11 @@ const aside = "text-muted mt-2 max-w-[62ch] text-sm/6 text-pretty";
           <code class="text-muted" data-identifier>Theme</code> layer can change which one is
           the default; it cannot add a value.
         </p>
-        <dl class="divide-muted border-muted mt-3 divide-y border-t">
+        <dl class="divide-default border-default mt-4 divide-y border-t">
           {api.variants.map((variant) => (
             <div class="flex flex-wrap items-baseline gap-x-8 gap-y-2 py-3">
               <dt
-                class="text-highlighted w-28 shrink-0 font-mono text-[0.8125rem]"
+                class="text-highlighted w-28 shrink-0 font-mono text-xs"
                 data-identifier
               >
                 {variant.name}
@@ -103,7 +104,7 @@ const aside = "text-muted mt-2 max-w-[62ch] text-sm/6 text-pretty";
       Taken by both adapters, read out of the component module. The same names and the
       same types work in {frameworkFacts.react.label} and {frameworkFacts.vue.label}.
     </p>
-    <div class="mt-3">
+    <div class="mt-4">
       <PropsTable props={shared} id={`${id}-prop`} />
     </div>
   </section>
@@ -166,11 +167,11 @@ const aside = "text-muted mt-2 max-w-[62ch] text-sm/6 text-pretty";
         )}
 
         {api.vue.slots.length > 0 && (
-          <dl class="divide-muted border-muted mt-6 divide-y border-t">
+          <dl class="divide-default border-default mt-6 divide-y border-t">
             {api.vue.slots.map((slot) => (
               <div class="grid gap-x-10 gap-y-2 py-4 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]">
                 <dt class="min-w-0">
-                  <span class="text-highlighted font-mono text-[0.8125rem]" data-identifier>
+                  <span class="text-highlighted font-mono text-xs" data-identifier>
                     #{slot.name}
                   </span>
                   {slot.scope && (

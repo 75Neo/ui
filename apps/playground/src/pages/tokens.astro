@@ -56,10 +56,10 @@ const vocabulary = [
 ];
 
 const rail = "grid gap-6 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-12";
-const railTitle = "text-highlighted text-base font-semibold tracking-[-0.015em]";
+const railTitle = "text-highlighted text-base font-semibold tracking-tight";
 const railNote = "text-muted mt-2 max-w-[46ch] text-sm/6 text-pretty";
 const mono = "text-dimmed font-mono text-[0.6875rem] leading-none";
-const section = "border-muted border-t pt-10 mt-14 lg:mt-20";
+const section = "border-default border-t pt-10 mt-14 lg:mt-20";
 ---
 
 <Playground
@@ -80,7 +80,7 @@ const section = "border-muted border-t pt-10 mt-14 lg:mt-20";
     </div>
 
     <div class="min-w-0">
-      <ul class="divide-muted border-muted divide-y border-y">
+      <ul class="divide-default border-default divide-y border-y">
         {
           themeColors.map((color) => (
             <li class="grid gap-3 py-5 @container sm:grid-cols-[8rem_minmax(0,1fr)] sm:items-center sm:gap-6">
@@ -154,7 +154,7 @@ const section = "border-muted border-t pt-10 mt-14 lg:mt-20";
       </p>
     </div>
 
-    <dl class="divide-muted border-muted grid divide-y border-y sm:grid-cols-2 sm:gap-x-12">
+    <dl class="divide-default border-default grid divide-y border-y sm:grid-cols-2 sm:gap-x-12">
       {
         vocabulary.map(({ step, role }) => (
           <div class="flex items-baseline gap-5 py-3">
@@ -205,7 +205,7 @@ const section = "border-muted border-t pt-10 mt-14 lg:mt-20";
 
       <div>
         <p class={mono} data-identifier>text</p>
-        <ul class="divide-muted border-muted mt-3 divide-y border-y">
+        <ul class="divide-default border-default mt-3 divide-y border-y">
           {
             texts.map(({ name, token, note }) => (
               <li class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-3">

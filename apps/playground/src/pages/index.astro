@@ -28,12 +28,12 @@ const steps = [
   description="Each page renders one component twice, once through @75neo/react and once through @75neo/vue, from the same recipe in @75neo/themes. Edits to packages/*/src hot-reload here with no build step."
 >
   <section aria-labelledby="components" class="mt-10">
-    <h2 id="components" class="text-highlighted text-lg font-semibold tracking-[-0.02em]">
+    <h2 id="components" class="text-highlighted text-xl font-semibold tracking-tight">
       Components
     </h2>
     <p class="text-muted mt-2 max-w-[68ch] text-sm/6 text-pretty">
       The column on the left holds the same list. Press <kbd
-        class="border-muted text-dimmed rounded-md border px-1 py-0.5 font-mono text-[0.6875rem]"
+        class="bg-elevated text-dimmed rounded-sm px-1.5 py-0.5 font-mono text-[0.6875rem]"
         data-identifier>⌘K</kbd
       > to jump to one by name.
     </p>
@@ -41,9 +41,9 @@ const steps = [
     <ul class="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
       {
         previews.map(({ href, label, summary, key }) => (
-          <li class="border-muted hover:border-accented relative rounded-xl border px-4 py-3.5">
+          <li class="border-default hover:bg-elevated/40 relative rounded-lg border px-4 py-3.5 transition-colors">
             <div class="flex items-baseline justify-between gap-3">
-              <h3 class="text-highlighted text-[0.9375rem] font-medium tracking-[-0.01em]">
+              <h3 class="text-highlighted text-sm font-semibold tracking-tight">
                 <a href={href} class="after:absolute after:inset-0">
                   {label}
                 </a>
@@ -59,8 +59,8 @@ const steps = [
     </ul>
   </section>
 
-  <section aria-labelledby="next" class="border-muted mt-14 border-t pt-8">
-    <h2 id="next" class="text-highlighted text-lg font-semibold tracking-[-0.02em]">
+  <section aria-labelledby="next" class="border-default mt-12 border-t pt-8">
+    <h2 id="next" class="text-highlighted text-xl font-semibold tracking-tight">
       Adding the next component
     </h2>
     <p class="text-muted mt-2 max-w-[68ch] text-sm/6 text-pretty">
@@ -69,7 +69,7 @@ const steps = [
       >; what follows is the short version.
     </p>
 
-    <ol class="divide-muted border-muted mt-5 max-w-[52rem] divide-y border-t">
+    <ol class="divide-default border-default mt-5 max-w-[52rem] divide-y border-t">
       {
         steps.map(({ path, note }, index) => (
           <li class="flex gap-5 py-3.5">

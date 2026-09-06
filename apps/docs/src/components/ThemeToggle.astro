@@ -1,14 +1,15 @@
 ---
-import { Check, ChevronDown, Monitor, Moon, Sun } from "@lucide/astro";
+import { Check, Monitor, Moon, Sun } from "@lucide/astro";
+import { iconButton, panel, panelItem } from "../lib/controls";
 
 /**
  * A three-way theme control, behind one button.
  *
  * @remarks
- * A `details` element rather than a menu built out of the library, which stands in
- * chrome both routes and the landing page share. All three icons
- * are rendered and `main.css` reveals the one matching `data-theme` on the root element,
- * so the trigger is right on the first frame and after a navigation repaints nothing.
+ * A `details` element rather than the library's own Menu, which stands in chrome both
+ * routes and the landing page share. All three icons are rendered and `main.css`
+ * reveals the one matching `data-theme` on the root element, so the trigger is right on
+ * the first frame and after a navigation repaints nothing.
  */
 const options = [
   { value: "light", label: "Light", icon: Sun },
@@ -17,26 +18,18 @@ const options = [
 ] as const;
 ---
 
-<details data-theme-menu class="relative">
-  <summary
-    aria-label="Theme"
-    class="border-muted bg-elevated/60 text-muted hover:text-highlighted flex h-8 cursor-pointer list-none items-center gap-1 rounded-lg border px-2"
-  >
+<details data-menu data-theme-menu class="relative">
+  <summary aria-label="Theme" class={`${iconButton} list-none`}>
     {
       options.map(({ value, icon: Icon }) => (
         <span data-theme-current={value}>
-          <Icon size={15} aria-hidden="true" />
+          <Icon size={16} aria-hidden="true" />
         </span>
       ))
     }
-    <ChevronDown size={13} aria-hidden="true" class="text-dimmed" />
   </summary>
 
-  <div
-    role="menu"
-    aria-label="Theme"
-    class="border-muted bg-default shadow-panel absolute end-0 top-full mt-2 w-40 rounded-xl border p-1"
-  >
+  <div role="menu" aria-label="Theme" class={`${panel} absolute end-0 top-full z-50 mt-1.5 w-36`}>
     {
       options.map(({ value, label, icon: Icon }) => (
         <button
@@ -44,7 +37,7 @@ const options = [
           role="menuitemradio"
           aria-checked="false"
           data-theme-option={value}
-          class="text-muted hover:bg-elevated hover:text-highlighted flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-sm"
+          class={panelItem}
         >
           <Icon size={15} aria-hidden="true" class="text-dimmed shrink-0" />
           {label}

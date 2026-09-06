@@ -10,29 +10,16 @@
 @source "../../../../../packages/vue/src";
 
 /*
- * The playground is a consumer of the design system, so it retunes it the way any
- * application would: by redefining `--ui-*` after the import. Nothing else changes.
+ * The playground redefines no `--ui-*` token. It is a workbench for the design system,
+ * so the measure, the gutters, the header height and the radii on the page around a
+ * specimen are the system's own — anything else and the page would be arguing with the
+ * component it is showing. The two faces below are the one thing the system does not
+ * ship, because a webfont is the application's to serve.
  */
-:root {
-  --ui-container: 100rem;
-}
-
 @theme {
   --font-sans:
     "Geist Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
   --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-
-  /* One z-index scale for the whole playground. */
-  --z-index-header: 20;
-  --z-index-skip-link: 30;
-
-  /*
-   * The one shadow on the page, tinted with the theme's own neutral so it reads as the
-   * same light source in both light and dark rather than as grey haze on grey.
-   */
-  --shadow-panel:
-    0 1px 2px 0 color-mix(in oklab, var(--ui-text) 8%, transparent),
-    0 24px 60px -20px color-mix(in oklab, var(--ui-text) 28%, transparent);
 }
 
 @layer base {
@@ -75,21 +62,21 @@
     color: var(--ui-text-highlighted);
   }
 
-  /* Anchored headings land below the sticky header rather than under it. */
+  /* Anchored headings land below the sticky header, whose height is a token. */
   [id] {
-    scroll-margin-top: 5.5rem;
+    scroll-margin-top: calc(var(--ui-header-height) + 1.5rem);
   }
 
   /*
    * The page column scrolls on its own, and a second browser scrollbar beside the
    * page's would be one too many. Thin, and untinted until the pointer is over it.
    */
-  [data-page-nav] {
+  [data-column] {
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
   }
 
-  [data-page-nav]:hover {
+  [data-column]:hover {
     scrollbar-color: var(--ui-border-accented) transparent;
   }
 }
@@ -137,7 +124,7 @@
    */
   [data-stage] {
     background-color: var(--ui-bg);
-    background-image: radial-gradient(var(--ui-border-muted) 1px, transparent 1px);
+    background-image: radial-gradient(var(--ui-border) 1px, transparent 1px);
     background-position: -0.5px -0.5px;
     background-size: 0.5rem 0.5rem;
   }
@@ -151,18 +138,18 @@
   }
 
   /*
-   * A segment is active when its value matches the matching attribute on the
-   * root element. CSS cannot compare two attributes to each other, so the
-   * pairs are written out; in exchange the active segment is right on first
-   * paint, before any script runs.
+   * A segment is active when its value matches the matching attribute on the root
+   * element. CSS cannot compare two attributes to each other, so the pairs are written
+   * out; in exchange the active segment is right on first paint, before any script
+   * runs. The look is the SegmentGroup's: the current segment lifted back to the page's
+   * own surface, with a hairline around it.
    */
   :root[data-surface="default"] [data-option="surface:default"],
   :root[data-surface="muted"] [data-option="surface:muted"],
   :root[data-surface="elevated"] [data-option="surface:elevated"] {
     background-color: var(--ui-bg);
+    box-shadow: inset 0 0 0 1px var(--ui-border);
     color: var(--ui-text-highlighted);
-    /* Tinted to the theme's own neutral rather than a generic black. */
-    box-shadow: 0 1px 2px -1px color-mix(in oklab, var(--ui-text) 22%, transparent);
   }
 
   /*
@@ -189,8 +176,8 @@
     color: var(--ui-text-highlighted);
   }
 
-  /* The disclosure triangle is replaced by the chevron the trigger draws itself. */
-  [data-theme-menu] > summary::-webkit-details-marker {
+  /* A disclosure triangle, replaced by the chevron the trigger draws itself. */
+  [data-menu] > summary::-webkit-details-marker {
     display: none;
   }
 

@@ -14,21 +14,21 @@ interface Props {
 const { title, description, meta = [] } = Astro.props;
 
 const frameLabel = "text-highlighted font-mono text-xs leading-none";
-const framePackage = "text-dimmed font-mono text-[0.625rem] leading-none";
+const framePackage = "text-dimmed font-mono text-[0.6875rem] leading-none";
 const frameHeader =
-  "bg-muted border-muted flex items-center justify-between gap-3 border-b px-4 py-2.5";
+  "bg-muted border-default flex items-center justify-between gap-3 border-b px-4 py-2.5";
 const stage = "p-5 sm:p-7";
 ---
 
-<section class="mt-10">
-  <h2 class="text-highlighted text-lg font-semibold tracking-[-0.02em]">{title}</h2>
-  <p class="text-muted mt-2 max-w-[68ch] text-sm/6 text-pretty">{description}</p>
+<section class="border-default mt-12 border-t pt-8">
+  <h2 class="text-highlighted text-xl font-semibold tracking-tight">{title}</h2>
+  <p class="text-muted mt-2 max-w-[70ch] text-base/7 text-pretty">{description}</p>
 
   {
     meta.length > 0 && (
       <dl class="mt-4 flex flex-wrap gap-x-2 gap-y-1.5">
         {meta.map(({ term, value }) => (
-          <div class="border-muted flex items-baseline gap-2 rounded-lg border px-2 py-1">
+          <div class="bg-elevated flex items-baseline gap-2 rounded-md px-2 py-1">
             <dt class="text-dimmed font-mono text-xs" data-identifier>
               {term}
             </dt>
@@ -41,9 +41,9 @@ const stage = "p-5 sm:p-7";
     )
   }
 
-  <div class="border-muted bg-default mt-5 overflow-hidden rounded-xl border">
+  <div class="border-default bg-default mt-5 overflow-hidden rounded-lg border">
     <div class="grid md:grid-cols-2">
-      <article class="border-muted min-w-0 border-b md:border-r md:border-b-0">
+      <article class="border-default min-w-0 border-b md:border-e md:border-b-0">
         <header class={frameHeader}>
           <h3 class={frameLabel} data-identifier>react</h3>
           <span class={framePackage} data-identifier>@75neo/react</span>
