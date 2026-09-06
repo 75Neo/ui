@@ -52,6 +52,36 @@ const routes: readonly PreviewRoute[] = [
     summary: "A rail of heading links that follows the reading position.",
     key: "tableOfContents",
   },
+  {
+    href: "/combobox",
+    label: "Combobox",
+    summary: "A field that filters a list as it is typed into, single or multiple.",
+    key: "combobox",
+  },
+  {
+    href: "/listbox",
+    label: "Listbox",
+    summary: "An inline list of options, collecting one or several.",
+    key: "listbox",
+  },
+  {
+    href: "/menu",
+    label: "Menu",
+    summary: "A panel of rows dropped from a trigger, with submenus and ticks.",
+    key: "menu",
+  },
+  {
+    href: "/select",
+    label: "Select",
+    summary: "A button showing the current answer, and the list it opens.",
+    key: "select",
+  },
+  {
+    href: "/tree-view",
+    label: "TreeView",
+    summary: "Nested rows that expand, collapse and select.",
+    key: "treeView",
+  },
 ];
 
 /**

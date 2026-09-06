@@ -40,6 +40,26 @@ export default defineConfig({
           find: /^@75neo\/react\/table-of-contents$/,
           replacement: src("react", "table-of-contents/index.ts"),
         },
+        {
+          find: /^@75neo\/react\/combobox$/,
+          replacement: src("react", "combobox/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/listbox$/,
+          replacement: src("react", "listbox/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/menu$/,
+          replacement: src("react", "menu/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/select$/,
+          replacement: src("react", "select/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/tree-view$/,
+          replacement: src("react", "tree-view/index.ts"),
+        },
         { find: /^@75neo\/themes$/, replacement: src("themes") },
         { find: /^@75neo\/vue$/, replacement: src("vue") },
         {
@@ -54,6 +74,26 @@ export default defineConfig({
         {
           find: /^@75neo\/vue\/table-of-contents$/,
           replacement: src("vue", "table-of-contents/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/combobox$/,
+          replacement: src("vue", "combobox/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/listbox$/,
+          replacement: src("vue", "listbox/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/menu$/,
+          replacement: src("vue", "menu/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/select$/,
+          replacement: src("vue", "select/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/tree-view$/,
+          replacement: src("vue", "tree-view/index.ts"),
         },
       ],
     },

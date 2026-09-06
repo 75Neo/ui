@@ -1,0 +1,37 @@
+---
+import * as TreeViewParts from "@75neo/react/tree-view";
+import { treeViewSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import TreeViewPreview from "../previews/TreeViewPreview.tsx";
+import TreeViewPreviewVue from "../previews/TreeViewPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(TreeViewParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(treeViewSchema);
+const combinations = variantKeys.reduce(
+  (total, key) =>
+    total * (treeViewSchema[key as keyof typeof treeViewSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  title="TreeView"
+  description="Nested rows that expand, collapse and select. A node with children is a branch, one without is a leaf, and the collection is derived state the caller never meets."
+>
+  <Preview
+    title="Variant matrix"
+    description="Every size, then all seven colors, then multiple selection. Both columns render the same matrix, so anything that differs between them is a real difference between the adapters."
+    meta={meta}
+  >
+    <Fragment slot="react"><TreeViewPreview client:load /></Fragment>
+    <Fragment slot="vue"><TreeViewPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

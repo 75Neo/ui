@@ -3,10 +3,20 @@ import type { Framework } from "../lib/framework";
 import { AccordionPreview } from "../previews/AccordionPreview";
 import { ButtonPreview } from "../previews/ButtonPreview";
 import { ClipboardPreview } from "../previews/ClipboardPreview";
+import { TreeViewPreview } from "../previews/TreeViewPreview";
+import { SelectPreview } from "../previews/SelectPreview";
+import { MenuPreview } from "../previews/MenuPreview";
+import { ListboxPreview } from "../previews/ListboxPreview";
+import { ComboboxPreview } from "../previews/ComboboxPreview";
 import { TableOfContentsPreview } from "../previews/TableOfContentsPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
 import ButtonPreviewVue from "../previews/ButtonPreview.vue";
 import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
+import TreeViewPreviewVue from "../previews/TreeViewPreview.vue";
+import SelectPreviewVue from "../previews/SelectPreview.vue";
+import MenuPreviewVue from "../previews/MenuPreview.vue";
+import ListboxPreviewVue from "../previews/ListboxPreview.vue";
+import ComboboxPreviewVue from "../previews/ComboboxPreview.vue";
 import TableOfContentsPreviewVue from "../previews/TableOfContentsPreview.vue";
 
 /**
@@ -32,9 +42,19 @@ const vue = framework === "vue";
 {react && name === "Accordion" && <AccordionPreview />}
 {react && name === "Button" && <ButtonPreview />}
 {react && name === "Clipboard" && <ClipboardPreview />}
+{react && name === "TreeView" && <TreeViewPreview />}
+{react && name === "Select" && <SelectPreview />}
+{react && name === "Menu" && <MenuPreview />}
+{react && name === "Listbox" && <ListboxPreview />}
+{react && name === "Combobox" && <ComboboxPreview />}
 {react && name === "TableOfContents" && <TableOfContentsPreview />}
 
 {vue && name === "Accordion" && <AccordionPreviewVue />}
 {vue && name === "Button" && <ButtonPreviewVue />}
 {vue && name === "Clipboard" && <ClipboardPreviewVue />}
+{vue && name === "TreeView" && <TreeViewPreviewVue />}
+{vue && name === "Select" && <SelectPreviewVue />}
+{vue && name === "Menu" && <MenuPreviewVue />}
+{vue && name === "Listbox" && <ListboxPreviewVue />}
+{vue && name === "Combobox" && <ComboboxPreviewVue />}
 {vue && name === "TableOfContents" && <TableOfContentsPreviewVue />}
