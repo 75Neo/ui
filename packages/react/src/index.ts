@@ -12,3 +12,8 @@ export * from "./password-input/index";
 export * from "./pin-input/index";
 export * from "./tags-input/index";
 export * from "./editable/index";
+export * from "./checkbox/index";
+export * from "./radio-group/index";
+export * from "./switch/index";
+export * from "./segment-group/index";
+export * from "./rating-group/index";

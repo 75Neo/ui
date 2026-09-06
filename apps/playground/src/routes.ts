@@ -17,10 +17,40 @@ export const overview: readonly PreviewRoute[] = [
     key: "overview",
   },
   {
-    href: "/tokens",
-    label: "Tokens",
-    summary: "Every color, strength and surface a recipe is allowed to compose.",
-    key: "overview",
+    href: "/tree-view",
+    label: "TreeView",
+    summary: "Nested rows that expand, collapse and select.",
+    key: "treeView",
+  },
+  {
+    href: "/checkbox",
+    label: "Checkbox",
+    summary: "A box that ticks, unticks, or holds the third state.",
+    key: "checkbox",
+  },
+  {
+    href: "/radio-group",
+    label: "RadioGroup",
+    summary: "One choice out of several, each with room for a second line.",
+    key: "radioGroup",
+  },
+  {
+    href: "/switch",
+    label: "Switch",
+    summary: "An on-off control with icons riding the thumb.",
+    key: "switch",
+  },
+  {
+    href: "/segment-group",
+    label: "SegmentGroup",
+    summary: "A row of choices under a sliding pill.",
+    key: "segmentGroup",
+  },
+  {
+    href: "/rating-group",
+    label: "RatingGroup",
+    summary: "Stars that fill whole or half.",
+    key: "ratingGroup",
   },
 ];
 

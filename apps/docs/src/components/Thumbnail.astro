@@ -5,6 +5,11 @@ import { ButtonPreview } from "../previews/ButtonPreview";
 import { ClipboardPreview } from "../previews/ClipboardPreview";
 import { TreeViewPreview } from "../previews/TreeViewPreview";
 import { SelectPreview } from "../previews/SelectPreview";
+import { RatingGroupPreview } from "../previews/RatingGroupPreview";
+import { SegmentGroupPreview } from "../previews/SegmentGroupPreview";
+import { SwitchPreview } from "../previews/SwitchPreview";
+import { RadioGroupPreview } from "../previews/RadioGroupPreview";
+import { CheckboxPreview } from "../previews/CheckboxPreview";
 import { MenuPreview } from "../previews/MenuPreview";
 import { ListboxPreview } from "../previews/ListboxPreview";
 import { ComboboxPreview } from "../previews/ComboboxPreview";
@@ -19,6 +24,11 @@ import ButtonPreviewVue from "../previews/ButtonPreview.vue";
 import ClipboardPreviewVue from "../previews/ClipboardPreview.vue";
 import TreeViewPreviewVue from "../previews/TreeViewPreview.vue";
 import SelectPreviewVue from "../previews/SelectPreview.vue";
+import RatingGroupPreviewVue from "../previews/RatingGroupPreview.vue";
+import SegmentGroupPreviewVue from "../previews/SegmentGroupPreview.vue";
+import SwitchPreviewVue from "../previews/SwitchPreview.vue";
+import RadioGroupPreviewVue from "../previews/RadioGroupPreview.vue";
+import CheckboxPreviewVue from "../previews/CheckboxPreview.vue";
 import MenuPreviewVue from "../previews/MenuPreview.vue";
 import ListboxPreviewVue from "../previews/ListboxPreview.vue";
 import ComboboxPreviewVue from "../previews/ComboboxPreview.vue";
@@ -54,6 +64,11 @@ const vue = framework === "vue";
 {react && name === "Clipboard" && <ClipboardPreview />}
 {react && name === "TreeView" && <TreeViewPreview />}
 {react && name === "Select" && <SelectPreview />}
+{react && name === "RatingGroup" && <RatingGroupPreview />}
+{react && name === "SegmentGroup" && <SegmentGroupPreview />}
+{react && name === "Switch" && <SwitchPreview />}
+{react && name === "RadioGroup" && <RadioGroupPreview />}
+{react && name === "Checkbox" && <CheckboxPreview />}
 {react && name === "Menu" && <MenuPreview />}
 {react && name === "Listbox" && <ListboxPreview />}
 {react && name === "Combobox" && <ComboboxPreview />}
@@ -69,6 +84,11 @@ const vue = framework === "vue";
 {vue && name === "Clipboard" && <ClipboardPreviewVue />}
 {vue && name === "TreeView" && <TreeViewPreviewVue />}
 {vue && name === "Select" && <SelectPreviewVue />}
+{vue && name === "RatingGroup" && <RatingGroupPreviewVue />}
+{vue && name === "SegmentGroup" && <SegmentGroupPreviewVue />}
+{vue && name === "Switch" && <SwitchPreviewVue />}
+{vue && name === "RadioGroup" && <RadioGroupPreviewVue />}
+{vue && name === "Checkbox" && <CheckboxPreviewVue />}
 {vue && name === "Menu" && <MenuPreviewVue />}
 {vue && name === "Listbox" && <ListboxPreviewVue />}
 {vue && name === "Combobox" && <ComboboxPreviewVue />}

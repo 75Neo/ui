@@ -1,0 +1,37 @@
+---
+import * as SwitchParts from "@75neo/react/switch";
+import { switchSchema } from "@75neo/themes";
+import Preview from "../components/Preview.astro";
+import Playground from "../layouts/Playground.astro";
+import SwitchPreview from "../previews/SwitchPreview.tsx";
+import SwitchPreviewVue from "../previews/SwitchPreview.vue";
+
+// Read off the module rather than restated here, so this ledger cannot drift.
+const parts = Object.keys(SwitchParts).filter((key) => !key.startsWith("use"));
+const variantKeys = Object.keys(switchSchema);
+const combinations = variantKeys.reduce(
+  (total, key) =>
+    total * (switchSchema[key as keyof typeof switchSchema].values.length as number),
+  1,
+);
+
+const meta = [
+  { term: "parts", value: parts.join(" · ") },
+  { term: "variants", value: variantKeys.join(" · ") },
+  { term: "combinations", value: String(combinations) },
+];
+---
+
+<Playground
+  title="Switch"
+  description="An on-off control with icons riding the thumb. Loading spins whichever icon shows and disables the control; the thumb itself snaps, never slides."
+>
+  <Preview
+    title="Variant matrix"
+    description="Every size, then all seven colors, then checked, loading and disabled. Both columns render the same matrix, so anything that differs between them is a real difference between the adapters."
+    meta={meta}
+  >
+    <Fragment slot="react"><SwitchPreview client:load /></Fragment>
+    <Fragment slot="vue"><SwitchPreviewVue client:load /></Fragment>
+  </Preview>
+</Playground>

@@ -12,6 +12,11 @@ import { EditablePreview } from "../previews/EditablePreview";
 import { ListboxPreview } from "../previews/ListboxPreview";
 import { MenuPreview } from "../previews/MenuPreview";
 import { SelectPreview } from "../previews/SelectPreview";
+import { RatingGroupPreview } from "../previews/RatingGroupPreview";
+import { SegmentGroupPreview } from "../previews/SegmentGroupPreview";
+import { SwitchPreview } from "../previews/SwitchPreview";
+import { RadioGroupPreview } from "../previews/RadioGroupPreview";
+import { CheckboxPreview } from "../previews/CheckboxPreview";
 import { TableOfContentsPreview } from "../previews/TableOfContentsPreview";
 import { TreeViewPreview } from "../previews/TreeViewPreview";
 import AccordionPreviewVue from "../previews/AccordionPreview.vue";
@@ -26,6 +31,11 @@ import EditablePreviewVue from "../previews/EditablePreview.vue";
 import ListboxPreviewVue from "../previews/ListboxPreview.vue";
 import MenuPreviewVue from "../previews/MenuPreview.vue";
 import SelectPreviewVue from "../previews/SelectPreview.vue";
+import RatingGroupPreviewVue from "../previews/RatingGroupPreview.vue";
+import SegmentGroupPreviewVue from "../previews/SegmentGroupPreview.vue";
+import SwitchPreviewVue from "../previews/SwitchPreview.vue";
+import RadioGroupPreviewVue from "../previews/RadioGroupPreview.vue";
+import CheckboxPreviewVue from "../previews/CheckboxPreview.vue";
 import TableOfContentsPreviewVue from "../previews/TableOfContentsPreview.vue";
 import TreeViewPreviewVue from "../previews/TreeViewPreview.vue";
 
@@ -63,6 +73,11 @@ const vue = framework === "vue";
 {react && name === "Listbox" && <ListboxPreview client:visible />}
 {react && name === "Menu" && <MenuPreview client:visible />}
 {react && name === "Select" && <SelectPreview client:visible />}
+{react && name === "RatingGroup" && <RatingGroupPreview client:visible />}
+{react && name === "SegmentGroup" && <SegmentGroupPreview client:visible />}
+{react && name === "Switch" && <SwitchPreview client:visible />}
+{react && name === "RadioGroup" && <RadioGroupPreview client:visible />}
+{react && name === "Checkbox" && <CheckboxPreview client:visible />}
 {react && name === "TableOfContents" && <TableOfContentsPreview client:visible />}
 {react && name === "TreeView" && <TreeViewPreview client:visible />}
 
@@ -78,5 +93,10 @@ const vue = framework === "vue";
 {vue && name === "Listbox" && <ListboxPreviewVue client:visible />}
 {vue && name === "Menu" && <MenuPreviewVue client:visible />}
 {vue && name === "Select" && <SelectPreviewVue client:visible />}
+{vue && name === "RatingGroup" && <RatingGroupPreviewVue client:visible />}
+{vue && name === "SegmentGroup" && <SegmentGroupPreviewVue client:visible />}
+{vue && name === "Switch" && <SwitchPreviewVue client:visible />}
+{vue && name === "RadioGroup" && <RadioGroupPreviewVue client:visible />}
+{vue && name === "Checkbox" && <CheckboxPreviewVue client:visible />}
 {vue && name === "TableOfContents" && <TableOfContentsPreviewVue client:visible />}
 {vue && name === "TreeView" && <TreeViewPreviewVue client:visible />}

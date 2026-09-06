@@ -17,6 +17,11 @@ export const previewed = new Set([
   "Listbox",
   "Menu",
   "Select",
+  "Checkbox",
+  "RadioGroup",
+  "Switch",
+  "SegmentGroup",
+  "RatingGroup",
   "TreeView",
 ]);
 

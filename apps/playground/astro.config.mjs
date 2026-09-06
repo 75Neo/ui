@@ -61,6 +61,26 @@ export default defineConfig({
           replacement: src("react", "tree-view/index.ts"),
         },
         {
+          find: /^@75neo\/react\/checkbox$/,
+          replacement: src("react", "checkbox/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/radio-group$/,
+          replacement: src("react", "radio-group/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/switch$/,
+          replacement: src("react", "switch/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/segment-group$/,
+          replacement: src("react", "segment-group/index.ts"),
+        },
+        {
+          find: /^@75neo\/react\/rating-group$/,
+          replacement: src("react", "rating-group/index.ts"),
+        },
+        {
           find: /^@75neo\/react\/number-input$/,
           replacement: src("react", "number-input/index.ts"),
         },
@@ -114,6 +134,26 @@ export default defineConfig({
         {
           find: /^@75neo\/vue\/tree-view$/,
           replacement: src("vue", "tree-view/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/checkbox$/,
+          replacement: src("vue", "checkbox/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/radio-group$/,
+          replacement: src("vue", "radio-group/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/switch$/,
+          replacement: src("vue", "switch/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/segment-group$/,
+          replacement: src("vue", "segment-group/index.ts"),
+        },
+        {
+          find: /^@75neo\/vue\/rating-group$/,
+          replacement: src("vue", "rating-group/index.ts"),
         },
         {
           find: /^@75neo\/vue\/number-input$/,
