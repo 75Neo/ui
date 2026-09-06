@@ -227,8 +227,8 @@ catalogs:
       specifier: ^6.1.7
       version: 6.1.7
     lucide-react:
-      specifier: ^1.37.0
-      version: 1.37.0
+      specifier: ^1.39.0
+      version: 1.39.0
     publint:
       specifier: ^0.3.24
       version: 0.3.24
@@ -329,7 +329,7 @@ importers:
         version: 7.2.10(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.3)(@types/node@26.4.0)(jiti@2.7.0)(yaml@2.9.0)
       lucide-react:
         specifier: 'catalog:'
-        version: 1.37.0(react@19.2.8)
+        version: 1.39.0(react@19.2.8)
       react:
         specifier: 'catalog:'
         version: 19.2.8
@@ -402,7 +402,7 @@ importers:
         version: 7.2.10(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.3)(@types/node@26.4.0)(jiti@2.7.0)(yaml@2.9.0)
       lucide-react:
         specifier: 'catalog:'
-        version: 1.37.0(react@19.2.8)
+        version: 1.39.0(react@19.2.8)
       react:
         specifier: 'catalog:'
         version: 19.2.8
@@ -464,7 +464,7 @@ importers:
         version: 5.39.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       lucide-react:
         specifier: 'catalog:'
-        version: 1.37.0(react@19.2.8)
+        version: 1.39.0(react@19.2.8)
     devDependencies:
       '@rolldown/plugin-babel':
         specifier: ^0.2.3
@@ -3491,8 +3491,8 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
-  lucide-react@1.37.0:
-    resolution: {integrity: sha512-LPsB4rD1TD6wZu1djKOf9vUnS1jTNaHbolXebXDgiTdb6jeA1agIJhJsIybCmjKmQClcOaal1o1OaiYahEftyQ==}
+  lucide-react@1.39.0:
+    resolution: {integrity: sha512-y8nXoEwvqqIsF927NBWXODa4bfMrcUeEb/9sgpwFqg0gUjgn3j5Hznk+v7STmPgZ2iQ11JKlbQGdFRuTOwvYkA==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -7805,7 +7805,7 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-react@1.37.0(react@19.2.8):
+  lucide-react@1.39.0(react@19.2.8):
     dependencies:
       react: 19.2.8
 
