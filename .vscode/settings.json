@@ -2,5 +2,8 @@
   "editor.quickSuggestions": {
     "strings": "on"
   },
-  "tailwindCSS.classFunctions": ["cva", "cn"]
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.classFunctions": ["tv", "cn"]
 }
