@@ -107,6 +107,22 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+  # The registry is what the library ships, so it is built on every run rather than
+  # behind the `changes` filters, the same as format and lint.
+  registry:
+    name: Registry
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Build the registry
+        run: pnpm registry:build
+
   build:
     name: Build
     needs: changes
@@ -188,7 +204,7 @@ jobs:
   ci:
     name: CI
     if: always()
-    needs: [changes, format, lint, build, typecheck, test]
+    needs: [changes, format, lint, registry, build, typecheck, test]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

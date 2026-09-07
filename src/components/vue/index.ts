@@ -1,1 +1,1 @@
-export { default as Button } from "./button/button.vue";
+export { default as Button } from "@/registry/vue/ui/Button.vue";

@@ -8,6 +8,8 @@ import vue from "@astrojs/vue";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
+  site: "https://75neo-ui.pages.dev",
+
   integrations: [react(), vue()],
 
   vite: {

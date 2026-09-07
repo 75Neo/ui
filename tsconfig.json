@@ -12,7 +12,7 @@
     "jsx": "preserve",
     "jsxImportSource": "react",
     "paths": {
-      "@components/*": ["./src/components/*"],
+      "@/registry/*": ["./registry/*"],
       "@layouts/*": ["./src/layouts/*"]
     }
   }

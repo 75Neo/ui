@@ -13,11 +13,11 @@ export default defineConfig({
   },
   overrides: [
     {
-      files: ["src/components/react/**"],
+      files: ["registry/react/**"],
       plugins: ["react", "react-perf"],
     },
     {
-      files: ["src/components/vue/**"],
+      files: ["registry/vue/**"],
       plugins: ["vue"],
     },
   ],

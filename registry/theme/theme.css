@@ -1,0 +1,73 @@
+@custom-variant light (&:where(.light, .light *));
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --ui-primary: var(--color-blue-600);
+    --ui-secondary: var(--color-teal-700);
+    --ui-success: var(--color-green-700);
+    --ui-info: var(--color-sky-700);
+    --ui-warning: var(--color-yellow-500);
+    --ui-error: var(--color-red-600);
+
+    --ui-text: var(--color-zinc-900);
+    --ui-text-dimmed: var(--color-zinc-400);
+    --ui-text-muted: var(--color-zinc-500);
+    --ui-text-inverted: var(--color-zinc-200);
+
+    --ui-bg: var(--color-zinc-50);
+    --ui-bg-muted: var(--color-zinc-200);
+    --ui-bg-accented: var(--color-zinc-400);
+    --ui-bg-inverted: var(--color-zinc-800);
+
+    --ui-radius: 0.15rem;
+    --ui-container: 50rem;
+  }
+
+  .dark {
+    --ui-primary: var(--color-blue-400);
+    --ui-secondary: var(--color-teal-400);
+    --ui-success: var(--color-green-400);
+    --ui-info: var(--color-sky-400);
+    --ui-warning: var(--color-yellow-400);
+    --ui-error: var(--color-red-400);
+
+    --ui-text: var(--color-zinc-200);
+    --ui-text-dimmed: var(--color-zinc-500);
+    --ui-text-muted: var(--color-zinc-400);
+    --ui-text-inverted: var(--color-zinc-900);
+
+    --ui-bg: var(--color-zinc-800);
+    --ui-bg-muted: var(--color-zinc-700);
+    --ui-bg-accented: var(--color-zinc-600);
+    --ui-bg-inverted: var(--color-zinc-50);
+  }
+}
+
+@theme default {
+  --color-primary: var(--ui-primary);
+  --color-secondary: var(--ui-secondary);
+  --color-success: var(--ui-success);
+  --color-info: var(--ui-info);
+  --color-warning: var(--ui-warning);
+  --color-error: var(--ui-error);
+
+  --radius-xs: calc(var(--ui-radius) * 0.5);
+  --radius-sm: calc(var(--ui-radius));
+  --radius-md: calc(var(--ui-radius) * 1.5);
+  --radius-lg: calc(var(--ui-radius) * 2);
+  --radius-xl: calc(var(--ui-radius) * 2.5);
+  --radius-2xl: calc(var(--ui-radius) * 3);
+  --radius-3xl: calc(var(--ui-radius) * 3.5);
+  --radius-4xl: calc(var(--ui-radius) * 4);
+
+  --text-color-default: var(--ui-text);
+  --text-color-dimmed: var(--ui-text-dimmed);
+  --text-color-muted: var(--ui-text-muted);
+  --text-color-inverted: var(--ui-text-inverted);
+
+  --background-color-default: var(--ui-bg);
+  --background-color-muted: var(--ui-bg-muted);
+  --background-color-accented: var(--ui-bg-accented);
+  --background-color-inverted: var(--ui-bg-inverted);
+}

@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "cn";
-import { button, type ButtonVariants } from "@components/shared/button.styles";
+import { button, type ButtonVariants } from "@/registry/shared/lib/button.styles";
 
 export interface ButtonProps
   extends Omit<React.ComponentPropsWithRef<"button">, "color">, ButtonVariants {

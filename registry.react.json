@@ -1,0 +1,39 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "75neo",
+  "homepage": "https://75neo-ui.pages.dev",
+  "items": [
+    {
+      "name": "theme",
+      "type": "registry:theme",
+      "title": "75NeoUI theme",
+      "description": "The colour, radius and text tokens every 75NeoUI component draws on.",
+      "files": [
+        {
+          "path": "registry/theme/theme.css",
+          "type": "registry:file",
+          "target": "~/75neo-theme.css"
+        }
+      ],
+      "docs": "Add @import \"./75neo-theme.css\"; to your stylesheet, after @import \"tailwindcss\";."
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "A button with six variants, six semantic colours and five sizes.",
+      "registryDependencies": ["@75neo/theme"],
+      "dependencies": ["cn", "tailwind-variants"],
+      "files": [
+        {
+          "path": "registry/react/ui/button.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "registry/shared/lib/button.styles.ts",
+          "type": "registry:lib"
+        }
+      ]
+    }
+  ]
+}

@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "registry:build": "shadcn build registry.react.json --output public/r/react && shadcn-vue build registry.vue.json --output public/r/vue",
+    "build": "pnpm registry:build && astro build",
     "preview": "astro preview",
     "typecheck": "astro check",
     "lint": "oxlint",
@@ -36,7 +37,9 @@
     "astro": "^7.3.1",
     "oxfmt": "^0.66.0",
     "oxlint": "^1.81.0",
-    "oxlint-tailwindcss": "^1.10.2"
+    "oxlint-tailwindcss": "^1.10.2",
+    "shadcn": "^4.21.0",
+    "shadcn-vue": "^2.8.2"
   },
   "devEngines": {
     "packageManager": {
