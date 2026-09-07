@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Clipboard",
+  "description": "A copy control that reports success for a moment afterwards.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}
