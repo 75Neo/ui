@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Table of Contents",
+  "description": "A navigation rail that tracks the headings in view and marks the active one.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

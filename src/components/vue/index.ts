@@ -14,3 +14,9 @@ export { default as TableFooter } from "@/registry/vue/ui/table/TableFooter.vue"
 export { default as TableHead } from "@/registry/vue/ui/table/TableHead.vue";
 export { default as TableHeader } from "@/registry/vue/ui/table/TableHeader.vue";
 export { default as TableRow } from "@/registry/vue/ui/table/TableRow.vue";
+export { default as Toc } from "@/registry/vue/ui/toc/Toc.vue";
+export { default as TocIndicator } from "@/registry/vue/ui/toc/TocIndicator.vue";
+export { default as TocItem } from "@/registry/vue/ui/toc/TocItem.vue";
+export { default as TocLink } from "@/registry/vue/ui/toc/TocLink.vue";
+export { default as TocList } from "@/registry/vue/ui/toc/TocList.vue";
+export { default as TocTitle } from "@/registry/vue/ui/toc/TocTitle.vue";
