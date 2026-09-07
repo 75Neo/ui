@@ -1,4 +1,7 @@
-# 75NeoUI
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.png">
+  <img alt="75NeoUI, one UI kit for React and Vue" src="assets/banner-light.png">
+</picture>
 
 A component library for React and Vue, distributed as a [shadcn
 registry](https://ui.shadcn.com/docs/registry/getting-started). You install a component's
