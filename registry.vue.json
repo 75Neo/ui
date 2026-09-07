@@ -23,7 +23,7 @@
       "title": "Button",
       "description": "A button with six variants, six semantic colours and five sizes.",
       "registryDependencies": ["@75neo/theme"],
-      "dependencies": ["cn", "tailwind-variants"],
+      "dependencies": ["@ark-ui/vue", "cn", "tailwind-variants"],
       "files": [
         {
           "path": "registry/vue/ui/button/Button.vue",
@@ -31,6 +31,24 @@
         },
         {
           "path": "registry/shared/lib/button.styles.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "container",
+      "type": "registry:ui",
+      "title": "Container",
+      "description": "A layout element that centres its content and holds it to a maximum width.",
+      "registryDependencies": ["@75neo/theme"],
+      "dependencies": ["@ark-ui/vue", "cn", "tailwind-variants"],
+      "files": [
+        {
+          "path": "registry/vue/ui/container/Container.vue",
+          "type": "registry:ui"
+        },
+        {
+          "path": "registry/shared/lib/container.styles.ts",
           "type": "registry:lib"
         }
       ]
