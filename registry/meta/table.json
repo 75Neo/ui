@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Table",
+  "description": "A composable data table with a header, body, footer, caption and scrollable container.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["cn", "tailwind-variants"]
+}

@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Number Input",
+  "description": "A numeric field with steppers, clamping and locale aware formatting.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

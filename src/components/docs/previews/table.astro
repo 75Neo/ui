@@ -1,0 +1,49 @@
+---
+import Table from "@/registry/vue/ui/table/Table.vue";
+import TableBody from "@/registry/vue/ui/table/TableBody.vue";
+import TableCaption from "@/registry/vue/ui/table/TableCaption.vue";
+import TableCell from "@/registry/vue/ui/table/TableCell.vue";
+import TableFooter from "@/registry/vue/ui/table/TableFooter.vue";
+import TableHead from "@/registry/vue/ui/table/TableHead.vue";
+import TableHeader from "@/registry/vue/ui/table/TableHeader.vue";
+import TableRow from "@/registry/vue/ui/table/TableRow.vue";
+
+const rows = [
+  { item: "button", framework: "React and Vue", files: 2 },
+  { item: "container", framework: "React and Vue", files: 2 },
+  { item: "navigation-menu", framework: "React and Vue", files: 12 },
+  { item: "table", framework: "React and Vue", files: 16 },
+];
+---
+
+<Table class="w-full">
+  <TableCaption>Registry items and the number of source files each one installs.</TableCaption>
+
+  <TableHeader>
+    <TableRow>
+      <TableHead>Item</TableHead>
+      <TableHead>Adapters</TableHead>
+      <TableHead class="text-right">Files</TableHead>
+    </TableRow>
+  </TableHeader>
+
+  <TableBody>
+    {
+      rows.map((row) => (
+        <TableRow>
+          <TableCell class="font-mono text-xs text-default">{row.item}</TableCell>
+          <TableCell class="text-muted">{row.framework}</TableCell>
+          <TableCell class="text-right font-mono text-xs text-muted">{row.files}</TableCell>
+        </TableRow>
+      ))
+    }
+  </TableBody>
+
+  <TableFooter>
+    <TableRow>
+      <TableCell class="text-default">Total</TableCell>
+      <TableCell />
+      <TableCell class="text-right font-mono text-xs text-default">32</TableCell>
+    </TableRow>
+  </TableFooter>
+</Table>

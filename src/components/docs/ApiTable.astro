@@ -1,0 +1,74 @@
+---
+import Table from "@/registry/vue/ui/table/Table.vue";
+import TableBody from "@/registry/vue/ui/table/TableBody.vue";
+import TableCell from "@/registry/vue/ui/table/TableCell.vue";
+import TableHead from "@/registry/vue/ui/table/TableHead.vue";
+import TableHeader from "@/registry/vue/ui/table/TableHeader.vue";
+import TableRow from "@/registry/vue/ui/table/TableRow.vue";
+
+interface Row {
+  name: string;
+  type?: string;
+  required?: boolean;
+  default?: string;
+  description?: string;
+}
+
+interface Props {
+  label: string;
+  nameHeading: string;
+  rows: Row[];
+}
+
+const { label, nameHeading, rows } = Astro.props;
+
+const showType = rows.some((row) => row.type);
+const showDefault = rows.some((row) => row.default);
+const showDescription = rows.some((row) => row.description);
+---
+
+<div class="mt-6">
+  <p class="mb-2 text-xs font-medium text-dimmed">{label}</p>
+
+  <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHead>{nameHeading}</TableHead>
+        {showType && <TableHead>Type</TableHead>}
+        {showDefault && <TableHead>Default</TableHead>}
+        {showDescription && <TableHead>Description</TableHead>}
+      </TableRow>
+    </TableHeader>
+
+    <TableBody>
+      {
+        rows.map((row) => (
+          <TableRow>
+            <TableCell class="align-top font-mono text-xs whitespace-nowrap text-default">
+              {row.name}
+              {row.required && <span class="ms-1 text-error">*</span>}
+            </TableCell>
+
+            {showType && (
+              <TableCell class="align-top font-mono text-xs text-muted">
+                <span class="block max-w-72 break-words">{row.type}</span>
+              </TableCell>
+            )}
+
+            {showDefault && (
+              <TableCell class="align-top font-mono text-xs whitespace-nowrap text-muted">
+                {row.default}
+              </TableCell>
+            )}
+
+            {showDescription && (
+              <TableCell class="align-top text-xs text-muted">
+                <span class="block max-w-96">{row.description}</span>
+              </TableCell>
+            )}
+          </TableRow>
+        ))
+      }
+    </TableBody>
+  </Table>
+</div>

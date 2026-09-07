@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Progress",
+  "description": "A determinate progress bar with an optional label and value readout.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

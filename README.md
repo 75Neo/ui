@@ -1,134 +1,98 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="assets/banner-light.png">
-  <img alt="75NeoUI — a component library for React and Vue, built on Ark UI and Tailwind CSS" src="assets/banner-dark.png" width="100%">
+  <img alt="75NeoUI, one UI kit for React and Vue" src="assets/banner-light.png">
 </picture>
 
-# 75NeoUI
+A component library for React and Vue, distributed as a [shadcn
+registry](https://ui.shadcn.com/docs/registry/getting-started). You install a component's
+source into your own project and own it from there; there is no runtime package to depend
+on.
 
-A component library for React and Vue. Behaviour and accessibility come from
-[Ark UI](https://ark-ui.com), styling from [Tailwind CSS](https://tailwindcss.com) and
-[Tailwind Variants](https://www.tailwind-variants.org), and theming from a set of CSS
-custom properties you can redefine.
+Components are written twice, once for each framework, over one shared
+[tailwind-variants](https://www.tailwind-variants.org) recipe, so a button looks and
+behaves the same whichever adapter you install.
 
-Both adapters ship the same components with the same props, the same slot names and the
-same variants.
+## Requirements
 
-| Framework | Package        | Requires            |
-| --------- | -------------- | ------------------- |
-| React     | `@75neo/react` | React 18 or greater |
-| Vue       | `@75neo/vue`   | Vue 3.5 or greater  |
+Tailwind CSS v4 and a project the shadcn CLI recognises, which means a `components.json`
+at its root. Run `npx shadcn@latest init` (or `npx shadcn-vue@latest init` for Vue) if you
+do not have one.
 
 ## Install
 
-```sh
-pnpm add @75neo/react   # or @75neo/vue
+Add the registry to your `components.json`:
+
+```json
+{
+  "registries": {
+    "@75neo": "https://75neo-ui.pages.dev/r/react/{name}.json"
+  }
+}
 ```
 
-Either adapter pulls `@75neo/themes` in with it. Swap `pnpm add` for `npm install`,
-`yarn add` or `bun add`.
+Vue projects point at the `vue` path instead:
 
-Then add two imports to the stylesheet your app already loads:
+```json
+{
+  "registries": {
+    "@75neo": "https://75neo-ui.pages.dev/r/vue/{name}.json"
+  }
+}
+```
+
+Then add a component. React:
+
+```sh
+npx shadcn@latest add @75neo/button
+```
+
+Vue:
+
+```sh
+npx shadcn-vue@latest add @75neo/button
+```
+
+## Theme
+
+Every component draws on a set of `--ui-*` custom properties and the Tailwind theme
+mapping built on top of them. The `theme` item carries them, and the CLI installs it
+automatically the first time you add a component. It writes `75neo-theme.css` to your
+project root, which you import after Tailwind:
 
 ```css
 @import "tailwindcss";
-@import "@75neo/themes";
+@import "./75neo-theme.css";
 ```
 
-That brings the tokens, the `light` and `dark` variants and the base layer. Dark mode is
-a `.dark` class on a root element, so a theme toggle only has to move that class.
+Dark mode is class-based: put `dark` on an ancestor of the components you want in the dark
+palette. Retheme the library by overriding the `--ui-*` properties rather than the
+Tailwind tokens derived from them.
 
-## Use a component
-
-```tsx
-import { Button } from "@75neo/react";
-
-export function App() {
-  return (
-    <Button variant="solid" color="primary">
-      Get started
-    </Button>
-  );
-}
-```
-
-```vue
-<script setup lang="ts">
-import { Button } from "@75neo/vue";
-</script>
-
-<template>
-  <Button variant="solid" color="primary">Get started</Button>
-</template>
-```
-
-## Restyle it
-
-Three entry points, from broadest to narrowest.
-
-**Redefine a token** in your own CSS, after the import. Every value is a plain custom
-property, and both themes flip with it:
-
-```css
-:root {
-  --ui-radius: 0.5rem;
-  --ui-primary: var(--color-teal-700);
-}
-
-.dark {
-  --ui-primary: var(--color-teal-400);
-}
-```
-
-Each semantic color is one token, spent at different strengths with Tailwind's opacity
-modifier, so a rebrand is one line per color.
-
-**Wrap a subtree in `Theme`** to restyle everything below it. Nesting composes:
-
-```tsx
-<Theme theme={{ button: { ui: { base: "rounded-full" }, props: { color: "neutral" } } }}>
-  <Button>Rounded and neutral by default</Button>
-</Theme>
-```
-
-**Pass `ui` to one component** to restyle that call alone. The keys are the component's
-slots:
-
-```tsx
-<Button ui={{ base: "rounded-full", label: "tracking-wide" }}>One-off</Button>
-```
-
-All three settle through one cascade: the recipe, then `Theme` layers, then `ui`, then
-`class` on the base slot. Tailwind-merge resolves conflicts, so a later layer replaces a
-conflicting utility and everything else survives.
-[`packages/themes/README.md`](packages/themes/README.md) has the token vocabulary.
-
-## Documentation
-
-- `pnpm dev:docs` runs the documentation site
-- `pnpm dev:play` runs the playground, every component in React and Vue side by side
-
-## Develop locally
+## Working on the registry
 
 ```sh
-mise install   # Node 24 and pnpm 11
 pnpm install
-pnpm build     # core → themes → react/vue
+pnpm dev              # docs site on http://localhost:4321
+pnpm registry:build   # write the registry items into public/r
 ```
 
-Before opening a pull request, run what CI runs:
+Component sources live under `registry/`: `react/ui` and `vue/ui` hold the adapters,
+`shared/lib` the recipes both import, and `theme` the stylesheet. `registry.react.json`
+and `registry.vue.json` list what each framework publishes. Imports between registry files
+are written as `@/registry/…` because that is the prefix the shadcn CLI rewrites to the
+installing project's own aliases.
 
-```sh
-pnpm format:check && pnpm lint && pnpm build && pnpm typecheck && pnpm test
-```
+`pnpm build` runs the registry build before Astro, so a deployment of the docs site is
+also a publish of the registry.
 
-The first `pnpm test` needs `pnpm exec playwright install --with-deps chromium`.
+## Working on the docs
 
-## Contributing
+Pages come from Markdown under `src/content`: `guides` for the getting started track and
+`components` for one page per registry item. Component front matter carries a
+`registryItem`, which is how a page finds its live preview in
+`src/components/docs/previews` and its API reference.
 
-Open an issue with a minimal reproduction for a bug, or an issue or discussion for a
-proposal.
-
-> [!TIP]
-> [`AGENTS.md`](AGENTS.md) carries the same guidelines in the form AI coding agents pick
-> up automatically: commands, architecture, conventions and the checks to run.
+The API reference is not written by hand. A content collection loader reads the React
+adapters with ts-morph and the Vue adapters with vue-component-meta, then renders props,
+slots and events into the Table component. Add a prop to a component and the table follows
+on the next build.

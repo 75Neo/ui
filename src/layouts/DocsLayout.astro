@@ -1,0 +1,102 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import SiteHeader from "@/components/site/SiteHeader.astro";
+import DocsSidebar from "@/components/docs/DocsSidebar.astro";
+import TableOfContents from "@/components/docs/TableOfContents.vue";
+import { adjacentPages, docsNavigation, type DocsHeading } from "@/lib/docs";
+
+interface Props {
+  title: string;
+  description: string;
+  headings: DocsHeading[];
+}
+
+const { title, description, headings } = Astro.props;
+
+const sections = await docsNavigation();
+const rawCurrent = Astro.url.pathname.replace(/\/$/, "") || "/";
+const current = rawCurrent === "/" ? "/docs/introduction" : rawCurrent;
+const { previous, next } = adjacentPages(sections, current);
+---
+
+<Layout title={`${title} - 75NeoUI`} description={description}>
+  <SiteHeader />
+
+  <div class="mx-auto w-full max-w-360 px-4 sm:px-6">
+    <div
+      class="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-10 xl:grid-cols-[15rem_minmax(0,1fr)_15rem]"
+    >
+      <aside class="hidden lg:block" transition:persist>
+        <div class="sticky top-14 max-h-[calc(100dvh-3.5rem)] overflow-y-auto py-10 pe-2">
+          <DocsSidebar sections={sections} current={current} />
+        </div>
+      </aside>
+
+      <main class="min-w-0 py-10">
+        <details class="mb-8 rounded-md ring ring-default lg:hidden">
+          <summary
+            class="cursor-pointer list-none px-4 py-2.5 text-sm font-medium text-default select-none"
+          >
+            Browse the documentation
+          </summary>
+          <div class="border-t border-default px-2 py-4">
+            <DocsSidebar sections={sections} current={current} />
+          </div>
+        </details>
+
+        <header>
+          <h1 class="text-2xl font-semibold tracking-tight text-default sm:text-3xl">{title}</h1>
+          <p class="mt-3 text-base leading-7 text-muted">{description}</p>
+        </header>
+
+        <div class="mt-10">
+          <slot name="preview" />
+        </div>
+
+        <div class="mt-10">
+          <slot />
+        </div>
+
+        <slot name="api" />
+
+        {
+          (previous || next) && (
+            <nav class="mt-16 grid gap-4 border-t border-default pt-8 sm:grid-cols-2">
+              {previous ? (
+                <a
+                  href={previous.href}
+                  class="rounded-md px-4 py-3 text-sm ring ring-default transition-colors hover:bg-muted/50"
+                >
+                  <span class="block text-xs text-dimmed">Previous</span>
+                  <span class="mt-0.5 block font-medium text-default">{previous.label}</span>
+                </a>
+              ) : (
+                <span />
+              )}
+
+              {next && (
+                <a
+                  href={next.href}
+                  class="rounded-md px-4 py-3 text-end text-sm ring ring-default transition-colors hover:bg-muted/50 sm:col-start-2"
+                >
+                  <span class="block text-xs text-dimmed">Next</span>
+                  <span class="mt-0.5 block font-medium text-default">{next.label}</span>
+                </a>
+              )}
+            </nav>
+          )
+        }
+      </main>
+
+      {
+        headings.length > 0 && (
+          <aside class="hidden xl:block">
+            <div class="sticky top-14 max-h-[calc(100dvh-3.5rem)] overflow-y-auto py-10">
+              <TableOfContents headings={headings} client:load />
+            </div>
+          </aside>
+        )
+      }
+    </div>
+  </div>
+</Layout>

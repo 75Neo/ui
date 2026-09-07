@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Hover Card",
+  "description": "A rich preview that opens on hover after a short delay.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

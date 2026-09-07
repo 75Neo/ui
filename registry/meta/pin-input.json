@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Pin Input",
+  "description": "A row of single character boxes for a one time code.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Avatar",
+  "description": "A circular image that falls back to initials while loading or on error.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

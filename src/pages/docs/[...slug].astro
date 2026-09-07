@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content";
+import DocsLayout from "@/layouts/DocsLayout.astro";
+import ComponentApi from "@/components/docs/ComponentApi.astro";
+import ComponentPreview from "@/components/docs/ComponentPreview.astro";
+import MarkdownContent from "@/components/docs/MarkdownContent.vue";
+import { hasPreview } from "@/components/docs/previews";
+import { apiHeadings } from "@/lib/docs";
+import { documentHeadings, parseDocument } from "@/lib/markdown";
+
+export async function getStaticPaths() {
+  const guides = await getCollection("guides");
+  const components = await getCollection("components");
+
+  return [
+    ...guides.map((entry) => ({ params: { slug: entry.id }, props: { entry } })),
+    ...components.map((entry) => ({ params: { slug: `components/${entry.id}` }, props: { entry } })),
+  ];
+}
+
+const { entry } = Astro.props;
+const document = await parseDocument(entry.body ?? "");
+
+const registryItem = entry.collection === "components" ? entry.data.registryItem : null;
+const previewHeading =
+  registryItem && hasPreview(registryItem)
+    ? [{ slug: "preview", text: "Preview", depth: 2 }]
+    : [];
+const tocHeadings = registryItem
+  ? [...previewHeading, ...documentHeadings(document), ...(await apiHeadings(registryItem))]
+  : documentHeadings(document);
+---
+
+<DocsLayout title={entry.data.title} description={entry.data.description} headings={tocHeadings}>
+  {registryItem && <ComponentPreview slot="preview" id={registryItem} />}
+  <MarkdownContent value={document} class="prose" />
+  {registryItem && <ComponentApi slot="api" registryItem={registryItem} />}
+</DocsLayout>

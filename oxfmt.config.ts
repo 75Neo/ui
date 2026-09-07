@@ -9,7 +9,6 @@ export default defineConfig({
   sortTailwindcss: {
     functions: ["tv"],
     attributes: ["ui"],
-    stylesheet: "packages/themes/src/tokens/lint.css",
+    stylesheet: "src/styles/global.css",
   },
-  ignorePatterns: [".agents/**", ".claude/**"],
 });

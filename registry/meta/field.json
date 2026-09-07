@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Field",
+  "description": "Labels, helper text and error text wired to one control.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

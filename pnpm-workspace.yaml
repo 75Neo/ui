@@ -1,46 +1,5 @@
-packages:
-  - packages/*
-  - apps/*
-
-catalog:
-  # Tooling
-  "@types/node": ^26.4.1
-  publint: ^0.3.24
-  tsdown: ^0.22.14
-  typescript: ~6.0.3
-
-  # Utilities
-  defu: ^6.1.7
-
-  # Styling
-  "@tailwindcss/vite": ^4.3.3
-  tailwindcss: ^4.3.3
-  tailwind-variants: ^3.3.1
-
-  # Icons
-  "@lucide/astro": ^1.39.0
-  "@lucide/vue": ^1.39.0
-  lucide-react: ^1.39.0
-
-  # React
-  "@types/react": ^19.2.18
-  "@types/react-dom": ^19.2.5
-  react: ^19.2.8
-  react-dom: ^19.2.8
-
-  # Vue
-  vue: ^3.5.42
-  vue-tsc: ^3.3.11
-
-  # Testing
-  vitest: ^4.1.11
-  vitest-browser-vue: ^2.1.0
-  vitest-browser-react: ^2.2.0
-  "@vitest/browser-playwright": ^4.1.11
-
 allowBuilds:
-  esbuild: false
-  puppeteer: false
-
-minimumReleaseAgeExclude:
-  - "@lucide/astro@1.39.0"
+  esbuild: true
+  puppeteer: true
+  sharp: true
+  vue-demi: true

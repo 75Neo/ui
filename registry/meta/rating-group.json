@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Rating Group",
+  "description": "A row of stars that reads and writes a number, with optional halves.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

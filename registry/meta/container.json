@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Container",
+  "description": "A layout element that centres its content and holds it to a maximum width.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

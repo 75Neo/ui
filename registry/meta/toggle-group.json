@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Toggle Group",
+  "description": "A row of toggles that share one selection, single or multiple.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

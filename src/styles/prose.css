@@ -1,0 +1,77 @@
+@layer components {
+  .prose {
+    @apply text-[0.9375rem] leading-7 text-muted;
+  }
+
+  .prose > * + * {
+    @apply mt-5;
+  }
+
+  .prose h2 {
+    @apply mt-14 scroll-mt-24 text-xl font-semibold tracking-tight text-default;
+  }
+
+  .prose h3 {
+    @apply mt-10 scroll-mt-24 text-base font-semibold tracking-tight text-default;
+  }
+
+  .prose h4 {
+    @apply mt-8 scroll-mt-24 text-sm font-semibold tracking-tight text-default;
+  }
+
+  .prose :is(h2, h3, h4) + * {
+    @apply mt-3;
+  }
+
+  .prose a {
+    @apply font-medium text-primary underline decoration-primary/40 underline-offset-4 transition-colors hover:decoration-primary;
+  }
+
+  .prose strong {
+    @apply font-medium text-default;
+  }
+
+  .prose :is(ul, ol) {
+    @apply space-y-2 ps-5 marker:text-dimmed;
+  }
+
+  .prose ul {
+    @apply list-disc;
+  }
+
+  .prose ol {
+    @apply list-decimal;
+  }
+
+  .prose li > :is(ul, ol) {
+    @apply mt-2;
+  }
+
+  .prose :not(pre) > code {
+    @apply rounded-sm bg-muted/60 px-1.5 py-0.5 text-[0.8125em] text-default;
+  }
+
+  .prose pre {
+    @apply overflow-x-auto rounded-md bg-muted/40 p-4 text-[0.8125rem] leading-6 ring ring-default;
+  }
+
+  .dark .prose pre span {
+    color: var(--shiki-dark, inherit) !important;
+  }
+
+  .prose blockquote {
+    @apply border-s-2 border-primary/40 ps-4 text-muted;
+  }
+
+  .prose hr {
+    @apply my-10 border-default;
+  }
+
+  .prose img {
+    @apply rounded-md ring ring-default;
+  }
+
+  .prose kbd {
+    @apply rounded-sm bg-muted px-1.5 py-0.5 text-xs text-default ring ring-default;
+  }
+}

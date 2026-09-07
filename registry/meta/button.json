@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Button",
+  "description": "A button with six variants, six semantic colours and five sizes.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

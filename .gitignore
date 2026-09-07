@@ -1,16 +1,7 @@
 node_modules/
 dist/
-build/
-*.tsbuildinfo
-
-## Build system / framework caches
-.turbo/
 .astro/
-
-## Editors / OS
-.DS_Store
-*.log
-
-## Test artifacts
-.vitest-attachments/
-__screenshots__/
+public/r/
+registry.react.json
+registry.vue.json
+src/styles/registry.css
