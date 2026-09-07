@@ -1,9 +1,26 @@
 @import "tailwindcss";
+@import "@fontsource-variable/outfit";
+@import "@fontsource-variable/jetbrains-mono";
 @import "../../registry/theme/theme.css";
 @import "./registry.css";
 
+@theme {
+  --font-sans: "Outfit Variable", "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+}
+
 @layer base {
   :root {
-    @apply bg-default text-default antialiased scheme-light dark:scheme-dark;
+    @apply bg-default font-sans text-base text-default antialiased scheme-light dark:scheme-dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  code,
+  pre,
+  kbd {
+    @apply font-mono;
   }
 }
