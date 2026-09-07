@@ -1,13 +1,5 @@
 name: Docs
 
-# The documentation site, published to Cloudflare Pages at https://75neo-ui.pages.dev.
-#
-# The same deployment serves the shadcn registry: `pnpm build` writes the registry items
-# into `public/r` and Astro copies them into `dist`, so `shadcn add @75neo/button` reads
-# whatever this workflow last published. `CLOUDFLARE_API_TOKEN` and
-# `CLOUDFLARE_ACCOUNT_ID` are repository secrets, and wrangler reads the branch it ran on,
-# so only master is a production deployment.
-
 on:
   push:
     branches: [master]
@@ -50,12 +42,6 @@ jobs:
       - name: Build
         run: pnpm build
 
-      # `pnpm dlx` rather than `cloudflare/wrangler-action`, which installs wrangler into
-      # the checkout and would show up in the deployed tree.
-      #
-      # `pages deploy` will not create the project it deploys into and Cloudflare has no
-      # create-if-missing, so this creates it and shrugs on every run after the first. A
-      # token that cannot create one cannot deploy either, so the step below still fails.
       - name: Ensure the Pages project exists
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

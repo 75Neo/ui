@@ -26,7 +26,7 @@
       "dependencies": ["cn", "tailwind-variants"],
       "files": [
         {
-          "path": "registry/react/ui/button.tsx",
+          "path": "registry/react/ui/button/Button.tsx",
           "type": "registry:ui"
         },
         {

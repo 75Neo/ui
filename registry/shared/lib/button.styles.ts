@@ -3,8 +3,8 @@ import { tv, type VariantProps } from "tailwind-variants/lite";
 export const button = tv({
   slots: {
     base: "inline-flex cursor-pointer items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
-    leadingIcon: "shrink-0",
-    trailingIcon: "shrink-0",
+    leading: "shrink-0",
+    trailing: "shrink-0",
   },
   variants: {
     variant: {

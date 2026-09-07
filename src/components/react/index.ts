@@ -1,1 +1,1 @@
-export { default as Button } from "@/registry/react/ui/button";
+export { default as Button } from "@/registry/react/ui/button/Button";

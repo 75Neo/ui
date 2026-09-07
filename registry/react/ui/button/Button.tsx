@@ -19,13 +19,13 @@ export default function Button({
   children,
   ...props
 }: ButtonProps) {
-  const { base, leadingIcon, trailingIcon } = button({ variant, color, size, disabled });
+  const styles = button({ variant, color, size, disabled });
 
   return (
-    <button className={cn(base(), className)} disabled={disabled} {...props}>
-      {leading ? <span className={leadingIcon()}>{leading}</span> : null}
+    <button className={cn(styles.base(), className)} disabled={disabled} {...props}>
+      {leading ? <span className={styles.leading()}>{leading}</span> : null}
       {children}
-      {trailing ? <span className={trailingIcon()}>{trailing}</span> : null}
+      {trailing ? <span className={styles.trailing()}>{trailing}</span> : null}
     </button>
   );
 }

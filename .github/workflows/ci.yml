@@ -41,8 +41,6 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-  # `pnpm build` runs this too, before Astro. Separate so a manifest that names a file it
-  # no longer has is reported as a registry failure rather than as a broken site build.
   registry:
     name: Registry
     runs-on: ubuntu-latest
@@ -85,8 +83,6 @@ jobs:
       - name: Type check
         run: pnpm typecheck
 
-  # One name for branch protection to require, so the list of jobs above can change
-  # without the protection rule following it.
   ci:
     name: CI
     if: always()

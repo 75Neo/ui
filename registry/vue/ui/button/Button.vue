@@ -31,13 +31,13 @@ const styles = computed(() =>
 
 <template>
   <button :class="cn(styles.base(), props.class)" :disabled="disabled">
-    <span v-if="$slots.leading" :class="styles.leadingIcon()">
+    <span v-if="$slots.leading" :class="styles.leading()">
       <slot name="leading" />
     </span>
 
     <slot />
 
-    <span v-if="$slots.trailing" :class="styles.trailingIcon()">
+    <span v-if="$slots.trailing" :class="styles.trailing()">
       <slot name="trailing" />
     </span>
   </button>
