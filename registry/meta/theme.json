@@ -1,0 +1,13 @@
+{
+  "type": "registry:theme",
+  "title": "75NeoUI theme",
+  "description": "The colour, radius and text tokens every 75NeoUI component draws on.",
+  "files": [
+    {
+      "path": "registry/theme/theme.css",
+      "type": "registry:file",
+      "target": "~/75neo-theme.css"
+    }
+  ],
+  "docs": "Add @import \"./75neo-theme.css\"; to your stylesheet, after @import \"tailwindcss\";."
+}

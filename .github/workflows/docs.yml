@@ -12,8 +12,8 @@ on:
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
       - "public/**"
-      - "registry.*.json"
       - "registry/**"
+      - "scripts/**"
       - "src/**"
       - "tsconfig.json"
   workflow_dispatch:

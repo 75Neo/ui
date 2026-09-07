@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "registry:build": "shadcn build registry.react.json --output public/r/react && shadcn-vue build registry.vue.json --output public/r/vue",
+    "registry:generate": "node scripts/build-registry.mjs",
+    "registry:build": "pnpm registry:generate && shadcn build registry.react.json --output public/r/react && shadcn-vue build registry.vue.json --output public/r/vue",
     "build": "pnpm registry:build && astro build",
     "preview": "astro preview",
     "typecheck": "astro check",
