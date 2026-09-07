@@ -14,7 +14,8 @@ interface Props {
 const { title, description, headings } = Astro.props;
 
 const sections = await docsNavigation();
-const current = Astro.url.pathname.replace(/\/$/, "");
+const rawCurrent = Astro.url.pathname.replace(/\/$/, "") || "/";
+const current = rawCurrent === "/" ? "/docs/introduction" : rawCurrent;
 const { previous, next } = adjacentPages(sections, current);
 ---
 

@@ -35,7 +35,8 @@ const { sections, current } = Astro.props;
 
 <script>
   const syncCurrent = () => {
-    const current = window.location.pathname.replace(/\/$/, "");
+    const raw = window.location.pathname.replace(/\/$/, "") || "/";
+    const current = raw === "/" ? "/docs/introduction" : raw;
 
     for (const link of document.querySelectorAll("[data-docs-nav] a")) {
       if (link.getAttribute("href") === current) link.setAttribute("aria-current", "page");
