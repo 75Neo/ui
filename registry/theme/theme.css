@@ -39,7 +39,7 @@
     --ui-text-muted: var(--color-zinc-400);
     --ui-text-inverted: var(--color-zinc-900);
 
-    --ui-bg: var(--color-zinc-800);
+    --ui-bg: var(--color-zinc-900);
     --ui-bg-muted: var(--color-zinc-700);
     --ui-bg-accented: var(--color-zinc-600);
     --ui-bg-inverted: var(--color-zinc-50);
