@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { computed, type ButtonHTMLAttributes } from "vue";
+import { computed, type HTMLAttributes } from "vue";
 import { cn } from "cn";
 import { button, type ButtonVariants } from "@components/shared/button.styles";
 
-interface ButtonProps extends /* @vue-ignore */ ButtonHTMLAttributes {
+interface ButtonProps {
   variant?: ButtonVariants["variant"];
   color?: ButtonVariants["color"];
   size?: ButtonVariants["size"];
   disabled?: ButtonVariants["disabled"];
-  class?: ButtonHTMLAttributes["class"];
+  class?: HTMLAttributes["class"];
 }
 
 const props = defineProps<ButtonProps>();
