@@ -1,4 +1,5 @@
 import React from "react";
+import { cn } from "cn";
 import { button, type ButtonVariants } from "@components/shared/button.styles";
 
 export interface ButtonProps
@@ -23,7 +24,7 @@ export default function Button({
   const { base, leadingIcon, trailingIcon } = button({ variant, color, size, disabled });
 
   return (
-    <button className={base({ class: className })} disabled={disabled} {...props}>
+    <button className={cn(base(), className)} disabled={disabled} {...props}>
       {leading ? <span className={leadingIcon()}>{leading}</span> : null}
       {children}
       {trailing ? <span className={trailingIcon()}>{trailing}</span> : null}

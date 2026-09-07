@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, type HTMLAttributes } from "vue";
+import { cn } from "cn";
 import { button, type ButtonVariants } from "@components/shared/button.styles";
 
+// Declared so the caller's class stops falling through to the root element and
+// can be merged with cn() instead of concatenated onto it.
 const props = defineProps<{
   variant?: ButtonVariants["variant"];
   color?: ButtonVariants["color"];
   size?: ButtonVariants["size"];
   disabled?: ButtonVariants["disabled"];
+  class?: HTMLAttributes["class"];
 }>();
 
 defineSlots<{
@@ -26,7 +30,7 @@ const styles = computed(() =>
 </script>
 
 <template>
-  <button :class="styles.base()" :disabled="disabled">
+  <button :class="cn(styles.base(), props.class)" :disabled="disabled">
     <span v-if="$slots.leading" :class="styles.leadingIcon()">
       <slot name="leading" />
     </span>
