@@ -51,7 +51,7 @@
 @theme default {
   --color-primary: var(--ui-primary);
   --color-secondary: var(--ui-secondary);
-  --color-sucess: var(--ui-success);
+  --color-success: var(--ui-success);
   --color-info: var(--ui-info);
   --color-warning: var(--ui-warning);
   --color-error: var(--ui-error);
@@ -66,5 +66,12 @@
   --radius-4xl: calc(var(--ui-radius) * 4);
 
   --text-color-default: var(--ui-text);
+  --text-color-dimmed: var(--ui-text-dimmed);
+  --text-color-muted: var(--ui-text-muted);
+  --text-color-inverted: var(--ui-text-inverted);
+
   --background-color-default: var(--ui-bg);
+  --background-color-muted: var(--ui-bg-muted);
+  --background-color-accented: var(--ui-bg-accented);
+  --background-color-inverted: var(--ui-bg-inverted);
 }
