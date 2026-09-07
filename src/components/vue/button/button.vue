@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from "vue";
+import { computed, type ButtonHTMLAttributes } from "vue";
 import { cn } from "cn";
 import { button, type ButtonVariants } from "@components/shared/button.styles";
 
-// Declared so the caller's class stops falling through to the root element and
-// can be merged with cn() instead of concatenated onto it.
 const props = defineProps<{
   variant?: ButtonVariants["variant"];
   color?: ButtonVariants["color"];
   size?: ButtonVariants["size"];
   disabled?: ButtonVariants["disabled"];
-  class?: HTMLAttributes["class"];
+  class?: ButtonHTMLAttributes["class"];
 }>();
 
 defineSlots<{

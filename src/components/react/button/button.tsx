@@ -4,9 +4,7 @@ import { button, type ButtonVariants } from "@components/shared/button.styles";
 
 export interface ButtonProps
   extends Omit<React.ComponentPropsWithRef<"button">, "color">, ButtonVariants {
-  /** Rendered before the label, wrapped in the leading icon slot. */
   leading?: React.ReactNode;
-  /** Rendered after the label, wrapped in the trailing icon slot. */
   trailing?: React.ReactNode;
 }
 
