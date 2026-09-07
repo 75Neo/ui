@@ -47,7 +47,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          if pnpm dlx wrangler@4 pages project create 75neo-ui \
+          if pnpm dlx --allow-build=esbuild --allow-build=workerd wrangler@4 pages project create 75neo-ui \
             --production-branch=master; then
             echo "Created the Pages project."
           else
@@ -58,4 +58,4 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: pnpm dlx wrangler@4 pages deploy dist --project-name=75neo-ui
+        run: pnpm dlx --allow-build=esbuild --allow-build=workerd wrangler@4 pages deploy dist --project-name=75neo-ui
