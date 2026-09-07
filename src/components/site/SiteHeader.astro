@@ -1,0 +1,52 @@
+---
+import Logo from "@/components/site/Logo.astro";
+import ThemeToggle from "@/components/site/ThemeToggle.astro";
+
+const { pathname } = Astro.url;
+
+const links = [
+  { href: "/docs/introduction", label: "Docs", match: "/docs/" },
+  { href: "/docs/components/button", label: "Components", match: "/docs/components/" },
+];
+
+const activeMatch = links.map((link) => link.match).findLast((match) => pathname.startsWith(match));
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-default bg-default/85 backdrop-blur supports-[backdrop-filter]:bg-default/70"
+>
+  <div class="mx-auto flex h-14 w-full max-w-360 items-center gap-6 px-4 sm:px-6">
+    <a
+      href="/"
+      class="flex items-center gap-2 text-sm font-semibold tracking-tight text-default transition-colors hover:text-primary"
+    >
+      <Logo class="size-5 text-primary" />
+      75NeoUI
+    </a>
+
+    <nav class="flex items-center gap-5 text-sm">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            aria-current={link.match === activeMatch ? "page" : undefined}
+            class="text-muted transition-colors hover:text-default aria-[current=page]:text-default"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="ms-auto flex items-center gap-1">
+      <a
+        href="https://github.com/75Neo/ui"
+        rel="noreferrer"
+        class="hidden rounded-md px-2.5 py-1.5 text-sm text-muted transition-colors hover:bg-muted hover:text-default sm:inline-flex"
+      >
+        GitHub
+      </a>
+      <ThemeToggle />
+    </div>
+  </div>
+</header>

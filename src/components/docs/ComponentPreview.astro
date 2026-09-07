@@ -1,0 +1,24 @@
+---
+import { previewComponent } from "@/components/docs/previews";
+
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+const Preview = previewComponent(id);
+---
+
+{
+  Preview && (
+    <section>
+      <h2 id="preview" class="scroll-mt-24 text-xl font-semibold tracking-tight text-default">
+        Preview
+      </h2>
+
+      <div class="mt-4 rounded-md p-6 ring ring-default sm:p-8">
+        <Preview />
+      </div>
+    </section>
+  )
+}

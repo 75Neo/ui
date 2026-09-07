@@ -1,11 +1,12 @@
 @import "tailwindcss";
-@import "@fontsource-variable/outfit";
+@import "@fontsource-variable/roboto";
 @import "@fontsource-variable/jetbrains-mono";
 @import "../../registry/theme/theme.css";
 @import "./registry.css";
+@import "./prose.css";
 
 @theme {
-  --font-sans: "Outfit Variable", "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Roboto Variable", Roboto, ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
 }
 

@@ -1,0 +1,21 @@
+---
+import Button from "@/registry/vue/ui/button/Button.vue";
+
+const variants = ["solid", "outline", "soft", "subtle", "ghost", "link"] as const;
+const colors = ["primary", "secondary", "success", "info", "warning", "error"] as const;
+const sizes = ["xs", "sm", "md", "lg", "xl"] as const;
+---
+
+<div class="flex flex-col gap-6">
+  <div class="flex flex-wrap items-center gap-2">
+    {variants.map((variant) => <Button variant={variant}>{variant}</Button>)}
+  </div>
+
+  <div class="flex flex-wrap items-center gap-2">
+    {colors.map((color) => <Button color={color} variant="soft">{color}</Button>)}
+  </div>
+
+  <div class="flex flex-wrap items-center gap-2">
+    {sizes.map((size) => <Button size={size} variant="outline">{size}</Button>)}
+  </div>
+</div>

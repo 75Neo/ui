@@ -84,3 +84,15 @@ installing project's own aliases.
 
 `pnpm build` runs the registry build before Astro, so a deployment of the docs site is
 also a publish of the registry.
+
+## Working on the docs
+
+Pages come from Markdown under `src/content`: `guides` for the getting started track and
+`components` for one page per registry item. Component front matter carries a
+`registryItem`, which is how a page finds its live preview in
+`src/components/docs/previews` and its API reference.
+
+The API reference is not written by hand. A content collection loader reads the React
+adapters with ts-morph and the Vue adapters with vue-component-meta, then renders props,
+slots and events into the Table component. Add a prop to a component and the table follows
+on the next build.

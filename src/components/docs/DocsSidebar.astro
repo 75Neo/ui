@@ -1,0 +1,47 @@
+---
+import type { DocsSection } from "@/lib/docs";
+
+interface Props {
+  sections: DocsSection[];
+  current: string;
+}
+
+const { sections, current } = Astro.props;
+---
+
+<nav data-docs-nav aria-label="Documentation" class="flex flex-col gap-7 text-sm">
+  {
+    sections.map((section) => (
+      <div>
+        <p class="mb-2 px-3 text-xs font-medium text-dimmed">{section.label}</p>
+
+        <ul class="flex flex-col">
+          {section.links.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                aria-current={link.href === current ? "page" : undefined}
+                class="block rounded-md px-3 py-1.5 text-muted transition-colors hover:bg-muted hover:text-default aria-[current=page]:bg-muted aria-[current=page]:font-medium aria-[current=page]:text-default"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+</nav>
+
+<script>
+  const syncCurrent = () => {
+    const current = window.location.pathname.replace(/\/$/, "");
+
+    for (const link of document.querySelectorAll("[data-docs-nav] a")) {
+      if (link.getAttribute("href") === current) link.setAttribute("aria-current", "page");
+      else link.removeAttribute("aria-current");
+    }
+  };
+
+  document.addEventListener("astro:page-load", syncCurrent);
+</script>
