@@ -16,6 +16,8 @@ const FRAMEWORKS = {
 const NAME = "75neo";
 const HOMEPAGE = "https://75neo-ui.pages.dev";
 const ORDER = ["registry:theme", "registry:lib", "registry:ui"];
+const STYLESHEET = "src/styles/registry.css";
+const VAR_TARGETS = { theme: null, light: ":root", dark: ".dark" };
 
 const sortPaths = (paths) => paths.map((p) => p.split(path.sep).join("/")).sort();
 
@@ -51,6 +53,56 @@ async function readMeta() {
   });
 }
 
+function declarations(entries, indent) {
+  return Object.entries(entries).map(([key, value]) => `${indent}${key}: ${value};`);
+}
+
+function block(selector, body, indent) {
+  return [`${indent}${selector} {`, ...body, `${indent}}`];
+}
+
+function rule(selector, body, indent) {
+  const lines = Object.entries(body).flatMap(([key, value]) =>
+    typeof value === "object" && value !== null
+      ? rule(key, value, `${indent}  `)
+      : [`${indent}  ${key}: ${value};`],
+  );
+  return block(selector, lines, indent);
+}
+
+function stylesheet(metas) {
+  const themeVars = {};
+  const scoped = {};
+  const keyframes = [];
+  const other = [];
+
+  for (const meta of metas) {
+    for (const [group, entries] of Object.entries(meta.cssVars ?? {})) {
+      if (!(group in VAR_TARGETS)) continue;
+      const target = VAR_TARGETS[group];
+      if (target === null) Object.assign(themeVars, entries);
+      else Object.assign((scoped[target] ??= {}), entries);
+    }
+    for (const [selector, body] of Object.entries(meta.css ?? {})) {
+      (selector.startsWith("@keyframes") ? keyframes : other).push([selector, body]);
+    }
+  }
+
+  const theme = [
+    ...declarations(themeVars, "  "),
+    ...keyframes.flatMap(([selector, body]) => ["", ...rule(selector, body, "  ")]),
+  ];
+
+  const sections = [];
+  if (theme.length > 0) sections.push(block("@theme inline", theme, "").join("\n"));
+  for (const [selector, entries] of Object.entries(scoped)) {
+    sections.push(block(selector, declarations(entries, "  "), "").join("\n"));
+  }
+  for (const [selector, body] of other) sections.push(rule(selector, body, "").join("\n"));
+
+  return sections.length > 0 ? `${sections.join("\n\n")}\n` : "";
+}
+
 function buildItem(meta, framework) {
   const { name, dependencies, files, ...rest } = meta;
   const resolved = files ?? [...uiFiles(name, framework), ...libFiles(name)];
@@ -68,6 +120,9 @@ function buildItem(meta, framework) {
 }
 
 const metas = await readMeta();
+
+await writeFile(STYLESHEET, stylesheet(metas));
+console.log(`${STYLESHEET}`);
 
 for (const [framework, { out, schema }] of Object.entries(FRAMEWORKS)) {
   const registry = {
