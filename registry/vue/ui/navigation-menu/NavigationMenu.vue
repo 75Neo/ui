@@ -21,7 +21,14 @@ interface NavigationMenuProps {
   class?: HTMLAttributes["class"];
 }
 
-const props = withDefaults(defineProps<NavigationMenuProps>(), { size: "md" });
+const props = withDefaults(defineProps<NavigationMenuProps>(), {
+  disableClickTrigger: undefined,
+  disableHoverTrigger: undefined,
+  disablePointerLeaveClose: undefined,
+  lazyMount: undefined,
+  unmountOnExit: undefined,
+  size: "md",
+});
 
 const value = defineModel<string>("value");
 

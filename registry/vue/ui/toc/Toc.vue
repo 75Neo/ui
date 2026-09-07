@@ -15,7 +15,7 @@ interface TocProps {
   class?: HTMLAttributes["class"];
 }
 
-const props = defineProps<TocProps>();
+const props = withDefaults(defineProps<TocProps>(), { autoScroll: undefined });
 
 const activeIds = defineModel<string[]>("activeIds");
 

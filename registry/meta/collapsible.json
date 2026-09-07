@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Collapsible",
+  "description": "A single trigger that shows and hides one panel of content.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

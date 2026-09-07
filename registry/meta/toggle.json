@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Toggle",
+  "description": "A button that stays pressed until it is pressed again.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

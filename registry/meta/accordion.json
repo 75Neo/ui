@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Accordion",
+  "description": "Stacked sections that each reveal a panel of content when opened.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}
