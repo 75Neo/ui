@@ -9,6 +9,16 @@ const props = defineProps<{
   size?: ButtonVariants["size"];
   disabled?: ButtonVariants["disabled"];
   class?: ButtonHTMLAttributes["class"];
+  type?: ButtonHTMLAttributes["type"];
+  name?: ButtonHTMLAttributes["name"];
+  value?: ButtonHTMLAttributes["value"];
+  form?: ButtonHTMLAttributes["form"];
+  formaction?: ButtonHTMLAttributes["formaction"];
+  formenctype?: ButtonHTMLAttributes["formenctype"];
+  formmethod?: ButtonHTMLAttributes["formmethod"];
+  formnovalidate?: ButtonHTMLAttributes["formnovalidate"];
+  formtarget?: ButtonHTMLAttributes["formtarget"];
+  autofocus?: ButtonHTMLAttributes["autofocus"];
 }>();
 
 defineSlots<{
@@ -25,10 +35,15 @@ const styles = computed(() =>
     disabled: props.disabled,
   }),
 );
+
+const attrs = computed(() => {
+  const { variant, color, size, class: _class, ...rest } = props;
+  return rest;
+});
 </script>
 
 <template>
-  <button :class="cn(styles.base(), props.class)" :disabled="disabled">
+  <button v-bind="attrs" :class="cn(styles.base(), props.class)">
     <span v-if="$slots.leading" :class="styles.leadingIcon()">
       <slot name="leading" />
     </span>
