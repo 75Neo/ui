@@ -3,23 +3,15 @@ import { computed, type ButtonHTMLAttributes } from "vue";
 import { cn } from "cn";
 import { button, type ButtonVariants } from "@components/shared/button.styles";
 
-const props = defineProps<{
+interface ButtonProps extends /* @vue-ignore */ ButtonHTMLAttributes {
   variant?: ButtonVariants["variant"];
   color?: ButtonVariants["color"];
   size?: ButtonVariants["size"];
   disabled?: ButtonVariants["disabled"];
   class?: ButtonHTMLAttributes["class"];
-  type?: ButtonHTMLAttributes["type"];
-  name?: ButtonHTMLAttributes["name"];
-  value?: ButtonHTMLAttributes["value"];
-  form?: ButtonHTMLAttributes["form"];
-  formaction?: ButtonHTMLAttributes["formaction"];
-  formenctype?: ButtonHTMLAttributes["formenctype"];
-  formmethod?: ButtonHTMLAttributes["formmethod"];
-  formnovalidate?: ButtonHTMLAttributes["formnovalidate"];
-  formtarget?: ButtonHTMLAttributes["formtarget"];
-  autofocus?: ButtonHTMLAttributes["autofocus"];
-}>();
+}
+
+const props = defineProps<ButtonProps>();
 
 defineSlots<{
   leading?: () => unknown;
@@ -35,15 +27,10 @@ const styles = computed(() =>
     disabled: props.disabled,
   }),
 );
-
-const attrs = computed(() => {
-  const { variant, color, size, class: _class, ...rest } = props;
-  return rest;
-});
 </script>
 
 <template>
-  <button v-bind="attrs" :class="cn(styles.base(), props.class)">
+  <button :class="cn(styles.base(), props.class)" :disabled="disabled">
     <span v-if="$slots.leading" :class="styles.leadingIcon()">
       <slot name="leading" />
     </span>
