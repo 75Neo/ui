@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Dialog",
+  "description": "A modal window that traps focus until it is dismissed.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Menu",
+  "description": "A list of actions anchored to a trigger, with typeahead and roving focus.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

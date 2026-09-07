@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Popover",
+  "description": "A panel anchored to a trigger, for content that needs focus.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

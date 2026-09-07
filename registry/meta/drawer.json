@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Drawer",
+  "description": "A panel that slides in from an edge and can be swiped away.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

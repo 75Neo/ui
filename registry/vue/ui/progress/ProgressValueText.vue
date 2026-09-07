@@ -10,15 +10,9 @@ interface ProgressValueTextProps {
 
 const props = defineProps<ProgressValueTextProps>();
 
-defineSlots<{
-  default?: () => unknown;
-}>();
-
 const styles = progress();
 </script>
 
 <template>
-  <Ark.ValueText :class="cn(styles.valueText(), props.class)">
-    <slot />
-  </Ark.ValueText>
+  <Ark.ValueText :class="cn(styles.valueText(), props.class)" />
 </template>

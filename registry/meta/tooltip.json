@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Tooltip",
+  "description": "A short label that appears on hover or keyboard focus.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}
