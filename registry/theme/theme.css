@@ -20,6 +20,8 @@
     --ui-bg-accented: var(--color-zinc-400);
     --ui-bg-inverted: var(--color-zinc-800);
 
+    --ui-border: var(--color-zinc-200);
+
     --ui-radius: 0.15rem;
     --ui-container: 50rem;
   }
@@ -41,6 +43,8 @@
     --ui-bg-muted: var(--color-zinc-700);
     --ui-bg-accented: var(--color-zinc-600);
     --ui-bg-inverted: var(--color-zinc-50);
+
+    --ui-border: var(--color-zinc-700);
   }
 }
 
@@ -70,4 +74,7 @@
   --background-color-muted: var(--ui-bg-muted);
   --background-color-accented: var(--ui-bg-accented);
   --background-color-inverted: var(--ui-bg-inverted);
+
+  --border-color-default: var(--ui-border);
+  --ring-color-default: var(--ui-border);
 }

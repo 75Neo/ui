@@ -1,6 +1,35 @@
 @import "tailwindcss";
 @import "../../registry/theme/theme.css";
 
+@theme inline {
+  --animate-panel-in: panel-in 0.15s ease-out;
+  --animate-panel-out: panel-out 0.1s ease-in;
+
+  @keyframes panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(-0.25rem);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes panel-out {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    to {
+      opacity: 0;
+      transform: translateY(-0.25rem);
+    }
+  }
+}
+
 @layer base {
   :root {
     @apply bg-default text-default antialiased scheme-light dark:scheme-dark;
