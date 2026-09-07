@@ -6,3 +6,11 @@ export { default as NavigationMenuItem } from "@/registry/react/ui/navigation-me
 export { default as NavigationMenuLink } from "@/registry/react/ui/navigation-menu/NavigationMenuLink";
 export { default as NavigationMenuList } from "@/registry/react/ui/navigation-menu/NavigationMenuList";
 export { default as NavigationMenuTrigger } from "@/registry/react/ui/navigation-menu/NavigationMenuTrigger";
+export { default as Table } from "@/registry/react/ui/table/Table";
+export { default as TableBody } from "@/registry/react/ui/table/TableBody";
+export { default as TableCaption } from "@/registry/react/ui/table/TableCaption";
+export { default as TableCell } from "@/registry/react/ui/table/TableCell";
+export { default as TableFooter } from "@/registry/react/ui/table/TableFooter";
+export { default as TableHead } from "@/registry/react/ui/table/TableHead";
+export { default as TableHeader } from "@/registry/react/ui/table/TableHeader";
+export { default as TableRow } from "@/registry/react/ui/table/TableRow";

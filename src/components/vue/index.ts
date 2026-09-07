@@ -6,3 +6,11 @@ export { default as NavigationMenuItem } from "@/registry/vue/ui/navigation-menu
 export { default as NavigationMenuLink } from "@/registry/vue/ui/navigation-menu/NavigationMenuLink.vue";
 export { default as NavigationMenuList } from "@/registry/vue/ui/navigation-menu/NavigationMenuList.vue";
 export { default as NavigationMenuTrigger } from "@/registry/vue/ui/navigation-menu/NavigationMenuTrigger.vue";
+export { default as Table } from "@/registry/vue/ui/table/Table.vue";
+export { default as TableBody } from "@/registry/vue/ui/table/TableBody.vue";
+export { default as TableCaption } from "@/registry/vue/ui/table/TableCaption.vue";
+export { default as TableCell } from "@/registry/vue/ui/table/TableCell.vue";
+export { default as TableFooter } from "@/registry/vue/ui/table/TableFooter.vue";
+export { default as TableHead } from "@/registry/vue/ui/table/TableHead.vue";
+export { default as TableHeader } from "@/registry/vue/ui/table/TableHeader.vue";
+export { default as TableRow } from "@/registry/vue/ui/table/TableRow.vue";
