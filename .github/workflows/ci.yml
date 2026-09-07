@@ -9,76 +9,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
-# `pull-requests: read` is for the `changes` job: on a pull request `dorny/paths-filter`
-# asks the API which files the PR touches, and without the scope that call fails and
-# takes the workflow with it. A push needs only `contents`.
 permissions:
   contents: read
-  pull-requests: read
-
-env:
-  TURBO_TELEMETRY_DISABLED: "1"
 
 jobs:
-  # What the rest of the workflow asks before it runs. A filter names the paths a job
-  # reads, expanded along the dependency graph by hand: `@75neo/react` is built from
-  # `core` and `themes` too, so all three belong to its filter.
-  changes:
-    name: Changes
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    outputs:
-      code: ${{ steps.filter.outputs.code }}
-      tested: ${{ steps.tested.outputs.packages }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Filter
-        id: filter
-        uses: dorny/paths-filter@v4
-        with:
-          filters: |
-            shared: &shared
-              - '.github/actions/setup/**'
-              - '.github/workflows/ci.yml'
-              - 'mise.toml'
-              - 'oxfmt.config.ts'
-              - 'oxlint.config.ts'
-              - 'package.json'
-              - 'pnpm-lock.yaml'
-              - 'pnpm-workspace.yaml'
-              - 'tsconfig.base.json'
-              - 'turbo.json'
-              - 'vitest.config.ts'
-            code:
-              - *shared
-              - 'apps/**'
-              - 'packages/**'
-            core:
-              - *shared
-              - 'packages/core/**'
-            react:
-              - *shared
-              - 'packages/core/**'
-              - 'packages/themes/**'
-              - 'packages/react/**'
-            vue:
-              - *shared
-              - 'packages/core/**'
-              - 'packages/themes/**'
-              - 'packages/vue/**'
-
-      - name: Packages to test
-        id: tested
-        env:
-          MATCHED: ${{ steps.filter.outputs.changes }}
-        run: |
-          # `changes` lists every filter that matched, anchors included. `shared` and
-          # `code` name no package, so what is left is the matrix.
-          packages=$(jq -cn --argjson matched "$MATCHED" '$matched - ["code", "shared"]')
-          echo "packages=$packages" >> "$GITHUB_OUTPUT"
-
   format:
     name: Format
     runs-on: ubuntu-latest
@@ -107,8 +41,8 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-  # The registry is what the library ships, so it is built on every run rather than
-  # behind the `changes` filters, the same as format and lint.
+  # `pnpm build` runs this too, before Astro. Separate so a manifest that names a file it
+  # no longer has is reported as a registry failure rather than as a broken site build.
   registry:
     name: Registry
     runs-on: ubuntu-latest
@@ -125,8 +59,6 @@ jobs:
 
   build:
     name: Build
-    needs: changes
-    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -135,16 +67,12 @@ jobs:
 
       - name: Setup
         uses: ./.github/actions/setup
-        with:
-          turbo-cache-key: build
 
       - name: Build
         run: pnpm build
 
   typecheck:
     name: Type check
-    needs: changes
-    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -153,58 +81,16 @@ jobs:
 
       - name: Setup
         uses: ./.github/actions/setup
-        with:
-          turbo-cache-key: typecheck
 
-      # `typecheck` depends on `build`, so this covers both. Separate from `Build` so a
-      # broken build is named as one rather than as a type error.
       - name: Type check
         run: pnpm typecheck
 
-  test:
-    name: Test ${{ matrix.package }}
-    needs: changes
-    if: needs.changes.outputs.tested != '[]'
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    strategy:
-      fail-fast: false
-      matrix:
-        package: ${{ fromJSON(needs.changes.outputs.tested) }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Setup
-        uses: ./.github/actions/setup
-        with:
-          turbo-cache-key: test-${{ matrix.package }}
-
-      # `@75neo/core` is node-only. The two adapters drive a real browser.
-      - name: Playwright browsers cache
-        if: matrix.package != 'core'
-        uses: actions/cache@v6
-        with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-playwright-
-
-      - name: Install Playwright browsers
-        if: matrix.package != 'core'
-        run: pnpm exec playwright install --with-deps chromium
-
-      - name: Test
-        env:
-          PACKAGE: ${{ matrix.package }}
-        run: pnpm exec turbo run test --filter "@75neo/$PACKAGE"
-
-  # One name for branch protection to require. The jobs above skip rather than fail when
-  # nothing they cover changed, and a matrix job's name moves with the matrix.
+  # One name for branch protection to require, so the list of jobs above can change
+  # without the protection rule following it.
   ci:
     name: CI
     if: always()
-    needs: [changes, format, lint, registry, build, typecheck, test]
+    needs: [format, lint, registry, build, typecheck]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

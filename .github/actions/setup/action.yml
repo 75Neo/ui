@@ -1,14 +1,5 @@
 name: Setup
-description: Node, pnpm, the workspace's dependencies, and the caches a job reads.
-
-inputs:
-  turbo-cache-key:
-    description: >-
-      Names this job's slice of the Turborepo cache; leaving it out skips that cache, which
-      is what a job running only oxlint or oxfmt wants. A cache entry is written once, so
-      two jobs sharing a key would race and one would throw its work away.
-    required: false
-    default: ""
+description: Node, pnpm, and the project's dependencies.
 
 runs:
   using: composite
@@ -28,15 +19,6 @@ runs:
         key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
         restore-keys: |
           ${{ runner.os }}-pnpm-store-
-
-    - name: Turborepo cache
-      if: inputs.turbo-cache-key != ''
-      uses: actions/cache@v6
-      with:
-        path: .turbo/cache
-        key: ${{ runner.os }}-turbo-${{ inputs.turbo-cache-key }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-turbo-${{ inputs.turbo-cache-key }}-
 
     - name: Install
       shell: bash
