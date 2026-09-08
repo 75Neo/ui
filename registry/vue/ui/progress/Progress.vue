@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
+import { computed, type HTMLAttributes } from "vue";
 import { Progress as Ark } from "@ark-ui/vue/progress";
 import { cn } from "cn";
-import { progress, type ProgressSize } from "@/registry/shared/lib/progress.styles";
+import { progress, type ProgressSize, type Intent } from "@/registry/shared/lib/progress.styles";
 
 interface ProgressProps {
   defaultValue?: number | null;
@@ -12,6 +12,7 @@ interface ProgressProps {
   locale?: string;
   formatOptions?: Intl.NumberFormatOptions;
   size?: ProgressSize;
+  color?: Intent;
   class?: HTMLAttributes["class"];
 }
 
@@ -25,7 +26,7 @@ defineSlots<{
   default?: () => unknown;
 }>();
 
-const styles = progress();
+const styles = computed(() => progress({ color: props.color }));
 </script>
 
 <template>

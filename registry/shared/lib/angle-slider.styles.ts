@@ -7,9 +7,9 @@ export const angleSlider = tv({
     control:
       "relative size-24 rounded-full bg-muted ring ring-default data-disabled:pointer-events-none data-disabled:opacity-75",
     thumb:
-      "size-3 rounded-full bg-primary shadow-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+      "size-3 rounded-full bg-primary shadow-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus",
     valueText: "font-mono text-sm text-muted tabular-nums",
     markerGroup: "",
-    marker: "size-1 rounded-full bg-accented data-[state=under-value]:bg-primary/40",
+    marker: "size-1 rounded-full bg-accented data-[state=under-value]:bg-primary",
   },
 });

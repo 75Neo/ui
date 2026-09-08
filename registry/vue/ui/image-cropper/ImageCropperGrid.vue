@@ -5,6 +5,7 @@ import { cn } from "cn";
 import { imageCropper } from "@/registry/shared/lib/image-cropper.styles";
 
 interface ImageCropperGridProps {
+  axis: "horizontal" | "vertical";
   class?: HTMLAttributes["class"];
 }
 
@@ -14,5 +15,5 @@ const styles = imageCropper();
 </script>
 
 <template>
-  <Ark.Grid :class="cn(styles.grid(), props.class)" />
+  <Ark.Grid :axis="props.axis" :class="cn(styles.grid(), props.class)" />
 </template>

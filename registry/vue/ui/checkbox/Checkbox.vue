@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
+import { computed, type HTMLAttributes } from "vue";
 import { Checkbox as Ark } from "@ark-ui/vue/checkbox";
 import { cn } from "cn";
-import { checkbox, type CheckboxSize } from "@/registry/shared/lib/checkbox.styles";
+import { checkbox, type CheckboxSize, type Intent } from "@/registry/shared/lib/checkbox.styles";
 
 interface CheckboxProps {
   defaultChecked?: boolean | "indeterminate";
@@ -14,6 +14,7 @@ interface CheckboxProps {
   value?: string;
   form?: string;
   size?: CheckboxSize;
+  color?: Intent;
   class?: HTMLAttributes["class"];
 }
 
@@ -32,7 +33,7 @@ defineSlots<{
   default?: () => unknown;
 }>();
 
-const styles = checkbox();
+const styles = computed(() => checkbox({ color: props.color }));
 </script>
 
 <template>

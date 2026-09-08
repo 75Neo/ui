@@ -36,8 +36,12 @@ function libFiles(name) {
   }));
 }
 
+const ICONS = { react: "lucide-react", vue: "@lucide/vue" };
+
 function resolveDependencies(dependencies, framework) {
-  return dependencies?.map((d) => d.replaceAll("{framework}", framework));
+  return dependencies?.map((d) =>
+    d.replaceAll("{framework}", framework).replaceAll("{icons}", ICONS[framework]),
+  );
 }
 
 async function readMeta() {
@@ -84,7 +88,11 @@ function stylesheet(metas) {
       else Object.assign((scoped[target] ??= {}), entries);
     }
     for (const [selector, body] of Object.entries(meta.css ?? {})) {
-      (selector.startsWith("@keyframes") ? keyframes : other).push([selector, body]);
+      if (!selector.startsWith("@keyframes")) {
+        other.push([selector, body]);
+      } else if (!keyframes.some(([name]) => name === selector)) {
+        keyframes.push([selector, body]);
+      }
     }
   }
 

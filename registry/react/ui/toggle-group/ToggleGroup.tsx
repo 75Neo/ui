@@ -1,19 +1,28 @@
 import React from "react";
 import { ToggleGroup as Ark } from "@ark-ui/react/toggle-group";
 import { cn } from "cn";
-import { toggleGroup, type ToggleGroupSize } from "@/registry/shared/lib/toggle-group.styles";
+import {
+  toggleGroup,
+  type ToggleGroupSize,
+  type Intent,
+} from "@/registry/shared/lib/toggle-group.styles";
 
-export interface ToggleGroupProps extends React.ComponentPropsWithRef<typeof Ark.Root> {
+export interface ToggleGroupProps extends Omit<
+  React.ComponentPropsWithRef<typeof Ark.Root>,
+  "color"
+> {
+  color?: Intent;
   size?: ToggleGroupSize;
 }
 
 export default function ToggleGroup({
   size = "md",
+  color,
   className,
   children,
   ...props
 }: ToggleGroupProps) {
-  const styles = toggleGroup();
+  const styles = toggleGroup({ color });
 
   return (
     <Ark.Root className={cn(styles.root(), className)} data-size={size} {...props}>

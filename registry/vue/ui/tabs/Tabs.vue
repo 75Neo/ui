@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
+import { computed, type HTMLAttributes } from "vue";
 import { Tabs as Ark } from "@ark-ui/vue/tabs";
 import { cn } from "cn";
-import { tabs } from "@/registry/shared/lib/tabs.styles";
+import { tabs, type Intent } from "@/registry/shared/lib/tabs.styles";
 
 interface TabsProps {
   defaultValue?: string;
@@ -10,6 +10,7 @@ interface TabsProps {
   activationMode?: "manual" | "automatic";
   deselectable?: boolean;
   loopFocus?: boolean;
+  color?: Intent;
   class?: HTMLAttributes["class"];
 }
 
@@ -24,7 +25,7 @@ defineSlots<{
   default?: () => unknown;
 }>();
 
-const styles = tabs();
+const styles = computed(() => tabs({ color: props.color }));
 </script>
 
 <template>

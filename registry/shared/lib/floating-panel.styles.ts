@@ -1,13 +1,13 @@
 import { tv } from "tailwind-variants/lite";
 
 const controlTrigger =
-  "inline-flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-md text-dimmed transition-colors hover:bg-muted hover:text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&>svg]:size-3.5";
+  "inline-flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-md text-dimmed transition-colors hover:bg-muted hover:text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus [&>svg]:size-3.5";
 
 export const floatingPanel = tv({
   slots: {
     positioner: "z-50",
     content:
-      "flex flex-col overflow-hidden rounded-md bg-default shadow-xl ring ring-default outline-none data-behind:opacity-90",
+      "flex flex-col overflow-hidden rounded-md bg-elevated shadow-lg ring ring-default outline-none data-behind:opacity-90 data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in",
     header:
       "flex shrink-0 cursor-grab items-center gap-2 border-b border-default px-3 py-2 data-dragging:cursor-grabbing",
     title: "min-w-0 flex-1 truncate text-sm font-medium text-default",

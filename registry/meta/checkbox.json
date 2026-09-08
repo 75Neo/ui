@@ -2,6 +2,6 @@
   "type": "registry:ui",
   "title": "Checkbox",
   "description": "A three state checkbox with a label, over a real hidden input.",
-  "registryDependencies": ["@75neo/theme"],
+  "registryDependencies": ["@75neo/theme", "@75neo/intent"],
   "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
 }

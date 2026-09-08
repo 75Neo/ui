@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { NumberInput as Ark } from "@ark-ui/vue/number-input";
 import { cn } from "cn";
-import { numberInput } from "@/registry/shared/lib/number-input.styles";
+import { numberInput, type NumberInputSize } from "@/registry/shared/lib/number-input.styles";
 
 interface NumberInputProps {
   defaultValue?: string;
@@ -21,10 +21,12 @@ interface NumberInputProps {
   form?: string;
   locale?: string;
   formatOptions?: Intl.NumberFormatOptions;
+  size?: NumberInputSize;
   class?: HTMLAttributes["class"];
 }
 
 const props = withDefaults(defineProps<NumberInputProps>(), {
+  size: "md",
   allowMouseWheel: undefined,
   allowOverflow: undefined,
   clampValueOnBlur: undefined,
@@ -62,6 +64,7 @@ const styles = numberInput();
     :form="props.form"
     :locale="props.locale"
     :format-options="props.formatOptions"
+    :data-size="props.size"
     :class="cn(styles.root(), props.class)"
   >
     <slot />
