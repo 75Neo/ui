@@ -5,16 +5,6 @@ category: Forms
 registryItem: angle-slider
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/angle-slider
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/angle-slider
-```
-
 ## Usage
 
 ```vue

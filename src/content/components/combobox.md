@@ -5,16 +5,6 @@ category: Forms
 registryItem: combobox
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/combobox
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/combobox
-```
-
 ## Usage
 
 The list is filtered by you, in response to what was typed. `useListCollection` gives you a

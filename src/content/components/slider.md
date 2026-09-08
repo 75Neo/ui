@@ -5,16 +5,6 @@ category: Forms
 registryItem: slider
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/slider
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/slider
-```
-
 ## Usage
 
 ```tsx

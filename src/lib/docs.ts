@@ -1,8 +1,20 @@
 import { getCollection, getEntry } from "astro:content";
 
+export const FRAMEWORKS = ["react", "vue"] as const;
+
+export type Framework = (typeof FRAMEWORKS)[number];
+
+export const DEFAULT_FRAMEWORK: Framework = "react";
+
+export const FRAMEWORK_LABELS: Record<Framework, string> = {
+  react: "React",
+  vue: "Vue",
+};
+
 export interface DocsLink {
   href: string;
   label: string;
+  component?: string;
 }
 
 export interface DocsSection {
@@ -17,16 +29,22 @@ export interface DocsHeading {
 }
 
 export const guideHref = (id: string) => `/docs/${id}`;
-export const componentHref = (id: string) => `/docs/components/${id}`;
 
-export async function docsNavigation(): Promise<DocsSection[]> {
+export const componentHref = (id: string, framework?: Framework | null) =>
+  `/docs/components/${framework ?? DEFAULT_FRAMEWORK}/${id}`;
+
+export async function docsNavigation(framework: Framework | null): Promise<DocsSection[]> {
   const guides = await getCollection("guides");
   const components = await getCollection("components");
 
   const categories = new Map<string, DocsLink[]>();
   for (const entry of components.sort((a, b) => a.data.title.localeCompare(b.data.title))) {
     const links = categories.get(entry.data.category) ?? [];
-    links.push({ href: componentHref(entry.id), label: entry.data.title });
+    links.push({
+      href: componentHref(entry.id, framework),
+      label: entry.data.title,
+      component: entry.id,
+    });
     categories.set(entry.data.category, links);
   }
 

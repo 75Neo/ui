@@ -5,16 +5,6 @@ category: Navigation
 registryItem: steps
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/steps
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/steps
-```
-
 ## Usage
 
 ```vue

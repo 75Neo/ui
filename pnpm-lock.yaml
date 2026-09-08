@@ -212,6 +212,9 @@ importers:
       shadcn-vue:
         specifier: ^2.8.2
         version: 2.8.2(eslint@10.10.0(jiti@2.7.0))(magicast@0.5.4)(vue@3.5.42(typescript@6.0.3))
+      simple-icons:
+        specifier: ^16.30.0
+        version: 16.30.0
 
 packages:
 
@@ -4179,6 +4182,10 @@ packages:
   signal-exit@4.1.0:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
+
+  simple-icons@16.30.0:
+    resolution: {integrity: sha512-YX/HmgEqjpn5Zs3myzKp8ek5Ti+TdrkvNWn9skGLetg9tOg0cTjYizj9ESAYJn4xwc0GQYVGzQxBELDfbxq7WQ==}
+    engines: {node: '>=0.12.18'}
 
   sirv@3.0.2:
     resolution: {integrity: sha512-2wcC/oGxHis/BoHkkPwldgiPSYcpZK3JU28WoMVv55yHJgcZ8rlXvuG9iZggz+sU1d4bRgIGASwyWqjxu3FM0g==}
@@ -9392,6 +9399,8 @@ snapshots:
   signal-exit@3.0.7: {}
 
   signal-exit@4.1.0: {}
+
+  simple-icons@16.30.0: {}
 
   sirv@3.0.2:
     dependencies:

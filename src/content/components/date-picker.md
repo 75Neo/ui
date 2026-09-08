@@ -5,16 +5,6 @@ category: Forms
 registryItem: date-picker
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/date-picker
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/date-picker
-```
-
 ## Usage
 
 The weeks and the weekday names come from the context, so the grid is yours to render and the

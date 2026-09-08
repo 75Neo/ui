@@ -5,16 +5,6 @@ category: Forms
 registryItem: number-input
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/number-input
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/number-input
-```
-
 ## Usage
 
 ```tsx

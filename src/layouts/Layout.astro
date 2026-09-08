@@ -1,5 +1,4 @@
 ---
-import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 
 interface Props {
@@ -24,7 +23,6 @@ const {
     <meta name="description" content={description} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <ClientRouter />
     <script is:inline>
       const applyTheme = () => {
         const stored = localStorage.getItem("theme");
@@ -35,7 +33,6 @@ const {
       };
 
       applyTheme();
-      document.addEventListener("astro:after-swap", applyTheme);
     </script>
   </head>
   <body>

@@ -1,0 +1,39 @@
+import { Tabs, TabsContent, TabsIndicator, TabsList, TabsTrigger } from "@/components/react";
+
+const panels = [
+  {
+    value: "react",
+    label: "React",
+    body: "The adapter is a function component. Icons come in as props, and className merges through cn.",
+  },
+  {
+    value: "vue",
+    label: "Vue",
+    body: "The adapter is a single file component. Icons come in as slots, and class merges through cn.",
+  },
+  {
+    value: "shared",
+    label: "Shared",
+    body: "Both import the same tailwind-variants recipe, so the classes only exist in one place.",
+  },
+];
+
+export default function TabsOverview() {
+  return (
+    <Tabs defaultValue="react">
+      <TabsList>
+        {panels.map((panel) => (
+          <TabsTrigger key={panel.value} value={panel.value}>
+            {panel.label}
+          </TabsTrigger>
+        ))}
+        <TabsIndicator />
+      </TabsList>
+      {panels.map((panel) => (
+        <TabsContent key={panel.value} value={panel.value}>
+          <p className="text-sm text-muted">{panel.body}</p>
+        </TabsContent>
+      ))}
+    </Tabs>
+  );
+}

@@ -5,16 +5,6 @@ category: Navigation
 registryItem: tabs
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/tabs
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/tabs
-```
-
 ## Usage
 
 ```tsx

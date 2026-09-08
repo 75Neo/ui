@@ -1,13 +1,14 @@
 ---
 import { getEntry } from "astro:content";
 import ApiTable from "@/components/docs/ApiTable.astro";
-import { apiHeadingSlug } from "@/lib/docs";
+import { apiHeadingSlug, FRAMEWORK_LABELS, type Framework } from "@/lib/docs";
 
 interface Props {
   registryItem: string;
+  framework: Framework;
 }
 
-const { registryItem } = Astro.props;
+const { registryItem, framework } = Astro.props;
 const entry = await getEntry("componentApi", registryItem);
 
 if (!entry) {
@@ -15,6 +16,7 @@ if (!entry) {
 }
 
 const { components } = entry.data;
+const label = FRAMEWORK_LABELS[framework];
 ---
 
 <section>
@@ -23,7 +25,7 @@ const { components } = entry.data;
   </h2>
 
   <p class="mt-3 text-[0.9375rem] leading-7 text-muted">
-    Read straight from the component sources at build time, so it never drifts from the code you
+    Read straight from the {label} sources at build time, so it never drifts from the code you
     install. A red asterisk marks a required prop.
   </p>
 
@@ -37,29 +39,29 @@ const { components } = entry.data;
           {component.name}
         </h3>
 
-        {component.vue && (
+        {framework === "vue" && component.vue && (
           <>
             {component.vue.props.length > 0 && (
-              <ApiTable label="Vue props" nameHeading="Prop" rows={component.vue.props} />
+              <ApiTable label="Props" nameHeading="Prop" rows={component.vue.props} />
             )}
             {component.vue.slots.length > 0 && (
-              <ApiTable label="Vue slots" nameHeading="Slot" rows={component.vue.slots} />
+              <ApiTable label="Slots" nameHeading="Slot" rows={component.vue.slots} />
             )}
             {component.vue.events.length > 0 && (
-              <ApiTable label="Vue events" nameHeading="Event" rows={component.vue.events} />
+              <ApiTable label="Events" nameHeading="Event" rows={component.vue.events} />
             )}
           </>
         )}
 
-        {component.react && (
+        {framework === "react" && component.react && (
           <>
             {component.react.props.length > 0 && (
-              <ApiTable label="React props" nameHeading="Prop" rows={component.react.props} />
+              <ApiTable label="Props" nameHeading="Prop" rows={component.react.props} />
             )}
 
             {component.react.inherits.length > 0 && (
               <p class="mt-3 text-xs text-dimmed">
-                The React component also accepts everything in{" "}
+                It also accepts everything in{" "}
                 {component.react.inherits.map((inherited, index) => (
                   <>
                     {index > 0 && " and "}

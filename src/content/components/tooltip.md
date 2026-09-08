@@ -5,16 +5,6 @@ category: Overlays
 registryItem: tooltip
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/tooltip
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/tooltip
-```
-
 ## Usage
 
 ```tsx

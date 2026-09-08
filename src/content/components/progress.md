@@ -5,16 +5,6 @@ category: Data display
 registryItem: progress
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/progress
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/progress
-```
-
 ## Usage
 
 ```tsx

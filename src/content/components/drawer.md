@@ -5,16 +5,6 @@ category: Overlays
 registryItem: drawer
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/drawer
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/drawer
-```
-
 ## Usage
 
 ```tsx

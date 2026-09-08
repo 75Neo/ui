@@ -5,16 +5,6 @@ category: Layout
 registryItem: container
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/container
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/container
-```
-
 ## Usage
 
 ```tsx

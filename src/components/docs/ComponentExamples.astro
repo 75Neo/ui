@@ -1,0 +1,52 @@
+---
+import type { Framework } from "@/lib/docs";
+import DemoIsland from "@/components/docs/DemoIsland.astro";
+import DemoSource from "@/components/docs/DemoSource.astro";
+import { demoExamples, demoHeadingSlug, demoLanguage, demoSource } from "@/components/docs/demos";
+
+interface Props {
+  component: string;
+  framework: Framework;
+}
+
+const { component, framework } = Astro.props;
+const examples = demoExamples(component);
+---
+
+{
+  examples.length > 0 && (
+    <section>
+      <h2 id="examples" class="scroll-mt-24 text-xl font-semibold tracking-tight text-default">
+        Examples
+      </h2>
+
+      <div class="mt-4 flex flex-col gap-10">
+        {examples.map((example) => (
+          <article>
+            <h3
+              id={demoHeadingSlug(example.id)}
+              class="scroll-mt-24 text-base font-semibold tracking-tight text-default"
+            >
+              {example.title}
+            </h3>
+
+            {example.description && (
+              <p class="mt-2 text-[0.9375rem] leading-7 text-muted">{example.description}</p>
+            )}
+
+            <div class="mt-4 rounded-md p-6 ring ring-default sm:p-8">
+              <DemoIsland component={component} framework={framework} example={example} />
+            </div>
+
+            {demoSource(component, framework, example.id) && (
+              <DemoSource
+                source={demoSource(component, framework, example.id)!}
+                language={demoLanguage(framework)}
+              />
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}

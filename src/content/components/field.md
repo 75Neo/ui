@@ -5,16 +5,6 @@ category: Forms
 registryItem: field
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/field
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/field
-```
-
 ## Usage
 
 ```tsx

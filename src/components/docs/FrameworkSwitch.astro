@@ -1,0 +1,28 @@
+---
+import { componentHref, FRAMEWORK_LABELS, FRAMEWORKS, type Framework } from "@/lib/docs";
+
+interface Props {
+  component: string;
+  current: Framework;
+}
+
+const { component, current } = Astro.props;
+---
+
+<div
+  role="group"
+  aria-label="Framework"
+  class="inline-flex items-center gap-1 rounded-md bg-muted/60 p-1"
+>
+  {
+    FRAMEWORKS.map((framework) => (
+      <a
+        href={componentHref(component, framework)}
+        aria-current={framework === current ? "page" : undefined}
+        class="rounded-sm px-2.5 py-1 text-xs font-medium text-muted transition-colors hover:text-default aria-[current=page]:bg-elevated aria-[current=page]:text-default aria-[current=page]:shadow-sm"
+      >
+        {FRAMEWORK_LABELS[framework]}
+      </a>
+    ))
+  }
+</div>

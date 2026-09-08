@@ -5,16 +5,6 @@ category: Disclosure
 registryItem: accordion
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/accordion
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/accordion
-```
-
 ## Usage
 
 ```tsx

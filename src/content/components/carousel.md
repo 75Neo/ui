@@ -5,16 +5,6 @@ category: Data display
 registryItem: carousel
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/carousel
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/carousel
-```
-
 ## Usage
 
 ```vue

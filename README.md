@@ -68,6 +68,10 @@ Dark mode is class-based: put `dark` on an ancestor of the components you want i
 palette. Retheme the library by overriding the `--ui-*` properties rather than the
 Tailwind tokens derived from them.
 
+Each of the six semantic intents carries a small ramp, a fill plus a hover step, a foreground, a
+tint, a tint foreground and a border, so components express every state with a real colour rather
+than an opacity. Neutrals are Tailwind's warm `stone` ramp and the default primary is near black.
+
 ## Working on the registry
 
 ```sh
@@ -87,10 +91,20 @@ also a publish of the registry.
 
 ## Working on the docs
 
+Component pages fork by framework, at `/docs/components/react/<item>` and
+`/docs/components/vue/<item>`, with a switch in the page header that remembers your choice.
+The bare `/docs/components/<item>` path redirects to whichever you used last. Guides are shared.
+
 Pages come from Markdown under `src/content`: `guides` for the getting started track and
-`components` for one page per registry item. Component front matter carries a
-`registryItem`, which is how a page finds its live preview in
-`src/components/docs/previews` and its API reference.
+`components` for one page per registry item. Component front matter carries a `registryItem`,
+which is how a page finds its examples and its API reference. Code fences are filtered by
+framework, so a `tsx` block only renders on React pages and a `vue` block only on Vue ones.
+
+Examples live under `src/components/docs/demos/<item>`, with an `examples.ts` listing them in
+order and one real source file per framework. The page renders that file and shows its source, so
+the snippet a reader copies is the one that just ran. `pnpm registry:generate` writes a small
+Astro wrapper next to each demo, which is how Astro gets the static import it needs to hydrate
+them; those wrappers are generated and gitignored.
 
 The API reference is not written by hand. A content collection loader reads the React
 adapters with ts-morph and the Vue adapters with vue-component-meta, then renders props,

@@ -5,16 +5,6 @@ category: Forms
 registryItem: file-upload
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/file-upload
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/file-upload
-```
-
 ## Usage
 
 The accepted files live in the machine. Read them from the context component and render an item for

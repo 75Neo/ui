@@ -5,16 +5,6 @@ category: Forms
 registryItem: select
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/select
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/select
-```
-
 ## Usage
 
 The options come from a collection rather than from the markup, so the machine can do typeahead and

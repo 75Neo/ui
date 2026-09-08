@@ -3,21 +3,8 @@ title: Table of Contents
 description: A navigation rail that tracks which headings are on screen and marks the active one.
 category: Navigation
 registryItem: toc
+installNote: "The rail on the right of this page is this component, driven by the headings of this document plus the ones the API reference generates. Narrow the window below `1280px` and it is hidden, which is the layout decision this documentation makes rather than something the component enforces."
 ---
-
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/toc
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/toc
-```
-
-The rail on the right of this page is this component, driven by the headings of this document plus
-the ones the API reference generates. Narrow the window below `1280px` and it is hidden, which is
-the layout decision this documentation makes rather than something the component enforces.
 
 ## Usage
 

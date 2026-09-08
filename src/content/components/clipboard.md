@@ -5,16 +5,6 @@ category: Data display
 registryItem: clipboard
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/clipboard
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/clipboard
-```
-
 ## Usage
 
 ```tsx

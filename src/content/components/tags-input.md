@@ -5,16 +5,6 @@ category: Forms
 registryItem: tags-input
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/tags-input
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/tags-input
-```
-
 ## Usage
 
 The items come from the current value, so read it from the context component rather than keeping a

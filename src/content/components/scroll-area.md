@@ -5,16 +5,6 @@ category: Layout
 registryItem: scroll-area
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/scroll-area
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/scroll-area
-```
-
 ## Usage
 
 ```vue

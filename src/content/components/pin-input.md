@@ -5,16 +5,6 @@ category: Forms
 registryItem: pin-input
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/pin-input
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/pin-input
-```
-
 ## Usage
 
 ```tsx

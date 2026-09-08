@@ -5,16 +5,6 @@ category: Navigation
 registryItem: pagination
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/pagination
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/pagination
-```
-
 ## Usage
 
 The pages are computed for you. Read them from the context component and render an item or an

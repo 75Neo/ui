@@ -1,0 +1,18 @@
+---
+import type { Framework } from "@/lib/docs";
+import type { DemoExample } from "@/components/docs/demos/types";
+import { demoComponent } from "@/components/docs/demos";
+
+interface Props {
+  component: string;
+  framework: Framework;
+  example: DemoExample;
+}
+
+const { component, framework, example } = Astro.props;
+const Demo = demoComponent(component, framework, example.id);
+---
+
+{Demo && <Demo mode={example.client ?? "visible"} />}
+
+{!Demo && <p class="text-sm text-dimmed">This example has no {framework} source yet.</p>}

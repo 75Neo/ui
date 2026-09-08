@@ -5,16 +5,6 @@ category: Data display
 registryItem: timer
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/timer
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/timer
-```
-
 ## Usage
 
 The formatted parts come from the context, so the markup decides which units to show and how to

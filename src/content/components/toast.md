@@ -5,16 +5,6 @@ category: Feedback
 registryItem: toast
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/toast
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/toast
-```
-
 ## Usage
 
 A toaster is a store rather than a component tree. Create one, render it once near the root of the

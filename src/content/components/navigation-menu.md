@@ -3,20 +3,8 @@ title: Navigation Menu
 description: A horizontal or vertical bar of rows, each opening a panel of links on hover or click.
 category: Navigation
 registryItem: navigation-menu
+installNote: "The item pulls in `@ark-ui/react` or `@ark-ui/vue`. It also installs two keyframes for the panel, which the CLI adds to your stylesheet."
 ---
-
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/navigation-menu
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/navigation-menu
-```
-
-The item pulls in `@ark-ui/react` or `@ark-ui/vue`. It also installs two keyframes for the panel,
-which the CLI adds to your stylesheet.
 
 ## Usage
 

@@ -5,16 +5,6 @@ category: Layout
 registryItem: splitter
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/splitter
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/splitter
-```
-
 ## Usage
 
 Panels are declared twice: once in the `panels` prop, which is what the machine sizes, and once in

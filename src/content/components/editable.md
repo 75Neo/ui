@@ -5,16 +5,6 @@ category: Forms
 registryItem: editable
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/editable
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/editable
-```
-
 ## Usage
 
 ```tsx

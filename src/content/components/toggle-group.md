@@ -5,16 +5,6 @@ category: Actions
 registryItem: toggle-group
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/toggle-group
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/toggle-group
-```
-
 ## Usage
 
 ```tsx
