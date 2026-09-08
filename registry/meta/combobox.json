@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Combobox",
+  "description": "A text field that filters a list and commits one of its options.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

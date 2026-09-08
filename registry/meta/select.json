@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Select",
+  "description": "A trigger that opens a list of options and reports the chosen one.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}
