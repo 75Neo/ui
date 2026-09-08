@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "vue";
 import { Select as Ark } from "@ark-ui/vue/select";
 import type { CollectionItem, ListCollection } from "@ark-ui/vue/collection";
 import { cn } from "cn";
-import { select } from "@/registry/shared/lib/select.styles";
+import { selectStyles as styles } from "@/registry/shared/lib/select.styles";
 
 interface SelectProps {
   collection: ListCollection<CollectionItem>;
@@ -37,8 +37,6 @@ const value = defineModel<string[]>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = select();
 </script>
 
 <template>

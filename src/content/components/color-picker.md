@@ -5,16 +5,6 @@ category: Forms
 registryItem: color-picker
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/color-picker
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/color-picker
-```
-
 ## Usage
 
 ```vue

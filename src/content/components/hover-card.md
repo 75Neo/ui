@@ -5,16 +5,6 @@ category: Overlays
 registryItem: hover-card
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/hover-card
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/hover-card
-```
-
 ## Usage
 
 ```tsx

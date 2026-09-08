@@ -1,7 +1,7 @@
 import React from "react";
 import { AngleSlider as Ark } from "@ark-ui/react/angle-slider";
 import { cn } from "cn";
-import { angleSlider } from "@/registry/shared/lib/angle-slider.styles";
+import { angleSliderStyles as styles } from "@/registry/shared/lib/angle-slider.styles";
 
 export interface AngleSliderValueTextProps extends Omit<
   React.ComponentPropsWithRef<typeof Ark.ValueText>,
@@ -9,7 +9,5 @@ export interface AngleSliderValueTextProps extends Omit<
 > {}
 
 export default function AngleSliderValueText({ className, ...props }: AngleSliderValueTextProps) {
-  const styles = angleSlider();
-
   return <Ark.ValueText className={cn(styles.valueText(), className)} {...props} />;
 }

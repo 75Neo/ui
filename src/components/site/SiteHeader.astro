@@ -1,12 +1,20 @@
 ---
+import { siGithub } from "simple-icons";
+import { componentHref } from "@/lib/docs";
 import Logo from "@/components/site/Logo.astro";
+import SimpleIcon from "@/components/site/SimpleIcon.astro";
 import ThemeToggle from "@/components/site/ThemeToggle.astro";
 
 const { pathname } = Astro.url;
 
-const links = [
+const links: { href: string; label: string; match: string; component?: string }[] = [
   { href: "/", label: "Docs", match: "/" },
-  { href: "/docs/components/button", label: "Components", match: "/docs/components/" },
+  {
+    href: componentHref("button"),
+    label: "Components",
+    match: "/docs/components/",
+    component: "button",
+  },
 ];
 
 const activeMatch = links.map((link) => link.match).findLast((match) => pathname.startsWith(match));
@@ -20,7 +28,7 @@ const activeMatch = links.map((link) => link.match).findLast((match) => pathname
       href="/"
       class="flex items-center gap-2 text-sm font-semibold tracking-tight text-default transition-colors hover:text-primary"
     >
-      <Logo class="size-5 text-primary" />
+      <Logo class="size-5 rounded-sm" />
       75NeoUI
     </a>
 
@@ -29,6 +37,7 @@ const activeMatch = links.map((link) => link.match).findLast((match) => pathname
         links.map((link) => (
           <a
             href={link.href}
+            data-component={link.component}
             aria-current={link.match === activeMatch ? "page" : undefined}
             class="text-muted transition-colors hover:text-default aria-[current=page]:text-default"
           >
@@ -42,9 +51,10 @@ const activeMatch = links.map((link) => link.match).findLast((match) => pathname
       <a
         href="https://github.com/75Neo/ui"
         rel="noreferrer"
-        class="hidden rounded-md px-2.5 py-1.5 text-sm text-muted transition-colors hover:bg-muted hover:text-default sm:inline-flex"
+        aria-label="75NeoUI on GitHub"
+        class="hidden rounded-md p-2 text-muted transition-colors hover:bg-muted hover:text-default sm:inline-flex"
       >
-        GitHub
+        <SimpleIcon icon={siGithub} class="size-4" />
       </a>
       <ThemeToggle />
     </div>

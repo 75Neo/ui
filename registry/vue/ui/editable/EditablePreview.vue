@@ -2,15 +2,13 @@
 import type { HTMLAttributes } from "vue";
 import { Editable as Ark } from "@ark-ui/vue/editable";
 import { cn } from "cn";
-import { editable } from "@/registry/shared/lib/editable.styles";
+import { editableStyles as styles } from "@/registry/shared/lib/editable.styles";
 
 interface EditablePreviewProps {
   class?: HTMLAttributes["class"];
 }
 
 const props = defineProps<EditablePreviewProps>();
-
-const styles = editable();
 </script>
 
 <template>

@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { Carousel as Ark } from "@ark-ui/vue/carousel";
 import { cn } from "cn";
-import { carousel } from "@/registry/shared/lib/carousel.styles";
+import { carouselStyles as styles } from "@/registry/shared/lib/carousel.styles";
 
 interface CarouselNextTriggerProps {
   class?: HTMLAttributes["class"];
@@ -13,8 +13,6 @@ const props = defineProps<CarouselNextTriggerProps>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = carousel();
 </script>
 
 <template>

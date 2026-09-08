@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { Avatar as Ark } from "@ark-ui/vue/avatar";
 import { cn } from "cn";
-import { avatar, type AvatarSize } from "@/registry/shared/lib/avatar.styles";
+import { avatarStyles as styles, type AvatarSize } from "@/registry/shared/lib/avatar.styles";
 
 interface AvatarProps {
   size?: AvatarSize;
@@ -16,8 +16,6 @@ const props = withDefaults(defineProps<AvatarProps>(), {
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = avatar();
 </script>
 
 <template>

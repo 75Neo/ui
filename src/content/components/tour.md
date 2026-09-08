@@ -5,22 +5,12 @@ category: Overlays
 registryItem: tour
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/tour
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/tour
-```
-
 ## Usage
 
 The steps are data. Each one names a target, the copy to show, and the actions at the bottom.
 
 ```ts
-const steps: StepDetails[] = [
+const steps: TourStepDetails[] = [
   {
     id: "start",
     type: "dialog",

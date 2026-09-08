@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content";
+import { componentHref, DEFAULT_FRAMEWORK, FRAMEWORKS } from "@/lib/docs";
+
+export async function getStaticPaths() {
+  const components = await getCollection("components");
+  return components.map((entry) => ({ params: { component: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const targets = Object.fromEntries(
+  FRAMEWORKS.map((framework) => [framework, componentHref(entry.id, framework)]),
+);
+const fallback = componentHref(entry.id, DEFAULT_FRAMEWORK);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{entry.data.title} - 75NeoUI</title>
+    <link rel="canonical" href={fallback} />
+    <meta name="robots" content="noindex" />
+    <script is:inline define:vars={{ targets, fallback }}>
+      let stored = null;
+      try {
+        stored = localStorage.getItem("framework");
+      } catch {
+        stored = null;
+      }
+
+      location.replace(targets[stored] ?? fallback);
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to <a href={fallback}>{entry.data.title}</a>.</p>
+  </body>
+</html>

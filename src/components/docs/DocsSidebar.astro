@@ -20,6 +20,7 @@ const { sections, current } = Astro.props;
             <li>
               <a
                 href={link.href}
+                data-component={link.component}
                 aria-current={link.href === current ? "page" : undefined}
                 class="block rounded-md px-3 py-1.5 text-muted transition-colors hover:bg-muted hover:text-default aria-[current=page]:bg-muted aria-[current=page]:font-medium aria-[current=page]:text-default"
               >
@@ -34,9 +35,52 @@ const { sections, current } = Astro.props;
 </nav>
 
 <script>
-  const syncCurrent = () => {
+  const FRAMEWORKS = ["react", "vue"];
+  const DEFAULT_FRAMEWORK = "react";
+
+  const isFramework = (value: string | null | undefined): value is string =>
+    typeof value === "string" && FRAMEWORKS.includes(value);
+
+  const frameworkFromLocation = () => {
+    const [section, group, segment] = window.location.pathname.split("/").filter(Boolean);
+    return section === "docs" && group === "components" && isFramework(segment) ? segment : null;
+  };
+
+  const remember = (framework: string) => {
+    try {
+      localStorage.setItem("framework", framework);
+    } catch {
+      return;
+    }
+  };
+
+  const recall = () => {
+    try {
+      return localStorage.getItem("framework");
+    } catch {
+      return null;
+    }
+  };
+
+  const activeFramework = () => {
+    const fromLocation = frameworkFromLocation();
+    if (fromLocation) {
+      remember(fromLocation);
+      return fromLocation;
+    }
+
+    const stored = recall();
+    return isFramework(stored) ? stored : DEFAULT_FRAMEWORK;
+  };
+
+  const syncNavigation = () => {
+    const framework = activeFramework();
     const raw = window.location.pathname.replace(/\/$/, "") || "/";
     const current = raw === "/" ? "/docs/introduction" : raw;
+
+    for (const link of document.querySelectorAll<HTMLAnchorElement>("a[data-component]")) {
+      link.setAttribute("href", `/docs/components/${framework}/${link.dataset.component}`);
+    }
 
     for (const link of document.querySelectorAll("[data-docs-nav] a")) {
       if (link.getAttribute("href") === current) link.setAttribute("aria-current", "page");
@@ -44,5 +88,5 @@ const { sections, current } = Astro.props;
     }
   };
 
-  document.addEventListener("astro:page-load", syncCurrent);
+  syncNavigation();
 </script>

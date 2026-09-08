@@ -6,15 +6,4 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<svg
-  viewBox="0 0 64 64"
-  fill="none"
-  role="img"
-  aria-label="75NeoUI"
-  class={className}
->
-  <g stroke="currentColor" stroke-width="11" stroke-linecap="butt" fill="none">
-    <path d="M 13 44 L 13 26 A 13 13 0 0 1 26 13 L 44 13"></path>
-    <path d="M 51 20 L 51 38 A 13 13 0 0 1 38 51 L 20 51"></path>
-  </g>
-</svg>
+<img src="/logo-brand.svg" alt="" width="20" height="20" class={className} />

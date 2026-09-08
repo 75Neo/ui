@@ -9,3 +9,5 @@ export const avatar = tv({
 });
 
 export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
+
+export const avatarStyles = avatar();

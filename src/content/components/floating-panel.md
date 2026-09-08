@@ -5,16 +5,6 @@ category: Overlays
 registryItem: floating-panel
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/floating-panel
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/floating-panel
-```
-
 ## Usage
 
 ```vue

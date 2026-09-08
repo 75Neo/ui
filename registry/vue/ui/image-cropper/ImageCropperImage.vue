@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { ImageCropper as Ark } from "@ark-ui/vue/image-cropper";
 import { cn } from "cn";
-import { imageCropper } from "@/registry/shared/lib/image-cropper.styles";
+import { imageCropperStyles as styles } from "@/registry/shared/lib/image-cropper.styles";
 
 interface ImageCropperImageProps {
   src?: string;
@@ -10,8 +10,6 @@ interface ImageCropperImageProps {
 }
 
 const props = defineProps<ImageCropperImageProps>();
-
-const styles = imageCropper();
 </script>
 
 <template>

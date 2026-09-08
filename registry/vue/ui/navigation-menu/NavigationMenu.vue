@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "vue";
 import { NavigationMenu as Ark } from "@ark-ui/vue/navigation-menu";
 import { cn } from "cn";
 import {
-  navigationMenu,
+  navigationMenuStyles as styles,
   type NavigationMenuSize,
 } from "@/registry/shared/lib/navigation-menu.styles";
 
@@ -35,8 +35,6 @@ const value = defineModel<string>("value");
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = navigationMenu();
 </script>
 
 <template>

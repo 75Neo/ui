@@ -2,6 +2,6 @@
   "type": "registry:ui",
   "title": "Radio Group",
   "description": "A set of options where exactly one can be selected at a time.",
-  "registryDependencies": ["@75neo/theme"],
+  "registryDependencies": ["@75neo/theme", "@75neo/intent"],
   "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
 }

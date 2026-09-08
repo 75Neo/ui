@@ -3,20 +3,8 @@ title: Table
 description: Composable table parts over native table elements, inside a container that scrolls sideways.
 category: Data display
 registryItem: table
+installNote: "No Ark UI dependency. A table has no interaction model to speak of, so this is our own markup with a recipe applied."
 ---
-
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/table
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/table
-```
-
-No Ark UI dependency. A table has no interaction model to speak of, so this is our own markup with
-a recipe applied.
 
 ## Usage
 

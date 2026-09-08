@@ -5,16 +5,6 @@ category: Forms
 registryItem: segment-group
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/segment-group
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/segment-group
-```
-
 ## Usage
 
 ```tsx

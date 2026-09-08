@@ -5,16 +5,6 @@ category: Overlays
 registryItem: popover
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/popover
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/popover
-```
-
 ## Usage
 
 ```tsx

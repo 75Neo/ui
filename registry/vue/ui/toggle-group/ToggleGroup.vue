@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
+import { computed, type HTMLAttributes } from "vue";
 import { ToggleGroup as Ark } from "@ark-ui/vue/toggle-group";
 import { cn } from "cn";
-import { toggleGroup, type ToggleGroupSize } from "@/registry/shared/lib/toggle-group.styles";
+import {
+  toggleGroup,
+  type ToggleGroupSize,
+  type Intent,
+} from "@/registry/shared/lib/toggle-group.styles";
 
 interface ToggleGroupProps {
   defaultValue?: string[];
@@ -13,6 +17,7 @@ interface ToggleGroupProps {
   loopFocus?: boolean;
   rovingFocus?: boolean;
   size?: ToggleGroupSize;
+  color?: Intent;
   class?: HTMLAttributes["class"];
 }
 
@@ -31,7 +36,7 @@ defineSlots<{
   default?: () => unknown;
 }>();
 
-const styles = toggleGroup();
+const styles = computed(() => toggleGroup({ color: props.color }));
 </script>
 
 <template>

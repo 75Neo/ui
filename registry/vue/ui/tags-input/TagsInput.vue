@@ -2,7 +2,10 @@
 import type { HTMLAttributes } from "vue";
 import { TagsInput as Ark } from "@ark-ui/vue/tags-input";
 import { cn } from "cn";
-import { tagsInput } from "@/registry/shared/lib/tags-input.styles";
+import {
+  tagsInputStyles as styles,
+  type TagsInputSize,
+} from "@/registry/shared/lib/tags-input.styles";
 
 interface TagsInputProps {
   defaultValue?: string[];
@@ -21,10 +24,12 @@ interface TagsInputProps {
   required?: boolean;
   name?: string;
   form?: string;
+  size?: TagsInputSize;
   class?: HTMLAttributes["class"];
 }
 
 const props = withDefaults(defineProps<TagsInputProps>(), {
+  size: "md",
   addOnPaste: undefined,
   allowDuplicates: undefined,
   allowOverflow: undefined,
@@ -40,8 +45,6 @@ const value = defineModel<string[]>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = tagsInput();
 </script>
 
 <template>
@@ -63,6 +66,7 @@ const styles = tagsInput();
     :required="props.required"
     :name="props.name"
     :form="props.form"
+    :data-size="props.size"
     :class="cn(styles.root(), props.class)"
   >
     <slot />

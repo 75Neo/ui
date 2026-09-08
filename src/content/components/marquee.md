@@ -5,16 +5,6 @@ category: Data display
 registryItem: marquee
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/marquee
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/marquee
-```
-
 ## Usage
 
 ```vue

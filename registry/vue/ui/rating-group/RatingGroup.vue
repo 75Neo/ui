@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
+import { computed, type HTMLAttributes } from "vue";
 import { RatingGroup as Ark } from "@ark-ui/vue/rating-group";
 import { cn } from "cn";
-import { ratingGroup } from "@/registry/shared/lib/rating-group.styles";
+import { ratingGroup, type Intent } from "@/registry/shared/lib/rating-group.styles";
 
 interface RatingGroupProps {
   defaultValue?: number;
@@ -14,6 +14,7 @@ interface RatingGroupProps {
   required?: boolean;
   name?: string;
   form?: string;
+  color?: Intent;
   class?: HTMLAttributes["class"];
 }
 
@@ -31,7 +32,7 @@ defineSlots<{
   default?: () => unknown;
 }>();
 
-const styles = ratingGroup();
+const styles = computed(() => ratingGroup({ color: props.color }));
 </script>
 
 <template>

@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 import { QrCode as Ark } from "@ark-ui/vue/qr-code";
+import type { QrCodeDownloadTriggerProps as ArkDownloadTriggerProps } from "@ark-ui/vue/qr-code";
 import { cn } from "cn";
-import { qrCode } from "@/registry/shared/lib/qr-code.styles";
+import { qrCodeStyles as styles } from "@/registry/shared/lib/qr-code.styles";
 
 interface QrCodeDownloadTriggerProps {
   fileName: string;
-  mimeType: "image/png" | "image/jpeg" | "image/webp";
+  mimeType: ArkDownloadTriggerProps["mimeType"];
   quality?: number;
   class?: HTMLAttributes["class"];
 }
@@ -16,8 +17,6 @@ const props = defineProps<QrCodeDownloadTriggerProps>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = qrCode();
 </script>
 
 <template>

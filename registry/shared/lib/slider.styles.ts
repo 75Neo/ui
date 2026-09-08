@@ -1,4 +1,5 @@
 import { tv } from "tailwind-variants/lite";
+import { intentSlot, type Intent } from "@/registry/shared/lib/intent.styles";
 
 export const slider = tv({
   slots: {
@@ -10,12 +11,22 @@ export const slider = tv({
     track:
       "relative h-1.5 w-full overflow-hidden rounded-full bg-muted data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1.5",
     range:
-      "absolute rounded-full bg-primary data-disabled:bg-accented data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full",
+      "absolute rounded-full bg-(--intent) data-disabled:bg-accented data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full",
     thumb:
-      "block size-4 shrink-0 cursor-grab rounded-full bg-default shadow-sm ring-2 ring-primary transition-shadow outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary data-disabled:pointer-events-none data-disabled:ring-default data-dragging:cursor-grabbing",
+      "block size-4 shrink-0 cursor-grab rounded-full bg-elevated shadow-sm ring-2 ring-(--intent) transition-shadow outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus data-disabled:pointer-events-none data-disabled:ring-default data-dragging:cursor-grabbing",
     markerGroup: "flex w-full justify-between pt-1",
     marker: "text-xs text-dimmed data-[state=under-value]:text-muted",
     draggingIndicator:
       "rounded-sm bg-inverted px-1.5 py-0.5 text-xs text-inverted tabular-nums shadow-md",
   },
+  variants: {
+    color: intentSlot("root"),
+  },
+  defaultVariants: {
+    color: "primary",
+  },
 });
+
+export type { Intent };
+
+export const sliderStyles = slider();

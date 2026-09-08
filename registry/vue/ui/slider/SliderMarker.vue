@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { Slider as Ark } from "@ark-ui/vue/slider";
 import { cn } from "cn";
-import { slider } from "@/registry/shared/lib/slider.styles";
+import { sliderStyles as styles } from "@/registry/shared/lib/slider.styles";
 
 interface SliderMarkerProps {
   value: number;
@@ -14,8 +14,6 @@ const props = defineProps<SliderMarkerProps>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = slider();
 </script>
 
 <template>

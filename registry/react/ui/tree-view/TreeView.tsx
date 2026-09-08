@@ -1,13 +1,16 @@
 import React from "react";
-import { TreeView as Ark } from "@ark-ui/react/tree-view";
+import { TreeView as Ark, type TreeNode, type TreeViewRootProps } from "@ark-ui/react/tree-view";
 import { cn } from "cn";
-import { treeView } from "@/registry/shared/lib/tree-view.styles";
+import { treeViewStyles as styles } from "@/registry/shared/lib/tree-view.styles";
 
-export interface TreeViewProps extends React.ComponentPropsWithRef<typeof Ark.Root> {}
+export interface TreeViewProps<T extends TreeNode>
+  extends TreeViewRootProps<T>, React.RefAttributes<HTMLDivElement> {}
 
-export default function TreeView({ className, children, ...props }: TreeViewProps) {
-  const styles = treeView();
-
+export default function TreeView<T extends TreeNode>({
+  className,
+  children,
+  ...props
+}: TreeViewProps<T>) {
   return (
     <Ark.Root className={cn(styles.root(), className)} {...props}>
       {children}

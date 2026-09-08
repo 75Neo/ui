@@ -5,16 +5,6 @@ category: Forms
 registryItem: fieldset
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/fieldset
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/fieldset
-```
-
 ## Usage
 
 ```vue

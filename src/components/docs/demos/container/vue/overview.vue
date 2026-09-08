@@ -1,0 +1,11 @@
+<script setup lang="ts">
+import { Container } from "@/components/vue";
+</script>
+
+<template>
+  <div class="w-full rounded-md bg-muted/40 py-6">
+    <Container class="rounded-md bg-default py-6 text-center text-sm text-muted ring ring-default">
+      Centred, held to the width in <code class="text-default">--ui-container</code>
+    </Container>
+  </div>
+</template>

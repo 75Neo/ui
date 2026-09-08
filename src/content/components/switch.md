@@ -5,16 +5,6 @@ category: Forms
 registryItem: switch
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/switch
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/switch
-```
-
 ## Usage
 
 ```tsx

@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { PasswordInput as Ark } from "@ark-ui/vue/password-input";
 import { cn } from "cn";
-import { passwordInput } from "@/registry/shared/lib/password-input.styles";
+import { passwordInputStyles as styles } from "@/registry/shared/lib/password-input.styles";
 
 interface PasswordInputProps {
   defaultVisible?: boolean;
@@ -24,13 +24,11 @@ const props = withDefaults(defineProps<PasswordInputProps>(), {
   ignorePasswordManagers: undefined,
 });
 
-const visible = defineModel<boolean>("visible", { default: undefined });
+const visible = defineModel<boolean>("visible");
 
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = passwordInput();
 </script>
 
 <template>

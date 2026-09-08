@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { ToggleGroup as Ark } from "@ark-ui/vue/toggle-group";
 import { cn } from "cn";
-import { toggleGroup } from "@/registry/shared/lib/toggle-group.styles";
+import { toggleGroupStyles as styles } from "@/registry/shared/lib/toggle-group.styles";
 
 interface ToggleGroupItemProps {
   value: string;
@@ -17,8 +17,6 @@ const props = withDefaults(defineProps<ToggleGroupItemProps>(), {
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = toggleGroup();
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 import React from "react";
 import { AngleSlider as Ark } from "@ark-ui/react/angle-slider";
 import { cn } from "cn";
-import { angleSlider } from "@/registry/shared/lib/angle-slider.styles";
+import { angleSliderStyles as styles } from "@/registry/shared/lib/angle-slider.styles";
 
 export interface AngleSliderMarkerGroupProps extends React.ComponentPropsWithRef<
   typeof Ark.MarkerGroup
@@ -12,8 +12,6 @@ export default function AngleSliderMarkerGroup({
   children,
   ...props
 }: AngleSliderMarkerGroupProps) {
-  const styles = angleSlider();
-
   return (
     <Ark.MarkerGroup className={cn(styles.markerGroup(), className)} {...props}>
       {children}

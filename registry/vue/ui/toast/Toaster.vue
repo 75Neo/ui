@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
-import { Toaster as Ark, type CreateToasterReturn, type ToastOptions } from "@ark-ui/vue/toast";
+import {
+  Toaster as Ark,
+  type ToasterProps as ArkToasterProps,
+  type ToastOptions,
+} from "@ark-ui/vue/toast";
 import { cn } from "cn";
-import { toast } from "@/registry/shared/lib/toast.styles";
+import { toastStyles as styles } from "@/registry/shared/lib/toast.styles";
 
 interface ToasterProps {
-  toaster: CreateToasterReturn<unknown>;
+  toaster: ArkToasterProps["toaster"];
   class?: HTMLAttributes["class"];
 }
 
@@ -14,8 +18,6 @@ const props = defineProps<ToasterProps>();
 defineSlots<{
   default?: (options: ToastOptions) => unknown;
 }>();
-
-const styles = toast();
 </script>
 
 <template>

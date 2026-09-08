@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
+import { computed, type HTMLAttributes } from "vue";
 import { RadioGroup as Ark } from "@ark-ui/vue/radio-group";
 import { cn } from "cn";
-import { radioGroup, type RadioGroupSize } from "@/registry/shared/lib/radio-group.styles";
+import {
+  radioGroup,
+  type RadioGroupSize,
+  type Intent,
+} from "@/registry/shared/lib/radio-group.styles";
 
 interface RadioGroupProps {
   defaultValue?: string | null;
@@ -12,6 +16,7 @@ interface RadioGroupProps {
   name?: string;
   form?: string;
   size?: RadioGroupSize;
+  color?: Intent;
   class?: HTMLAttributes["class"];
 }
 
@@ -27,7 +32,7 @@ defineSlots<{
   default?: () => unknown;
 }>();
 
-const styles = radioGroup();
+const styles = computed(() => radioGroup({ color: props.color }));
 </script>
 
 <template>

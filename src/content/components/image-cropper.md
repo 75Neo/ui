@@ -5,16 +5,6 @@ category: Forms
 registryItem: image-cropper
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/image-cropper
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/image-cropper
-```
-
 ## Usage
 
 ```vue
@@ -23,7 +13,8 @@ npx shadcn-vue@latest add @75neo/image-cropper
     <ImageCropperViewport>
       <ImageCropperImage :src="src" alt="" />
       <ImageCropperSelection>
-        <ImageCropperGrid />
+        <ImageCropperGrid axis="horizontal" />
+        <ImageCropperGrid axis="vertical" />
         <ImageCropperHandle v-for="position in handles" :key="position" :position="position" />
       </ImageCropperSelection>
     </ImageCropperViewport>

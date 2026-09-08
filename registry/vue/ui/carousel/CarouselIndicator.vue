@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { Carousel as Ark } from "@ark-ui/vue/carousel";
 import { cn } from "cn";
-import { carousel } from "@/registry/shared/lib/carousel.styles";
+import { carouselStyles as styles } from "@/registry/shared/lib/carousel.styles";
 
 interface CarouselIndicatorProps {
   index: number;
@@ -13,8 +13,6 @@ interface CarouselIndicatorProps {
 const props = withDefaults(defineProps<CarouselIndicatorProps>(), {
   readOnly: undefined,
 });
-
-const styles = carousel();
 </script>
 
 <template>

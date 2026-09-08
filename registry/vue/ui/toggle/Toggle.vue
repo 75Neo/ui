@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
+import { computed, type HTMLAttributes } from "vue";
 import { Toggle as Ark } from "@ark-ui/vue/toggle";
 import { cn } from "cn";
-import { toggle, type ToggleSize } from "@/registry/shared/lib/toggle.styles";
+import { toggle, type ToggleSize, type Intent } from "@/registry/shared/lib/toggle.styles";
 
 interface ToggleProps {
   defaultPressed?: boolean;
   disabled?: boolean;
   size?: ToggleSize;
+  color?: Intent;
   class?: HTMLAttributes["class"];
 }
 
@@ -17,13 +18,13 @@ const props = withDefaults(defineProps<ToggleProps>(), {
   size: "md",
 });
 
-const pressed = defineModel<boolean>("pressed", { default: undefined });
+const pressed = defineModel<boolean>("pressed");
 
 defineSlots<{
   default?: () => unknown;
 }>();
 
-const styles = toggle();
+const styles = computed(() => toggle({ color: props.color }));
 </script>
 
 <template>

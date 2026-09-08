@@ -5,16 +5,6 @@ category: Forms
 registryItem: rating-group
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/rating-group
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/rating-group
-```
-
 ## Usage
 
 ```tsx

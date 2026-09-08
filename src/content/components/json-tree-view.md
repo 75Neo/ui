@@ -5,16 +5,6 @@ category: Data display
 registryItem: json-tree-view
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/json-tree-view
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/json-tree-view
-```
-
 ## Usage
 
 ```vue

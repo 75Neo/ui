@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { NumberInput as Ark } from "@ark-ui/vue/number-input";
 import { cn } from "cn";
-import { numberInput } from "@/registry/shared/lib/number-input.styles";
+import { numberInputStyles as styles } from "@/registry/shared/lib/number-input.styles";
 
 interface NumberInputIncrementTriggerProps {
   class?: HTMLAttributes["class"];
@@ -13,8 +13,6 @@ const props = defineProps<NumberInputIncrementTriggerProps>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = numberInput();
 </script>
 
 <template>

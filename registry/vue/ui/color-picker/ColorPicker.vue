@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 import { ColorPicker as Ark } from "@ark-ui/vue/color-picker";
-import type { Color, ColorFormat } from "@ark-ui/vue/color-picker";
+import type { Color, ColorPickerRootProps } from "@ark-ui/vue/color-picker";
 import { cn } from "cn";
-import { colorPicker } from "@/registry/shared/lib/color-picker.styles";
+import { colorPickerStyles as styles } from "@/registry/shared/lib/color-picker.styles";
 
 interface ColorPickerProps {
   defaultValue?: Color;
-  format?: ColorFormat;
-  defaultFormat?: ColorFormat;
+  format?: ColorPickerRootProps["format"];
+  defaultFormat?: ColorPickerRootProps["format"];
   closeOnSelect?: boolean;
   openAutoFocus?: boolean;
   disabled?: boolean;
@@ -33,8 +33,6 @@ const value = defineModel<Color>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = colorPicker();
 </script>
 
 <template>

@@ -5,16 +5,6 @@ category: Forms
 registryItem: listbox
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/listbox
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/listbox
-```
-
 ## Usage
 
 ```vue

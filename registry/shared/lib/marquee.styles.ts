@@ -9,3 +9,5 @@ export const marquee = tv({
     edge: "pointer-events-none absolute inset-y-0 w-16 from-default to-transparent data-[side=left]:left-0 data-[side=left]:bg-gradient-to-r data-[side=right]:right-0 data-[side=right]:bg-gradient-to-l",
   },
 });
+
+export const marqueeStyles = marquee();

@@ -6,3 +6,5 @@ export const jsonTreeView = tv({
     tree: "font-mono text-xs leading-6 text-muted [&_[data-kind=boolean]]:text-warning [&_[data-kind=function]]:text-secondary [&_[data-kind=null]]:text-dimmed [&_[data-kind=number]]:text-info [&_[data-kind=string]]:text-success [&_[data-kind=undefined]]:text-dimmed [&_[data-part=branch-text]]:text-default [&_[data-part=item-text]]:text-default",
   },
 });
+
+export const jsonTreeViewStyles = jsonTreeView();

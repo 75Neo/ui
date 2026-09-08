@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 import { Timer as Ark } from "@ark-ui/vue/timer";
-import type { TimerType } from "@ark-ui/vue/timer";
+import type { TimerItemProps as ArkItemProps } from "@ark-ui/vue/timer";
 import { cn } from "cn";
-import { timer } from "@/registry/shared/lib/timer.styles";
+import { timerStyles as styles } from "@/registry/shared/lib/timer.styles";
 
 interface TimerItemProps {
-  type: TimerType;
+  type: ArkItemProps["type"];
   class?: HTMLAttributes["class"];
 }
 
@@ -15,8 +15,6 @@ const props = defineProps<TimerItemProps>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = timer();
 </script>
 
 <template>

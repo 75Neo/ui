@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
+import { computed, type HTMLAttributes } from "vue";
 import { Slider as Ark } from "@ark-ui/vue/slider";
 import { cn } from "cn";
-import { slider } from "@/registry/shared/lib/slider.styles";
+import { slider, type Intent } from "@/registry/shared/lib/slider.styles";
 
 interface SliderProps {
   defaultValue?: number[];
@@ -18,6 +18,7 @@ interface SliderProps {
   readOnly?: boolean;
   name?: string;
   form?: string;
+  color?: Intent;
   class?: HTMLAttributes["class"];
 }
 
@@ -33,7 +34,7 @@ defineSlots<{
   default?: () => unknown;
 }>();
 
-const styles = slider();
+const styles = computed(() => slider({ color: props.color }));
 </script>
 
 <template>

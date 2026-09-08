@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 import { Splitter as Ark } from "@ark-ui/vue/splitter";
-import type { PanelData } from "@ark-ui/vue/splitter";
+import type { SplitterRootProps } from "@ark-ui/vue/splitter";
 import { cn } from "cn";
-import { splitter } from "@/registry/shared/lib/splitter.styles";
+import { splitterStyles as styles } from "@/registry/shared/lib/splitter.styles";
 
 interface SplitterProps {
-  panels: PanelData[];
+  panels: SplitterRootProps["panels"];
   defaultSize?: number[];
   orientation?: "horizontal" | "vertical";
   keyboardResizeBy?: number;
@@ -20,8 +20,6 @@ const size = defineModel<number[]>("size");
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = splitter();
 </script>
 
 <template>

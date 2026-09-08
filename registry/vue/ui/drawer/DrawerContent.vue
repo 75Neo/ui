@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
+import { computed, type HTMLAttributes } from "vue";
 import { Drawer as Ark } from "@ark-ui/vue/drawer";
 import { cn } from "cn";
-import { drawer } from "@/registry/shared/lib/drawer.styles";
+import { drawer, type DrawerSize } from "@/registry/shared/lib/drawer.styles";
 
 interface DrawerContentProps {
+  size?: DrawerSize;
   class?: HTMLAttributes["class"];
 }
 
@@ -14,7 +15,7 @@ defineSlots<{
   default?: () => unknown;
 }>();
 
-const styles = drawer();
+const styles = computed(() => drawer({ size: props.size }));
 </script>
 
 <template>

@@ -5,16 +5,6 @@ category: Disclosure
 registryItem: collapsible
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/collapsible
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/collapsible
-```
-
 ## Usage
 
 ```tsx

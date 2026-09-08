@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<DialogProps>(), {
   restoreFocus: undefined,
 });
 
-const open = defineModel<boolean>("open", { default: undefined });
+const open = defineModel<boolean>("open");
 
 defineSlots<{
   default?: () => unknown;

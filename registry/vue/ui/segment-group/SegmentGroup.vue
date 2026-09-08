@@ -2,7 +2,10 @@
 import type { HTMLAttributes } from "vue";
 import { SegmentGroup as Ark } from "@ark-ui/vue/segment-group";
 import { cn } from "cn";
-import { segmentGroup } from "@/registry/shared/lib/segment-group.styles";
+import {
+  segmentGroupStyles as styles,
+  type SegmentGroupSize,
+} from "@/registry/shared/lib/segment-group.styles";
 
 interface SegmentGroupProps {
   defaultValue?: string;
@@ -11,10 +14,12 @@ interface SegmentGroupProps {
   readOnly?: boolean;
   name?: string;
   form?: string;
+  size?: SegmentGroupSize;
   class?: HTMLAttributes["class"];
 }
 
 const props = withDefaults(defineProps<SegmentGroupProps>(), {
+  size: "md",
   disabled: undefined,
   readOnly: undefined,
 });
@@ -24,8 +29,6 @@ const value = defineModel<string | null>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = segmentGroup();
 </script>
 
 <template>
@@ -37,6 +40,7 @@ const styles = segmentGroup();
     :read-only="props.readOnly"
     :name="props.name"
     :form="props.form"
+    :data-size="props.size"
     :class="cn(styles.root(), props.class)"
   >
     <slot />

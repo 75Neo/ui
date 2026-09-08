@@ -5,16 +5,6 @@ category: Data display
 registryItem: qr-code
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/qr-code
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/qr-code
-```
-
 ## Usage
 
 ```vue

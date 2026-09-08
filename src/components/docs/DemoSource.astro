@@ -1,0 +1,25 @@
+---
+import MarkdownContent from "@/components/docs/MarkdownContent.vue";
+import { parseDocument } from "@/lib/markdown";
+
+interface Props {
+  source: string;
+  language: string;
+}
+
+const { source, language } = Astro.props;
+const document = await parseDocument(`\`\`\`${language}\n${source.trimEnd()}\n\`\`\``);
+---
+
+<details class="group mt-3 overflow-hidden rounded-md ring ring-default">
+  <summary
+    class="cursor-pointer list-none px-4 py-2 text-xs font-medium text-muted transition-colors select-none hover:text-default"
+  >
+    <span class="group-open:hidden">Show code</span>
+    <span class="hidden group-open:inline">Hide code</span>
+  </summary>
+
+  <div class="border-t border-default">
+    <MarkdownContent value={document} class="prose [&>pre]:m-0 [&>pre]:rounded-none [&>pre]:ring-0" />
+  </div>
+</details>

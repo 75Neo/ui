@@ -5,16 +5,6 @@ category: Overlays
 registryItem: dialog
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/dialog
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/dialog
-```
-
 ## Usage
 
 The panel belongs in a portal so it escapes any ancestor that clips or stacks. React takes Ark's

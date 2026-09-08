@@ -1,7 +1,7 @@
 import React from "react";
 import { DatePicker as Ark } from "@ark-ui/react/date-picker";
 import { cn } from "cn";
-import { datePicker } from "@/registry/shared/lib/date-picker.styles";
+import { datePickerStyles as styles } from "@/registry/shared/lib/date-picker.styles";
 
 export interface DatePickerValueTextProps extends Omit<
   React.ComponentPropsWithRef<typeof Ark.ValueText>,
@@ -9,7 +9,5 @@ export interface DatePickerValueTextProps extends Omit<
 > {}
 
 export default function DatePickerValueText({ className, ...props }: DatePickerValueTextProps) {
-  const styles = datePicker();
-
   return <Ark.ValueText className={cn(styles.valueText(), className)} {...props} />;
 }

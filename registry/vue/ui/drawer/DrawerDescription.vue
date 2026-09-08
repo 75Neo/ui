@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { Drawer as Ark } from "@ark-ui/vue/drawer";
 import { cn } from "cn";
-import { drawer } from "@/registry/shared/lib/drawer.styles";
+import { drawerStyles as styles } from "@/registry/shared/lib/drawer.styles";
 
 interface DrawerDescriptionProps {
   class?: HTMLAttributes["class"];
@@ -13,8 +13,6 @@ const props = defineProps<DrawerDescriptionProps>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = drawer();
 </script>
 
 <template>

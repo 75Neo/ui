@@ -5,3 +5,6 @@ public/r/
 registry.react.json
 registry.vue.json
 src/styles/registry.css
+
+src/components/docs/demos/*/react/*.astro
+src/components/docs/demos/*/vue/*.astro

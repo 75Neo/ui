@@ -5,16 +5,6 @@ category: Forms
 registryItem: radio-group
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/radio-group
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/radio-group
-```
-
 ## Usage
 
 ```tsx

@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { NavigationMenu as Ark } from "@ark-ui/vue/navigation-menu";
 import { cn } from "cn";
-import { navigationMenu } from "@/registry/shared/lib/navigation-menu.styles";
+import { navigationMenuStyles as styles } from "@/registry/shared/lib/navigation-menu.styles";
 
 interface NavigationMenuTriggerProps {
   disabled?: boolean;
@@ -16,8 +16,6 @@ defineSlots<{
   default?: () => unknown;
   trailing?: () => unknown;
 }>();
-
-const styles = navigationMenu();
 </script>
 
 <template>

@@ -1,25 +1,26 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 import { cn } from "cn";
-import { table } from "@/registry/shared/lib/table.styles";
+import { tableStyles as styles, type TableSize } from "@/registry/shared/lib/table.styles";
 
 interface TableProps {
   containerClass?: HTMLAttributes["class"];
+  size?: TableSize;
   class?: HTMLAttributes["class"];
 }
 
-const props = defineProps<TableProps>();
+const props = withDefaults(defineProps<TableProps>(), {
+  size: "md",
+});
 
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = table();
 </script>
 
 <template>
   <div :class="cn(styles.container(), props.containerClass)">
-    <table :class="cn(styles.root(), props.class)">
+    <table :data-size="props.size" :class="cn(styles.root(), props.class)">
       <slot />
     </table>
   </div>

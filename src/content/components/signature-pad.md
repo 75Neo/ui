@@ -5,31 +5,32 @@ category: Forms
 registryItem: signature-pad
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/signature-pad
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/signature-pad
-```
-
 ## Usage
 
 ```vue
+<script setup lang="ts">
+const value = ref("");
+
+const store = async (details) => {
+  value.value = await details.getDataUrl("image/png");
+};
+</script>
+
 <template>
-  <SignaturePad>
+  <SignaturePad @draw-end="store">
     <SignaturePadLabel>Sign here</SignaturePadLabel>
     <SignaturePadControl>
       <SignaturePadSegment />
       <SignaturePadGuide />
     </SignaturePadControl>
     <SignaturePadClearTrigger>Clear</SignaturePadClearTrigger>
-    <SignaturePadHiddenInput />
+    <SignaturePadHiddenInput :value="value" />
   </SignaturePad>
 </template>
 ```
+
+The hidden input takes the value rather than reading it back out of the pad, so you decide what
+shape the form submits. Fill it on `drawEnd`, which hands you the data URL.
 
 ## Paths, not pixels
 

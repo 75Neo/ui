@@ -3,5 +3,33 @@
   "title": "Hover Card",
   "description": "A rich preview that opens on hover after a short delay.",
   "registryDependencies": ["@75neo/theme"],
-  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"],
+  "cssVars": {
+    "theme": {
+      "--animate-panel-in": "panel-in 0.15s ease-out",
+      "--animate-panel-out": "panel-out 0.1s ease-in"
+    }
+  },
+  "css": {
+    "@keyframes panel-in": {
+      "from": {
+        "opacity": "0",
+        "transform": "translateY(-0.25rem)"
+      },
+      "to": {
+        "opacity": "1",
+        "transform": "translateY(0)"
+      }
+    },
+    "@keyframes panel-out": {
+      "from": {
+        "opacity": "1",
+        "transform": "translateY(0)"
+      },
+      "to": {
+        "opacity": "0",
+        "transform": "translateY(-0.25rem)"
+      }
+    }
+  }
 }

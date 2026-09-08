@@ -1,0 +1,6 @@
+{
+  "type": "registry:lib",
+  "title": "Intent tokens",
+  "description": "Binds the six semantic intents onto the local custom properties every coloured component reads.",
+  "registryDependencies": ["@75neo/theme"]
+}

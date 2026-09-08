@@ -1,17 +1,13 @@
 <script setup lang="ts">
-import { Tour as Ark } from "@ark-ui/vue/tour";
-
-interface TourActionsProps {}
-
-const props = defineProps<TourActionsProps>();
+import { Tour as Ark, type TourActionTriggerProps } from "@ark-ui/vue/tour";
 
 defineSlots<{
-  default?: () => unknown;
+  default?: (props: { actions: TourActionTriggerProps["action"][] }) => unknown;
 }>();
 </script>
 
 <template>
-  <Ark.Actions>
-    <slot />
+  <Ark.Actions v-slot="actions">
+    <slot :actions="actions" />
   </Ark.Actions>
 </template>

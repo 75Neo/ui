@@ -5,16 +5,6 @@ category: Forms
 registryItem: password-input
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/password-input
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/password-input
-```
-
 ## Usage
 
 ```tsx

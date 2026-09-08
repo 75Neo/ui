@@ -5,16 +5,6 @@ category: Data display
 registryItem: tree-view
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/tree-view
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/tree-view
-```
-
 ## Usage
 
 The tree comes from a collection that knows how to read a value, a label and the children out of

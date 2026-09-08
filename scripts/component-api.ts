@@ -222,9 +222,10 @@ function vueApi(
 }
 
 export function registryComponentNames() {
-  return globSync(`${VUE_DIR}/*`)
-    .map((dir) => path.basename(String(dir)))
-    .sort();
+  const names = [...globSync(`${VUE_DIR}/*`), ...globSync(`${REACT_DIR}/*`)].map((dir) =>
+    path.basename(String(dir)),
+  );
+  return [...new Set(names)].sort();
 }
 
 export function createComponentApiReader() {

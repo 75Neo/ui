@@ -19,6 +19,7 @@ const components = defineCollection({
     description: z.string(),
     category: z.string(),
     registryItem: z.string(),
+    installNote: z.string().optional(),
   }),
 });
 

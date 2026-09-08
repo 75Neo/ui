@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 import { cn } from "cn";
-import { table } from "@/registry/shared/lib/table.styles";
+import { tableStyles as styles } from "@/registry/shared/lib/table.styles";
 
 interface TableRowProps {
   selected?: boolean;
@@ -13,8 +13,6 @@ const props = defineProps<TableRowProps>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = table();
 </script>
 
 <template>

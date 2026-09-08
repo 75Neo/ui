@@ -5,16 +5,6 @@ category: Data display
 registryItem: avatar
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/avatar
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/avatar
-```
-
 ## Usage
 
 ```tsx

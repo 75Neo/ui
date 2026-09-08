@@ -5,16 +5,6 @@ category: Forms
 registryItem: checkbox
 ---
 
-## Installation
-
-```sh
-npx shadcn@latest add @75neo/checkbox
-```
-
-```sh
-npx shadcn-vue@latest add @75neo/checkbox
-```
-
 ## Usage
 
 ```tsx

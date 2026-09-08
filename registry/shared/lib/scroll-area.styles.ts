@@ -11,3 +11,5 @@ export const scrollArea = tv({
     corner: "bg-transparent",
   },
 });
+
+export const scrollAreaStyles = scrollArea();

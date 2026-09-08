@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 import { Marquee as Ark } from "@ark-ui/vue/marquee";
+import type { MarqueeEdgeProps as ArkEdgeProps } from "@ark-ui/vue/marquee";
 import { cn } from "cn";
-import { marquee } from "@/registry/shared/lib/marquee.styles";
+import { marqueeStyles as styles } from "@/registry/shared/lib/marquee.styles";
 
 interface MarqueeProps {
   defaultPaused?: boolean;
@@ -13,7 +14,7 @@ interface MarqueeProps {
   autoFill?: boolean;
   reverse?: boolean;
   pauseOnInteraction?: boolean;
-  side?: "left" | "right" | "top" | "bottom";
+  side?: ArkEdgeProps["side"];
   class?: HTMLAttributes["class"];
 }
 
@@ -24,13 +25,11 @@ const props = withDefaults(defineProps<MarqueeProps>(), {
   pauseOnInteraction: undefined,
 });
 
-const paused = defineModel<boolean>("paused", { default: undefined });
+const paused = defineModel<boolean>("paused");
 
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = marquee();
 </script>
 
 <template>

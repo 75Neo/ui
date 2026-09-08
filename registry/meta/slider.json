@@ -2,6 +2,6 @@
   "type": "registry:ui",
   "title": "Slider",
   "description": "One or more thumbs picking a value along a track.",
-  "registryDependencies": ["@75neo/theme"],
+  "registryDependencies": ["@75neo/theme", "@75neo/intent"],
   "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
 }

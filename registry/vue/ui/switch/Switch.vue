@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
+import { computed, type HTMLAttributes } from "vue";
 import { Switch as Ark } from "@ark-ui/vue/switch";
 import { cn } from "cn";
-import { switchRecipe, type SwitchSize } from "@/registry/shared/lib/switch.styles";
+import { switchRecipe, type SwitchSize, type Intent } from "@/registry/shared/lib/switch.styles";
 
 interface SwitchProps {
   defaultChecked?: boolean;
@@ -14,6 +14,7 @@ interface SwitchProps {
   value?: string;
   form?: string;
   size?: SwitchSize;
+  color?: Intent;
   class?: HTMLAttributes["class"];
 }
 
@@ -26,13 +27,13 @@ const props = withDefaults(defineProps<SwitchProps>(), {
   size: "md",
 });
 
-const checked = defineModel<boolean>("checked", { default: undefined });
+const checked = defineModel<boolean>("checked");
 
 defineSlots<{
   default?: () => unknown;
 }>();
 
-const styles = switchRecipe();
+const styles = computed(() => switchRecipe({ color: props.color }));
 </script>
 
 <template>
