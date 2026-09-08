@@ -8,6 +8,9 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
+const targets = Object.fromEntries(
+  FRAMEWORKS.map((framework) => [framework, componentHref(entry.id, framework)]),
+);
 const fallback = componentHref(entry.id, DEFAULT_FRAMEWORK);
 ---
 
@@ -18,10 +21,15 @@ const fallback = componentHref(entry.id, DEFAULT_FRAMEWORK);
     <title>{entry.data.title} - 75NeoUI</title>
     <link rel="canonical" href={fallback} />
     <meta name="robots" content="noindex" />
-    <script is:inline define:vars={{ id: entry.id, frameworks: FRAMEWORKS, fallback }}>
-      const stored = localStorage.getItem("framework");
-      const framework = frameworks.includes(stored) ? stored : null;
-      location.replace(framework ? `/docs/components/${framework}/${id}` : fallback);
+    <script is:inline define:vars={{ targets, fallback }}>
+      let stored = null;
+      try {
+        stored = localStorage.getItem("framework");
+      } catch {
+        stored = null;
+      }
+
+      location.replace(targets[stored] ?? fallback);
     </script>
   </head>
   <body>

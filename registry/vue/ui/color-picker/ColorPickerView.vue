@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 import { ColorPicker as Ark } from "@ark-ui/vue/color-picker";
-import type { ColorFormat } from "@ark-ui/vue/color-picker";
+import type { ColorPickerViewProps as ArkViewProps } from "@ark-ui/vue/color-picker";
 import { cn } from "cn";
 import { colorPicker } from "@/registry/shared/lib/color-picker.styles";
 
 interface ColorPickerViewProps {
-  format: ColorFormat;
+  format: ArkViewProps["format"];
   class?: HTMLAttributes["class"];
 }
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Tour as Ark, type UseTourReturn } from "@ark-ui/vue/tour";
+import { Tour as Ark, type TourRootProps } from "@ark-ui/vue/tour";
 
 interface TourProps {
-  tour: UseTourReturn;
+  tour: TourRootProps["tour"];
   lazyMount?: boolean;
   unmountOnExit?: boolean;
 }

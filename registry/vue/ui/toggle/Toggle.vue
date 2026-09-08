@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<ToggleProps>(), {
   size: "md",
 });
 
-const pressed = defineModel<boolean>("pressed", { default: undefined });
+const pressed = defineModel<boolean>("pressed");
 
 defineSlots<{
   default?: () => unknown;

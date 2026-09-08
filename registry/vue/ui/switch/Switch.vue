@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<SwitchProps>(), {
   size: "md",
 });
 
-const checked = defineModel<boolean>("checked", { default: undefined });
+const checked = defineModel<boolean>("checked");
 
 defineSlots<{
   default?: () => unknown;

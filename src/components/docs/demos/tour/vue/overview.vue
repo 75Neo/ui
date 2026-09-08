@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTour, type StepDetails } from "@ark-ui/vue/tour";
+import { useTour, type TourStepDetails } from "@ark-ui/vue/tour";
 import { X } from "@lucide/vue";
 import {
   Button,
@@ -17,7 +17,7 @@ import {
   TourTitle,
 } from "@/components/vue";
 
-const steps: StepDetails[] = [
+const steps: TourStepDetails[] = [
   {
     id: "start",
     type: "dialog",

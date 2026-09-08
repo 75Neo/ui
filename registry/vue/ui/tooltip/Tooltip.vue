@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<TooltipProps>(), {
   closeOnPointerDown: undefined,
 });
 
-const open = defineModel<boolean>("open", { default: undefined });
+const open = defineModel<boolean>("open");
 
 defineSlots<{
   default?: () => unknown;

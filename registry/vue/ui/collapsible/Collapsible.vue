@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<CollapsibleProps>(), {
   unmountOnExit: undefined,
 });
 
-const open = defineModel<boolean>("open", { default: undefined });
+const open = defineModel<boolean>("open");
 
 defineSlots<{
   default?: () => unknown;

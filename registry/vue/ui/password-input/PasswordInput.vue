@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<PasswordInputProps>(), {
   ignorePasswordManagers: undefined,
 });
 
-const visible = defineModel<boolean>("visible", { default: undefined });
+const visible = defineModel<boolean>("visible");
 
 defineSlots<{
   default?: () => unknown;

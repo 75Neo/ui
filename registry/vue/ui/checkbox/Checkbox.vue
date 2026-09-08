@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<CheckboxProps>(), {
   size: "md",
 });
 
-const checked = defineModel<boolean | "indeterminate">("checked", { default: undefined });
+const checked = defineModel<boolean | "indeterminate">("checked");
 
 defineSlots<{
   default?: () => unknown;

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 import { Splitter as Ark } from "@ark-ui/vue/splitter";
-import type { ResizeTriggerId } from "@ark-ui/vue/splitter";
+import type { SplitterResizeTriggerProps as ArkResizeTriggerProps } from "@ark-ui/vue/splitter";
 import { cn } from "cn";
 import { splitter } from "@/registry/shared/lib/splitter.styles";
 
 interface SplitterResizeTriggerProps {
-  id: ResizeTriggerId;
+  id: ArkResizeTriggerProps["id"];
   disabled?: boolean;
   class?: HTMLAttributes["class"];
 }

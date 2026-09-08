@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 import { FloatingPanel as Ark } from "@ark-ui/vue/floating-panel";
-import type { ResizeTriggerAxis } from "@ark-ui/vue/floating-panel";
+import type { FloatingPanelResizeTriggerProps as ArkResizeTriggerProps } from "@ark-ui/vue/floating-panel";
 import { cn } from "cn";
 import { floatingPanel } from "@/registry/shared/lib/floating-panel.styles";
 
 interface FloatingPanelResizeTriggerProps {
-  axis: ResizeTriggerAxis;
+  axis: ArkResizeTriggerProps["axis"];
   class?: HTMLAttributes["class"];
 }
 
