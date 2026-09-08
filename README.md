@@ -1,6 +1,6 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.png">
-  <img alt="75NeoUI, one UI kit for React and Vue" src="assets/banner-light.png">
+  <img alt="75NeoUI. Components you own, not a dependency you carry." src="assets/banner-light.png">
 </picture>
 
 A component library for React and Vue, distributed as a [shadcn
