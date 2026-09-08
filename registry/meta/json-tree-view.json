@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "JSON Tree View",
+  "description": "A collapsible view of a JSON value, coloured by type.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Timer",
+  "description": "A countdown or stopwatch split into labelled units.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

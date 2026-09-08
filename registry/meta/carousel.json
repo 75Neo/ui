@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Carousel",
+  "description": "A scroll snapped strip of slides with paging controls and indicators.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

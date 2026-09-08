@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Fieldset",
+  "description": "A group of related fields with one legend and one disabled state.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

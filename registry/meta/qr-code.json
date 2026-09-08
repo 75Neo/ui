@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "QR Code",
+  "description": "A generated QR code with an optional logo and a download control.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}
