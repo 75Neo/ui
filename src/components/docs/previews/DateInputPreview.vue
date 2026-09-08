@@ -16,7 +16,7 @@ import DateInputSegmentGroup from "@/registry/vue/ui/date-input/DateInputSegment
         <DateInputSegmentGroup>
           <DateInputContext v-slot="dateInput">
             <DateInputSegment
-              v-for="(segment, index) in dateInput.segments[0]"
+              v-for="(segment, index) in dateInput.getSegments()"
               :key="index"
               :segment="segment"
             >

@@ -18,7 +18,6 @@ import ColorPickerSwatchTrigger from "@/registry/vue/ui/color-picker/ColorPicker
 import ColorPickerTrigger from "@/registry/vue/ui/color-picker/ColorPickerTrigger.vue";
 import ColorPickerValueSwatch from "@/registry/vue/ui/color-picker/ColorPickerValueSwatch.vue";
 import ColorPickerValueText from "@/registry/vue/ui/color-picker/ColorPickerValueText.vue";
-import ColorPickerView from "@/registry/vue/ui/color-picker/ColorPickerView.vue";
 
 const presets = ["#2563eb", "#0f766e", "#7c3aed", "#e11d48", "#f59e0b"];
 </script>
@@ -36,16 +35,20 @@ const presets = ["#2563eb", "#0f766e", "#7c3aed", "#e11d48", "#f59e0b"];
 
       <ColorPickerPositioner>
         <ColorPickerContent>
-          <ColorPickerView format="rgba">
-            <ColorPickerArea>
-              <ColorPickerAreaBackground />
-              <ColorPickerAreaThumb />
-            </ColorPickerArea>
-            <ColorPickerChannelSlider channel="hue">
-              <ColorPickerChannelSliderTrack />
-              <ColorPickerChannelSliderThumb />
-            </ColorPickerChannelSlider>
-          </ColorPickerView>
+          <ColorPickerArea>
+            <ColorPickerAreaBackground />
+            <ColorPickerAreaThumb />
+          </ColorPickerArea>
+
+          <ColorPickerChannelSlider channel="hue">
+            <ColorPickerChannelSliderTrack />
+            <ColorPickerChannelSliderThumb />
+          </ColorPickerChannelSlider>
+
+          <ColorPickerChannelSlider channel="alpha">
+            <ColorPickerChannelSliderTrack />
+            <ColorPickerChannelSliderThumb />
+          </ColorPickerChannelSlider>
 
           <ColorPickerSwatchGroup>
             <ColorPickerSwatchTrigger v-for="preset in presets" :key="preset" :value="preset">

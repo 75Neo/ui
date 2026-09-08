@@ -30,16 +30,14 @@ npx shadcn-vue@latest add @75neo/color-picker
 
     <ColorPickerPositioner>
       <ColorPickerContent>
-        <ColorPickerView format="rgba">
-          <ColorPickerArea>
-            <ColorPickerAreaBackground />
-            <ColorPickerAreaThumb />
-          </ColorPickerArea>
-          <ColorPickerChannelSlider channel="hue">
-            <ColorPickerChannelSliderTrack />
-            <ColorPickerChannelSliderThumb />
-          </ColorPickerChannelSlider>
-        </ColorPickerView>
+        <ColorPickerArea>
+          <ColorPickerAreaBackground />
+          <ColorPickerAreaThumb />
+        </ColorPickerArea>
+        <ColorPickerChannelSlider channel="hue">
+          <ColorPickerChannelSliderTrack />
+          <ColorPickerChannelSliderThumb />
+        </ColorPickerChannelSlider>
       </ColorPickerContent>
     </ColorPickerPositioner>
     <ColorPickerHiddenInput />
@@ -51,6 +49,12 @@ npx shadcn-vue@latest add @75neo/color-picker
 
 `parseColor` builds one from any CSS colour string. The object knows its own format, so switching
 between hex, RGB and HSL is a view change rather than a conversion you write.
+
+## Views and channels
+
+`ColorPickerView` scopes the parts inside it to one format, so a channel input marked `red` only
+renders while the picker is in an RGB format. The area and the hue slider work in any format and
+belong outside a view: asking an RGB view for a hue channel is an error rather than a conversion.
 
 ## Only the parts you need
 

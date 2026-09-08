@@ -25,7 +25,7 @@ npx shadcn-vue@latest add @75neo/date-input
       <DateInputSegmentGroup>
         <DateInputContext v-slot="dateInput">
           <DateInputSegment
-            v-for="(segment, index) in dateInput.segments[0]"
+            v-for="(segment, index) in dateInput.getSegments()"
             :key="index"
             :segment="segment"
           >

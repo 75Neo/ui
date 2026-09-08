@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { X } from "@lucide/vue";
-import type { StepDetails } from "@ark-ui/vue/tour";
+import { useTour, type StepDetails } from "@ark-ui/vue/tour";
 import Button from "@/registry/vue/ui/button/Button.vue";
 import Tour from "@/registry/vue/ui/tour/Tour.vue";
 import TourActionTrigger from "@/registry/vue/ui/tour/TourActionTrigger.vue";
@@ -44,13 +43,13 @@ const steps: StepDetails[] = [
   },
 ];
 
-const tour = ref();
+const tour = useTour({ steps });
 </script>
 
 <template>
   <div class="flex justify-center">
-    <Tour ref="tour" :steps="steps">
-      <Button data-tour-target variant="outline" @click="tour?.start()">Start the tour</Button>
+    <Tour :tour="tour">
+      <Button data-tour-target variant="outline" @click="tour.start()">Start the tour</Button>
 
       <Teleport to="body">
         <TourBackdrop />

@@ -10,15 +10,9 @@ interface TourDescriptionProps {
 
 const props = defineProps<TourDescriptionProps>();
 
-defineSlots<{
-  default?: () => unknown;
-}>();
-
 const styles = tour();
 </script>
 
 <template>
-  <Ark.Description :class="cn(styles.description(), props.class)">
-    <slot />
-  </Ark.Description>
+  <Ark.Description :class="cn(styles.description(), props.class)" />
 </template>

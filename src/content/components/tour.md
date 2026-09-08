@@ -41,9 +41,16 @@ const steps: StepDetails[] = [
 ];
 ```
 
+The root takes a tour instance rather than the steps, so the same instance can be started from
+anywhere in the tree.
+
+```ts
+const tour = useTour({ steps });
+```
+
 ```vue
 <template>
-  <Tour ref="tour" :steps="steps">
+  <Tour :tour="tour">
     <TourBackdrop />
     <TourSpotlight />
     <TourPositioner>
@@ -53,9 +60,7 @@ const steps: StepDetails[] = [
         <TourControl>
           <TourProgressText />
           <TourActions v-slot="{ actions }">
-            <TourActionTrigger v-for="action in actions" :key="action.label" :action="action">
-              {{ action.label }}
-            </TourActionTrigger>
+            <TourActionTrigger v-for="action in actions" :key="action.label" :action="action" />
           </TourActions>
         </TourControl>
       </TourContent>
@@ -63,6 +68,9 @@ const steps: StepDetails[] = [
   </Tour>
 </template>
 ```
+
+The title, the description, the progress text and the action triggers print their own content from
+the step, so they render as void elements rather than taking children.
 
 ## Step types
 

@@ -55,13 +55,21 @@ full.
 
 ## What is here
 
-| Item                                                | What it is                                        |
-| --------------------------------------------------- | ------------------------------------------------- |
-| [Button](/docs/components/button)                   | Six variants, six semantic colours, five sizes    |
-| [Container](/docs/components/container)             | Centred content held to a maximum width           |
-| [Navigation Menu](/docs/components/navigation-menu) | Rows that open a panel of links                   |
-| [Table](/docs/components/table)                     | Composable table parts with a scrolling container |
-| [Table of Contents](/docs/components/toc)           | A rail that tracks the headings in view           |
+Fifty five items, grouped in the sidebar by what they are for.
+
+| Group        | What is in it                                                                                                                                                                                                                                                                  |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Actions      | Button, toggle, toggle group                                                                                                                                                                                                                                                   |
+| Forms        | Field, fieldset, checkbox, radio group, switch, select, listbox, combobox, slider, angle slider, rating group, segment group, number input, password input, pin input, tags input, editable, date picker, date input, colour picker, signature pad, image cropper, file upload |
+| Overlays     | Dialog, drawer, popover, tooltip, hover card, menu, floating panel, tour                                                                                                                                                                                                       |
+| Navigation   | Navigation menu, tabs, pagination, steps, table of contents                                                                                                                                                                                                                    |
+| Disclosure   | Accordion, collapsible                                                                                                                                                                                                                                                         |
+| Data display | Table, avatar, progress, carousel, marquee, timer, QR code, tree view, JSON tree view, clipboard                                                                                                                                                                               |
+| Layout       | Container, splitter, scroll area                                                                                                                                                                                                                                               |
+| Feedback     | Toast                                                                                                                                                                                                                                                                          |
+
+Everything with behaviour is built over [Ark UI](https://ark-ui.com). The button, the container and
+the table are the only ones that are not, because none of them has behaviour to speak of.
 
 Every component page ends with an API reference read straight from the source at build time using
 [ts-morph](https://ts-morph.com) and

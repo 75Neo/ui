@@ -1,21 +1,15 @@
 <script setup lang="ts">
-import { Tour as Ark } from "@ark-ui/vue/tour";
-import type { StepDetails } from "@ark-ui/vue/tour";
+import { Tour as Ark, type UseTourReturn } from "@ark-ui/vue/tour";
 
 interface TourProps {
-  steps: StepDetails[];
-  keyboardNavigation?: boolean;
-  preventInteraction?: boolean;
-  closeOnEscape?: boolean;
-  closeOnInteractOutside?: boolean;
-  spotlightRadius?: number;
+  tour: UseTourReturn;
+  lazyMount?: boolean;
+  unmountOnExit?: boolean;
 }
 
 const props = withDefaults(defineProps<TourProps>(), {
-  keyboardNavigation: undefined,
-  preventInteraction: undefined,
-  closeOnEscape: undefined,
-  closeOnInteractOutside: undefined,
+  lazyMount: undefined,
+  unmountOnExit: undefined,
 });
 
 defineSlots<{
@@ -24,14 +18,7 @@ defineSlots<{
 </script>
 
 <template>
-  <Ark.Root
-    :steps="props.steps"
-    :keyboard-navigation="props.keyboardNavigation"
-    :prevent-interaction="props.preventInteraction"
-    :close-on-escape="props.closeOnEscape"
-    :close-on-interact-outside="props.closeOnInteractOutside"
-    :spotlight-radius="props.spotlightRadius"
-  >
+  <Ark.Root :tour="props.tour" :lazy-mount="props.lazyMount" :unmount-on-exit="props.unmountOnExit">
     <slot />
   </Ark.Root>
 </template>
