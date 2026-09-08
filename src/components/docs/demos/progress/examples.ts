@@ -9,7 +9,7 @@ export default [
   },
   {
     id: "colors",
-    title: "Colours",
+    title: "Colors",
     description: "The filled range takes the intent colour against a neutral track.",
     client: "none",
   },

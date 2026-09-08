@@ -9,7 +9,7 @@ export default [
   },
   {
     id: "colors",
-    title: "Colours",
+    title: "Colors",
     description: "The filled range and the thumb ring both take the intent colour.",
   },
 ] satisfies DemoExample[];

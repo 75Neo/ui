@@ -9,7 +9,7 @@ export default [
   { id: "sizes", title: "Sizes", description: "Three sizes, set on the root." },
   {
     id: "colors",
-    title: "Colours",
+    title: "Colors",
     description: "The checked track takes the intent colour. Off, it stays on the neutral surface.",
   },
 ] satisfies DemoExample[];

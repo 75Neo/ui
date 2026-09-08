@@ -22,7 +22,7 @@ brackets and the previews on collapsed branches.
 
 Values are marked with the type they hold, and the recipe maps those onto the semantic tokens:
 strings green, numbers blue, booleans amber, null and undefined dimmed. That means a retheme moves
-the syntax colours with everything else rather than leaving a hardcoded palette behind.
+the syntax colors with everything else rather than leaving a hardcoded palette behind.
 
 ## Depth
 

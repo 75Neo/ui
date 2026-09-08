@@ -7,5 +7,5 @@ export default [
     description: "A two state button. Pressed is a tinted surface rather than a filled one.",
   },
   { id: "sizes", title: "Sizes", description: "Three heights, matched to the button ladder." },
-  { id: "colors", title: "Colours", description: "The pressed surface takes the intent tint." },
+  { id: "colors", title: "Colors", description: "The pressed surface takes the intent tint." },
 ] satisfies DemoExample[];

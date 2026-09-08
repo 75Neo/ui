@@ -9,7 +9,7 @@ export default [
   },
   {
     id: "colors",
-    title: "Colours",
+    title: "Colors",
     description: "The indicator and the selected trigger both take the intent colour.",
   },
 ] satisfies DemoExample[];

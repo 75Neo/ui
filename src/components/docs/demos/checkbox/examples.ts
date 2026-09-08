@@ -14,7 +14,7 @@ export default [
   },
   {
     id: "colors",
-    title: "Colours",
+    title: "Colors",
     description: "The checked control takes the intent colour and its matching foreground.",
   },
 ] satisfies DemoExample[];

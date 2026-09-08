@@ -15,7 +15,7 @@ const sections = [
   },
   {
     value: "theme",
-    title: "Can I change the colours?",
+    title: "Can I change the colors?",
     body: "Override the --ui-* properties in your stylesheet. Every component follows without being touched.",
   },
   {

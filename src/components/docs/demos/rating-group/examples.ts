@@ -9,7 +9,7 @@ export default [
   },
   {
     id: "colors",
-    title: "Colours",
+    title: "Colors",
     description: "Stars default to the warning colour, which is the amber most rating bars use.",
   },
 ] satisfies DemoExample[];

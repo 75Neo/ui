@@ -1,6 +1,6 @@
 ---
 title: Button
-description: Six variants, six semantic colours and five sizes over a native button element.
+description: Six variants, six semantic colors and five sizes over a native button element.
 category: Actions
 registryItem: button
 ---
@@ -37,7 +37,7 @@ independent and all thirty six combinations exist.
 Use one variant per level of emphasis on a screen. A page with three solid buttons has no primary
 action.
 
-## Colours
+## Colors
 
 Each colour resolves to a set of `--ui-*` tokens rather than a fixed Tailwind hue, so retheming
 the library retints every button at once. `primary` is the near black brand colour and `secondary`
