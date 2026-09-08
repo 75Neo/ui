@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Tour",
+  "description": "A guided walk through a page, one spotlit step at a time.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

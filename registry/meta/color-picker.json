@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Color Picker",
+  "description": "An area, channel sliders and swatches behind a swatch trigger.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

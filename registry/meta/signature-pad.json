@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Signature Pad",
+  "description": "A drawing surface that records a signature as SVG paths.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

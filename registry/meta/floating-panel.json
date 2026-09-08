@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Floating Panel",
+  "description": "A window that can be dragged, resized, minimised and maximised.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}
