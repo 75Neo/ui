@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Splitter",
+  "description": "Resizable panes with a draggable, keyboard reachable handle.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

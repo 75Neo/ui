@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Toast",
+  "description": "A queue of short messages that stack in a corner and dismiss themselves.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

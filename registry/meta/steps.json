@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Steps",
+  "description": "A numbered sequence that tracks which stage the person is on.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}

@@ -1,0 +1,7 @@
+{
+  "type": "registry:ui",
+  "title": "Scroll Area",
+  "description": "A scrolling box with a thin overlay scrollbar that fades in.",
+  "registryDependencies": ["@75neo/theme"],
+  "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
+}
