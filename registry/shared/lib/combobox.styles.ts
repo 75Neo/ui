@@ -23,3 +23,5 @@ export const combobox = tv({
     empty: "px-2.5 py-6 text-center text-sm text-muted",
   },
 });
+
+export const comboboxStyles = combobox();

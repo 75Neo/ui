@@ -21,3 +21,5 @@ export const progress = tv({
 export type ProgressSize = "sm" | "md" | "lg";
 
 export type { Intent };
+
+export const progressStyles = progress();

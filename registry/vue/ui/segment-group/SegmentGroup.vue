@@ -2,7 +2,10 @@
 import type { HTMLAttributes } from "vue";
 import { SegmentGroup as Ark } from "@ark-ui/vue/segment-group";
 import { cn } from "cn";
-import { segmentGroup, type SegmentGroupSize } from "@/registry/shared/lib/segment-group.styles";
+import {
+  segmentGroupStyles as styles,
+  type SegmentGroupSize,
+} from "@/registry/shared/lib/segment-group.styles";
 
 interface SegmentGroupProps {
   defaultValue?: string;
@@ -26,8 +29,6 @@ const value = defineModel<string | null>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = segmentGroup();
 </script>
 
 <template>

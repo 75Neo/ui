@@ -13,3 +13,5 @@ export const segmentGroup = tv({
 });
 
 export type SegmentGroupSize = "sm" | "md" | "lg";
+
+export const segmentGroupStyles = segmentGroup();

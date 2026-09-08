@@ -19,3 +19,5 @@ export const carousel = tv({
     progressText: "text-xs text-dimmed tabular-nums",
   },
 });
+
+export const carouselStyles = carousel();

@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "vue";
 import { Combobox as Ark } from "@ark-ui/vue/combobox";
 import type { CollectionItem, ListCollection } from "@ark-ui/vue/collection";
 import { cn } from "cn";
-import { combobox } from "@/registry/shared/lib/combobox.styles";
+import { comboboxStyles as styles } from "@/registry/shared/lib/combobox.styles";
 
 interface ComboboxProps {
   collection: ListCollection<CollectionItem>;
@@ -43,8 +43,6 @@ const value = defineModel<string[]>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = combobox();
 </script>
 
 <template>

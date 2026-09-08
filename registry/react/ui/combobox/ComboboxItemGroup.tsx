@@ -1,7 +1,7 @@
 import React from "react";
 import { Combobox as Ark } from "@ark-ui/react/combobox";
 import { cn } from "cn";
-import { combobox } from "@/registry/shared/lib/combobox.styles";
+import { comboboxStyles as styles } from "@/registry/shared/lib/combobox.styles";
 
 export interface ComboboxItemGroupProps extends React.ComponentPropsWithRef<typeof Ark.ItemGroup> {}
 
@@ -10,8 +10,6 @@ export default function ComboboxItemGroup({
   children,
   ...props
 }: ComboboxItemGroupProps) {
-  const styles = combobox();
-
   return (
     <Ark.ItemGroup className={cn(styles.itemGroup(), className)} {...props}>
       {children}

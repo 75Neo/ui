@@ -28,3 +28,5 @@ export const slider = tv({
 });
 
 export type { Intent };
+
+export const sliderStyles = slider();

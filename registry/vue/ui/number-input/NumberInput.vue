@@ -2,7 +2,10 @@
 import type { HTMLAttributes } from "vue";
 import { NumberInput as Ark } from "@ark-ui/vue/number-input";
 import { cn } from "cn";
-import { numberInput, type NumberInputSize } from "@/registry/shared/lib/number-input.styles";
+import {
+  numberInputStyles as styles,
+  type NumberInputSize,
+} from "@/registry/shared/lib/number-input.styles";
 
 interface NumberInputProps {
   defaultValue?: string;
@@ -41,8 +44,6 @@ const value = defineModel<string>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = numberInput();
 </script>
 
 <template>

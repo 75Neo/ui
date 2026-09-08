@@ -18,3 +18,5 @@ export const toggle = tv({
 export type ToggleSize = "sm" | "md" | "lg";
 
 export type { Intent };
+
+export const toggleStyles = toggle();

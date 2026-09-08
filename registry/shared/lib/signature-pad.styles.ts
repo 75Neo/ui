@@ -12,3 +12,5 @@ export const signaturePad = tv({
       "self-end text-sm font-medium text-muted transition-colors hover:text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus",
   },
 });
+
+export const signaturePadStyles = signaturePad();

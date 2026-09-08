@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "vue";
 import { DatePicker as Ark } from "@ark-ui/vue/date-picker";
 import type { DatePickerTableCellProps as ArkTableCellProps } from "@ark-ui/vue/date-picker";
 import { cn } from "cn";
-import { datePicker } from "@/registry/shared/lib/date-picker.styles";
+import { datePickerStyles as styles } from "@/registry/shared/lib/date-picker.styles";
 
 interface DatePickerTableCellProps {
   value: ArkTableCellProps["value"];
@@ -15,8 +15,6 @@ const props = defineProps<DatePickerTableCellProps>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = datePicker();
 </script>
 
 <template>

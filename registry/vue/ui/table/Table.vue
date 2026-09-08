@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 import { cn } from "cn";
-import { table, type TableSize } from "@/registry/shared/lib/table.styles";
+import { tableStyles as styles, type TableSize } from "@/registry/shared/lib/table.styles";
 
 interface TableProps {
   containerClass?: HTMLAttributes["class"];
@@ -16,8 +16,6 @@ const props = withDefaults(defineProps<TableProps>(), {
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = table();
 </script>
 
 <template>

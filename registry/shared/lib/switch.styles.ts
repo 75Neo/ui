@@ -21,3 +21,5 @@ export const switchRecipe = tv({
 export type SwitchSize = "sm" | "md" | "lg";
 
 export type { Intent };
+
+export const switchStyles = switchRecipe();

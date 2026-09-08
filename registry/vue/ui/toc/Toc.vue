@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { Toc as Ark, type TocItemData } from "@ark-ui/vue/toc";
 import { cn } from "cn";
-import { toc } from "@/registry/shared/lib/toc.styles";
+import { tocStyles as styles } from "@/registry/shared/lib/toc.styles";
 
 interface TocProps {
   items: TocItemData[];
@@ -22,8 +22,6 @@ const activeIds = defineModel<string[]>("activeIds");
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = toc();
 </script>
 
 <template>

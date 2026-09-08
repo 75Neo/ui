@@ -11,3 +11,5 @@ export const collapsible = tv({
       "overflow-hidden text-sm text-muted data-[state=closed]:animate-panel-out data-[state=open]:animate-panel-in",
   },
 });
+
+export const collapsibleStyles = collapsible();

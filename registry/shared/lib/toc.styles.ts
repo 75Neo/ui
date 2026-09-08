@@ -11,3 +11,5 @@ export const toc = tv({
       "absolute -start-px top-(--top) h-(--height) w-px bg-primary transition-[top,height] duration-200 ease-out",
   },
 });
+
+export const tocStyles = toc();

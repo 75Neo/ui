@@ -20,3 +20,5 @@ export const tabs = tv({
 });
 
 export type { Intent };
+
+export const tabsStyles = tabs();

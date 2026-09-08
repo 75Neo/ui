@@ -1,7 +1,7 @@
 import React from "react";
 import { NavigationMenu as Ark } from "@ark-ui/react/navigation-menu";
 import { cn } from "cn";
-import { navigationMenu } from "@/registry/shared/lib/navigation-menu.styles";
+import { navigationMenuStyles as styles } from "@/registry/shared/lib/navigation-menu.styles";
 
 export interface NavigationMenuTriggerProps extends React.ComponentPropsWithRef<
   typeof Ark.Trigger
@@ -17,8 +17,6 @@ export default function NavigationMenuTrigger({
   children,
   ...props
 }: NavigationMenuTriggerProps) {
-  const styles = navigationMenu();
-
   return (
     <Ark.Trigger className={cn(styles.trigger(), className)} {...props}>
       {leading ? <span className={styles.triggerLeading()}>{leading}</span> : null}

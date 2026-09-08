@@ -17,3 +17,5 @@ export const toggleGroup = tv({
 export type ToggleGroupSize = "sm" | "md" | "lg";
 
 export type { Intent };
+
+export const toggleGroupStyles = toggleGroup();

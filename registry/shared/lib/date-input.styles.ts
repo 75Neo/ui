@@ -11,3 +11,5 @@ export const dateInput = tv({
       "rounded-sm px-0.5 font-mono text-sm text-default tabular-nums outline-none data-focus:bg-primary data-focus:text-primary-fg data-placeholder-shown:text-dimmed",
   },
 });
+
+export const dateInputStyles = dateInput();

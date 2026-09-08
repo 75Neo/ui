@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "vue";
 import { Marquee as Ark } from "@ark-ui/vue/marquee";
 import type { MarqueeEdgeProps as ArkEdgeProps } from "@ark-ui/vue/marquee";
 import { cn } from "cn";
-import { marquee } from "@/registry/shared/lib/marquee.styles";
+import { marqueeStyles as styles } from "@/registry/shared/lib/marquee.styles";
 
 interface MarqueeProps {
   defaultPaused?: boolean;
@@ -30,8 +30,6 @@ const paused = defineModel<boolean>("paused");
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = marquee();
 </script>
 
 <template>

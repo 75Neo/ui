@@ -12,3 +12,5 @@ export const passwordInput = tv({
     indicator: "[&>svg]:size-4",
   },
 });
+
+export const passwordInputStyles = passwordInput();

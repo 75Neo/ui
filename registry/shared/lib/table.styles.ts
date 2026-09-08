@@ -15,3 +15,5 @@ export const table = tv({
 });
 
 export type TableSize = "sm" | "md" | "lg";
+
+export const tableStyles = table();

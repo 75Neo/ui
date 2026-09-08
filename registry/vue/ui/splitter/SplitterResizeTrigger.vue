@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "vue";
 import { Splitter as Ark } from "@ark-ui/vue/splitter";
 import type { SplitterResizeTriggerProps as ArkResizeTriggerProps } from "@ark-ui/vue/splitter";
 import { cn } from "cn";
-import { splitter } from "@/registry/shared/lib/splitter.styles";
+import { splitterStyles as styles } from "@/registry/shared/lib/splitter.styles";
 
 interface SplitterResizeTriggerProps {
   id: ArkResizeTriggerProps["id"];
@@ -18,8 +18,6 @@ const props = withDefaults(defineProps<SplitterResizeTriggerProps>(), {
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = splitter();
 </script>
 
 <template>

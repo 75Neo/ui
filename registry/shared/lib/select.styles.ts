@@ -23,3 +23,5 @@ export const select = tv({
     itemGroupLabel: "px-2.5 py-1.5 text-xs font-medium text-dimmed",
   },
 });
+
+export const selectStyles = select();

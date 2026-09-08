@@ -20,3 +20,5 @@ export const steps = tv({
       "inline-flex h-9 cursor-pointer items-center rounded-md px-3 text-sm font-medium text-muted ring ring-default transition-colors hover:bg-muted hover:text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus disabled:pointer-events-none disabled:opacity-50",
   },
 });
+
+export const stepsStyles = steps();

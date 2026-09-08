@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "vue";
 import { ColorPicker as Ark } from "@ark-ui/vue/color-picker";
 import type { ColorPickerChannelInputProps as ArkChannelInputProps } from "@ark-ui/vue/color-picker";
 import { cn } from "cn";
-import { colorPicker } from "@/registry/shared/lib/color-picker.styles";
+import { colorPickerStyles as styles } from "@/registry/shared/lib/color-picker.styles";
 
 interface ColorPickerChannelInputProps {
   channel: ArkChannelInputProps["channel"];
@@ -11,8 +11,6 @@ interface ColorPickerChannelInputProps {
 }
 
 const props = defineProps<ColorPickerChannelInputProps>();
-
-const styles = colorPicker();
 </script>
 
 <template>

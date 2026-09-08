@@ -40,3 +40,5 @@ export const drawer = tv({
 });
 
 export type DrawerSize = "sm" | "md" | "lg" | "xl" | "full";
+
+export const drawerStyles = drawer();

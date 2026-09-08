@@ -18,3 +18,5 @@ export const navigationMenu = tv({
 });
 
 export type NavigationMenuSize = "sm" | "md" | "lg";
+
+export const navigationMenuStyles = navigationMenu();

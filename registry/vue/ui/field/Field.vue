@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { Field as Ark } from "@ark-ui/vue/field";
 import { cn } from "cn";
-import { field, type FieldSize } from "@/registry/shared/lib/field.styles";
+import { fieldStyles as styles, type FieldSize } from "@/registry/shared/lib/field.styles";
 
 interface FieldProps {
   disabled?: boolean;
@@ -24,8 +24,6 @@ const props = withDefaults(defineProps<FieldProps>(), {
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = field();
 </script>
 
 <template>

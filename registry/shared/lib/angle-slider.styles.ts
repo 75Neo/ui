@@ -13,3 +13,5 @@ export const angleSlider = tv({
     marker: "size-1 rounded-full bg-accented data-[state=under-value]:bg-primary",
   },
 });
+
+export const angleSliderStyles = angleSlider();

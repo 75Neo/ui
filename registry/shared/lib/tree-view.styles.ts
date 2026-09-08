@@ -23,3 +23,5 @@ export const treeView = tv({
       "w-full min-w-0 rounded-sm bg-default px-1 text-sm text-default ring ring-focus outline-none",
   },
 });
+
+export const treeViewStyles = treeView();

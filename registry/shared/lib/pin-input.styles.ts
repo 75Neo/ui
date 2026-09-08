@@ -11,3 +11,5 @@ export const pinInput = tv({
 });
 
 export type PinInputSize = "sm" | "md" | "lg";
+
+export const pinInputStyles = pinInput();

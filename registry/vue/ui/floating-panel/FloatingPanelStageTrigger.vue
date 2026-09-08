@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { FloatingPanel as Ark } from "@ark-ui/vue/floating-panel";
 import { cn } from "cn";
-import { floatingPanel } from "@/registry/shared/lib/floating-panel.styles";
+import { floatingPanelStyles as styles } from "@/registry/shared/lib/floating-panel.styles";
 
 interface FloatingPanelStageTriggerProps {
   stage: "minimized" | "maximized" | "default";
@@ -14,8 +14,6 @@ const props = defineProps<FloatingPanelStageTriggerProps>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = floatingPanel();
 </script>
 
 <template>

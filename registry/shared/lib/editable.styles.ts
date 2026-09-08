@@ -18,3 +18,5 @@ export const editable = tv({
       "inline-flex h-7 cursor-pointer items-center rounded-md px-2 text-xs font-medium text-muted transition-colors hover:bg-muted hover:text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus",
   },
 });
+
+export const editableStyles = editable();

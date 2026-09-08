@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { Avatar as Ark } from "@ark-ui/vue/avatar";
 import { cn } from "cn";
-import { avatar } from "@/registry/shared/lib/avatar.styles";
+import { avatarStyles as styles } from "@/registry/shared/lib/avatar.styles";
 
 interface AvatarImageProps {
   src?: string;
@@ -11,8 +11,6 @@ interface AvatarImageProps {
 }
 
 const props = defineProps<AvatarImageProps>();
-
-const styles = avatar();
 </script>
 
 <template>

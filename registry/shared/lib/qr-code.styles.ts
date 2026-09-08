@@ -11,3 +11,5 @@ export const qrCode = tv({
       "inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-md px-3 text-sm font-medium text-muted ring ring-default transition-colors hover:bg-muted hover:text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus [&>svg]:size-4",
   },
 });
+
+export const qrCodeStyles = qrCode();

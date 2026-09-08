@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "vue";
 import { Listbox as Ark } from "@ark-ui/vue/listbox";
 import type { CollectionItem, ListCollection } from "@ark-ui/vue/collection";
 import { cn } from "cn";
-import { listbox } from "@/registry/shared/lib/listbox.styles";
+import { listboxStyles as styles } from "@/registry/shared/lib/listbox.styles";
 
 interface ListboxProps {
   collection: ListCollection<CollectionItem>;
@@ -33,8 +33,6 @@ const value = defineModel<string[]>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = listbox();
 </script>
 
 <template>

@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "vue";
 import { TreeView as Ark } from "@ark-ui/vue/tree-view";
 import type { TreeNode } from "@ark-ui/vue/collection";
 import { cn } from "cn";
-import { treeView } from "@/registry/shared/lib/tree-view.styles";
+import { treeViewStyles as styles } from "@/registry/shared/lib/tree-view.styles";
 
 interface TreeViewItemProps {
   node: TreeNode;
@@ -16,8 +16,6 @@ const props = defineProps<TreeViewItemProps>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = treeView();
 </script>
 
 <template>

@@ -2,15 +2,13 @@
 import type { HTMLAttributes } from "vue";
 import { Popover as Ark } from "@ark-ui/vue/popover";
 import { cn } from "cn";
-import { popover } from "@/registry/shared/lib/popover.styles";
+import { popoverStyles as styles } from "@/registry/shared/lib/popover.styles";
 
 interface PopoverArrowTipProps {
   class?: HTMLAttributes["class"];
 }
 
 const props = defineProps<PopoverArrowTipProps>();
-
-const styles = popover();
 </script>
 
 <template>

@@ -38,3 +38,5 @@ export const colorPicker = tv({
       "h-8 cursor-pointer rounded-md bg-transparent px-1 text-xs font-medium text-muted outline-none",
   },
 });
+
+export const colorPickerStyles = colorPicker();

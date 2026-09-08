@@ -11,3 +11,5 @@ export const timer = tv({
       "inline-flex h-8 cursor-pointer items-center rounded-md px-2.5 text-xs font-medium text-muted ring ring-default transition-colors hover:bg-muted hover:text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus",
   },
 });
+
+export const timerStyles = timer();

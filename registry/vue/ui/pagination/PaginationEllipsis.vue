@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { Pagination as Ark } from "@ark-ui/vue/pagination";
 import { cn } from "cn";
-import { pagination } from "@/registry/shared/lib/pagination.styles";
+import { paginationStyles as styles } from "@/registry/shared/lib/pagination.styles";
 
 interface PaginationEllipsisProps {
   index: number;
@@ -14,8 +14,6 @@ const props = defineProps<PaginationEllipsisProps>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = pagination();
 </script>
 
 <template>

@@ -10,3 +10,5 @@ export const splitter = tv({
       "rounded-full bg-accented transition-colors group-hover/resize:bg-primary group-data-[orientation=horizontal]/resize:h-8 group-data-[orientation=horizontal]/resize:w-0.5 group-data-[orientation=vertical]/resize:h-0.5 group-data-[orientation=vertical]/resize:w-8 group-data-[state=dragging]/resize:bg-primary",
   },
 });
+
+export const splitterStyles = splitter();

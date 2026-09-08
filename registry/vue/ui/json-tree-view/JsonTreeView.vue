@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { JsonTreeView as Ark } from "@ark-ui/vue/json-tree-view";
 import { cn } from "cn";
-import { jsonTreeView } from "@/registry/shared/lib/json-tree-view.styles";
+import { jsonTreeViewStyles as styles } from "@/registry/shared/lib/json-tree-view.styles";
 
 interface JsonTreeViewProps {
   data: object;
@@ -15,8 +15,6 @@ const props = defineProps<JsonTreeViewProps>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = jsonTreeView();
 </script>
 
 <template>

@@ -20,3 +20,5 @@ export const tour = tv({
     arrowTip: "border-s border-t border-default",
   },
 });
+
+export const tourStyles = tour();

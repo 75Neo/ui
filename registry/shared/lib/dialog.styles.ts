@@ -27,3 +27,5 @@ export const dialog = tv({
 });
 
 export type DialogSize = "sm" | "md" | "lg" | "xl" | "full";
+
+export const dialogStyles = dialog();

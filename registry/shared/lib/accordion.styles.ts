@@ -12,3 +12,5 @@ export const accordion = tv({
       "overflow-hidden pb-4 text-sm text-muted group-data-[state=open]/accordion-item:animate-panel-in",
   },
 });
+
+export const accordionStyles = accordion();

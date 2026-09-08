@@ -1,7 +1,7 @@
 import React from "react";
 import { ColorPicker as Ark } from "@ark-ui/react/color-picker";
 import { cn } from "cn";
-import { colorPicker } from "@/registry/shared/lib/color-picker.styles";
+import { colorPickerStyles as styles } from "@/registry/shared/lib/color-picker.styles";
 
 export interface ColorPickerSwatchTriggerProps extends React.ComponentPropsWithRef<
   typeof Ark.SwatchTrigger
@@ -12,8 +12,6 @@ export default function ColorPickerSwatchTrigger({
   children,
   ...props
 }: ColorPickerSwatchTriggerProps) {
-  const styles = colorPicker();
-
   return (
     <Ark.SwatchTrigger className={cn(styles.swatchTrigger(), className)} {...props}>
       {children}

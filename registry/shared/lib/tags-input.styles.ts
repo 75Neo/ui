@@ -21,3 +21,5 @@ export const tagsInput = tv({
 });
 
 export type TagsInputSize = "sm" | "md" | "lg";
+
+export const tagsInputStyles = tagsInput();

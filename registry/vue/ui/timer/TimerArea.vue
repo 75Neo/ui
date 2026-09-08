@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { Timer as Ark } from "@ark-ui/vue/timer";
 import { cn } from "cn";
-import { timer } from "@/registry/shared/lib/timer.styles";
+import { timerStyles as styles } from "@/registry/shared/lib/timer.styles";
 
 interface TimerAreaProps {
   class?: HTMLAttributes["class"];
@@ -13,8 +13,6 @@ const props = defineProps<TimerAreaProps>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = timer();
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Combobox as Ark } from "@ark-ui/react/combobox";
 import { cn } from "cn";
-import { combobox } from "@/registry/shared/lib/combobox.styles";
+import { comboboxStyles as styles } from "@/registry/shared/lib/combobox.styles";
 
 export interface ComboboxClearTriggerProps extends React.ComponentPropsWithRef<
   typeof Ark.ClearTrigger
@@ -12,8 +12,6 @@ export default function ComboboxClearTrigger({
   children,
   ...props
 }: ComboboxClearTriggerProps) {
-  const styles = combobox();
-
   return (
     <Ark.ClearTrigger className={cn(styles.clearTrigger(), className)} {...props}>
       {children}

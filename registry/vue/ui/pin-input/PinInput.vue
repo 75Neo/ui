@@ -2,7 +2,10 @@
 import type { HTMLAttributes } from "vue";
 import { PinInput as Ark } from "@ark-ui/vue/pin-input";
 import { cn } from "cn";
-import { pinInput, type PinInputSize } from "@/registry/shared/lib/pin-input.styles";
+import {
+  pinInputStyles as styles,
+  type PinInputSize,
+} from "@/registry/shared/lib/pin-input.styles";
 
 interface PinInputProps {
   defaultValue?: string[];
@@ -42,8 +45,6 @@ const value = defineModel<string[]>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = pinInput();
 </script>
 
 <template>

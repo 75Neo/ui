@@ -12,3 +12,5 @@ export const toast = tv({
       "absolute end-2 top-2 inline-flex size-6 cursor-pointer items-center justify-center rounded-md text-dimmed transition-colors hover:bg-muted hover:text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus [&>svg]:size-3.5",
   },
 });
+
+export const toastStyles = toast();

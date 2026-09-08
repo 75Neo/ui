@@ -21,3 +21,5 @@ export const field = tv({
 });
 
 export type FieldSize = "sm" | "md" | "lg";
+
+export const fieldStyles = field();

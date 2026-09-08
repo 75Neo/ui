@@ -20,3 +20,5 @@ export const checkbox = tv({
 export type CheckboxSize = "sm" | "md" | "lg";
 
 export type { Intent };
+
+export const checkboxStyles = checkbox();

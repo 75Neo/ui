@@ -1,7 +1,7 @@
 import React from "react";
 import { Select as Ark, type CollectionItem, type SelectRootProps } from "@ark-ui/react/select";
 import { cn } from "cn";
-import { select } from "@/registry/shared/lib/select.styles";
+import { selectStyles as styles } from "@/registry/shared/lib/select.styles";
 
 export interface SelectProps<T extends CollectionItem>
   extends SelectRootProps<T>, React.RefAttributes<HTMLDivElement> {}
@@ -11,8 +11,6 @@ export default function Select<T extends CollectionItem>({
   children,
   ...props
 }: SelectProps<T>) {
-  const styles = select();
-
   return (
     <Ark.Root className={cn(styles.root(), className)} {...props}>
       {children}

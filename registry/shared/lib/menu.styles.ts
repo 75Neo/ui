@@ -15,3 +15,5 @@ export const menu = tv({
     arrowTip: "border-s border-t border-default",
   },
 });
+
+export const menuStyles = menu();

@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "vue";
 import { ColorPicker as Ark } from "@ark-ui/vue/color-picker";
 import type { Color } from "@ark-ui/vue/color-picker";
 import { cn } from "cn";
-import { colorPicker } from "@/registry/shared/lib/color-picker.styles";
+import { colorPickerStyles as styles } from "@/registry/shared/lib/color-picker.styles";
 
 interface ColorPickerSwatchProps {
   value: string | Color;
@@ -11,8 +11,6 @@ interface ColorPickerSwatchProps {
 }
 
 const props = defineProps<ColorPickerSwatchProps>();
-
-const styles = colorPicker();
 </script>
 
 <template>

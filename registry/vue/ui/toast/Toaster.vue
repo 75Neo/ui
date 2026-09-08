@@ -6,7 +6,7 @@ import {
   type ToastOptions,
 } from "@ark-ui/vue/toast";
 import { cn } from "cn";
-import { toast } from "@/registry/shared/lib/toast.styles";
+import { toastStyles as styles } from "@/registry/shared/lib/toast.styles";
 
 interface ToasterProps {
   toaster: ArkToasterProps["toaster"];
@@ -18,8 +18,6 @@ const props = defineProps<ToasterProps>();
 defineSlots<{
   default?: (options: ToastOptions) => unknown;
 }>();
-
-const styles = toast();
 </script>
 
 <template>

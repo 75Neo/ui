@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "vue";
 import { DateInput as Ark } from "@ark-ui/vue/date-input";
 import type { DateInputRootProps } from "@ark-ui/vue/date-input";
 import { cn } from "cn";
-import { dateInput } from "@/registry/shared/lib/date-input.styles";
+import { dateInputStyles as styles } from "@/registry/shared/lib/date-input.styles";
 
 interface DateInputProps {
   defaultValue?: DateInputRootProps["value"];
@@ -37,8 +37,6 @@ const value = defineModel<DateInputRootProps["value"]>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = dateInput();
 </script>
 
 <template>

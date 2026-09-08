@@ -18,3 +18,5 @@ export const numberInput = tv({
 });
 
 export type NumberInputSize = "sm" | "md" | "lg";
+
+export const numberInputStyles = numberInput();

@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { Tooltip as Ark } from "@ark-ui/vue/tooltip";
 import { cn } from "cn";
-import { tooltip } from "@/registry/shared/lib/tooltip.styles";
+import { tooltipStyles as styles } from "@/registry/shared/lib/tooltip.styles";
 
 interface TooltipContentProps {
   class?: HTMLAttributes["class"];
@@ -13,8 +13,6 @@ const props = defineProps<TooltipContentProps>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = tooltip();
 </script>
 
 <template>

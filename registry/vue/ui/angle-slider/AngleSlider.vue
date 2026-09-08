@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { AngleSlider as Ark } from "@ark-ui/vue/angle-slider";
 import { cn } from "cn";
-import { angleSlider } from "@/registry/shared/lib/angle-slider.styles";
+import { angleSliderStyles as styles } from "@/registry/shared/lib/angle-slider.styles";
 
 interface AngleSliderProps {
   defaultValue?: number;
@@ -25,8 +25,6 @@ const value = defineModel<number>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = angleSlider();
 </script>
 
 <template>

@@ -12,3 +12,5 @@ export const imageCropper = tv({
     grid: "pointer-events-none absolute inset-0 opacity-0 transition-opacity data-dragging:opacity-100",
   },
 });
+
+export const imageCropperStyles = imageCropper();

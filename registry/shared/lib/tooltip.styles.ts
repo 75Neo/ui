@@ -9,3 +9,5 @@ export const tooltip = tv({
     arrowTip: "",
   },
 });
+
+export const tooltipStyles = tooltip();

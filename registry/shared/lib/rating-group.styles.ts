@@ -17,3 +17,5 @@ export const ratingGroup = tv({
 });
 
 export type { Intent };
+
+export const ratingGroupStyles = ratingGroup();

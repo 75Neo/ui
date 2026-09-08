@@ -8,3 +8,5 @@ export const fieldset = tv({
     errorText: "flex items-center gap-1.5 text-xs leading-5 text-error [&>svg]:size-3.5",
   },
 });
+
+export const fieldsetStyles = fieldset();

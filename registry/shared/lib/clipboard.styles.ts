@@ -13,3 +13,5 @@ export const clipboard = tv({
     valueText: "truncate font-mono text-xs text-muted",
   },
 });
+
+export const clipboardStyles = clipboard();

@@ -21,3 +21,5 @@ export const radioGroup = tv({
 export type RadioGroupSize = "sm" | "md" | "lg";
 
 export type { Intent };
+
+export const radioGroupStyles = radioGroup();

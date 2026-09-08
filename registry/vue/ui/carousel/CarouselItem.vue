@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { Carousel as Ark } from "@ark-ui/vue/carousel";
 import { cn } from "cn";
-import { carousel } from "@/registry/shared/lib/carousel.styles";
+import { carouselStyles as styles } from "@/registry/shared/lib/carousel.styles";
 
 interface CarouselItemProps {
   index: number;
@@ -14,8 +14,6 @@ const props = defineProps<CarouselItemProps>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = carousel();
 </script>
 
 <template>

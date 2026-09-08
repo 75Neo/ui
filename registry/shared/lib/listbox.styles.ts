@@ -17,3 +17,5 @@ export const listbox = tv({
     valueText: "text-sm text-muted",
   },
 });
+
+export const listboxStyles = listbox();

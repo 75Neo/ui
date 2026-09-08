@@ -2,15 +2,13 @@
 import type { HTMLAttributes } from "vue";
 import { AngleSlider as Ark } from "@ark-ui/vue/angle-slider";
 import { cn } from "cn";
-import { angleSlider } from "@/registry/shared/lib/angle-slider.styles";
+import { angleSliderStyles as styles } from "@/registry/shared/lib/angle-slider.styles";
 
 interface AngleSliderValueTextProps {
   class?: HTMLAttributes["class"];
 }
 
 const props = defineProps<AngleSliderValueTextProps>();
-
-const styles = angleSlider();
 </script>
 
 <template>

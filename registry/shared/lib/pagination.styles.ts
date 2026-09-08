@@ -14,3 +14,5 @@ export const pagination = tv({
     lastTrigger: trigger,
   },
 });
+
+export const paginationStyles = pagination();

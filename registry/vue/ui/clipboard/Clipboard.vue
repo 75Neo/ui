@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { Clipboard as Ark } from "@ark-ui/vue/clipboard";
 import { cn } from "cn";
-import { clipboard } from "@/registry/shared/lib/clipboard.styles";
+import { clipboardStyles as styles } from "@/registry/shared/lib/clipboard.styles";
 
 interface ClipboardProps {
   defaultValue?: string;
@@ -17,8 +17,6 @@ const value = defineModel<string>();
 defineSlots<{
   default?: () => unknown;
 }>();
-
-const styles = clipboard();
 </script>
 
 <template>

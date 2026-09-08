@@ -20,3 +20,5 @@ export const floatingPanel = tv({
       "absolute data-[axis=e]:cursor-ew-resize data-[axis=n]:cursor-ns-resize data-[axis=ne]:cursor-nesw-resize data-[axis=nw]:cursor-nwse-resize data-[axis=s]:cursor-ns-resize data-[axis=se]:cursor-nwse-resize data-[axis=sw]:cursor-nesw-resize data-[axis=w]:cursor-ew-resize",
   },
 });
+
+export const floatingPanelStyles = floatingPanel();
