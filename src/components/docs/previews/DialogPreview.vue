@@ -27,10 +27,7 @@ import DialogTrigger from "@/registry/vue/ui/dialog/DialogTrigger.vue";
             them goes with it, so check the diff first.
           </DialogDescription>
 
-          <div class="mt-2 flex justify-end gap-2">
-            <DialogCloseTrigger as-child>
-              <Button variant="ghost" color="secondary">Keep it</Button>
-            </DialogCloseTrigger>
+          <div class="mt-2 flex justify-end">
             <Button color="error">Remove</Button>
           </div>
 
