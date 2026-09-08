@@ -97,12 +97,12 @@ use.
 
 ## Retheme
 
-Override the tokens in your own stylesheet, after the theme import. Both palettes are separate, so
+Override the tokens in your Tailwind CSS file, after the injected theme. Both palettes are separate, so
 set the ones you want in each.
 
 ```css
 @import "tailwindcss";
-@import "./75neo-theme.css";
+/* theme is injected here by the registry */
 
 :root {
   --ui-primary: var(--color-violet-600);

@@ -55,13 +55,13 @@ npx shadcn-vue@latest add @75neo/button
 ## Theme
 
 Every component draws on a set of `--ui-*` custom properties and the Tailwind theme
-mapping built on top of them. The `theme` item carries them, and the CLI installs it
-automatically the first time you add a component. It writes `75neo-theme.css` to your
-project root, which you import after Tailwind:
+mapping built on top of them. The `theme` item carries them, and the CLI injects them
+automatically the first time you add a component into your Tailwind CSS file (configured
+via `components.json` `tailwind.css`). No separate file or import is needed:
 
 ```css
 @import "tailwindcss";
-@import "./75neo-theme.css";
+/* theme is injected here */
 ```
 
 Dark mode is class-based: put `dark` on an ancestor of the components you want in the dark
@@ -81,7 +81,7 @@ pnpm registry:build   # write the registry items into public/r
 ```
 
 Component sources live under `registry/`: `react/ui` and `vue/ui` hold the adapters,
-`shared/lib` the recipes both import, and `theme` the stylesheet. `registry.react.json`
+`shared/lib` the recipes both import, and `meta/theme.json` the theme tokens. `registry.react.json`
 and `registry.vue.json` list what each framework publishes. Imports between registry files
 are written as `@/registry/…` because that is the prefix the shadcn CLI rewrites to the
 installing project's own aliases.

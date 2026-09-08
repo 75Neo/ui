@@ -54,23 +54,17 @@ npx shadcn@latest add @75neo/button
 npx shadcn-vue@latest add @75neo/button
 ```
 
-The CLI writes three things: the adapter into your UI directory, the shared recipe into your lib
-directory, and, the first time you add anything, the theme stylesheet into your project root. It
+The CLI writes the adapter into your UI directory, the shared recipe into your lib
+directory, and, the first time you add anything, the theme tokens into your Tailwind CSS file
+(configured via `components.json` `tailwind.css`, e.g. `src/styles/global.css`). It
 also installs the npm dependencies the component declares, which are `cn` and `tailwind-variants`
 for every component and `@ark-ui/react` or `@ark-ui/vue` for the ones built over Ark UI.
 
-## Import the theme
+## Theme
 
-The theme item is written to `75neo-theme.css` at your project root. Import it after Tailwind in
-your global stylesheet:
-
-```css
-@import "tailwindcss";
-@import "./75neo-theme.css";
-```
-
-Order matters. The theme file declares `@theme` tokens that reference Tailwind's own colour scale,
-so Tailwind has to be loaded first.
+The theme item is injected directly into your Tailwind CSS file — no separate file or import is
+needed. Order matters inside that file: keep `@import "tailwindcss"` first, so the `@theme`
+tokens that reference Tailwind's colour scale resolve correctly.
 
 ## Turn on dark mode
 
@@ -117,8 +111,7 @@ import Button from "@/components/ui/button/Button.vue";
 </template>
 ```
 
-If the button renders unstyled, the theme stylesheet is not being imported or Tailwind is not
-scanning the directory the CLI wrote to.
+If the button renders unstyled, the theme tokens were not injected into your Tailwind CSS file (check `components.json` `tailwind.css` path) or Tailwind is not scanning the directory the CLI wrote to.
 
 ## Next
 

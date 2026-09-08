@@ -106,7 +106,13 @@ function stylesheet(metas) {
   for (const [selector, entries] of Object.entries(scoped)) {
     sections.push(block(selector, declarations(entries, "  "), "").join("\n"));
   }
-  for (const [selector, body] of other) sections.push(rule(selector, body, "").join("\n"));
+  for (const [selector, body] of other) {
+    if (Object.keys(body).length === 0) {
+      sections.push(`${selector};`);
+    } else {
+      sections.push(rule(selector, body, "").join("\n"));
+    }
+  }
 
   return sections.length > 0 ? `${sections.join("\n\n")}\n` : "";
 }
@@ -114,8 +120,11 @@ function stylesheet(metas) {
 function buildItem(meta, framework) {
   const { name, dependencies, files, ...rest } = meta;
   const resolved = files ?? [...uiFiles(name, framework), ...libFiles(name)];
+  const hasCss =
+    (meta.css && Object.keys(meta.css).length > 0) ||
+    (meta.cssVars && Object.keys(meta.cssVars).length > 0);
 
-  if (resolved.length === 0) {
+  if (resolved.length === 0 && !hasCss) {
     throw new Error(`No files found for registry item "${name}" (${framework}).`);
   }
 
@@ -123,7 +132,7 @@ function buildItem(meta, framework) {
     name,
     ...rest,
     ...(dependencies ? { dependencies: resolveDependencies(dependencies, framework) } : {}),
-    files: resolved,
+    ...(resolved.length > 0 ? { files: resolved } : {}),
   };
 }
 

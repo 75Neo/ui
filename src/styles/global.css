@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "@fontsource-variable/roboto";
 @import "@fontsource-variable/jetbrains-mono";
-@import "../../registry/theme/theme.css";
 @import "./registry.css";
 @import "./prose.css";
 
