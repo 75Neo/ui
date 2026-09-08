@@ -18,8 +18,6 @@ on:
       - "tsconfig.json"
   workflow_dispatch:
 
-# One deployment at a time, and never cancel one halfway: an interrupted publish leaves
-# the live site on a half-uploaded build.
 concurrency:
   group: docs-deploy
   cancel-in-progress: false

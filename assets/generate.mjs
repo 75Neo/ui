@@ -15,7 +15,6 @@ try {
   process.exit(0);
 }
 
-// ── Tokens ───────────────────────────────────────────────────────────────────
 const TOKENS = {
   light: {
     bg: "#ffffff",
@@ -59,12 +58,10 @@ const TOKENS = {
   },
 };
 
-// ── Brand ────────────────────────────────────────────────────────────────────
 const BRAND_GROUND = "#2563eb";
 const BRAND_CANVAS = 512;
 const BRAND_MARK = 320;
 
-// ── Mark geometry ────────────────────────────────────────────────────────────
 const MARK = {
   box: 64,
   weight: 11,
@@ -79,7 +76,6 @@ const BRACKET_TL = `M ${TL} ${TL + A} L ${TL} ${TL + R} A ${R} ${R} 0 0 1 ${TL +
 const BRACKET_BR = `M ${BR} ${BR - A} L ${BR} ${BR - R} A ${R} ${R} 0 0 1 ${BR - R} ${BR} L ${BR - A} ${BR}`;
 const MARK_PATHS = `<path d="${BRACKET_TL}"/><path d="${BRACKET_BR}"/>`;
 
-// ── SVG helpers ──────────────────────────────────────────────────────────────
 function markSVG(color, { size = BOX, label = "75Neo" } = {}) {
   return `<svg width="${size}" height="${size}" viewBox="0 0 ${BOX} ${BOX}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${label}">
   <g stroke="${color}" stroke-width="${W}" stroke-linecap="butt" fill="none">
@@ -106,7 +102,6 @@ function brandSVG(color, ground, { size = BOX, label = "75Neo" } = {}) {
 const markInline = (color, px) =>
   `<svg width="${px}" height="${px}" viewBox="0 0 ${BOX} ${BOX}" fill="none" aria-hidden="true"><g stroke="${color}" stroke-width="${W}" stroke-linecap="butt" fill="none">${MARK_PATHS}</g></svg>`;
 
-// ── Wordmark ─────────────────────────────────────────────────────────────────
 const wordmark = (t, { product = true, size = 34 } = {}) => `
   <span class="wm" style="font-size:${size}px">
     <b>75</b><b>Neo</b>${product ? `<i>UI</i>` : ""}
@@ -119,7 +114,6 @@ const WORDMARK_CSS = (t) => `
   .wm i{font-style:normal;font-weight:500;color:${t.textMuted};letter-spacing:-0.02em}
 `;
 
-// ── Frameworks ───────────────────────────────────────────────────────────────
 const FRAMEWORKS = [
   {
     name: "React",
@@ -138,7 +132,6 @@ const FRAMEWORKS = [
 const frameworkIcon = (f, px = 36) =>
   `<svg width="${px}" height="${px}" viewBox="0 0 24 24" fill="${f.color}" role="img" aria-label="${f.name}"><path d="${f.path}"/></svg>`;
 
-// ── Pattern ──────────────────────────────────────────────────────────────────
 const PATTERN_TILE = 152;
 
 function patternURI(color, opacity = 0.6) {
@@ -147,7 +140,6 @@ function patternURI(color, opacity = 0.6) {
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
 }
 
-// ── Banner ───────────────────────────────────────────────────────────────────
 const BANNER_W = 1280;
 const BANNER_H = 360;
 
@@ -229,7 +221,6 @@ ${WORDMARK_CSS(t)}
 </style></head><body><div id="c">${markInline(t.primary, 40)}${wordmark(t, { size: 38 })}</div></body></html>`;
 }
 
-// ── I/O ──────────────────────────────────────────────────────────────────────
 function writeAsset(name, content) {
   fs.writeFileSync(join(HERE, name), content);
   console.log(`  ${name}`);
@@ -253,7 +244,6 @@ async function capture(
   console.log(`  ${out}`);
 }
 
-// ── Run ──────────────────────────────────────────────────────────────────────
 console.log("\n75Neo — brand assets\n");
 
 console.log("vector");
