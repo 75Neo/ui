@@ -13,7 +13,7 @@ const {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-pm="pnpm">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
@@ -32,7 +32,13 @@ const {
         document.documentElement.classList.toggle("dark", dark);
       };
 
+      const applyPackageManager = () => {
+        const stored = localStorage.getItem("package-manager");
+        if (stored) document.documentElement.dataset.pm = stored;
+      };
+
       applyTheme();
+      applyPackageManager();
     </script>
   </head>
   <body>

@@ -3,10 +3,8 @@
   <img alt="75NeoUI. Components you own, not a dependency you carry." src="assets/banner-light.png">
 </picture>
 
-A component library for React and Vue, distributed as a [shadcn
-registry](https://ui.shadcn.com/docs/registry/getting-started). You install a component's
-source into your own project and own it from there; there is no runtime package to depend
-on.
+A component library for React and Vue. You install a component's source into your own
+project and own it from there; there is no runtime package to depend on.
 
 Components are written twice, once for each framework, over one shared
 [tailwind-variants](https://www.tailwind-variants.org) recipe, so a button looks and
@@ -14,54 +12,35 @@ behaves the same whichever adapter you install.
 
 ## Requirements
 
-Tailwind CSS v4 and a project the shadcn CLI recognises, which means a `components.json`
-at its root. Run `npx shadcn@latest init` (or `npx shadcn-vue@latest init` for Vue) if you
-do not have one.
+A React or Vue project with Tailwind CSS v4.
 
 ## Install
 
-Add the registry to your `components.json`:
-
-```json
-{
-  "registries": {
-    "@75neo": "https://75neo-ui.pages.dev/r/react/{name}.json"
-  }
-}
+```sh
+npx @75neo/ui@latest init
 ```
 
-Vue projects point at the `vue` path instead:
-
-```json
-{
-  "registries": {
-    "@75neo": "https://75neo-ui.pages.dev/r/vue/{name}.json"
-  }
-}
-```
-
-Then add a component. React:
+`init` writes a `75neoui.json`, installs `@75neo/ui`, and adds the theme tokens and the
+animation stylesheet to your Tailwind entry file. Then add components, naming as many as
+you like or passing `--all`:
 
 ```sh
-npx shadcn@latest add @75neo/button
+npx @75neo/ui@latest add button
 ```
 
-Vue:
-
-```sh
-npx shadcn-vue@latest add @75neo/button
-```
+The same command serves both frameworks. `75neoui.json` records which one you are on.
 
 ## Theme
 
 Every component draws on a set of `--ui-*` custom properties and the Tailwind theme
-mapping built on top of them. The `theme` item carries them, and the CLI injects them
-automatically the first time you add a component into your Tailwind CSS file (configured
-via `components.json` `tailwind.css`). No separate file or import is needed:
+mapping built on top of them. `init` writes those into your own stylesheet so you can
+override them there. Component keyframes are not tokens, so they ship in `@75neo/ui`
+instead and update with the package:
 
 ```css
 @import "tailwindcss";
-/* theme is injected here */
+@import "@75neo/ui/animations.css";
+/* 75NeoUI theme */
 ```
 
 Dark mode is class-based: put `dark` on an ancestor of the components you want in the dark
@@ -77,14 +56,19 @@ than an opacity. Neutrals are Tailwind's warm `stone` ramp and the default prima
 ```sh
 pnpm install
 pnpm dev              # docs site on http://localhost:4321
-pnpm registry:build   # write the registry items into public/r
+pnpm registry:generate # write the registry items into public/r
 ```
 
 Component sources live under `registry/`: `react/ui` and `vue/ui` hold the adapters,
 `shared/lib` the recipes both import, and `meta/theme.json` the theme tokens. `registry.react.json`
-and `registry.vue.json` list what each framework publishes. Imports between registry files
-are written as `@/registry/…` because that is the prefix the shadcn CLI rewrites to the
-installing project's own aliases.
+and `registry.vue.json` list what each framework publishes, and `build-registry.mjs` inlines
+their contents into `public/r`. Imports between registry files are written as `@/registry/…`
+because that is the prefix the CLI rewrites to the installing project's own aliases.
+
+The CLI itself lives in `packages/ui` and is published as `@75neo/ui`. It is TypeScript,
+compiled with `tsc` into `dist`, and `pnpm packages:build` builds it. The pieces the
+commands are built from, config reading, registry resolution and file writing, are exported
+with type declarations so a script can drive the installer directly.
 
 `pnpm build` runs the registry build before Astro, so a deployment of the docs site is
 also a publish of the registry.

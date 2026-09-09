@@ -12,7 +12,7 @@ const sections = [
   {
     value: "install",
     title: "How do I install a component?",
-    body: "Point the shadcn CLI at the registry and run add. The source lands in your own repository.",
+    body: "Run the add command and the source lands in your own repository.",
   },
   {
     value: "theme",

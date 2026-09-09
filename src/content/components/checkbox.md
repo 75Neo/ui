@@ -54,4 +54,4 @@ box empty, since an empty box reads as "none selected".
 
 ## Sizes
 
-`size` accepts `sm`, `md` and `lg`, and moves the box and the label text together.
+`size` moves the box and the label text together.

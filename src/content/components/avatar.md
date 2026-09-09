@@ -34,8 +34,7 @@ who has never uploaded a photo.
 
 ## Sizes
 
-`size` runs `xs`, `sm`, `md`, `lg`, `xl` and moves the circle and the text together. The default is
-`md`.
+`size` moves the circle and the text together, so initials stay proportional at every step.
 
 ## Alt text
 

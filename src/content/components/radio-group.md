@@ -45,4 +45,4 @@ one per option.
 
 ## Sizes
 
-`size` accepts `sm`, `md` and `lg`, and moves the circle and the label text together.
+`size` moves the circle and the label text together.

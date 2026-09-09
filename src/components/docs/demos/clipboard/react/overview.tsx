@@ -11,7 +11,7 @@ import {
 export default function ClipboardOverview() {
   return (
     <div className="max-w-md">
-      <Clipboard defaultValue="npx shadcn@latest add @75neo/button">
+      <Clipboard defaultValue="npx @75neo/ui@latest add button">
         <ClipboardLabel>Install command</ClipboardLabel>
         <ClipboardControl>
           <ClipboardInput />

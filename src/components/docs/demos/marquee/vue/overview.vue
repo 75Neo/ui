@@ -7,7 +7,7 @@ import {
   MarqueeViewport,
 } from "@/components/vue";
 
-const items = ["Ark UI", "Tailwind v4", "tailwind-variants", "shadcn registry", "Astro", "Comark"];
+const items = ["Ark UI", "Tailwind v4", "tailwind-variants", "Registry", "Astro", "Comark"];
 </script>
 
 <template>

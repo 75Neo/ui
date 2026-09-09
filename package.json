@@ -5,19 +5,20 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
+    "packages:build": "pnpm --filter @75neo/ui build",
     "registry:generate": "node scripts/build-registry.mjs && node scripts/build-demos.mjs",
-    "registry:build": "pnpm registry:generate && shadcn build registry.react.json --output public/r/react && shadcn-vue build registry.vue.json --output public/r/vue",
-    "build": "pnpm registry:build && astro build",
+    "build": "pnpm packages:build && pnpm registry:generate && astro build",
     "preview": "astro preview",
-    "typecheck": "astro check && vue-tsc --noEmit",
+    "typecheck": "pnpm --filter @75neo/ui typecheck && astro check && vue-tsc --noEmit",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
-    "prepare": "pnpm registry:generate",
+    "prepare": "pnpm packages:build && pnpm registry:generate",
     "demos:generate": "node scripts/build-demos.mjs"
   },
   "dependencies": {
+    "@75neo/ui": "workspace:*",
     "@ark-ui/react": "^5.39.1",
     "@ark-ui/vue": "^5.39.1",
     "@astrojs/check": "^0.9.10",
@@ -53,7 +54,6 @@
     "oxlint": "^1.81.0",
     "oxlint-tailwindcss": "^1.10.2",
     "shadcn": "^4.21.0",
-    "shadcn-vue": "^2.8.2",
     "simple-icons": "^16.30.0",
     "vue-tsc": "^3.3.11"
   },

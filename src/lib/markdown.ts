@@ -4,6 +4,7 @@ import { generateFlatToc } from "comark/plugins/toc";
 import githubDark from "@shikijs/themes/github-dark";
 import githubLight from "@shikijs/themes/github-light";
 import type { DocsHeading, Framework } from "@/lib/docs";
+import { isPackageCommand } from "@/lib/package-manager";
 
 const TOC_OPTIONS = { title: "", depth: 2, searchDepth: 1, links: [] };
 
@@ -11,7 +12,14 @@ const parse = createMarkdownParser({
   plugins: [shiki({ themes: { light: githubLight, dark: githubDark } })],
 });
 
-export const parseDocument = (markdown: string) => parse(markdown);
+const SHELL_FENCE = /^```sh\n([^\n]+)\n```$/gm;
+
+const withPackageCommands = (markdown: string) =>
+  markdown.replace(SHELL_FENCE, (fence, command: string) =>
+    isPackageCommand(command) ? `::pm-command{value="${command}"}\n::` : fence,
+  );
+
+export const parseDocument = (markdown: string) => parse(withPackageCommands(markdown));
 
 export function documentHeadings(document: MarkdownDocument): DocsHeading[] {
   return generateFlatToc(document, TOC_OPTIONS).links.map((link) => ({

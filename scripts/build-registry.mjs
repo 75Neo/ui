@@ -1,17 +1,10 @@
 import { globSync } from "node:fs";
-import { readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { registryItemSchema } from "shadcn/schema";
 
-const FRAMEWORKS = {
-  react: {
-    out: "registry.react.json",
-    schema: "https://ui.shadcn.com/schema/registry.json",
-  },
-  vue: {
-    out: "registry.vue.json",
-    schema: "https://shadcn-vue.com/schema/registry.json",
-  },
-};
+const FRAMEWORKS = { react: "registry.react.json", vue: "registry.vue.json" };
+const PUBLISH_DIR = "public/r";
 
 const NAME = "75neo";
 const HOMEPAGE = "https://75neo-ui.pages.dev";
@@ -136,18 +129,42 @@ function buildItem(meta, framework) {
   };
 }
 
+async function publishItem(item, directory) {
+  const files = [];
+  for (const file of item.files ?? []) {
+    files.push({ ...file, content: await readFile(file.path, "utf8") });
+  }
+
+  const published = { ...item, ...(files.length > 0 ? { files } : {}) };
+  const parsed = registryItemSchema.safeParse(published);
+  if (!parsed.success) {
+    throw new Error(`Registry item "${item.name}" is invalid: ${parsed.error.message}`);
+  }
+
+  await writeFile(
+    path.join(directory, `${item.name}.json`),
+    `${JSON.stringify(published, null, 2)}\n`,
+  );
+}
+
 const metas = await readMeta();
 
 await writeFile(STYLESHEET, stylesheet(metas));
 console.log(`${STYLESHEET}`);
 
-for (const [framework, { out, schema }] of Object.entries(FRAMEWORKS)) {
+for (const [framework, out] of Object.entries(FRAMEWORKS)) {
   const registry = {
-    $schema: schema,
     name: NAME,
     homepage: HOMEPAGE,
     items: metas.map((meta) => buildItem(meta, framework)),
   };
   await writeFile(out, `${JSON.stringify(registry, null, 2)}\n`);
-  console.log(`${out}  ${registry.items.length} items`);
+
+  const directory = path.join(PUBLISH_DIR, framework);
+  await rm(directory, { recursive: true, force: true });
+  await mkdir(directory, { recursive: true });
+  await writeFile(path.join(directory, "registry.json"), `${JSON.stringify(registry, null, 2)}\n`);
+  for (const item of registry.items) await publishItem(item, directory);
+
+  console.log(`${out}  ${registry.items.length} items  ${directory}`);
 }

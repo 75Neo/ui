@@ -8,7 +8,7 @@ registryItem: clipboard
 ## Usage
 
 ```tsx
-<Clipboard defaultValue="npx shadcn@latest add @75neo/button">
+<Clipboard defaultValue="npx @75neo/ui@latest add button">
   <ClipboardLabel>Install command</ClipboardLabel>
   <ClipboardControl>
     <ClipboardInput />
@@ -23,7 +23,7 @@ registryItem: clipboard
 
 ```vue
 <template>
-  <Clipboard default-value="npx shadcn-vue@latest add @75neo/button">
+  <Clipboard default-value="npx @75neo/ui@latest add button">
     <ClipboardLabel>Install command</ClipboardLabel>
     <ClipboardControl>
       <ClipboardInput />
