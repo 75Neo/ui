@@ -48,9 +48,20 @@ jobs:
           TAG: ${{ github.event.release.tag_name }}
         run: |
           version=$(node -p "require('./packages/ui/package.json').version")
-          if [ "$TAG" != "v$version" ]; then
-            echo "Release $TAG does not match @75neo/ui $version."
+          if [ "${TAG#v}" != "$version" ]; then
+            echo "Release $TAG does not name @75neo/ui $version."
             exit 1
+          fi
+
+      - name: Check whether this version is already on npm
+        id: published
+        run: |
+          version=$(node -p "require('./packages/ui/package.json').version")
+          if npm view "@75neo/ui@$version" version --silent > /dev/null 2>&1; then
+            echo "@75neo/ui $version is already published, nothing to do."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Test
@@ -63,5 +74,6 @@ jobs:
         run: pnpm --filter @75neo/ui build
 
       - name: Publish
+        if: steps.published.outputs.skip == 'false'
         working-directory: packages/ui
         run: npm publish --ignore-scripts --tag "${{ inputs.tag || 'latest' }}"
