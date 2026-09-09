@@ -41,6 +41,11 @@
   [data-pm-tabs] pre {
     @apply my-0 rounded-none ring-0;
   }
+
+  [data-pm-tabs] pre,
+  .prose pre {
+    scrollbar-width: thin;
+  }
 }
 
 @layer utilities {

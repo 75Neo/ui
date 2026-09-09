@@ -19,6 +19,6 @@ defineSlots<{
 <template>
   <div class="relative">
     <pre :class="[props.class, 'pe-14']" :data-language="props.language"><slot /></pre>
-    <div data-code-copy class="absolute end-2 top-2"></div>
+    <div data-code-copy class="absolute inset-e-2 top-2"></div>
   </div>
 </template>
