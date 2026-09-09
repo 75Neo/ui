@@ -16,7 +16,8 @@
     "format": "oxfmt",
     "format:check": "oxfmt --check",
     "prepare": "pnpm packages:build && pnpm registry:generate",
-    "demos:generate": "node scripts/build-demos.mjs"
+    "demos:generate": "node scripts/build-demos.mjs",
+    "changelog": "git-cliff --output CHANGELOG.md"
   },
   "dependencies": {
     "@75neo/ui": "workspace:*",

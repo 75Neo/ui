@@ -2,7 +2,7 @@ import { mkdtemp, mkdir, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { PACKAGE_MANAGERS, detectPackageManager } from "../src/pm.js";
+import { PACKAGE_MANAGERS, detectPackageManager, installArgs } from "../src/pm.js";
 
 const roots: string[] = [];
 
@@ -47,5 +47,33 @@ describe("detectPackageManager", () => {
 
   it("only ever returns a known manager", async () => {
     expect(PACKAGE_MANAGERS).toContain(detectPackageManager(await project("yarn.lock")));
+  });
+});
+
+describe("installArgs", () => {
+  it.each([
+    ["npm", ["install", "@75neo/ui"]],
+    ["pnpm", ["add", "@75neo/ui"]],
+    ["yarn", ["add", "@75neo/ui"]],
+    ["bun", ["add", "@75neo/ui"]],
+  ] as const)("builds the %s command", (manager, expected) => {
+    expect(installArgs(["@75neo/ui"], manager)).toEqual(expected);
+  });
+
+  it.each([
+    ["npm", ["install", "-D", "@75neo/ui"]],
+    ["pnpm", ["add", "-D", "@75neo/ui"]],
+    ["yarn", ["add", "-D", "@75neo/ui"]],
+    ["bun", ["add", "-D", "@75neo/ui"]],
+  ] as const)("adds the dev flag for %s", (manager, expected) => {
+    expect(installArgs(["@75neo/ui"], manager, true)).toEqual(expected);
+  });
+
+  it("keeps several packages in order", () => {
+    expect(installArgs(["cn", "tailwind-variants"], "pnpm")).toEqual([
+      "add",
+      "cn",
+      "tailwind-variants",
+    ]);
   });
 });

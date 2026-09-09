@@ -13,7 +13,7 @@ export {
 export { serialize, withImport, withTheme } from "./css.js";
 export { InstallError, destinationFor, rewriteImports, writeFiles } from "./install.js";
 export type { WriteOptions, WriteResult } from "./install.js";
-export { PACKAGE_MANAGERS, detectPackageManager, install } from "./pm.js";
+export { PACKAGE_MANAGERS, detectPackageManager, install, installArgs } from "./pm.js";
 export type { InstallOptions, PackageManager } from "./pm.js";
 export {
   RegistryError,

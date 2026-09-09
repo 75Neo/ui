@@ -113,8 +113,8 @@ async function runInit(args: InitArgs): Promise<void> {
 
   if (!args.install) return;
   const manager = detectPackageManager(cwd);
-  console.log(dim(`${manager} add ${PACKAGE}`));
-  await install([PACKAGE], { cwd, manager });
+  console.log(dim(`${manager} add -D ${PACKAGE}`));
+  await install([PACKAGE], { cwd, manager, dev: true });
 }
 
 async function runAdd(args: AddArgs): Promise<void> {

@@ -1,0 +1,41 @@
+[changelog]
+header = """
+# Changelog
+
+Every notable change to 75NeoUI, newest first.
+"""
+body = """
+{% if version %}## {{ version | trim_start_matches(pat="v") }} - {{ timestamp | date(format="%Y-%m-%d") }}{% else %}## Unreleased{% endif %}
+{% for group, commits in commits | group_by(attribute="group") %}
+### {{ group | upper_first }}
+
+{% for commit in commits %}- {{ commit.message | upper_first }}{% if commit.remote.pr_number %} ([#{{ commit.remote.pr_number }}](https://github.com/75Neo/ui/pull/{{ commit.remote.pr_number }})){% endif %}
+{% endfor %}{% endfor %}
+"""
+footer = ""
+trim = false
+
+[git]
+conventional_commits = true
+filter_unconventional = true
+split_commits = false
+protect_breaking_commits = true
+filter_commits = false
+tag_pattern = "v?[0-9]*"
+topo_order = false
+sort_commits = "newest"
+
+commit_preprocessors = [{ pattern = ' *\(#([0-9]+)\)$', replace = "" }]
+
+commit_parsers = [
+  { message = "^feat", group = "Added" },
+  { message = "^fix", group = "Fixed" },
+  { message = "^perf", group = "Performance" },
+  { message = "^refactor", group = "Changed" },
+  { message = "^build", group = "Build" },
+  { message = "^docs", group = "Documentation" },
+  { message = "^test", skip = true },
+  { message = "^chore", skip = true },
+  { message = "^ci", skip = true },
+  { body = ".*security", group = "Security" },
+]
