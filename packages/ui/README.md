@@ -62,24 +62,3 @@ const item = validate(registryItemSchema, "button.json", await response.json());
 The stylesheet carries the keyframes and `--animate-*` entries that overlay components use. Design
 tokens are not here on purpose: `init` writes those into your own stylesheet so you can override
 them.
-
-## Releasing
-
-The first publish of a new package must be manual, because npm only lets a trusted publisher be
-configured on a package that already exists.
-
-```sh
-cd packages/ui
-pnpm publish --access public --no-git-checks
-```
-
-After that, configure trusted publishing once, either on the package's access page at npmjs.com or
-with the npm CLI:
-
-```sh
-npm trust github @75neo/ui --repo 75Neo/ui --file release.yml --allow-publish
-```
-
-From then on, publishing a GitHub release named `v<version>` runs `.github/workflows/release.yml`,
-which authenticates over OIDC with no token stored anywhere. The workflow refuses to run when the
-release tag and the package version disagree.
