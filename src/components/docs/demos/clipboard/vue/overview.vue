@@ -12,7 +12,7 @@ import {
 
 <template>
   <div class="max-w-md">
-    <Clipboard default-value="npx shadcn-vue@latest add @75neo/button">
+    <Clipboard default-value="npx @75neo/ui@latest add button">
       <ClipboardLabel>Install command</ClipboardLabel>
       <ClipboardControl>
         <ClipboardInput />

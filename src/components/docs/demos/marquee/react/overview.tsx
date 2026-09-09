@@ -6,7 +6,7 @@ import {
   MarqueeViewport,
 } from "@/components/react";
 
-const items = ["Ark UI", "Tailwind v4", "tailwind-variants", "shadcn registry", "Astro", "Comark"];
+const items = ["Ark UI", "Tailwind v4", "tailwind-variants", "Registry", "Astro", "Comark"];
 
 export default function MarqueeOverview() {
   return (

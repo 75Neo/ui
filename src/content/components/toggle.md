@@ -37,4 +37,4 @@ An icon only toggle needs an `aria-label`. The icon is not a name.
 
 ## Sizes
 
-`size` accepts `sm`, `md` and `lg`, which set the height, the padding and the indicator together.
+`size` sets the height, the padding and the indicator together.

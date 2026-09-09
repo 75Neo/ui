@@ -1,19 +1,12 @@
 ---
-import MarkdownContent from "@/components/docs/MarkdownContent.vue";
-import type { Framework } from "@/lib/docs";
-import { parseDocument } from "@/lib/markdown";
+import PackageManagerTabs from "@/components/docs/PackageManagerTabs.vue";
 
 interface Props {
   registryItem: string;
-  framework: Framework;
   note?: string;
 }
 
-const { registryItem, framework, note } = Astro.props;
-const cli = framework === "react" ? "shadcn" : "shadcn-vue";
-const document = await parseDocument(
-  `\`\`\`sh\nnpx ${cli}@latest add @75neo/${registryItem}\n\`\`\``,
-);
+const { registryItem, note } = Astro.props;
 ---
 
 <section>
@@ -21,9 +14,7 @@ const document = await parseDocument(
     Installation
   </h2>
 
-  <div class="mt-4">
-    <MarkdownContent value={document} class="prose" />
-  </div>
+  <PackageManagerTabs value={`npx @75neo/ui@latest add ${registryItem}`} />
 
   {note && <p class="mt-4 text-[0.9375rem] leading-7 text-muted">{note}</p>}
 </section>

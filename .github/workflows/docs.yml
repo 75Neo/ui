@@ -9,6 +9,7 @@ on:
       - "astro.config.mjs"
       - "mise.toml"
       - "package.json"
+      - "packages/**"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
       - "public/**"

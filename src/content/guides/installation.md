@@ -1,70 +1,31 @@
 ---
 title: Installation
-description: Point the shadcn CLI at the registry, add a component, and import the theme stylesheet.
+description: Set your project up with one command, then add components.
 order: 2
 ---
 
-## Requirements
+## Prerequisites
 
-You need Tailwind CSS v4 and a project the shadcn CLI recognises, which means a `components.json`
-at the root. If you do not have one:
+A React or Vue project with [Tailwind CSS v4](https://tailwindcss.com) installed.
 
-```sh
-npx shadcn@latest init
-```
-
-Vue projects use the Vue fork of the CLI instead:
+## Set up
 
 ```sh
-npx shadcn-vue@latest init
+npx @75neo/ui@latest init
 ```
 
-## Register the registry
-
-Add a `registries` entry to `components.json`. React projects point at the `react` path:
-
-```json
-{
-  "registries": {
-    "@75neo": "https://75neo-ui.pages.dev/r/react/{name}.json"
-  }
-}
-```
-
-Vue projects point at the `vue` path:
-
-```json
-{
-  "registries": {
-    "@75neo": "https://75neo-ui.pages.dev/r/vue/{name}.json"
-  }
-}
-```
-
-The two registries publish the same item names. Only the source files behind each name differ, so
-the rest of this documentation applies to both.
+This writes a `75neoui.json`, installs `@75neo/ui`, and adds the theme tokens and the animation
+stylesheet to your Tailwind entry file. It detects your framework and that file on its own; pass
+`--framework` or `--css` if it guesses wrong.
 
 ## Add a component
 
 ```sh
-npx shadcn@latest add @75neo/button
+npx @75neo/ui@latest add button
 ```
 
-```sh
-npx shadcn-vue@latest add @75neo/button
-```
-
-The CLI writes the adapter into your UI directory, the shared recipe into your lib
-directory, and, the first time you add anything, the theme tokens into your Tailwind CSS file
-(configured via `components.json` `tailwind.css`, e.g. `src/styles/global.css`). It
-also installs the npm dependencies the component declares, which are `cn` and `tailwind-variants`
-for every component and `@ark-ui/react` or `@ark-ui/vue` for the ones built over Ark UI.
-
-## Theme
-
-The theme item is injected directly into your Tailwind CSS file — no separate file or import is
-needed. Order matters inside that file: keep `@import "tailwindcss"` first, so the `@theme`
-tokens that reference Tailwind's colour scale resolve correctly.
+Name as many as you like, or pass `--all`. The command writes the adapter into your UI directory,
+the shared recipe into your lib directory, and installs the npm packages the component declares.
 
 ## Turn on dark mode
 
@@ -77,8 +38,8 @@ usually the `html` element:
 </html>
 ```
 
-The theme file defines both palettes, so nothing else is needed. To follow the operating system
-preference and remember an explicit choice, set the class before first paint:
+To follow the operating system preference and remember an explicit choice, set the class before
+first paint:
 
 ```html
 <script>
@@ -111,7 +72,8 @@ import Button from "@/components/ui/button/Button.vue";
 </template>
 ```
 
-If the button renders unstyled, the theme tokens were not injected into your Tailwind CSS file (check `components.json` `tailwind.css` path) or Tailwind is not scanning the directory the CLI wrote to.
+If the button renders unstyled, either the theme tokens are missing from the file named in
+`75neoui.json`, or Tailwind is not scanning the directory the CLI wrote to.
 
 ## Next
 

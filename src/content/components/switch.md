@@ -39,5 +39,5 @@ correctly in both positions; "Send email?" does not.
 
 ## Sizes
 
-`size` accepts `sm`, `md` and `lg`. The thumb travel is derived from the track, so the three sizes
-stay in proportion without any per size positioning.
+The thumb travel is derived from the track, so every size stays in proportion without any per size
+positioning.

@@ -115,4 +115,13 @@ const { previous, next } = adjacentPages(sections, current);
     const code = slot.parentElement?.querySelector("pre")?.textContent;
     if (code) createApp(CodeCopy, { value: code }).mount(slot);
   }
+
+  document.addEventListener("click", (event) => {
+    const trigger = (event.target as HTMLElement | null)?.closest<HTMLElement>("[data-pm-trigger]");
+    const manager = trigger?.dataset.pmValue;
+    if (!manager) return;
+
+    document.documentElement.dataset.pm = manager;
+    localStorage.setItem("package-manager", manager);
+  });
 </script>

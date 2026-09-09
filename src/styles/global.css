@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "@fontsource-variable/roboto";
 @import "@fontsource-variable/jetbrains-mono";
+@import "@75neo/ui/animations.css";
 @import "./registry.css";
 @import "./prose.css";
 
@@ -22,5 +23,31 @@
   pre,
   kbd {
     @apply font-mono;
+  }
+}
+
+@layer components {
+  [data-pm-panel] {
+    display: none;
+  }
+
+  html[data-pm="pnpm"] [data-pm-panel][data-pm-value="pnpm"],
+  html[data-pm="npm"] [data-pm-panel][data-pm-value="npm"],
+  html[data-pm="yarn"] [data-pm-panel][data-pm-value="yarn"],
+  html[data-pm="bun"] [data-pm-panel][data-pm-value="bun"] {
+    display: block;
+  }
+
+  [data-pm-tabs] pre {
+    @apply my-0 rounded-none ring-0;
+  }
+}
+
+@layer utilities {
+  html[data-pm="pnpm"] [data-pm-trigger][data-pm-value="pnpm"],
+  html[data-pm="npm"] [data-pm-trigger][data-pm-value="npm"],
+  html[data-pm="yarn"] [data-pm-trigger][data-pm-value="yarn"],
+  html[data-pm="bun"] [data-pm-trigger][data-pm-value="bun"] {
+    @apply border-primary text-default;
   }
 }
