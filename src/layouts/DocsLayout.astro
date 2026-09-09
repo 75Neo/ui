@@ -106,3 +106,13 @@ const { previous, next } = adjacentPages(sections, current);
     </div>
   </div>
 </Layout>
+
+<script>
+  import { createApp } from "vue";
+  import CodeCopy from "@/components/docs/CodeCopy.vue";
+
+  for (const slot of document.querySelectorAll<HTMLElement>("[data-code-copy]")) {
+    const code = slot.parentElement?.querySelector("pre")?.textContent;
+    if (code) createApp(CodeCopy, { value: code }).mount(slot);
+  }
+</script>
