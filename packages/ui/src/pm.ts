@@ -40,10 +40,16 @@ export interface InstallOptions {
   readonly dev?: boolean;
 }
 
+export const installArgs = (
+  packages: readonly string[],
+  manager: PackageManager,
+  dev = false,
+): string[] => [...ADD[manager], ...(dev ? ["-D"] : []), ...packages];
+
 export function install(packages: readonly string[], options: InstallOptions): Promise<void> {
   if (packages.length === 0) return Promise.resolve();
 
-  const args = [...ADD[options.manager], ...(options.dev === true ? ["-D"] : []), ...packages];
+  const args = installArgs(packages, options.manager, options.dev ?? false);
 
   return new Promise((resolve, reject) => {
     const child = spawn(options.manager, args, {
