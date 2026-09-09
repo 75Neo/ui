@@ -10,6 +10,7 @@
     "build": "pnpm packages:build && pnpm registry:generate && astro build",
     "preview": "astro preview",
     "typecheck": "pnpm --filter @75neo/ui typecheck && astro check && vue-tsc --noEmit",
+    "test": "pnpm --filter @75neo/ui test",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "format": "oxfmt",
@@ -53,7 +54,6 @@
     "oxfmt": "^0.66.0",
     "oxlint": "^1.81.0",
     "oxlint-tailwindcss": "^1.10.2",
-    "shadcn": "^4.21.0",
     "simple-icons": "^16.30.0",
     "vue-tsc": "^3.3.11"
   },

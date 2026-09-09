@@ -19,7 +19,6 @@ import {
 } from "./config.js";
 import { withImport, withTheme } from "./css.js";
 import { InstallError, writeFiles } from "./install.js";
-import { ParseError } from "./parse.js";
 import { detectPackageManager, install } from "./pm.js";
 import {
   RegistryError,
@@ -28,8 +27,8 @@ import {
   fetchItem,
   resolveItems,
 } from "./registry.js";
-import type { Config, Framework } from "./types.js";
-import { FRAMEWORKS } from "./types.js";
+import { FRAMEWORKS, ValidationError } from "./schema.js";
+import type { Config, Framework } from "./schema.js";
 
 const PACKAGE = "@75neo/ui";
 const ANIMATIONS = `${PACKAGE}/animations.css`;
@@ -166,7 +165,7 @@ function fail(error: unknown): void {
     error instanceof ConfigError ||
     error instanceof RegistryError ||
     error instanceof InstallError ||
-    error instanceof ParseError;
+    error instanceof ValidationError;
   const message =
     error instanceof Error
       ? known

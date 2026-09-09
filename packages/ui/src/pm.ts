@@ -1,7 +1,10 @@
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import path from "node:path";
-import type { PackageManager } from "./types.js";
+
+export const PACKAGE_MANAGERS = ["npm", "pnpm", "yarn", "bun"] as const;
+
+export type PackageManager = (typeof PACKAGE_MANAGERS)[number];
 
 const LOCKFILES: ReadonlyArray<readonly [string, PackageManager]> = [
   ["pnpm-lock.yaml", "pnpm"],

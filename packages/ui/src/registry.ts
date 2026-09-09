@@ -1,8 +1,8 @@
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { parseIndex, parseItem, parseJson } from "./parse.js";
-import type { Framework, RegistryIndex, RegistryItem } from "./types.js";
+import { parseJson, registryIndexSchema, registryItemSchema, validate } from "./schema.js";
+import type { Framework, RegistryIndex, RegistryItem } from "./schema.js";
 
 const NAMESPACE = /^@75neo\//;
 
@@ -38,7 +38,7 @@ async function read(
 
 export async function fetchIndex(registry: string, framework: Framework): Promise<RegistryIndex> {
   const [source, document] = await read(registry, framework, "registry.json");
-  return parseIndex(source, document);
+  return validate(registryIndexSchema, source, document);
 }
 
 export async function fetchItem(
@@ -47,7 +47,7 @@ export async function fetchItem(
   name: string,
 ): Promise<RegistryItem> {
   const [source, document] = await read(registry, framework, `${stripNamespace(name)}.json`);
-  return parseItem(source, document);
+  return validate(registryItemSchema, source, document);
 }
 
 export async function resolveItems(

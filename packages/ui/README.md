@@ -42,8 +42,15 @@ const { written, skipped } = await writeFiles(items, config, {
 });
 ```
 
-Registry responses and `75neoui.json` are validated at the boundary rather than cast, so a
-malformed document fails with a message naming the field instead of surfacing later as a crash.
+Registry responses and `75neoui.json` are validated against the package's own zod schemas rather
+than cast, so a malformed document fails with a message naming the field instead of surfacing
+later as a crash. The schemas are exported too, and `jsonSchemas()` renders them as JSON Schema.
+
+```ts
+import { registryItemSchema, validate } from "@75neo/ui";
+
+const item = validate(registryItemSchema, "button.json", await response.json());
+```
 
 ## Stylesheet
 

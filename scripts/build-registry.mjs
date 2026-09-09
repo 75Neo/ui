@@ -1,7 +1,19 @@
 import { globSync } from "node:fs";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { registryItemSchema } from "shadcn/schema";
+import process from "node:process";
+import {
+  ValidationError,
+  jsonSchemas,
+  registryIndexSchema,
+  registryItemSchema,
+  validate,
+} from "@75neo/ui";
+
+process.on("uncaughtException", (error) => {
+  console.error(error instanceof ValidationError ? error.message : error);
+  process.exit(1);
+});
 
 const FRAMEWORKS = { react: "registry.react.json", vue: "registry.vue.json" };
 const PUBLISH_DIR = "public/r";
@@ -136,10 +148,7 @@ async function publishItem(item, directory) {
   }
 
   const published = { ...item, ...(files.length > 0 ? { files } : {}) };
-  const parsed = registryItemSchema.safeParse(published);
-  if (!parsed.success) {
-    throw new Error(`Registry item "${item.name}" is invalid: ${parsed.error.message}`);
-  }
+  validate(registryItemSchema, `registry item "${item.name}"`, published);
 
   await writeFile(
     path.join(directory, `${item.name}.json`),
@@ -152,12 +161,19 @@ const metas = await readMeta();
 await writeFile(STYLESHEET, stylesheet(metas));
 console.log(`${STYLESHEET}`);
 
+await mkdir(PUBLISH_DIR, { recursive: true });
+for (const [file, schema] of Object.entries(jsonSchemas())) {
+  await writeFile(path.join(PUBLISH_DIR, file), `${JSON.stringify(schema, null, 2)}\n`);
+}
+console.log(`${PUBLISH_DIR}  ${Object.keys(jsonSchemas()).length} schemas`);
+
 for (const [framework, out] of Object.entries(FRAMEWORKS)) {
   const registry = {
     name: NAME,
     homepage: HOMEPAGE,
     items: metas.map((meta) => buildItem(meta, framework)),
   };
+  validate(registryIndexSchema, out, registry);
   await writeFile(out, `${JSON.stringify(registry, null, 2)}\n`);
 
   const directory = path.join(PUBLISH_DIR, framework);

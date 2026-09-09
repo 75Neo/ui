@@ -1,9 +1,8 @@
 import { existsSync } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { ParseError, parseJson } from "./parse.js";
-import type { Aliases, Config, Framework, Paths } from "./types.js";
-import { FRAMEWORKS, isFramework } from "./types.js";
+import { configSchema, parseJson, validate } from "./schema.js";
+import type { Aliases, Config, Framework, Paths } from "./schema.js";
 
 export const CONFIG_FILE = "75neoui.json";
 export const DEFAULT_REGISTRY = "https://75neo-ui.pages.dev/r";
@@ -35,47 +34,23 @@ export const configPath = (cwd: string): string => path.join(cwd, CONFIG_FILE);
 const isObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value);
 
-function segment(value: unknown, fallback: string): string {
-  return typeof value === "string" && value.length > 0 ? value : fallback;
-}
-
-function readPair(value: unknown, fallback: Paths | Aliases): { ui: string; lib: string } {
-  const source = isObject(value) ? value : {};
-  return { ui: segment(source["ui"], fallback.ui), lib: segment(source["lib"], fallback.lib) };
-}
-
 export async function readConfig(cwd: string): Promise<Config> {
   const file = configPath(cwd);
   if (!existsSync(file)) {
     throw new ConfigError(`No ${CONFIG_FILE} found in ${cwd}. Run \`75neoui init\` first.`);
   }
 
-  let document: unknown;
-  try {
-    document = parseJson(CONFIG_FILE, await readFile(file, "utf8"));
-  } catch (error) {
-    throw new ConfigError(error instanceof ParseError ? error.message : String(error));
-  }
+  const document = parseJson(CONFIG_FILE, await readFile(file, "utf8"));
+  const withDefaults = isObject(document)
+    ? {
+        registry: DEFAULT_REGISTRY,
+        paths: SRC_PATHS,
+        aliases: DEFAULT_ALIASES,
+        ...document,
+      }
+    : document;
 
-  if (!isObject(document)) throw new ConfigError(`${CONFIG_FILE} must contain an object.`);
-
-  const framework = document["framework"];
-  if (!isFramework(framework)) {
-    throw new ConfigError(`${CONFIG_FILE} needs a "framework" of ${FRAMEWORKS.join(" or ")}.`);
-  }
-
-  const css = document["css"];
-  if (typeof css !== "string" || css.length === 0) {
-    throw new ConfigError(`${CONFIG_FILE} needs a "css" path to your Tailwind entry file.`);
-  }
-
-  return {
-    framework,
-    css,
-    registry: segment(document["registry"], DEFAULT_REGISTRY),
-    paths: readPair(document["paths"], SRC_PATHS),
-    aliases: readPair(document["aliases"], DEFAULT_ALIASES),
-  };
+  return validate(configSchema, CONFIG_FILE, withDefaults);
 }
 
 export async function writeConfig(cwd: string, config: Config): Promise<void> {

@@ -13,9 +13,8 @@ export {
 export { serialize, withImport, withTheme } from "./css.js";
 export { InstallError, destinationFor, rewriteImports, writeFiles } from "./install.js";
 export type { WriteOptions, WriteResult } from "./install.js";
-export { ParseError, parseIndex, parseItem, parseJson } from "./parse.js";
-export { detectPackageManager, install } from "./pm.js";
-export type { InstallOptions } from "./pm.js";
+export { PACKAGE_MANAGERS, detectPackageManager, install } from "./pm.js";
+export type { InstallOptions, PackageManager } from "./pm.js";
 export {
   RegistryError,
   collectDependencies,
@@ -27,11 +26,20 @@ export {
 export {
   FRAMEWORKS,
   ITEM_TYPES,
-  PACKAGE_MANAGERS,
-  isFramework,
-  isItemType,
-  isPackageManager,
-} from "./types.js";
+  ValidationError,
+  configSchema,
+  cssBlockSchema,
+  frameworkSchema,
+  itemTypeSchema,
+  jsonSchemas,
+  parseJson,
+  registryFileEntrySchema,
+  registryFileSchema,
+  registryIndexEntrySchema,
+  registryIndexSchema,
+  registryItemSchema,
+  validate,
+} from "./schema.js";
 export type {
   Aliases,
   Config,
@@ -39,10 +47,9 @@ export type {
   CssValue,
   Framework,
   ItemType,
-  PackageManager,
   Paths,
   RegistryFile,
   RegistryIndex,
   RegistryIndexEntry,
   RegistryItem,
-} from "./types.js";
+} from "./schema.js";

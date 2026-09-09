@@ -83,10 +83,24 @@ jobs:
       - name: Type check
         run: pnpm typecheck
 
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Test
+        run: pnpm test
+
   ci:
     name: CI
     if: always()
-    needs: [format, lint, registry, build, typecheck]
+    needs: [format, lint, registry, test, build, typecheck]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

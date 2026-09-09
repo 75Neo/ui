@@ -62,7 +62,9 @@ pnpm registry:generate # write the registry items into public/r
 Component sources live under `registry/`: `react/ui` and `vue/ui` hold the adapters,
 `shared/lib` the recipes both import, and `meta/theme.json` the theme tokens. `registry.react.json`
 and `registry.vue.json` list what each framework publishes, and `build-registry.mjs` inlines
-their contents into `public/r`. Imports between registry files are written as `@/registry/…`
+their contents into `public/r`. Every item is validated against the zod schema in `@75neo/ui`
+before it is written, so a malformed meta fails the build rather than the install, and the same
+schema is published as JSON Schema at `/r/registry-item.json`. Imports between registry files are written as `@/registry/…`
 because that is the prefix the CLI rewrites to the installing project's own aliases.
 
 The CLI itself lives in `packages/ui` and is published as `@75neo/ui`. It is TypeScript,

@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import type { Config, RegistryFile, RegistryItem } from "./types.js";
+import type { Config, RegistryFile, RegistryItem } from "./schema.js";
 
 const UI_PREFIX = /^registry\/(?:react|vue)\/ui\//;
 const LIB_PREFIX = /^registry\/shared\/lib\//;

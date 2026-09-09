@@ -1,4 +1,4 @@
-import type { CssBlock } from "./types.js";
+import type { CssBlock } from "./schema.js";
 
 function rule(selector: string, body: CssBlock, indent: string): string[] {
   const lines = Object.entries(body).flatMap(([key, value]) =>

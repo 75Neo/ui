@@ -36,16 +36,20 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "typecheck": "tsc --noEmit",
-    "prepack": "tsc"
+    "typecheck": "tsc -p tsconfig.test.json",
+    "prepack": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
-    "yargs": "^18.1.0"
+    "yargs": "^18.1.0",
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@types/node": "^26.4.1",
     "@types/yargs": "^17.0.35",
-    "typescript": "~6.0.3"
+    "typescript": "~6.0.3",
+    "vitest": "^5.0.0"
   },
   "engines": {
     "node": ">=20"
