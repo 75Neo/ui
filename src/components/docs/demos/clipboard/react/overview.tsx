@@ -19,7 +19,6 @@ export default function ClipboardOverview() {
             <ClipboardIndicator copied={<Check />}>
               <Copy />
             </ClipboardIndicator>
-            Copy
           </ClipboardTrigger>
         </ClipboardControl>
       </Clipboard>

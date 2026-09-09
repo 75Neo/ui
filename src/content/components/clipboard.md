@@ -13,10 +13,9 @@ registryItem: clipboard
   <ClipboardControl>
     <ClipboardInput />
     <ClipboardTrigger>
-      <ClipboardIndicator fallback={<Copy />}>
-        <Check />
+      <ClipboardIndicator copied={<Check />}>
+        <Copy />
       </ClipboardIndicator>
-      Copy
     </ClipboardTrigger>
   </ClipboardControl>
 </Clipboard>
@@ -30,12 +29,11 @@ registryItem: clipboard
       <ClipboardInput />
       <ClipboardTrigger>
         <ClipboardIndicator>
-          <template #fallback>
-            <Copy />
+          <Copy />
+          <template #copied>
+            <Check />
           </template>
-          <Check />
         </ClipboardIndicator>
-        Copy
       </ClipboardTrigger>
     </ClipboardControl>
   </Clipboard>
@@ -44,9 +42,10 @@ registryItem: clipboard
 
 ## The confirmation
 
-`ClipboardIndicator` swaps to its children for `timeout` milliseconds after a successful copy and
-shows its fallback the rest of the time. That momentary tick is the whole point: a copy button with
-no feedback leaves people clicking it twice.
+`ClipboardIndicator` swaps to the tick for `timeout` milliseconds after a successful copy and shows
+its default icon the rest of the time. Every part also carries a `data-copied` attribute during that
+window, so you can style the confirmation further. That momentary tick is the whole point: a copy
+button with no feedback leaves people clicking it twice.
 
 ## Without the field
 
