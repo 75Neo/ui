@@ -18,12 +18,11 @@ import {
         <ClipboardInput />
         <ClipboardTrigger>
           <ClipboardIndicator>
-            <template #fallback>
-              <Copy />
+            <Copy />
+            <template #copied>
+              <Check />
             </template>
-            <Check />
           </ClipboardIndicator>
-          Copy
         </ClipboardTrigger>
       </ClipboardControl>
     </Clipboard>

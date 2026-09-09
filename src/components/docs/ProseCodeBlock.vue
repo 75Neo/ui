@@ -17,5 +17,8 @@ defineSlots<{
 </script>
 
 <template>
-  <pre :class="props.class" :data-language="props.language"><slot /></pre>
+  <div class="relative">
+    <pre :class="[props.class, 'pe-14']" :data-language="props.language"><slot /></pre>
+    <div data-code-copy class="absolute end-2 top-2"></div>
+  </div>
 </template>

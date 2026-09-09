@@ -12,11 +12,17 @@ const props = defineProps<ClipboardIndicatorProps>();
 
 defineSlots<{
   default?: () => unknown;
+  copied?: () => unknown;
 }>();
 </script>
 
 <template>
   <Ark.Indicator :class="cn(styles.indicator(), props.class)">
-    <slot />
+    <template #default>
+      <slot />
+    </template>
+    <template #copied>
+      <slot name="copied" />
+    </template>
   </Ark.Indicator>
 </template>
