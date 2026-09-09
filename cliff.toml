@@ -10,8 +10,7 @@ body = """
 ### {{ group | upper_first }}
 
 {% for commit in commits %}- {{ commit.message | upper_first }}{% if commit.remote.pr_number %} ([#{{ commit.remote.pr_number }}](https://github.com/75Neo/ui/pull/{{ commit.remote.pr_number }})){% endif %}
-{% endfor %}{% endfor %}
-"""
+{% endfor %}{% endfor %}"""
 footer = ""
 trim = false
 
