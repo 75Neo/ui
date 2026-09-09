@@ -1,6 +1,6 @@
 {
   "name": "@75neo/ui",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "The 75NeoUI installer and animation stylesheet",
   "keywords": [
     "75neoui",
@@ -11,33 +11,40 @@
   ],
   "homepage": "https://75neo-ui.pages.dev",
   "license": "MIT",
+  "author": "Vo Quang Chien <2giosangmitom@gmail.com>",
+  "contributors": [
+    "Vo Van Duy <nstcrystal@gmail.com>"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/75Neo/ui.git",
     "directory": "packages/ui"
   },
   "bin": {
-    "75neoui": "./dist/cli.js"
+    "75neoui": "./dist/cli.mjs"
   },
   "files": [
     "dist",
     "animations.css"
   ],
   "type": "module",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
     },
     "./animations.css": "./animations.css",
     "./package.json": "./package.json"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
+    "build": "tsdown",
+    "dev": "tsdown --watch",
     "typecheck": "tsc -p tsconfig.test.json",
-    "prepack": "tsc",
+    "prepack": "tsdown",
     "test": "vitest run",
     "test:watch": "vitest"
   },
@@ -48,6 +55,7 @@
   "devDependencies": {
     "@types/node": "^26.4.1",
     "@types/yargs": "^17.0.35",
+    "tsdown": "^0.23.0",
     "typescript": "~6.0.3",
     "vitest": "^5.0.0"
   },
