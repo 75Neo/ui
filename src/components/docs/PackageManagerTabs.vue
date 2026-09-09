@@ -33,9 +33,8 @@ const commands = computed(() => packageCommands(props.value));
       <pre
         data-language="sh"
         class="overflow-x-auto bg-muted/40 p-4 pe-14 text-[0.8125rem] leading-6 whitespace-pre"
-        >{{ commands[manager] }}</pre
-      >
-      <div data-code-copy class="absolute end-2 top-2"></div>
+        >{{ commands[manager] }}</pre>
+      <div data-code-copy class="absolute inset-e-2 top-2"></div>
     </div>
   </div>
 </template>
