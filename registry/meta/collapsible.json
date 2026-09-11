@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Collapsible",
   "description": "A single trigger that shows and hides one panel of content.",

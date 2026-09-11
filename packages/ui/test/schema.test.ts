@@ -5,6 +5,7 @@ import {
   jsonSchemas,
   registryIndexSchema,
   registryItemSchema,
+  registryMetaSchema,
   validate,
 } from "../src/schema.js";
 
@@ -37,9 +38,15 @@ describe("registryItemSchema", () => {
     expect(theme.files).toBeUndefined();
   });
 
-  it("rejects a component with no files", () => {
+  it("rejects a component with no files (only theme may ship fileless)", () => {
     expect(() =>
       validate(registryItemSchema, "x.json", { name: "x", type: "registry:ui" }),
+    ).toThrow(/files/);
+  });
+
+  it("rejects an empty files array", () => {
+    expect(() =>
+      validate(registryItemSchema, "x.json", { name: "x", type: "registry:ui", files: [] }),
     ).toThrow(/only a registry:theme item may ship without files/);
   });
 
@@ -49,7 +56,15 @@ describe("registryItemSchema", () => {
         ...button,
         css: { "@keyframes fade": { from: { opacity: "0" } } },
       }),
-    ).toThrow(/component CSS belongs in @75neo\/ui/);
+    ).toThrow(/css/);
+  });
+
+  it("accepts a $schema pointer on items", () => {
+    const item = validate(registryItemSchema, "button.json", {
+      $schema: "./registry-item.json",
+      ...button,
+    });
+    expect(item.name).toBe("button");
   });
 
   it("rejects a file outside the registry layout", () => {
@@ -143,13 +158,47 @@ describe("configSchema", () => {
   });
 });
 
+describe("registryMetaSchema", () => {
+  it("accepts authoring meta without name or content", () => {
+    const meta = validate(registryMetaSchema, "button.json", {
+      type: "registry:ui",
+      title: "Button",
+      dependencies: ["@ark-ui/{framework}", "{icons}"],
+      registryDependencies: ["@75neo/theme"],
+    });
+    expect(meta.type).toBe("registry:ui");
+  });
+
+  it("accepts a $schema pointer on meta", () => {
+    const meta = validate(registryMetaSchema, "button.json", {
+      $schema: "./registry-meta.json",
+      type: "registry:ui",
+    });
+    expect(meta.type).toBe("registry:ui");
+  });
+});
+
 describe("jsonSchemas", () => {
-  it("emits a draft schema for the index and the item", () => {
+  it("emits draft schemas for the index, item, meta, and config", () => {
     const schemas = jsonSchemas();
-    expect(Object.keys(schemas)).toEqual(["registry.json", "registry-item.json"]);
-    for (const schema of Object.values(schemas)) {
+    expect(Object.keys(schemas)).toEqual([
+      "registry.json",
+      "registry-item.json",
+      "registry-meta.json",
+      "75neoui.json",
+    ]);
+    for (const [file, schema] of Object.entries(schemas)) {
       expect(schema).toHaveProperty("$schema");
-      expect(schema).toHaveProperty("properties");
+      expect(schema).toHaveProperty("$id", `./${file}`);
     }
+    expect(schemas["registry.json"]).toHaveProperty("title");
+    expect(schemas["registry-item.json"]).toHaveProperty("oneOf");
+  });
+
+  it("encodes the files-required and ui-no-css rules in the item JSON schema", () => {
+    const schemas = jsonSchemas();
+    const item = JSON.stringify(schemas["registry-item.json"]);
+    expect(item).toContain("minItems");
+    expect(item).toContain('"not":{}');
   });
 });

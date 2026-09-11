@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Popover",
   "description": "A panel anchored to a trigger, for content that needs focus.",

@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Marquee",
   "description": "A row of content that scrolls past and loops, pausing on hover.",

@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Container",
   "description": "A layout element that centres its content and holds it to a maximum width.",

@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Angle Slider",
   "description": "A dial that picks a value in degrees around a circle.",

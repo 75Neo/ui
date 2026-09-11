@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Drawer",
   "description": "A panel that slides in from an edge and can be swiped away.",

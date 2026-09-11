@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Tour",
   "description": "A guided walk through a page, one spotlit step at a time.",

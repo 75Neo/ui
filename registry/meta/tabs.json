@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Tabs",
   "description": "A row of triggers that each swap in one panel, with a sliding indicator.",

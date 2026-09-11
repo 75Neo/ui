@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Carousel",
   "description": "A scroll snapped strip of slides with paging controls and indicators.",

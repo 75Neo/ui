@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Segment Group",
   "description": "A compact row of exclusive options with a sliding indicator.",

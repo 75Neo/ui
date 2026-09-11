@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Date Picker",
   "description": "A calendar in a popover that reads and writes one date or a range.",

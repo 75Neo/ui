@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Image Cropper",
   "description": "A viewport that pans, zooms and crops an image to a fixed shape.",

@@ -7,6 +7,7 @@ import {
   jsonSchemas,
   registryIndexSchema,
   registryItemSchema,
+  registryMetaSchema,
   validate,
 } from "@75neo/ui";
 
@@ -53,7 +54,7 @@ async function readMeta() {
   const files = sortPaths(globSync("registry/meta/*.json"));
   const metas = [];
   for (const file of files) {
-    const meta = JSON.parse(await readFile(file, "utf8"));
+    const meta = validate(registryMetaSchema, file, JSON.parse(await readFile(file, "utf8")));
     metas.push({ name: path.basename(file, ".json"), ...meta });
   }
   return metas.sort((a, b) => {
@@ -123,7 +124,9 @@ function stylesheet(metas) {
 }
 
 function buildItem(meta, framework) {
-  const { name, dependencies, files, ...rest } = meta;
+  // $schema is an authoring pointer and cssVars compiles into the docs
+  // stylesheet only; neither is published on the item.
+  const { name, dependencies, files, $schema: _schema, cssVars: _cssVars, ...rest } = meta;
   const resolved = files ?? [...uiFiles(name, framework), ...libFiles(name)];
   const hasCss =
     (meta.css && Object.keys(meta.css).length > 0) ||
@@ -147,12 +150,16 @@ async function publishItem(item, directory) {
     files.push({ ...file, content: await readFile(file.path, "utf8") });
   }
 
-  const published = { ...item, ...(files.length > 0 ? { files } : {}) };
-  validate(registryItemSchema, `registry item "${item.name}"`, published);
+  const published = {
+    ...item,
+    ...(files.length > 0 ? { files } : {}),
+    $schema: "../registry-item.json",
+  };
+  const validated = validate(registryItemSchema, `registry item "${item.name}"`, published);
 
   await writeFile(
     path.join(directory, `${item.name}.json`),
-    `${JSON.stringify(published, null, 2)}\n`,
+    `${JSON.stringify({ ...validated, $schema: "../registry-item.json" }, null, 2)}\n`,
   );
 }
 
@@ -173,13 +180,19 @@ for (const [framework, out] of Object.entries(FRAMEWORKS)) {
     homepage: HOMEPAGE,
     items: metas.map((meta) => buildItem(meta, framework)),
   };
-  validate(registryIndexSchema, out, registry);
-  await writeFile(out, `${JSON.stringify(registry, null, 2)}\n`);
+  const rootRegistry = { $schema: "./public/r/registry.json", ...registry };
+  validate(registryIndexSchema, out, rootRegistry);
+  await writeFile(out, `${JSON.stringify(rootRegistry, null, 2)}\n`);
 
   const directory = path.join(PUBLISH_DIR, framework);
   await rm(directory, { recursive: true, force: true });
   await mkdir(directory, { recursive: true });
-  await writeFile(path.join(directory, "registry.json"), `${JSON.stringify(registry, null, 2)}\n`);
+  const publishedRegistry = { $schema: "../registry.json", ...registry };
+  validate(registryIndexSchema, `${directory}/registry.json`, publishedRegistry);
+  await writeFile(
+    path.join(directory, "registry.json"),
+    `${JSON.stringify(publishedRegistry, null, 2)}\n`,
+  );
   for (const item of registry.items) await publishItem(item, directory);
 
   console.log(`${out}  ${registry.items.length} items  ${directory}`);

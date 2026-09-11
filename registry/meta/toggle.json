@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Toggle",
   "description": "A button that stays pressed until it is pressed again.",

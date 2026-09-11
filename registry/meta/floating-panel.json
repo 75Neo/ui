@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Floating Panel",
   "description": "A window that can be dragged, resized, minimised and maximised.",

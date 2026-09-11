@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:theme",
   "title": "75NeoUI theme",
   "description": "The colour, radius and text tokens every 75NeoUI component draws on.",

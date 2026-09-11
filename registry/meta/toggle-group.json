@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Toggle Group",
   "description": "A row of toggles that share one selection, single or multiple.",

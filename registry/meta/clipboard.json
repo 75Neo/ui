@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Clipboard",
   "description": "A copy control that reports success for a moment afterwards.",

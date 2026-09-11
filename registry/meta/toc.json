@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Table of Contents",
   "description": "A navigation rail that tracks the headings in view and marks the active one.",

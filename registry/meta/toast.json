@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Toast",
   "description": "A queue of short messages that stack in a corner and dismiss themselves.",

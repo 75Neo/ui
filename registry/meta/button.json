@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Button",
   "description": "A button with six variants, seven colors, five sizes and a loading state.",

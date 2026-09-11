@@ -43,7 +43,7 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "typecheck": "tsc -p tsconfig.test.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
     "prepack": "tsdown",
     "test": "vitest run",
     "test:watch": "vitest"

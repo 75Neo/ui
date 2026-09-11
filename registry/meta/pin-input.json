@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Pin Input",
   "description": "A row of single character boxes for a one time code.",

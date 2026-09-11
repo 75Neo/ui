@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Avatar",
   "description": "A circular image that falls back to initials while loading or on error.",

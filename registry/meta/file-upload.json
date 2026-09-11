@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "File Upload",
   "description": "A dropzone and a file list, with size and count validation.",

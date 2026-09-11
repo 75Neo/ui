@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Rating Group",
   "description": "A row of stars that reads and writes a number, with optional halves.",

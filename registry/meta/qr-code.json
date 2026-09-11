@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "QR Code",
   "description": "A generated QR code with an optional logo and a download control.",

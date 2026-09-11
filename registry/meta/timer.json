@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Timer",
   "description": "A countdown or stopwatch split into labelled units.",

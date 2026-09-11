@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Color Picker",
   "description": "An area, channel sliders and swatches behind a swatch trigger.",

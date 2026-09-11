@@ -1,4 +1,5 @@
 {
+  "$schema": "../../public/r/registry-meta.json",
   "type": "registry:ui",
   "title": "Select",
   "description": "A trigger that opens a list of options and reports the chosen one.",
