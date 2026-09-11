@@ -1,10 +1,10 @@
 import React from "react";
 import { Switch as Ark } from "@ark-ui/react/switch";
 import { cn } from "cn";
-import { switchRecipe, type SwitchSize, type Intent } from "@/registry/shared/lib/switch.styles";
+import { switchRecipe, type SwitchSize, type Color } from "@/registry/shared/lib/switch.styles";
 
 export interface SwitchProps extends Omit<React.ComponentPropsWithRef<typeof Ark.Root>, "color"> {
-  color?: Intent;
+  color?: Color;
   size?: SwitchSize;
 }
 

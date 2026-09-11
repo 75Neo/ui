@@ -14,55 +14,58 @@ a different shape rather than a different palette.
 
 ## The tokens
 
-### Intents
+### Colors
 
-Six semantic intents, each carrying a ramp rather than a single colour, so a recipe can fill, tint,
-hover and outline in one intent without opacity maths.
+Seven colors, each a single token, so a recipe fills, tints, hovers and outlines with opacity
+steps over that token instead of a hand built ramp.
 
-| Suffix     | Role                                                      | Utility                |
-| ---------- | --------------------------------------------------------- | ---------------------- |
-| none       | The solid fill                                            | `bg-primary`           |
-| `-hover`   | The solid fill on hover, a real step rather than a fade   | `bg-primary-hover`     |
-| `-fg`      | Text on the solid fill                                    | `text-primary-fg`      |
-| `-soft`    | The tinted surface for soft and subtle treatments         | `bg-primary-soft`      |
-| `-soft-fg` | Text on the tint, and the colour for outline, ghost, link | `text-primary-soft-fg` |
-| `-border`  | The ring for outline and subtle                           | `ring-primary-border`  |
+| Color            | Utility it drives | Light       | Dark        | Notes                                        |
+| ---------------- | ----------------- | ----------- | ----------- | -------------------------------------------- |
+| `--ui-primary`   | `bg-primary`      | `stone-900` | `stone-50`  | The brand is near black, not a hue           |
+| `--ui-secondary` | `bg-secondary`    | `stone-200` | `stone-800` | A light surface with dark text, role flipped |
+| `--ui-success`   | `bg-success`      | `green-500` | `green-500` |                                              |
+| `--ui-info`      | `bg-info`         | `blue-500`  | `blue-500`  |                                              |
+| `--ui-warning`   | `bg-warning`      | `amber-500` | `amber-500` |                                              |
+| `--ui-error`     | `bg-error`        | `red-500`   | `red-500`   |                                              |
+| `--ui-neutral`   | `bg-neutral`      | `stone-500` | `stone-400` | Picks neutral surfaces, not a hue            |
 
-| Intent      | Light fill  | Dark fill   | Notes                                        |
-| ----------- | ----------- | ----------- | -------------------------------------------- |
-| `primary`   | `stone-900` | `stone-50`  | The brand is near black, not a hue           |
-| `secondary` | `stone-200` | `stone-800` | A light surface with dark text, role flipped |
-| `success`   | `green-500` | `green-500` |                                              |
-| `info`      | `blue-500`  | `blue-500`  |                                              |
-| `warning`   | `amber-500` | `amber-500` | Dark foreground, because amber needs one     |
-| `error`     | `red-500`   | `red-500`   |                                              |
+States derive from the token. Solid hovers with `hover:bg-primary/75`, soft surfaces tint with
+`bg-primary/10`, outlines ring with `ring-primary/50`, and the focus ring takes the same color
+with `outline-primary/25`. Only components with a `color` prop use these; everything else draws
+on the neutrals below.
 
-`secondary` is the odd one out on purpose. Its fill is light and its foreground is dark, which is
-what makes it read as the quiet twin of the primary rather than as another hue.
+`secondary` is the odd one out on purpose. Its fill is light and its foreground is dark, so its
+recipes read dark text (`text-default`) where the hues read inverted text. `neutral` skips hues
+entirely and draws on the neutral system (`bg-inverted`, `bg-elevated`, `ring-accented`).
 
 ### Neutrals
 
-| Token                  | Utility it drives                     | Light       | Dark        |
-| ---------------------- | ------------------------------------- | ----------- | ----------- |
-| `--ui-text`            | `text-default`                        | `stone-900` | `stone-50`  |
-| `--ui-text-muted`      | `text-muted`                          | `stone-600` | `stone-400` |
-| `--ui-text-dimmed`     | `text-dimmed`                         | `stone-400` | `stone-500` |
-| `--ui-text-inverted`   | `text-inverted`                       | `stone-50`  | `stone-900` |
-| `--ui-bg`              | `bg-default`                          | `white`     | `stone-950` |
-| `--ui-bg-elevated`     | `bg-elevated`                         | `white`     | `stone-900` |
-| `--ui-bg-muted`        | `bg-muted`                            | `stone-100` | `stone-800` |
-| `--ui-bg-accented`     | `bg-accented`                         | `stone-200` | `stone-700` |
-| `--ui-bg-inverted`     | `bg-inverted`                         | `stone-900` | `stone-50`  |
-| `--ui-border`          | `border-default` and `ring-default`   | `stone-200` | `stone-800` |
-| `--ui-border-accented` | `border-accented` and `ring-accented` | `stone-300` | `stone-700` |
+| Token                   | Utility it drives                     | Light       | Dark        |
+| ----------------------- | ------------------------------------- | ----------- | ----------- |
+| `--ui-text`             | `text-default`                        | `stone-900` | `stone-50`  |
+| `--ui-text-muted`       | `text-muted`                          | `stone-600` | `stone-400` |
+| `--ui-text-toned`       | `text-toned`                          | `stone-700` | `stone-300` |
+| `--ui-text-dimmed`      | `text-dimmed`                         | `stone-400` | `stone-500` |
+| `--ui-text-highlighted` | `text-highlighted`                    | `stone-950` | `white`     |
+| `--ui-text-inverted`    | `text-inverted`                       | `stone-50`  | `stone-900` |
+| `--ui-bg`               | `bg-default`                          | `white`     | `stone-950` |
+| `--ui-bg-elevated`      | `bg-elevated`                         | `white`     | `stone-900` |
+| `--ui-bg-muted`         | `bg-muted`                            | `stone-100` | `stone-800` |
+| `--ui-bg-accented`      | `bg-accented`                         | `stone-200` | `stone-700` |
+| `--ui-bg-inverted`      | `bg-inverted`                         | `stone-900` | `stone-50`  |
+| `--ui-border`           | `border-default` and `ring-default`   | `stone-200` | `stone-800` |
+| `--ui-border-muted`     | `border-muted` and `ring-muted`       | `stone-100` | `stone-700` |
+| `--ui-border-accented`  | `border-accented` and `ring-accented` | `stone-300` | `stone-700` |
+| `--ui-border-inverted`  | `border-inverted` and `ring-inverted` | `stone-900` | `white`     |
 
 Dialogs, menus, popovers and toasts sit on `bg-elevated`. In light mode it matches the page and
 separates by ring and shadow; in dark mode it lifts one step off the page.
 
 ### Focus
 
-`--ui-focus` is `blue-500` in both modes and drives `outline-focus`. It is not the primary colour,
-because a near black ring is invisible against dark text and a per intent ring reads muddy.
+There is no focus token. The focus ring takes the color of the component carrying focus:
+`outline-primary/25` on a primary button, `outline-inverted/25` on neutral surfaces. Set it per
+recipe with the same token the recipe already uses.
 
 ### Elevation
 
@@ -93,27 +96,17 @@ want in each.
 
 :root {
   --ui-primary: var(--color-violet-600);
-  --ui-primary-hover: var(--color-violet-700);
-  --ui-primary-fg: var(--color-white);
-  --ui-primary-soft: var(--color-violet-50);
-  --ui-primary-soft-fg: var(--color-violet-700);
-  --ui-primary-border: var(--color-violet-200);
-
   --ui-radius: 0.5rem;
   --ui-container: 64rem;
 }
 
 .dark {
   --ui-primary: var(--color-violet-500);
-  --ui-primary-hover: var(--color-violet-400);
-  --ui-primary-soft: var(--color-violet-950);
-  --ui-primary-soft-fg: var(--color-violet-300);
-  --ui-primary-border: var(--color-violet-900);
 }
 ```
 
-Set every step of an intent you retheme, not just the fill, or the tinted and hovered states will
-still point at the old colour. Any colour works, not only Tailwind's:
+One token per color is the whole retheme. States follow automatically, because they are opacity
+steps over the token rather than separate variables. Any colour works, not only Tailwind's:
 
 ```css
 :root {
@@ -151,26 +144,33 @@ export const button = tv({
   },
   variants: {
     variant: {
-      solid: "bg-(--intent) text-(--intent-fg) shadow-xs hover:bg-(--intent-hover)",
+      solid: "",
+      soft: "",
+      // ...
     },
-    color: intent,
-    size: {
-      md: { base: "gap-1.5 px-3 py-2 text-sm" },
+    color: {
+      primary: "",
+      secondary: "",
+      // ...
     },
   },
+  compoundVariants: [
+    {
+      color: "primary",
+      variant: "solid",
+      class:
+        "bg-primary text-inverted hover:bg-primary/75 outline-primary/25 focus-visible:outline-3",
+    },
+    // ...
+  ],
 });
 ```
 
-The `color` axis comes from a shared file installed alongside any coloured component. Each entry
-binds one intent's tokens onto local custom properties, so a variant says `bg-(--intent)` once
-instead of once per colour. Custom properties inherit, so a compound component only needs the
-colour on its root.
-
-```ts
-export const intent = {
-  primary: "[--intent:var(--ui-primary)] [--intent-hover:var(--ui-primary-hover)] ...",
-};
-```
+The `color` axis carries one entry per color and the real classes live in `compoundVariants`,
+one entry per color and variant pair. States are opacity steps (`/75` on hover, `/10` and `/15`
+for tints, `/25` and `/50` for rings), so adding a variant means writing Tailwind classes, not
+new tokens. A compound component only needs the colour on the slot that shows it, for example a
+checkbox sets `data-[state=checked]:bg-primary` on its control and nothing elsewhere.
 
 To add a variant, add a key under `variants`, then add the matching entry to the adapter's prop
 type.

@@ -2,7 +2,7 @@
 import { computed, type HTMLAttributes } from "vue";
 import { Slider as Ark } from "@ark-ui/vue/slider";
 import { cn } from "cn";
-import { slider, type Intent } from "@/registry/shared/lib/slider.styles";
+import { slider, type Color } from "@/registry/shared/lib/slider.styles";
 
 interface SliderProps {
   defaultValue?: number[];
@@ -18,7 +18,7 @@ interface SliderProps {
   readOnly?: boolean;
   name?: string;
   form?: string;
-  color?: Intent;
+  color?: Color;
   class?: HTMLAttributes["class"];
 }
 

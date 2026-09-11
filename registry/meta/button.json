@@ -1,7 +1,7 @@
 {
   "type": "registry:ui",
   "title": "Button",
-  "description": "A button with six variants, six semantic colors, five sizes and a loading state.",
-  "registryDependencies": ["@75neo/theme", "@75neo/intent"],
+  "description": "A button with six variants, seven colors, five sizes and a loading state.",
+  "registryDependencies": ["@75neo/theme"],
   "dependencies": ["@ark-ui/{framework}", "{icons}", "cn", "tailwind-variants"]
 }

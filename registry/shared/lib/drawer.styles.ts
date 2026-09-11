@@ -13,7 +13,7 @@ export const drawer = tv({
     grabber: "flex shrink-0 cursor-grab justify-center py-1",
     grabberIndicator: "h-1 w-10 rounded-full bg-accented",
     closeTrigger:
-      "absolute end-4 top-4 inline-flex size-7 cursor-pointer items-center justify-center rounded-md text-dimmed transition-colors hover:bg-muted hover:text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus [&>svg]:size-4",
+      "absolute end-4 top-4 inline-flex size-7 cursor-pointer items-center justify-center rounded-md text-dimmed transition-colors hover:bg-muted hover:text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverted [&>svg]:size-4",
   },
   variants: {
     size: {

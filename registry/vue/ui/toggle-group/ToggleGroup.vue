@@ -5,7 +5,7 @@ import { cn } from "cn";
 import {
   toggleGroup,
   type ToggleGroupSize,
-  type Intent,
+  type Color,
 } from "@/registry/shared/lib/toggle-group.styles";
 
 interface ToggleGroupProps {
@@ -17,7 +17,7 @@ interface ToggleGroupProps {
   loopFocus?: boolean;
   rovingFocus?: boolean;
   size?: ToggleGroupSize;
-  color?: Intent;
+  color?: Color;
   class?: HTMLAttributes["class"];
 }
 

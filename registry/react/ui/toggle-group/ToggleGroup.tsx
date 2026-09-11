@@ -4,14 +4,14 @@ import { cn } from "cn";
 import {
   toggleGroup,
   type ToggleGroupSize,
-  type Intent,
+  type Color,
 } from "@/registry/shared/lib/toggle-group.styles";
 
 export interface ToggleGroupProps extends Omit<
   React.ComponentPropsWithRef<typeof Ark.Root>,
   "color"
 > {
-  color?: Intent;
+  color?: Color;
   size?: ToggleGroupSize;
 }
 

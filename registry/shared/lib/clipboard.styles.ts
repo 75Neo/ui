@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants/lite";
 
 const focusRing =
-  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus";
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverted";
 
 export const clipboard = tv({
   slots: {

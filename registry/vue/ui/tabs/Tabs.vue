@@ -2,7 +2,7 @@
 import { computed, type HTMLAttributes } from "vue";
 import { Tabs as Ark } from "@ark-ui/vue/tabs";
 import { cn } from "cn";
-import { tabs, type Intent } from "@/registry/shared/lib/tabs.styles";
+import { tabs, type Color } from "@/registry/shared/lib/tabs.styles";
 
 interface TabsProps {
   defaultValue?: string;
@@ -10,7 +10,7 @@ interface TabsProps {
   activationMode?: "manual" | "automatic";
   deselectable?: boolean;
   loopFocus?: boolean;
-  color?: Intent;
+  color?: Color;
   class?: HTMLAttributes["class"];
 }
 

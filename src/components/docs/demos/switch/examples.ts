@@ -10,6 +10,6 @@ export default [
   {
     id: "colors",
     title: "Colors",
-    description: "The checked track takes the intent colour. Off, it stays on the neutral surface.",
+    description: "The checked track takes the color. Off, it stays on the neutral surface.",
   },
 ] satisfies DemoExample[];

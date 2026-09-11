@@ -4,14 +4,14 @@ import { cn } from "cn";
 import {
   radioGroup,
   type RadioGroupSize,
-  type Intent,
+  type Color,
 } from "@/registry/shared/lib/radio-group.styles";
 
 export interface RadioGroupProps extends Omit<
   React.ComponentPropsWithRef<typeof Ark.Root>,
   "color"
 > {
-  color?: Intent;
+  color?: Color;
   size?: RadioGroupSize;
 }
 

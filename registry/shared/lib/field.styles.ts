@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants/lite";
 
 const control =
-  "w-full min-w-0 rounded-md bg-default text-default ring ring-default transition-colors outline-none placeholder:text-dimmed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus data-disabled:pointer-events-none data-disabled:opacity-75 data-invalid:ring-error";
+  "w-full min-w-0 rounded-md bg-default text-default ring ring-default transition-colors outline-none placeholder:text-dimmed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverted data-disabled:pointer-events-none data-disabled:opacity-75 data-invalid:ring-error";
 
 const lineHeight =
   "group-data-[size=lg]/field:h-10 group-data-[size=lg]/field:px-3.5 group-data-[size=lg]/field:text-base group-data-[size=md]/field:h-9 group-data-[size=md]/field:px-3 group-data-[size=md]/field:text-sm group-data-[size=sm]/field:h-8 group-data-[size=sm]/field:px-2.5 group-data-[size=sm]/field:text-xs";

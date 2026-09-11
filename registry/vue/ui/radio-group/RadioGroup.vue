@@ -5,7 +5,7 @@ import { cn } from "cn";
 import {
   radioGroup,
   type RadioGroupSize,
-  type Intent,
+  type Color,
 } from "@/registry/shared/lib/radio-group.styles";
 
 interface RadioGroupProps {
@@ -16,7 +16,7 @@ interface RadioGroupProps {
   name?: string;
   form?: string;
   size?: RadioGroupSize;
-  color?: Intent;
+  color?: Color;
   class?: HTMLAttributes["class"];
 }
 

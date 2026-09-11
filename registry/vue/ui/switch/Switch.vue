@@ -2,7 +2,7 @@
 import { computed, type HTMLAttributes } from "vue";
 import { Switch as Ark } from "@ark-ui/vue/switch";
 import { cn } from "cn";
-import { switchRecipe, type SwitchSize, type Intent } from "@/registry/shared/lib/switch.styles";
+import { switchRecipe, type SwitchSize, type Color } from "@/registry/shared/lib/switch.styles";
 
 interface SwitchProps {
   defaultChecked?: boolean;
@@ -14,7 +14,7 @@ interface SwitchProps {
   value?: string;
   form?: string;
   size?: SwitchSize;
-  color?: Intent;
+  color?: Color;
   class?: HTMLAttributes["class"];
 }
 

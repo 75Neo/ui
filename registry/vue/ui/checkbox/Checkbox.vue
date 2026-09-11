@@ -2,7 +2,7 @@
 import { computed, type HTMLAttributes } from "vue";
 import { Checkbox as Ark } from "@ark-ui/vue/checkbox";
 import { cn } from "cn";
-import { checkbox, type CheckboxSize, type Intent } from "@/registry/shared/lib/checkbox.styles";
+import { checkbox, type CheckboxSize, type Color } from "@/registry/shared/lib/checkbox.styles";
 
 interface CheckboxProps {
   defaultChecked?: boolean | "indeterminate";
@@ -14,7 +14,7 @@ interface CheckboxProps {
   value?: string;
   form?: string;
   size?: CheckboxSize;
-  color?: Intent;
+  color?: Color;
   class?: HTMLAttributes["class"];
 }
 

@@ -2,6 +2,6 @@
   "type": "registry:ui",
   "title": "Tabs",
   "description": "A row of triggers that each swap in one panel, with a sliding indicator.",
-  "registryDependencies": ["@75neo/theme", "@75neo/intent"],
+  "registryDependencies": ["@75neo/theme"],
   "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
 }

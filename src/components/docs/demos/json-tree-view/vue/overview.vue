@@ -5,7 +5,7 @@ const item = {
   name: "button",
   type: "registry:ui",
   title: "Button",
-  registryDependencies: ["@75neo/theme", "@75neo/intent"],
+  registryDependencies: ["@75neo/theme"],
   dependencies: ["@ark-ui/vue", "cn", "tailwind-variants"],
   files: [{ path: "registry/vue/ui/button/Button.vue", type: "registry:ui" }],
   deprecated: false,

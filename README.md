@@ -47,9 +47,9 @@ Dark mode is class-based: put `dark` on an ancestor of the components you want i
 palette. Retheme the library by overriding the `--ui-*` properties rather than the
 Tailwind tokens derived from them.
 
-Each of the six semantic intents carries a small ramp, a fill plus a hover step, a foreground, a
-tint, a tint foreground and a border, so components express every state with a real colour rather
-than an opacity. Neutrals are Tailwind's warm `stone` ramp and the default primary is near black.
+Each of the seven colors is a single token, so components express every state with an opacity
+step over that token rather than a hand built ramp. Neutrals are Tailwind's warm `stone` ramp
+and the default primary is near black.
 
 ## Working on the registry
 

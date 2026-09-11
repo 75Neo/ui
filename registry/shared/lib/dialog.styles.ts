@@ -10,7 +10,7 @@ export const dialog = tv({
     title: "text-base font-semibold text-default",
     description: "text-sm leading-6 text-muted",
     closeTrigger:
-      "absolute end-4 top-4 inline-flex size-7 cursor-pointer items-center justify-center rounded-md text-dimmed transition-colors hover:bg-muted hover:text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus [&>svg]:size-4",
+      "absolute end-4 top-4 inline-flex size-7 cursor-pointer items-center justify-center rounded-md text-dimmed transition-colors hover:bg-muted hover:text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverted [&>svg]:size-4",
   },
   variants: {
     size: {

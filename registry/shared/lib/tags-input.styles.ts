@@ -5,7 +5,7 @@ export const tagsInput = tv({
     root: "group/tags-input flex w-full min-w-0 flex-col gap-1.5",
     label: "text-sm font-medium text-default",
     control:
-      "flex w-full flex-wrap items-center gap-1.5 rounded-md bg-default ring ring-default group-data-[size=lg]/tags-input:p-2 group-data-[size=md]/tags-input:p-1.5 group-data-[size=sm]/tags-input:p-1 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-focus data-disabled:opacity-75 data-invalid:ring-error",
+      "flex w-full flex-wrap items-center gap-1.5 rounded-md bg-default ring ring-default group-data-[size=lg]/tags-input:p-2 group-data-[size=md]/tags-input:p-1.5 group-data-[size=sm]/tags-input:p-1 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-inverted data-disabled:opacity-75 data-invalid:ring-error",
     item: "inline-flex min-w-0 items-center",
     itemPreview:
       "inline-flex min-w-0 items-center gap-1 rounded-sm bg-muted py-0.5 ps-2 pe-1 text-xs text-default data-highlighted:bg-accented",

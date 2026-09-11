@@ -2,13 +2,13 @@
 import { computed, type HTMLAttributes } from "vue";
 import { Toggle as Ark } from "@ark-ui/vue/toggle";
 import { cn } from "cn";
-import { toggle, type ToggleSize, type Intent } from "@/registry/shared/lib/toggle.styles";
+import { toggle, type ToggleSize, type Color } from "@/registry/shared/lib/toggle.styles";
 
 interface ToggleProps {
   defaultPressed?: boolean;
   disabled?: boolean;
   size?: ToggleSize;
-  color?: Intent;
+  color?: Color;
   class?: HTMLAttributes["class"];
 }
 

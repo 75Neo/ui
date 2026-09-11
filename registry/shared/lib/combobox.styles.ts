@@ -6,7 +6,7 @@ export const combobox = tv({
     label: "text-sm font-medium text-default",
     control: "relative flex w-full min-w-0 items-center",
     input:
-      "h-9 w-full min-w-0 rounded-md bg-default ps-3 pe-16 text-sm text-default ring ring-default transition-colors outline-none placeholder:text-dimmed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus data-disabled:pointer-events-none data-disabled:opacity-75 data-invalid:ring-error",
+      "h-9 w-full min-w-0 rounded-md bg-default ps-3 pe-16 text-sm text-default ring ring-default transition-colors outline-none placeholder:text-dimmed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverted data-disabled:pointer-events-none data-disabled:opacity-75 data-invalid:ring-error",
     trigger:
       "absolute end-1 inline-flex size-7 cursor-pointer items-center justify-center rounded-md text-dimmed transition-colors hover:bg-muted hover:text-default data-[state=open]:rotate-180 [&>svg]:size-4",
     clearTrigger:

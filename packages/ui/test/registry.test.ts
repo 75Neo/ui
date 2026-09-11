@@ -20,16 +20,11 @@ const file = (name: string) => ({
 
 const ITEMS: Record<string, unknown> = {
   theme: { name: "theme", type: "registry:theme", css: { ":root": { "--ui-radius": "0.25rem" } } },
-  intent: {
-    name: "intent",
-    type: "registry:lib",
-    files: [{ path: "registry/shared/lib/intent.styles.ts", type: "registry:lib", content: "" }],
-  },
   button: {
     name: "button",
     type: "registry:ui",
     dependencies: ["cn", "tailwind-variants"],
-    registryDependencies: ["@75neo/theme", "@75neo/intent"],
+    registryDependencies: ["@75neo/theme"],
     files: [file("button")],
   },
   dialog: {
@@ -104,7 +99,7 @@ describe("fetchIndex", () => {
 describe("resolveItems", () => {
   it("follows registry dependencies transitively", async () => {
     const items = await resolveItems(await registry(), "react", ["button"]);
-    expect(items.map((item) => item.name).sort()).toEqual(["button", "intent", "theme"]);
+    expect(items.map((item) => item.name).sort()).toEqual(["button", "theme"]);
   });
 
   it("resolves each item once when two components share a dependency", async () => {
@@ -115,7 +110,7 @@ describe("resolveItems", () => {
 
   it("ignores a name repeated in the request", async () => {
     const items = await resolveItems(await registry(), "react", ["button", "@75neo/button"]);
-    expect(items).toHaveLength(3);
+    expect(items).toHaveLength(2);
   });
 
   it("names the item it could not resolve", async () => {

@@ -12,7 +12,7 @@ export default [
     id: "colors",
     title: "Colors",
     description:
-      "Six semantic intents. Primary is the near black brand colour, and each intent resolves through the theme tokens rather than a fixed Tailwind hue.",
+      "Seven colors. Primary is the near black brand colour, and each color resolves through one theme token rather than a fixed Tailwind hue.",
     client: "none",
   },
   {

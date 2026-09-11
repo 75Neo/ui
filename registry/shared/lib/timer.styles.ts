@@ -8,7 +8,7 @@ export const timer = tv({
     separator: "font-mono text-lg leading-none text-dimmed",
     control: "flex items-center gap-2",
     actionTrigger:
-      "inline-flex h-8 cursor-pointer items-center rounded-md px-2.5 text-xs font-medium text-muted ring ring-default transition-colors hover:bg-muted hover:text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus",
+      "inline-flex h-8 cursor-pointer items-center rounded-md px-2.5 text-xs font-medium text-muted ring ring-default transition-colors hover:bg-muted hover:text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverted",
   },
 });
 

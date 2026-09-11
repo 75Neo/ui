@@ -6,7 +6,7 @@ export const select = tv({
     label: "text-sm font-medium text-default",
     control: "relative w-full min-w-0",
     trigger:
-      "flex h-9 w-full min-w-0 cursor-pointer items-center justify-between gap-2 rounded-md bg-default px-3 text-sm text-default ring ring-default transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus data-disabled:pointer-events-none data-disabled:opacity-75 data-invalid:ring-error data-placeholder-shown:text-dimmed",
+      "flex h-9 w-full min-w-0 cursor-pointer items-center justify-between gap-2 rounded-md bg-default px-3 text-sm text-default ring ring-default transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverted data-disabled:pointer-events-none data-disabled:opacity-75 data-invalid:ring-error data-placeholder-shown:text-dimmed",
     valueText: "min-w-0 truncate text-start",
     indicator:
       "shrink-0 text-dimmed transition-transform duration-200 data-[state=open]:rotate-180 [&>svg]:size-4",

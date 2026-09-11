@@ -2,7 +2,7 @@
 import { computed, type HTMLAttributes } from "vue";
 import { Progress as Ark } from "@ark-ui/vue/progress";
 import { cn } from "cn";
-import { progress, type ProgressSize, type Intent } from "@/registry/shared/lib/progress.styles";
+import { progress, type ProgressSize, type Color } from "@/registry/shared/lib/progress.styles";
 
 interface ProgressProps {
   defaultValue?: number | null;
@@ -12,7 +12,7 @@ interface ProgressProps {
   locale?: string;
   formatOptions?: Intl.NumberFormatOptions;
   size?: ProgressSize;
-  color?: Intent;
+  color?: Color;
   class?: HTMLAttributes["class"];
 }
 

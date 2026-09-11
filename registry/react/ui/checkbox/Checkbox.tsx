@@ -1,10 +1,10 @@
 import React from "react";
 import { Checkbox as Ark } from "@ark-ui/react/checkbox";
 import { cn } from "cn";
-import { checkbox, type CheckboxSize, type Intent } from "@/registry/shared/lib/checkbox.styles";
+import { checkbox, type CheckboxSize, type Color } from "@/registry/shared/lib/checkbox.styles";
 
 export interface CheckboxProps extends Omit<React.ComponentPropsWithRef<typeof Ark.Root>, "color"> {
-  color?: Intent;
+  color?: Color;
   size?: CheckboxSize;
 }
 

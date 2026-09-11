@@ -1,10 +1,10 @@
 import React from "react";
 import { Toggle as Ark } from "@ark-ui/react/toggle";
 import { cn } from "cn";
-import { toggle, type ToggleSize, type Intent } from "@/registry/shared/lib/toggle.styles";
+import { toggle, type ToggleSize, type Color } from "@/registry/shared/lib/toggle.styles";
 
 export interface ToggleProps extends Omit<React.ComponentPropsWithRef<typeof Ark.Root>, "color"> {
-  color?: Intent;
+  color?: Color;
   size?: ToggleSize;
 }
 

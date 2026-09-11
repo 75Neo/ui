@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants/lite";
 
 const controlTrigger =
-  "inline-flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-md text-dimmed transition-colors hover:bg-muted hover:text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus [&>svg]:size-3.5";
+  "inline-flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-md text-dimmed transition-colors hover:bg-muted hover:text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverted [&>svg]:size-3.5";
 
 export const floatingPanel = tv({
   slots: {

@@ -1,10 +1,10 @@
 import React from "react";
 import { Progress as Ark } from "@ark-ui/react/progress";
 import { cn } from "cn";
-import { progress, type ProgressSize, type Intent } from "@/registry/shared/lib/progress.styles";
+import { progress, type ProgressSize, type Color } from "@/registry/shared/lib/progress.styles";
 
 export interface ProgressProps extends Omit<React.ComponentPropsWithRef<typeof Ark.Root>, "color"> {
-  color?: Intent;
+  color?: Color;
   size?: ProgressSize;
 }
 

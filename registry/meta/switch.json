@@ -2,6 +2,6 @@
   "type": "registry:ui",
   "title": "Switch",
   "description": "An on and off control that commits its change immediately.",
-  "registryDependencies": ["@75neo/theme", "@75neo/intent"],
+  "registryDependencies": ["@75neo/theme"],
   "dependencies": ["@ark-ui/{framework}", "cn", "tailwind-variants"]
 }

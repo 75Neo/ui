@@ -10,7 +10,7 @@ export const popover = tv({
     arrow: "[--arrow-background:var(--ui-bg)] [--arrow-size:0.5rem]",
     arrowTip: "border-s border-t border-default",
     closeTrigger:
-      "absolute end-2 top-2 inline-flex size-6 cursor-pointer items-center justify-center rounded-md text-dimmed transition-colors hover:bg-muted hover:text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus [&>svg]:size-3.5",
+      "absolute end-2 top-2 inline-flex size-6 cursor-pointer items-center justify-center rounded-md text-dimmed transition-colors hover:bg-muted hover:text-default focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverted [&>svg]:size-3.5",
   },
 });
 
